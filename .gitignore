@@ -1,1 +1,3 @@
 pyenergyplus/
+*.pkl
+*.pyc
