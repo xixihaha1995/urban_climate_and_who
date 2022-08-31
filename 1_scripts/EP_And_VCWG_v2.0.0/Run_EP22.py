@@ -1,4 +1,4 @@
-import sys
+import sys, _0_vcwg_ep_coordination as coordiantion
 sys.path.insert(0, 'C:\EnergyPlusV22-1-0')
 from pyenergyplus.api import EnergyPlusAPI
 from VCWG_Hydrology import VCWG_Hydro
@@ -6,44 +6,50 @@ one_time = True
 one_time_call_vcwg = True
 from threading import Thread
 
+def api_to_csv(state):
+    orig = api.exchange.list_available_api_data_csv(state)
+    newFileByteArray = bytearray(orig)
+    newFile = open("ep_files\\_3_available_api.csv", "wb")
+    newFile.write(newFileByteArray)
+    newFile.close()
 def time_step_handler(state):
-    global one_time,one_time_call_vcwg, _boiler_outlet_temp_act,_boiler_inlet_temp_act, _boiler_1_flow_act, \
-        _base_1_inlet_temp_act,_base_1_outlet_temp_act, _base_1_flow_act, \
-        _base_1_flow_sensor
+    global one_time,one_time_call_vcwg, odb_actuator_handle, \
+        oat_sensor_handle, hvac_heat_rejection_sensor_handle
         # _boiler_outlet_actuator2,_boiler_outlet_actuator3,_boiler_fraction_actuator, _boiler_inlet_temp_act, \
 
     if one_time:
         if not api.exchange.api_data_fully_ready(state):
             return
-        # _base_1_inlet_temp_act = api.exchange.get_actuator_handle(
-        #     state, "System Node Setpoint", "Temperature Setpoint",
-        #     "THERMAL ZONE: COMPARTMENT 1 THERMAL ZONE BASEBOARD HW INLET")
-        # _base_1_outlet_temp_act = api.exchange.get_actuator_handle(
-        #     state, "System Node Setpoint", "Temperature Setpoint",
-        #     "THERMAL ZONE: COMPARTMENT 1 THERMAL ZONE BASEBOARD HW OUTLET")
-
-        _base_1_flow_act = api.exchange.get_actuator_handle(
-            state, "System Node Setpoint", "Mass Flow Rate Setpoint",
-            "THERMAL ZONE: COMPARTMENT 1 THERMAL ZONE BASEBOARD HW INLET")
-
-        _base_1_flow_sensor = api.exchange.get_variable_handle(state, "System Node Mass Flow Rate",
-                                        "THERMAL ZONE: COMPARTMENT 1 THERMAL ZONE BASEBOARD HW INLET")
-        # api.exchange.get_variable_value(state, _base_1_flow_sensor)
         one_time = False
+        api_to_csv(state)
+        odb_actuator_handle = api.exchange.get_actuator_handle(
+            state, "Weather Data", "Outdoor Dry Bulb",
+            "Environment")
+
+        oat_sensor_handle = \
+            api.exchange.get_variable_handle(state,
+                                             "Site Outdoor Air Drybulb Temperature",
+                                             "ENVIRONMENT")
+
+        hvac_heat_rejection_sensor_handle = \
+            api.exchange.get_variable_handle(state,
+                                             "HVAC System Total Heat Rejection Energy",
+                                             "SIMHVAC")
     warm_up = api.exchange.warmup_flag(state)
     if not warm_up:
         if one_time_call_vcwg:
             one_time_call_vcwg = False
             Thread(target=run_vcwg).start()
-        print(f'EnergyPlus day: {api.exchange.day_of_month(state)}, hour: {api.exchange.hour(state)}')
-        pass
-        # api.exchange.set_actuator_value(state, _boiler_inlet_temp_act, 68)
-        # api.exchange.set_actuator_value(state, _boiler_1_flow_act, 40)
-        # api.exchange.set_actuator_value(state, _base_1_inlet_temp_act, 75)
-        # api.exchange.set_actuator_value(state, _base_1_outlet_temp_act, 70)
-        # api.exchange.set_actuator_value(state, _base_1_flow_act, 0.1)
-        # flow_rate = api.exchange.get_variable_value(state, _base_1_flow_sensor)
-        # print(flow_rate)t
+
+        coordiantion.sem_vcwg.acquire()
+        temp_ep_oat = api.exchange.get_variable_value(state, oat_sensor_handle)
+        print(f'EP: original OAT: {temp_ep_oat}')
+        print(f'EP: vcwg updated canTemp:{coordiantion.ep_oat}')
+        coordiantion.ep_hvac_waste = api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
+        api.exchange.set_actuator_value(state, odb_actuator_handle, coordiantion.ep_oat)
+        temp_ep_oat = api.exchange.get_variable_value(state, oat_sensor_handle)
+        print(f'EP: updated OAT: {temp_ep_oat}')
+        coordiantion.sem_energyplus.release()
 
 def run_ep_api():
 
@@ -70,6 +76,8 @@ def run_vcwg():
     VCWG.run()
 
 if __name__ == '__main__':
+    coordiantion.init_semaphore_settings()
+    coordiantion.init_temp_waste_heat()
     api = EnergyPlusAPI()
     Thread(target=run_ep_api).start()
 

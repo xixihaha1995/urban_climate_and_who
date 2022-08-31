@@ -3,6 +3,8 @@ from psychrometrics import psychrometrics, moist_air_density
 import logging
 import numpy
 import copy
+
+import _0_vcwg_ep_coordination as coordination
 """
 Calculate building characteristics
 Developed by Mohsen Moradi and Amir A. Aliabadi
@@ -469,8 +471,14 @@ class Building(object):
         self.QWater = (1 / self.heatEff - 1.) * self.sensWaterHeatDemand
         self.QGas = BEM.Gas * (1 - self.heatEff) * self.nFloor
         self.sensWaste = self.sensWasteCoolHeatDehum + self.QWater + self.QGas
-        print(f"I got temperature,{canTemp},humidity,{canHum}")
-        print(f'I got sensible waste heat {self.sensWaste}')
+
+        coordination.sem_energyplus.acquire()
+        print("VCWG: original sensWaste", self.sensWaste)
+        self.sensWaste = coordination.ep_hvac_waste
+        coordination.ep_oat = canTemp - 273.15
+        print("VCWG: updated sensWaste", self.sensWaste)
+        coordination.sem_vcwg.release()
+
         # Calculate total gas consumption per unit floor area [W m^-2] which is equal to gas consumption per unit floor area +
         # energy consumption for domestic hot water per unit floor area + energy consumption of the heating system per unit floor area
         self.GasTotal = BEM.Gas + (massFlorRateSWH*CpH20*(T_hot - MeteoData.waterTemp)/self.nFloor)/self.heatEff + self.heatConsump/self.nFloor
