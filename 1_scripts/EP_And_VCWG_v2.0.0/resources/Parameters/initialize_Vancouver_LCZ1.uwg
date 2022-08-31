@@ -12,7 +12,7 @@
 Month,7,           # starting month 6
 Day,1,             # starting day (1-31) 16
 nDay,3,           # number of days to run simulation 31
-dtSim,300,         # simulation time step [s]
+dtSim,900,         # simulation time step [s]
 dtWeather,3600,    # weather time step [s]
 nDay_spinup,1,     # Number of days accounted for spin-up
 nightStart,18,     # Sunset time in local standard time

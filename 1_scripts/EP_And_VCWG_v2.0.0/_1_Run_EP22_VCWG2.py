@@ -53,9 +53,12 @@ def time_step_handler(state):
         # print(f'EP: vcwg updated canTemp:{coordiantion.ep_oat}')
         cooling_demand = api.exchange.get_variable_value(state, zone1_cooling_sensor_handle)
         heating_demand = api.exchange.get_variable_value(state, zone1_heating_sensor_handle)
-        coordiantion.ep_hvac_demand = cooling_demand + heating_demand
+        waste_heat = api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
+        print(f'EP: Heat Rejection: {waste_heat}')
+        coordiantion.ep_hvac_demand = waste_heat
 
-        print(f'EP: day:{api.exchange.day_of_month(state)}, hour:{api.exchange.hour(state)}, minute:{api.exchange.minutes(state)}')
+        print(f'EP: day:{api.exchange.day_of_month(state)}, hour:{api.exchange.hour(state)}, '
+              f'minute:{api.exchange.minutes(state)}')
         api.exchange.set_actuator_value(state, odb_actuator_handle, coordiantion.ep_oat)
         coordiantion.sem_energyplus.release()
 
