@@ -473,10 +473,10 @@ class Building(object):
         self.sensWaste = self.sensWasteCoolHeatDehum + self.QWater + self.QGas
 
         coordination.sem_energyplus.acquire()
-        print("VCWG: original sensWaste", self.sensWaste)
-        self.sensWaste = coordination.ep_hvac_waste
+        # print("VCWG: original sensWaste", self.sensWaste)
+        self.sensWaste = coordination.ep_hvac_demand*10
         coordination.ep_oat = canTemp - 273.15
-        print("VCWG: updated sensWaste", self.sensWaste)
+        # print("VCWG: updated sensWaste", self.sensWaste)
         coordination.sem_vcwg.release()
 
         # Calculate total gas consumption per unit floor area [W m^-2] which is equal to gas consumption per unit floor area +

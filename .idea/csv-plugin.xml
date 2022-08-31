@@ -10,7 +10,28 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\Results\th_profilesVancouver_LCZ1_sensible_heat.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\Results\th_profilesVancouver_LCZ1_sensible_heat_times_10.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\ep_files\_3_available_api.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\ep_files\outputs\eplustbl.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -45,6 +66,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD12\BLD12_BuildingSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD12\BLD12_LocationSummary.csv">
           <value>
             <Attribute>
@@ -60,6 +88,13 @@
           </value>
         </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD13\BLD13_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD14\BLD14_BuildingSummary.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

@@ -8,6 +8,6 @@ def init_semaphore_settings():
     sem_energyplus = threading.Semaphore()
 
 def init_temp_waste_heat():
-    global ep_hvac_waste, ep_oat
-    ep_hvac_waste = 0
+    global ep_hvac_demand, ep_oat
+    ep_hvac_demand = 0
     ep_oat = 0
