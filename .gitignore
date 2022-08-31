@@ -5,3 +5,5 @@ ep_files/
 *.pkl
 *.pyc
 *.png
+*.zip
+InputOutputReference.pdf
