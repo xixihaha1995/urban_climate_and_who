@@ -38,6 +38,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\plots_related\waste_heat_15_min.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\plots_related\waste_heat_5_min.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD10\BLD10_BuildingSummary.csv">
           <value>
             <Attribute>

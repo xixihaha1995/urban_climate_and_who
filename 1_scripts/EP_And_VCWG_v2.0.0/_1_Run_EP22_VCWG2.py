@@ -1,10 +1,15 @@
-import sys, _0_vcwg_ep_coordination as coordiantion
+import sys, _0_vcwg_ep_coordination as coordiantion, numpy as np
 sys.path.insert(0, 'C:\EnergyPlusV22-1-0')
 from pyenergyplus.api import EnergyPlusAPI
 from VCWG_Hydrology import VCWG_Hydro
+from threading import Thread
+
 one_time = True
 one_time_call_vcwg = True
-from threading import Thread
+
+# init data frame for energyplus results
+records = []
+
 
 def api_to_csv(state):
     orig = api.exchange.list_available_api_data_csv(state)
@@ -15,7 +20,8 @@ def api_to_csv(state):
 def time_step_handler(state):
     global one_time,one_time_call_vcwg, odb_actuator_handle, \
         oat_sensor_handle, hvac_heat_rejection_sensor_handle, plant_cooling_sensor_handle, \
-        zone1_cooling_sensor_handle, zone1_heating_sensor_handle
+        zone1_cooling_sensor_handle, zone1_heating_sensor_handle, \
+        records
 
     if one_time:
         if not api.exchange.api_data_fully_ready(state):
@@ -45,26 +51,31 @@ def time_step_handler(state):
     if not warm_up:
         if one_time_call_vcwg:
             one_time_call_vcwg = False
-            Thread(target=run_vcwg).start()
+            # Thread(target=run_vcwg).start()
 
-        coordiantion.sem_vcwg.acquire()
+        # coordiantion.sem_vcwg.acquire()
         temp_ep_oat = api.exchange.get_variable_value(state, oat_sensor_handle)
-        # print(f'EP: original OAT: {temp_ep_oat}')
-        # print(f'EP: vcwg updated canTemp:{coordiantion.ep_oat}')
         cooling_demand = api.exchange.get_variable_value(state, zone1_cooling_sensor_handle)
         heating_demand = api.exchange.get_variable_value(state, zone1_heating_sensor_handle)
         waste_heat = api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
-        print(f'EP: Heat Rejection: {waste_heat}')
-        coordiantion.ep_hvac_demand = waste_heat
-
-        print(f'EP: day:{api.exchange.day_of_month(state)}, hour:{api.exchange.hour(state)}, '
-              f'minute:{api.exchange.minutes(state)}')
-        api.exchange.set_actuator_value(state, odb_actuator_handle, coordiantion.ep_oat)
-        coordiantion.sem_energyplus.release()
+        # print(f'EP: Heat Rejection: {waste_heat}')
+        # print(f'EP: day:{api.exchange.day_of_month(state)}, hour:{api.exchange.hour(state)}, '
+        #       f'minute:{api.exchange.minutes(state)}')
+        curr_sim_time = api.exchange.current_sim_time(state)
+        zone_time_step = api.exchange.zone_time_step(state)
+        sys_time_step = api.exchange.system_time_step(state)
+        # print(f'zone_time_step: {zone_time_step}, sys_time_step: {sys_time_step}\n')
+        # vertical stack records for energyplus results
+        records.append([curr_sim_time,waste_heat])
+        print(f'EP: Cumulated Time [h]: {curr_sim_time}, Heat Rejection: {records}\n')
+        # coordiantion.ep_hvac_demand = cooling_demand
+        # api.exchange.set_actuator_value(state, odb_actuator_handle, coordiantion.ep_oat)
+        # coordiantion.sem_energyplus.release()
 
 def run_ep_api():
     state = api.state_manager.new_state()
-    api.runtime.callback_end_zone_timestep_after_zone_reporting(state, time_step_handler)
+    # api.runtime.callback_end_zone_timestep_after_zone_reporting(state, time_step_handler)
+    api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handler)
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
     api.exchange.request_variable(state, "Plant Supply Side Cooling Demand Rate", "SHWSYS1")
     api.exchange.request_variable(state, "Plant Supply Side Heating Demand Rate", "SHWSYS1")
@@ -89,9 +100,15 @@ def run_vcwg():
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
     VCWG.run()
 
+
 if __name__ == '__main__':
     coordiantion.init_semaphore_settings()
     coordiantion.init_temp_waste_heat()
     api = EnergyPlusAPI()
-    Thread(target=run_ep_api).start()
+    ep_thread = Thread(target=run_ep_api)
+    ep_thread.start()
+    ep_thread.join()
+    records_arr = np.array(records)
+    # save results to csv file
+    np.savetxt('plots_related\\waste_heat_15_min.csv', records_arr, delimiter=',')
 

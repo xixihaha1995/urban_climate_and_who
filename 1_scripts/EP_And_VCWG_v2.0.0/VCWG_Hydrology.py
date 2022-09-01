@@ -429,6 +429,7 @@ class VCWG_Hydro(object):
         # Start simulation
         for it in range(0,self.simTime.nt-1,1):
             # print(r'VCWG: Progress [%]', numpy.round(100 * it / self.simTime.nt, 2))
+            print(f'VCWG Cumulative Time [h]: { it/12}\n')
 
             # Simulation time increment raised to weather time step
             SunPosition,MeteoData,Anthropogenic,location,ParCalculation = \
