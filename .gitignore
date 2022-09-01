@@ -1,6 +1,6 @@
 pyenergyplus/
 Results/
-ep_files/
+_0_ep_files/
 """
 *.pkl
 *.pyc

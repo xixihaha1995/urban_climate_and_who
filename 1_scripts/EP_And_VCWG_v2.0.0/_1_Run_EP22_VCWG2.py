@@ -14,7 +14,7 @@ one_time_call_vcwg = True
 def api_to_csv(state):
     orig = api.exchange.list_available_api_data_csv(state)
     newFileByteArray = bytearray(orig)
-    newFile = open("ep_files\\_3_available_api.csv", "wb")
+    newFile = open("_0_ep_files\\_3_available_api.csv", "wb")
     newFile.write(newFileByteArray)
     newFile.close()
 def time_step_handler(state):
@@ -77,7 +77,7 @@ def time_step_handler(state):
         coordiantion.ep_waste_heat = waste_heat*1e-4
         api.exchange.set_actuator_value(state, odb_actuator_handle, coordiantion.ep_oat)
         # records.append([curr_sim_time_in_hours,waste_heat])
-        print(f'EP: Cumulated Time [h]: {curr_sim_time_in_hours}, Heat Rejection * 1e-5 [J]: {waste_heat*1e-4}\n')
+        print(f'EP: Cumulated Time [h]: {curr_sim_time_in_hours}, Heat Rejection * 1e-4 [J]: {waste_heat*1e-4}\n')
         coordiantion.sem_energyplus.release()
 
 def run_ep_api():
@@ -89,9 +89,9 @@ def run_ep_api():
     api.exchange.request_variable(state, "Plant Supply Side Heating Demand Rate", "SHWSYS1")
     api.exchange.request_variable(state, "Zone Air System Sensible Cooling Rate", "PERIMETER_ZN_1")
     api.exchange.request_variable(state, "Zone Air System Sensible Heating Rate", "PERIMETER_ZN_1")
-    output_path = 'ep_files\\outputs'
-    weather_file = 'ep_files\\USA_CO_Golden-NREL.724666_TMY3.epw'
-    idf_file = 'ep_files\\ASHRAE901_OfficeSmall_STD2019_Denver.idf'
+    output_path = '_0_ep_files\\outputs'
+    weather_file = '_0_ep_files\\USA_CO_Golden-NREL.724666_TMY3.epw'
+    idf_file = '_0_ep_files\\ASHRAE901_OfficeSmall_STD2019_Denver.idf'
     sys_args = '-d', output_path, '-w', weather_file, idf_file
     api.runtime.run_energyplus(state, sys_args)
 
@@ -123,5 +123,5 @@ if __name__ == '__main__':
     # Lichen: post process, such as [timestamp, waste heat] * time_steps_num
     # records_arr = np.array(records)
     # save results to csv file
-    # np.savetxt('plots_related\\waste_heat_15_min.csv', records_arr, delimiter=',')
+    # np.savetxt('_1_plots_related\\waste_heat_15_min.csv', records_arr, delimiter=',')
 
