@@ -29,6 +29,8 @@ from Material import Material
 from psychrometrics import HumFromRHumTemp
 from EPWGenerator import write_epw
 
+import _0_vcwg_ep_coordination as coordiantion
+
 """
 Main VCWG script 
 Developed by Mohsen Moradi and Amir A. Aliabadi
@@ -429,8 +431,6 @@ class VCWG_Hydro(object):
         # Start simulation
         for it in range(0,self.simTime.nt-1,1):
             # print(r'VCWG: Progress [%]', numpy.round(100 * it / self.simTime.nt, 2))
-            print(f'VCWG Cumulative Time [h]: { it/12}\n')
-
             # Simulation time increment raised to weather time step
             SunPosition,MeteoData,Anthropogenic,location,ParCalculation = \
                 ForcingData(self.MeteoDataRaw_intp,it, self.WBCanyon.SoilPotW, self.VCWGParamFileName,self.simTime)

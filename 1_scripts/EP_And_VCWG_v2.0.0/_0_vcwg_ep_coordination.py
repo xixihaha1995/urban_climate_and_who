@@ -1,13 +1,12 @@
 import threading
-def init_semaphore_settings():
-    """
-    Initialize the semaphore settings for the EnergyPlus API.
-    """
+def init_semaphore_lock_settings():
     global sem_vcwg, sem_energyplus
-    sem_vcwg = threading.Semaphore()
+    sem_vcwg = threading.Semaphore(0)
     sem_energyplus = threading.Semaphore()
 
-def init_temp_waste_heat():
-    global ep_hvac_demand, ep_oat
+def init_variables_for_vcwg_ep():
+    global ep_hvac_demand, ep_oat, ep_waste_heat, vcwg_needed_time_idx_in_seconds
     ep_hvac_demand = 0
     ep_oat = 0
+    ep_waste_heat = 0
+    vcwg_needed_time_idx_in_seconds = 0

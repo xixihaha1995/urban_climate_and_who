@@ -1,15 +1,15 @@
-import sys, _0_vcwg_ep_coordination as coordiantion, numpy as np
+import sys,  numpy as np
 sys.path.insert(0, 'C:\EnergyPlusV22-1-0')
 from pyenergyplus.api import EnergyPlusAPI
 from VCWG_Hydrology import VCWG_Hydro
 from threading import Thread
 
+# Lichen: import the parent coordination class needed for EP and VCWG
+import _0_vcwg_ep_coordination as coordiantion
+# Lichen: init global variables used for EP each callback function
+records = []
 one_time = True
 one_time_call_vcwg = True
-
-# init data frame for energyplus results
-records = []
-
 
 def api_to_csv(state):
     orig = api.exchange.list_available_api_data_csv(state)
@@ -27,19 +27,11 @@ def time_step_handler(state):
         if not api.exchange.api_data_fully_ready(state):
             return
         one_time = False
-        api_to_csv(state)
-        odb_actuator_handle = api.exchange.get_actuator_handle(
-            state, "Weather Data", "Outdoor Dry Bulb",
-            "Environment")
-
+        # api_to_csv(state)
         oat_sensor_handle = \
             api.exchange.get_variable_handle(state,
                                              "Site Outdoor Air Drybulb Temperature",
                                              "ENVIRONMENT")
-        hvac_heat_rejection_sensor_handle = \
-            api.exchange.get_variable_handle(state,
-                                             "HVAC System Total Heat Rejection Energy",
-                                             "SIMHVAC")
         zone1_cooling_sensor_handle = api.exchange.get_variable_handle(state,
                                                                        "Zone Air System Sensible Cooling Rate",
                                                                        "PERIMETER_ZN_1")
@@ -47,30 +39,46 @@ def time_step_handler(state):
                                                                        "Zone Air System Sensible Heating Rate",
                                                                        "PERIMETER_ZN_1")
 
+        odb_actuator_handle = api.exchange.get_actuator_handle(
+            state, "Weather Data", "Outdoor Dry Bulb",
+            "Environment")
+
+        hvac_heat_rejection_sensor_handle = \
+            api.exchange.get_variable_handle(state,
+                                             "HVAC System Total Heat Rejection Energy",
+                                             "SIMHVAC")
+
     warm_up = api.exchange.warmup_flag(state)
     if not warm_up:
+        # Lichen: After EP warm up, start to call VCWG
         if one_time_call_vcwg:
             one_time_call_vcwg = False
-            # Thread(target=run_vcwg).start()
-
-        # coordiantion.sem_vcwg.acquire()
-        temp_ep_oat = api.exchange.get_variable_value(state, oat_sensor_handle)
-        cooling_demand = api.exchange.get_variable_value(state, zone1_cooling_sensor_handle)
-        heating_demand = api.exchange.get_variable_value(state, zone1_heating_sensor_handle)
+            Thread(target=run_vcwg).start()
+        '''
+        Lichen: sync EP and VCWG
+        1. EP: get the current time in seconds
+        2. Compare EP_time_idx_in_seconds with vcwg_needed_time_idx_in_seconds
+            a. if true, 
+                global_hvac_waste <- ep:hvac_heat_rejection_sensor_handle
+                ep:odb_actuator_handle <- global_oat
+                release the lock for vcwg, denoted as coordiantion.sem_energyplus.release()
+            b. if false (HVAC is converging, probably we need run many HVAC iteration loops):
+                release the lock for EP, denoted as coordiantion.sem_vcwg.release()
+        '''
+        coordiantion.sem_vcwg.acquire()
+        curr_sim_time_in_hours = api.exchange.current_sim_time(state)
+        curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
+        if abs(curr_sim_time_in_seconds - coordiantion.vcwg_needed_time_idx_in_seconds) < 1:
+            print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
+            print("EP: vcwg_needed_time_idx_in_seconds: ", coordiantion.vcwg_needed_time_idx_in_seconds)
+            coordiantion.sem_vcwg.release()
+            return
         waste_heat = api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
-        # print(f'EP: Heat Rejection: {waste_heat}')
-        # print(f'EP: day:{api.exchange.day_of_month(state)}, hour:{api.exchange.hour(state)}, '
-        #       f'minute:{api.exchange.minutes(state)}')
-        curr_sim_time = api.exchange.current_sim_time(state)
-        zone_time_step = api.exchange.zone_time_step(state)
-        sys_time_step = api.exchange.system_time_step(state)
-        # print(f'zone_time_step: {zone_time_step}, sys_time_step: {sys_time_step}\n')
-        # vertical stack records for energyplus results
-        records.append([curr_sim_time,waste_heat])
-        print(f'EP: Cumulated Time [h]: {curr_sim_time}, Heat Rejection: {records}\n')
-        # coordiantion.ep_hvac_demand = cooling_demand
-        # api.exchange.set_actuator_value(state, odb_actuator_handle, coordiantion.ep_oat)
-        # coordiantion.sem_energyplus.release()
+        coordiantion.ep_waste_heat = waste_heat*1e-4
+        api.exchange.set_actuator_value(state, odb_actuator_handle, coordiantion.ep_oat)
+        # records.append([curr_sim_time_in_hours,waste_heat])
+        print(f'EP: Cumulated Time [h]: {curr_sim_time_in_hours}, Heat Rejection * 1e-5 [J]: {waste_heat*1e-4}\n')
+        coordiantion.sem_energyplus.release()
 
 def run_ep_api():
     state = api.state_manager.new_state()
@@ -86,15 +94,14 @@ def run_ep_api():
     idf_file = 'ep_files\\ASHRAE901_OfficeSmall_STD2019_Denver.idf'
     sys_args = '-d', output_path, '-w', weather_file, idf_file
     api.runtime.run_energyplus(state, sys_args)
-def run_vcwg():
 
+def run_vcwg():
     epwFileName = None
     TopForcingFileName = 'Vancouver2008_ERA5_Jul.csv'
     VCWGParamFileName = 'initialize_Vancouver_LCZ1.uwg'
     ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
     # Case name to append output file names with
     case = 'Vancouver_LCZ1'
-    # '''
 
     # Initialize the UWG object and run the simulation
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
@@ -102,13 +109,19 @@ def run_vcwg():
 
 
 if __name__ == '__main__':
-    coordiantion.init_semaphore_settings()
-    coordiantion.init_temp_waste_heat()
+    # Lichen: init the synchronization lock related settings: locks, shared variables.
+    coordiantion.init_semaphore_lock_settings()
+    coordiantion.init_variables_for_vcwg_ep()
+
     api = EnergyPlusAPI()
+    # Lichen: run ep_thread first, wait for EP warm up and ep_thread will call run VCWG_thread
     ep_thread = Thread(target=run_ep_api)
     ep_thread.start()
+    # Lichen: wait for ep_thread to finish to post process some accumulated records
     ep_thread.join()
-    records_arr = np.array(records)
+
+    # Lichen: post process, such as [timestamp, waste heat] * time_steps_num
+    # records_arr = np.array(records)
     # save results to csv file
-    np.savetxt('plots_related\\waste_heat_15_min.csv', records_arr, delimiter=',')
+    # np.savetxt('plots_related\\waste_heat_15_min.csv', records_arr, delimiter=',')
 

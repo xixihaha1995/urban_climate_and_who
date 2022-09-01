@@ -4,6 +4,7 @@ import logging
 import numpy
 import copy
 
+# Lichen: import the parent coordination class needed for EP and VCWG
 import _0_vcwg_ep_coordination as coordination
 """
 Calculate building characteristics
@@ -472,10 +473,26 @@ class Building(object):
         self.QGas = BEM.Gas * (1 - self.heatEff) * self.nFloor
         self.sensWaste = self.sensWasteCoolHeatDehum + self.QWater + self.QGas
 
+        '''
+        Lichen: sync EP and VCWG
+        1. VCWG will be acquiring (waiting) until EP release the lock
+            a. If VCWG has acquired the lock, it means moments ago, 
+                EP has released the lock(coordiantion.sem_energyplus.release()).
+                It also means the waste_hvac for vcwg_needed_time_index_in_seconds has been updated.
+        2. VCWG will update the next vcwg_needed_time_index_in_seconds.
+        3. self.sensWaste <- coordination.ep_waste_heat*10
+        4. coordination.ep_oat <- canTemp - 273.15
+        '''
         coordination.sem_energyplus.acquire()
+        vcwg_time_index_in_seconds = (simTime.day - 1)* 3600 + simTime.secDay
+        # print(f'VCWG: Update needed time index[accumulated seconds]: {vcwg_time_index_in_seconds}\n')
+        coordination.vcwg_needed_time_idx_in_seconds = vcwg_time_index_in_seconds
         # # print("VCWG: original sensWaste", self.sensWaste)
-        # # self.sensWaste = coordination.ep_hvac_demand*10
-        # # coordination.ep_oat = canTemp - 273.15
+        if coordination.ep_waste_heat < 1e-30:
+            self.sensWaste = 20
+        else:
+            self.sensWaste = coordination.ep_waste_heat
+        coordination.ep_oat = canTemp - 273.15
         # # print("VCWG: updated sensWaste", self.sensWaste)
         coordination.sem_vcwg.release()
 
