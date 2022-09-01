@@ -29,8 +29,6 @@ from Material import Material
 from psychrometrics import HumFromRHumTemp
 from EPWGenerator import write_epw
 
-import _0_vcwg_ep_coordination as coordiantion
-
 """
 Main VCWG script 
 Developed by Mohsen Moradi and Amir A. Aliabadi

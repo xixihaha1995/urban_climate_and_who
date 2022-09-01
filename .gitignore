@@ -1,7 +1,7 @@
 pyenergyplus/
 Results/
 _0_ep_files/
-"""
+2_shared_zip/
 *.pkl
 *.pyc
 *.png
