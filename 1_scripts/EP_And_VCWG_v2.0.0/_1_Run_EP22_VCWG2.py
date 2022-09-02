@@ -90,7 +90,7 @@ def time_step_handler(state):
             # print("EP: vcwg_needed_time_idx_in_seconds: ", coordiantion.vcwg_needed_time_idx_in_seconds)
             coordiantion.sem_vcwg.release()
             return
-        api.exchange.set_actuator_value(state, odb_actuator_handle, coordiantion.ep_oat)
+        # api.exchange.set_actuator_value(state, odb_actuator_handle, coordiantion.ep_oat)
         # print(f'EP: accumulated Time [h]: {curr_sim_time_in_hours}, '
         #       f'Heat Rejection * 1e-4 [J]: {coordiantion.ep_accumulated_waste_heat }\n')
         coordiantion.sem_energyplus.release()
@@ -141,7 +141,7 @@ if __name__ == '__main__':
     records_df = pd.DataFrame(records_arr, columns=['last_time_in_seconds', 'curr_sim_time_in_seconds',
                                                     'vcwg_needed_time_idx_in_seconds',
                                                     'coordiantion.ep_accumulated_waste_heat'])
-    records_df.to_csv('_1_plots_related\\ep_1min_vcwg_5min_waste_heat.csv', index=False)
+    records_df.to_csv('_1_plots_related\\5zone_ep_5min_vcwg_5min_waste_heat.csv', index=False)
     # save results to csv file
     # np.savetxt('_1_plots_related\\ep_1min_vcwg_5min_waste_heat.csv', records_arr, delimiter=',')
 
