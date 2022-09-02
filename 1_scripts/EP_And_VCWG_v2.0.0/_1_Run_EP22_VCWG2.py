@@ -77,6 +77,8 @@ def time_step_handler(state):
         _this_waste_heat = api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
 
         if curr_sim_time_in_seconds != ep_last_time_index_in_seconds:
+            print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
+            print("EP: ep_last_time_index_in_seconds: ", ep_last_time_index_in_seconds)
             coordiantion.ep_accumulated_waste_heat += _this_waste_heat
             records.append([ep_last_time_index_in_seconds, curr_sim_time_in_seconds,
                             coordiantion.vcwg_needed_time_idx_in_seconds, coordiantion.ep_accumulated_waste_heat])
@@ -102,9 +104,9 @@ def run_ep_api():
     api.exchange.request_variable(state, "Plant Supply Side Heating Demand Rate", "SHWSYS1")
     api.exchange.request_variable(state, "Zone Air System Sensible Cooling Rate", "PERIMETER_ZN_1")
     api.exchange.request_variable(state, "Zone Air System Sensible Heating Rate", "PERIMETER_ZN_1")
-    output_path = '_0_ep_files\\outputs'
-    weather_file = '_0_ep_files\\USA_CO_Golden-NREL.724666_TMY3.epw'
-    idf_file = '_0_ep_files\\ASHRAE901_OfficeSmall_STD2019_Denver.idf'
+    output_path = '_01_ep_5zone\\outputs'
+    weather_file = '_01_ep_5zone\\USA_CO_Golden-NREL.724666_TMY3.epw'
+    idf_file = '_01_ep_5zone\\5ZoneAirCooled.idf'
     sys_args = '-d', output_path, '-w', weather_file, idf_file
     api.runtime.run_energyplus(state, sys_args)
 

@@ -2,6 +2,7 @@ only_ep/
 pyenergyplus/
 Results/
 _0_ep_files/
+_01_ep_5zone/
 2_shared_zip/
 *.pkl
 *.pyc
