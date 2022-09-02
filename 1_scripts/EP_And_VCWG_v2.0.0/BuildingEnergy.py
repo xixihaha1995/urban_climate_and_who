@@ -478,20 +478,22 @@ class Building(object):
         1. VCWG will be acquiring (waiting) until EP release the lock
             a. If VCWG has acquired the lock, it means moments ago, 
                 EP has released the lock(coordiantion.sem_energyplus.release()).
-                It also means the waste_hvac for vcwg_needed_time_index_in_seconds has been updated.
+                It also means the accumulated_waste_hvac for vcwg_needed_time_index_in_seconds has been updated.
         2. VCWG will update the next vcwg_needed_time_index_in_seconds.
-        3. self.sensWaste <- coordination.ep_waste_heat*10
+        3. self.sensWaste <- coordination.ep_accumulated_waste_heat*10
+        4. VCWG will reset coordination.ep_accumulated_waste_heat to 0
         4. coordination.ep_oat <- canTemp - 273.15
         '''
         coordination.sem_energyplus.acquire()
-        vcwg_time_index_in_seconds = (simTime.day - 1)* 3600 + simTime.secDay
-        # print(f'VCWG: Update needed time index[accumulated seconds]: {vcwg_time_index_in_seconds}\n')
+        vcwg_time_index_in_seconds = (simTime.day - 1)* 3600 *24 + simTime.secDay
+        print(f'VCWG: Update needed time index[accumulated seconds]: {vcwg_time_index_in_seconds}\n')
         coordination.vcwg_needed_time_idx_in_seconds = vcwg_time_index_in_seconds
         # # print("VCWG: original sensWaste", self.sensWaste)
-        if coordination.ep_waste_heat < 1e-30:
+        if coordination.ep_accumulated_waste_heat < 1e-30:
             self.sensWaste = 20
         else:
-            self.sensWaste = coordination.ep_waste_heat
+            self.sensWaste = coordination.ep_accumulated_waste_heat * 1e-4
+        coordination.ep_accumulated_waste_heat = 0
         coordination.ep_oat = canTemp - 273.15
         # # print("VCWG: updated sensWaste", self.sensWaste)
         coordination.sem_vcwg.release()

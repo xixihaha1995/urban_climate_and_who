@@ -2,20 +2,40 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# read csv
-df = pd.read_csv('waste_heat_5_min.csv', header=None)
-df2 = pd.read_csv('waste_heat_5_min_2.csv', header=None)
-df3 = pd.read_csv('waste_heat_15_min.csv', header=None)
-df4 = pd.read_csv('waste_heat_7.5_min.csv', header=None)
-# plot
-plt.plot(df[0], df[1], label='Zone Time Steo: 5 min')
-# plt.plot(df2[0], df2[1], label='waste_heat_5_min_2')
-plt.plot(df4[0], df4[1], label='Zone Time Step: 7.5 min')
-plt.plot(df3[0], df3[1], label='Zone Time Step: 15 min')
+def ep_time_to_pandas_time(dataframe, delta_t):
+    start_time = '2017-July-01 00:00:00'
+    date = pd.date_range(start_time, periods=len(dataframe), freq='{}S'.format(delta_t))
+    date = pd.Series(date)
+    # update dataframe index
+    dataframe.index = date
+    return dataframe
 
-plt.xlabel('Time [h]')
-plt.ylabel('Heat Rejection [J]')
-plt.legend()
+# add header to df
+
+# read csv
+df = pd.read_csv('../../only_ep/ASHRAE901_OfficeSmall_STD2019_Denver_5min.csv', header=0, index_col=0)
+df2 = pd.read_csv('../../only_ep/ASHRAE901_OfficeSmall_STD2019_Denver_15min.csv', header=0, index_col=0)
+df5 = pd.read_csv('../../only_ep/ASHRAE901_OfficeSmall_STD2019_Denver_1min.csv', header=0, index_col=0)
+
+df4 = pd.read_csv('ep_1min_vcwg_5min_waste_heat.csv', header=0)
+# add column names
+
+df = ep_time_to_pandas_time(df, 300)
+df2 = ep_time_to_pandas_time(df2, 900)
+df5 = ep_time_to_pandas_time(df5, 60)
+df4 = ep_time_to_pandas_time(df4, 60)
+
+# plot
+fig, ax = plt.subplots()
+ax.plot(df5.index, df5['SimHVAC:HVAC System Total Heat Rejection Energy [J](TimeStep) '], label='1 min Accumulated (1 min EP)')
+ax.plot(df.index, df['SimHVAC:HVAC System Total Heat Rejection Energy [J](TimeStep) '], label='5 min Accumulated (5 min EP)')
+ax.plot(df4.index, df4['coordiantion.ep_accumulated_waste_heat'], label='5 min Accumulated (1 min EP+ 5 min VCWG)')
+# ax.plot(df2.index, df2['SimHVAC:HVAC System Total Heat Rejection Energy [J](TimeStep) '], label='15 min  EP')
+# ax.plot(df3[0], df3[1], label='15 min, EP+VCWG')
+ax.set(xlabel='Time [h]', ylabel='HVAC System Total Heat Rejection Energy [J]',
+         title='Accumulated Waste Heat in different software (EP only, EP+VCWG)')
+ax.legend()
 plt.show()
+
 
 

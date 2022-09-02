@@ -1,4 +1,4 @@
-import sys,  numpy as np
+import sys,  numpy as np, pandas as pd
 sys.path.insert(0, 'C:\EnergyPlusV22-1-0')
 from pyenergyplus.api import EnergyPlusAPI
 from VCWG_Hydrology import VCWG_Hydro
@@ -19,14 +19,14 @@ def api_to_csv(state):
     newFile.close()
 def time_step_handler(state):
     global one_time,one_time_call_vcwg, odb_actuator_handle, \
-        oat_sensor_handle, hvac_heat_rejection_sensor_handle, plant_cooling_sensor_handle, \
-        zone1_cooling_sensor_handle, zone1_heating_sensor_handle, \
-        records
+        oat_sensor_handle, hvac_heat_rejection_sensor_handle, \
+        ep_last_time_index_in_seconds, records
 
     if one_time:
         if not api.exchange.api_data_fully_ready(state):
             return
         one_time = False
+        ep_last_time_index_in_seconds = 0
         # api_to_csv(state)
         oat_sensor_handle = \
             api.exchange.get_variable_handle(state,
@@ -57,27 +57,40 @@ def time_step_handler(state):
         '''
         Lichen: sync EP and VCWG
         1. EP: get the current time in seconds
-        2. Compare EP_time_idx_in_seconds with vcwg_needed_time_idx_in_seconds
+        2. EP: compare the current time with the last time
+            if the current time is larger than the last time,
+                then do accumulation: coordiantion.ep_accumulated_waste_heat += _this_waste_heat * 1e-4
+        3. Compare EP_time_idx_in_seconds with vcwg_needed_time_idx_in_seconds
             a. if true, 
                 global_hvac_waste <- ep:hvac_heat_rejection_sensor_handle
-                ep:odb_actuator_handle <- global_oat
+                global_oat -> ep:odb_actuator_handle
                 release the lock for vcwg, denoted as coordiantion.sem_energyplus.release()
-            b. if false (HVAC is converging, probably we need run many HVAC iteration loops):
+            b. if false 
+                (HVAC is converging, probably we need run many HVAC iteration loops for the same ep time index)
+                or
+                (HVAC is accumulating, probably we need run many HVAC iteration loops for the following ep time indices)
                 release the lock for EP, denoted as coordiantion.sem_vcwg.release()
         '''
         coordiantion.sem_vcwg.acquire()
         curr_sim_time_in_hours = api.exchange.current_sim_time(state)
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
-        if abs(curr_sim_time_in_seconds - coordiantion.vcwg_needed_time_idx_in_seconds) < 1:
-            print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
-            print("EP: vcwg_needed_time_idx_in_seconds: ", coordiantion.vcwg_needed_time_idx_in_seconds)
+        _this_waste_heat = api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
+
+        if curr_sim_time_in_seconds != ep_last_time_index_in_seconds:
+            coordiantion.ep_accumulated_waste_heat += _this_waste_heat
+            records.append([ep_last_time_index_in_seconds, curr_sim_time_in_seconds,
+                            coordiantion.vcwg_needed_time_idx_in_seconds, coordiantion.ep_accumulated_waste_heat])
+            ep_last_time_index_in_seconds = curr_sim_time_in_seconds
+        time_index_alignment_bool =  1 > abs(curr_sim_time_in_seconds - coordiantion.vcwg_needed_time_idx_in_seconds)
+
+        if not time_index_alignment_bool:
+            # print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
+            # print("EP: vcwg_needed_time_idx_in_seconds: ", coordiantion.vcwg_needed_time_idx_in_seconds)
             coordiantion.sem_vcwg.release()
             return
-        waste_heat = api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
-        coordiantion.ep_waste_heat = waste_heat*1e-4
         api.exchange.set_actuator_value(state, odb_actuator_handle, coordiantion.ep_oat)
-        # records.append([curr_sim_time_in_hours,waste_heat])
-        print(f'EP: Cumulated Time [h]: {curr_sim_time_in_hours}, Heat Rejection * 1e-4 [J]: {waste_heat*1e-4}\n')
+        # print(f'EP: accumulated Time [h]: {curr_sim_time_in_hours}, '
+        #       f'Heat Rejection * 1e-4 [J]: {coordiantion.ep_accumulated_waste_heat }\n')
         coordiantion.sem_energyplus.release()
 
 def run_ep_api():
@@ -121,7 +134,12 @@ if __name__ == '__main__':
     ep_thread.join()
 
     # Lichen: post process, such as [timestamp, waste heat] * time_steps_num
-    # records_arr = np.array(records)
+    records_arr = np.array(records)
+    # array to df
+    records_df = pd.DataFrame(records_arr, columns=['last_time_in_seconds', 'curr_sim_time_in_seconds',
+                                                    'vcwg_needed_time_idx_in_seconds',
+                                                    'coordiantion.ep_accumulated_waste_heat'])
+    records_df.to_csv('_1_plots_related\\ep_1min_vcwg_5min_waste_heat.csv', index=False)
     # save results to csv file
-    # np.savetxt('_1_plots_related\\waste_heat_15_min.csv', records_arr, delimiter=',')
+    # np.savetxt('_1_plots_related\\ep_1min_vcwg_5min_waste_heat.csv', records_arr, delimiter=',')
 
