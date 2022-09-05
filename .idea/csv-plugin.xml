@@ -325,6 +325,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\VCWG_v2.0.0\resources\TopForcing\Vancouver2008_ERA5.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
