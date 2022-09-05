@@ -138,9 +138,9 @@ class Building(object):
         ------
         INPUT:
         canTemp: Average canyon temperature [K]
-        canHum: Average canyon specific humidity [kg kg^-1]
+        canHum: Average canyon specific humidity [kg kg^-1] ()
         BEM: Building energy parameters
-        MeteoData: Forcing variables
+        MeteoData: Forcing variables (only pressure is used)
         ParCalculation: General calculation parameters
         simTime: Simulation time parameters
         Geometry_m: Geometric parameters
