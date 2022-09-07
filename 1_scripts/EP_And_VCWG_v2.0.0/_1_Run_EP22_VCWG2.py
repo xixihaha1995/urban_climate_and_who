@@ -1,8 +1,8 @@
-import sys,  numpy as np, pandas as pd
+import sys,  numpy as np, pandas as pd, os
 sys.path.insert(0, 'C:\EnergyPlusV22-1-0')
 from pyenergyplus.api import EnergyPlusAPI
 # from VCWG_Hydrology import VCWG_Hydro
-from _2_bypass_VCWG_Hydrology import bypass_VCWG_Hydro
+from _2_bypass_VCWG_Hydrology import VCWG_Hydro as bypass_VCWG_Hydro
 from threading import Thread
 
 # Lichen: import the parent coordination class needed for EP and VCWG
@@ -15,7 +15,8 @@ one_time_call_vcwg = True
 def api_to_csv(state):
     orig = api.exchange.list_available_api_data_csv(state)
     newFileByteArray = bytearray(orig)
-    newFile = open("_0_ep_files\\_3_available_api.csv", "wb")
+    api_path = os.path.join(ep_files_path, 'api.csv')
+    newFile = open(api_path, "wb")
     newFile.write(newFileByteArray)
     newFile.close()
 def time_step_handler(state):
@@ -28,7 +29,7 @@ def time_step_handler(state):
             return
         one_time = False
         ep_last_time_index_in_seconds = 0
-        # api_to_csv(state)
+        api_to_csv(state)
         oat_sensor_handle = \
             api.exchange.get_variable_handle(state,
                                              "Site Outdoor Air Drybulb Temperature",
@@ -54,7 +55,7 @@ def time_step_handler(state):
         # Lichen: After EP warm up, start to call VCWG
         if one_time_call_vcwg:
             one_time_call_vcwg = False
-            Thread(target=run_vcwg).start()
+            # Thread(target=run_vcwg).start()
         '''
         Lichen: sync EP and VCWG
         1. EP: get the current time in seconds
@@ -72,29 +73,29 @@ def time_step_handler(state):
                 (HVAC is accumulating, probably we need run many HVAC iteration loops for the following ep time indices)
                 release the lock for EP, denoted as coordiantion.sem_vcwg.release()
         '''
-        coordiantion.sem_vcwg.acquire()
-        curr_sim_time_in_hours = api.exchange.current_sim_time(state)
-        curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
-        _this_waste_heat = api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
-
-        if curr_sim_time_in_seconds != ep_last_time_index_in_seconds:
-            print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
-            print("EP: ep_last_time_index_in_seconds: ", ep_last_time_index_in_seconds)
-            coordiantion.ep_accumulated_waste_heat += _this_waste_heat
-            records.append([ep_last_time_index_in_seconds, curr_sim_time_in_seconds,
-                            coordiantion.vcwg_needed_time_idx_in_seconds, coordiantion.ep_accumulated_waste_heat])
-            ep_last_time_index_in_seconds = curr_sim_time_in_seconds
-        time_index_alignment_bool =  1 > abs(curr_sim_time_in_seconds - coordiantion.vcwg_needed_time_idx_in_seconds)
-
-        if not time_index_alignment_bool:
-            # print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
-            # print("EP: vcwg_needed_time_idx_in_seconds: ", coordiantion.vcwg_needed_time_idx_in_seconds)
-            coordiantion.sem_vcwg.release()
-            return
-        # api.exchange.set_actuator_value(state, odb_actuator_handle, coordiantion.ep_oat)
-        # print(f'EP: accumulated Time [h]: {curr_sim_time_in_hours}, '
-        #       f'Heat Rejection * 1e-4 [J]: {coordiantion.ep_accumulated_waste_heat }\n')
-        coordiantion.sem_energyplus.release()
+        # coordiantion.sem_vcwg.acquire()
+        # curr_sim_time_in_hours = api.exchange.current_sim_time(state)
+        # curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
+        # _this_waste_heat = api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
+        #
+        # if curr_sim_time_in_seconds != ep_last_time_index_in_seconds:
+        #     print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
+        #     print("EP: ep_last_time_index_in_seconds: ", ep_last_time_index_in_seconds)
+        #     coordiantion.ep_accumulated_waste_heat += _this_waste_heat
+        #     records.append([ep_last_time_index_in_seconds, curr_sim_time_in_seconds,
+        #                     coordiantion.vcwg_needed_time_idx_in_seconds, coordiantion.ep_accumulated_waste_heat])
+        #     ep_last_time_index_in_seconds = curr_sim_time_in_seconds
+        # time_index_alignment_bool =  1 > abs(curr_sim_time_in_seconds - coordiantion.vcwg_needed_time_idx_in_seconds)
+        #
+        # if not time_index_alignment_bool:
+        #     # print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
+        #     # print("EP: vcwg_needed_time_idx_in_seconds: ", coordiantion.vcwg_needed_time_idx_in_seconds)
+        #     coordiantion.sem_vcwg.release()
+        #     return
+        # # api.exchange.set_actuator_value(state, odb_actuator_handle, coordiantion.ep_oat)
+        # # print(f'EP: accumulated Time [h]: {curr_sim_time_in_hours}, '
+        # #       f'Heat Rejection * 1e-4 [J]: {coordiantion.ep_accumulated_waste_heat }\n')
+        # coordiantion.sem_energyplus.release()
 
 def run_ep_api():
     state = api.state_manager.new_state()
@@ -105,19 +106,25 @@ def run_ep_api():
     api.exchange.request_variable(state, "Plant Supply Side Heating Demand Rate", "SHWSYS1")
     api.exchange.request_variable(state, "Zone Air System Sensible Cooling Rate", "PERIMETER_ZN_1")
     api.exchange.request_variable(state, "Zone Air System Sensible Heating Rate", "PERIMETER_ZN_1")
-    output_path = '_01_ep_5zone\\outputs'
-    weather_file = '_01_ep_5zone\\USA_CO_Golden-NREL.724666_TMY3.epw'
-    idf_file = '_01_ep_5zone\\5ZoneAirCooled.idf'
-    sys_args = '-d', output_path, '-w', weather_file, idf_file
+    global ep_files_path
+    ep_files_path = '_02_ep_midRiseApartment'
+
+    epwFileName = 'ERA5_Basel_Jun.epw'
+    idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
+
+    output_path = os.path.join(ep_files_path, 'ep_outputs')
+    weather_file_path = os.path.join(ep_files_path, epwFileName)
+    idfFilePath = os.path.join(ep_files_path, idfFileName)
+    sys_args = '-d', output_path, '-w', weather_file_path, idfFilePath
     api.runtime.run_energyplus(state, sys_args)
 
 def run_vcwg():
-    epwFileName = None
-    TopForcingFileName = 'Vancouver2008_ERA5_Jul.csv'
-    VCWGParamFileName = 'initialize_Vancouver_LCZ1.uwg'
-    ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
+    epwFileName = 'ERA5_Basel_Jun.epw'
+    TopForcingFileName = None
+    VCWGParamFileName = 'initialize_Basel_MOST.uwg'
+    ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
     # Case name to append output file names with
-    case = 'Vancouver_LCZ1'
+    case = 'Basel_MOST'
 
     # Initialize the UWG object and run the simulation
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
@@ -136,13 +143,13 @@ if __name__ == '__main__':
     # Lichen: wait for ep_thread to finish to post process some accumulated records
     ep_thread.join()
 
-    # Lichen: post process, such as [timestamp, waste heat] * time_steps_num
-    records_arr = np.array(records)
-    # array to df
-    records_df = pd.DataFrame(records_arr, columns=['last_time_in_seconds', 'curr_sim_time_in_seconds',
-                                                    'vcwg_needed_time_idx_in_seconds',
-                                                    'coordiantion.ep_accumulated_waste_heat'])
-    records_df.to_csv('_1_plots_related\\5zone_ep_5min_vcwg_5min_waste_heat.csv', index=False)
-    # save results to csv file
-    # np.savetxt('_1_plots_related\\ep_1min_vcwg_5min_waste_heat.csv', records_arr, delimiter=',')
+    # # Lichen: post process, such as [timestamp, waste heat] * time_steps_num
+    # records_arr = np.array(records)
+    # # array to df
+    # records_df = pd.DataFrame(records_arr, columns=['last_time_in_seconds', 'curr_sim_time_in_seconds',
+    #                                                 'vcwg_needed_time_idx_in_seconds',
+    #                                                 'coordiantion.ep_accumulated_waste_heat'])
+    # saved_records_name = ep_files_path + '/records_df.csv'
+    # saved_records_path = os.path.join('_1_plots_related',saved_records_name)
+    # records_df.to_csv(saved_records_path, index=False)
 

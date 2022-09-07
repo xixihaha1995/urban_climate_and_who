@@ -24,6 +24,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_02_ep_midRiseApartment\api.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_0_ep_files\_3_available_api.csv">
           <value>
             <Attribute>
