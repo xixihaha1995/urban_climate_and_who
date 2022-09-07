@@ -428,8 +428,7 @@ class VCWG_Hydro(object):
 
         # Start simulation
         for it in range(0,self.simTime.nt-1,1):
-            print(r'Progress [%]', numpy.round(100 * it / self.simTime.nt, 2))
-
+            # print(r'VCWG: Progress [%]', numpy.round(100 * it / self.simTime.nt, 2))
             # Simulation time increment raised to weather time step
             SunPosition,MeteoData,Anthropogenic,location,ParCalculation = \
                 ForcingData(self.MeteoDataRaw_intp,it, self.WBCanyon.SoilPotW, self.VCWGParamFileName,self.simTime)
@@ -612,6 +611,7 @@ class VCWG_Hydro(object):
                 # Calculate one-point temperature and humidity in the canyon: Using 1-D profiles in the canyon
                 canTemp = numpy.mean(self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u])
                 canHum = numpy.mean(self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u])
+
                 self.BEM[i].building.BEMCalc(canTemp,canHum,self.BEM[i],MeteoData,ParCalculation,self.simTime,self.Geometry_m,
                                              self.FractionsRoof,self.EBCanyon.SWR)
 

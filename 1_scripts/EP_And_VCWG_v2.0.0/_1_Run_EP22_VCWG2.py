@@ -1,7 +1,8 @@
 import sys,  numpy as np, pandas as pd
 sys.path.insert(0, 'C:\EnergyPlusV22-1-0')
 from pyenergyplus.api import EnergyPlusAPI
-from VCWG_Hydrology import VCWG_Hydro
+# from VCWG_Hydrology import VCWG_Hydro
+from _2_bypass_VCWG_Hydrology import bypass_VCWG_Hydro
 from threading import Thread
 
 # Lichen: import the parent coordination class needed for EP and VCWG
