@@ -612,9 +612,11 @@ class VCWG_Hydro(object):
                 canTemp = numpy.mean(self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u])
                 canHum = numpy.mean(self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u])
 
+                # Lichen:
+                #   Bypassing the following function BEMCal():
+                #   by overwriting related variables in BuildingEnergy.py
                 self.BEM[i].building.BEMCalc(canTemp,canHum,self.BEM[i],MeteoData,ParCalculation,self.simTime,self.Geometry_m,
                                              self.FractionsRoof,self.EBCanyon.SWR)
-
                 # Electricity consumption of urban area [W]
                 self.BEM[i].ElecTotal = self.BEM[i].building.ElecTotal * self.BEM[i].fl_area
 

@@ -485,16 +485,20 @@ class Building(object):
         4. coordination.ep_oat <- canTemp - 273.15
         '''
         coordination.sem_energyplus.acquire()
-        vcwg_time_index_in_seconds = (simTime.day - 1)* 3600 *24 + simTime.secDay
+        start_day = 9
+        vcwg_time_index_in_seconds = (simTime.day - start_day)* 3600 *24 + simTime.secDay
         print(f'VCWG: Update needed time index[accumulated seconds]: {vcwg_time_index_in_seconds}\n')
         coordination.vcwg_needed_time_idx_in_seconds = vcwg_time_index_in_seconds
+        coordination.vcwg_canTemp_K = canTemp
+        coordination.vcwg_canSpecHum_Ratio = canHum
+        coordination.vcwg_canPress_Pa = MeteoData.Pre
         # # print("VCWG: original sensWaste", self.sensWaste)
         # if coordination.ep_accumulated_waste_heat < 1e-30:
         #     self.sensWaste = 20
         # else:
         #     self.sensWaste = coordination.ep_accumulated_waste_heat * 1e-4
-        coordination.ep_accumulated_waste_heat = 0
-        coordination.ep_oat = canTemp - 273.15
+        # coordination.ep_accumulated_waste_heat = 0
+        # coordination.ep_oat = canTemp - 273.15
         # # print("VCWG: updated sensWaste", self.sensWaste)
         coordination.sem_vcwg.release()
 
