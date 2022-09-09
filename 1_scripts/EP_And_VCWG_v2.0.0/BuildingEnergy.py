@@ -182,7 +182,7 @@ class Building(object):
         QWater: energy consumption for domestic hot water [W m^-2]
         QGas: energy consumption for gas [W m^-2]
         """
-
+        coordination.sem_energyplus.acquire()
         self.logger.debug("Logging at {} {}".format(__name__, self.__repr__()))
 
         # Building Energy Model
@@ -313,7 +313,7 @@ class Building(object):
         self.QVen = volVent * dens * ParCalculation.cp_atm * (T_can - T_cool)
         # Heat/Cooling load per unit building footprint area [W m^-2], if any
         self.sensCoolDemand = max(self.QWall+self.QMass+self.QWindow+self.QCeil+self.intHeat+self.QInfil+self.QVen+self.QWindowSolar,0.)
-
+        self.sensCoolDemand = coordination.ep_sensCoolDemand_w_m2
         self.sensHeatDemand = max(
             -(wallArea*zac_in_wall*(T_wall-T_heat) +               # wall load per unit building footprint area [W m^-2]
             massArea*zac_in_mass*(T_mass-T_heat) +                 # other surfaces load per unit building footprint area [W m^-2]
@@ -324,7 +324,7 @@ class Building(object):
             volVent*dens*ParCalculation.cp_atm*(T_can-T_heat) +    # ventilation load per unit building footprint area [W m^-2]
             self.QWindowSolar),                                    # solar load through window per unit building footprint area [W m^-2]
             0.)
-
+        self.sensHeatDemand = coordination.ep_sensHeatDemand_w_m2
         # -------------------------------------------------------------
         # HVAC system (cooling demand = [W m^-2] bld footprint)
         # -------------------------------------------------------------
@@ -366,6 +366,7 @@ class Building(object):
             # Calculate input work required by the refrigeration cycle per unit building footprint area [W m^-2]
             # COP = QL/Win or Win = QL/COP
             self.coolConsump = (max(self.sensCoolDemand+self.dehumDemand,0.0))/self.copAdj
+            self.coolConsump = coordination.ep_coolConsump_w_m2
 
             # Calculate waste heat from HVAC system per unit building footprint area [W m^-2]
             # Using 1st law of thermodynamics QH = Win + QL
@@ -390,6 +391,7 @@ class Building(object):
             self.Qheat = min(self.sensHeatDemand, self.heatCap*self.nFloor)
             # Calculate the energy consumption of the heating system per unit building footprint area [W m^-2] from heating demand divided by efficiency
             self.heatConsump  = self.Qheat / self.heatEff
+            self.heatConsump = coordination.ep_heatConsump_w_m2
             # Calculate waste heat from HVAC system per unit building footprint area [W m^-2]
             # Using 1st law of thermodynamics QL = Win - QH
             self.sensWasteCoolHeatDehum = self.heatConsump - self.Qheat
@@ -425,12 +427,14 @@ class Building(object):
         # weighted by area and heat transfer coefficient + generated heat
         # Calculate indoor air temperature [K]
         self.indoorTemp = (H1 + Q)/H2
+        self.indoorTemp = coordination.ep_indoorTemp_C + 273.15
         # Solve the latent heat balance equation for indoor air, considering effect of internal, infiltration and
         # ventilation latent heat and latent heat demand for dehumidification per unit building footprint area [W m^-2];
         # eq. 3 (Bueno et al., 2012)
         # Calculate indoor specific humidity [kgv kga^-1]
         self.indoorHum = self.indoorHum + (simTime.dt/(dens * ParCalculation.Lv * Geometry_m.Height_canyon)) * \
             (QLintload + QLinfil + QLvent - Qdehum)
+        self.indoorHum = coordination.ep_indoorHum_Ratio
 
         # Calculate relative humidity ((Pw/Pws)*100) using pressure, indoor temperature, humidity
         _Tdb, _w, _phi, _h, _Tdp, _v = psychrometrics(self.indoorTemp, self.indoorHum, MeteoData.Pre)
@@ -441,11 +445,13 @@ class Building(object):
         # (will be used for element calculation)
         # Wall heat flux per unit wall area [W m^-2]
         self.fluxWall = zac_in_wall * (T_indoor - T_wall)
+        self.fluxWall = coordination.ep_fluxWall_w_m2
         # Top ceiling heat flux per unit ceiling or building footprint area [W m^-2]
         self.fluxRoof = zac_in_ceil * (T_indoor - T_ceil)
+        self.fluxRoof = coordination.ep_fluxRoof_w_m2
         # Inner horizontal heat flux per unit floor area [W m^-2]
         self.fluxMass = zac_in_mass * (T_indoor - T_mass) + self.intHeat * self.intHeatFRad/massArea
-
+        self.fluxMass = coordination.ep_floor_fluxMass_w_m2
 
         # Calculate heat fluxes per unit floor area [W m^-2] (These are for record keeping only)
         self.fluxSolar = self.QWindowSolar/self.nFloor
@@ -457,6 +463,7 @@ class Building(object):
         # Total Electricity consumption per unit floor area [W m^-2] which is equal to
         # cooling consumption + electricity consumption + lighting
         self.ElecTotal = self.coolConsump/self.nFloor + BEM.Elec + BEM.Light
+        self.ElecTotal = coordination.ep_elecTotal_w_m2
         # electricity demand other than cooling consumption per building footprint area [W m^-2]
         self.elecDomesticDemand = self.nFloor * (BEM.Elec + BEM.Light)
         # Sensible hot water heating demand
@@ -472,6 +479,7 @@ class Building(object):
         self.QWater = (1 / self.heatEff - 1.) * self.sensWaterHeatDemand
         self.QGas = BEM.Gas * (1 - self.heatEff) * self.nFloor
         self.sensWaste = self.sensWasteCoolHeatDehum + self.QWater + self.QGas
+        self.sensWaste = coordination.ep_sensWaste_w_m2
 
         '''
         Lichen: sync EP and VCWG
@@ -484,7 +492,7 @@ class Building(object):
         4. VCWG will reset coordination.ep_accumulated_waste_heat to 0
         4. coordination.ep_oat <- canTemp - 273.15
         '''
-        coordination.sem_energyplus.acquire()
+
         start_day = 9
         vcwg_time_index_in_seconds = (simTime.day - start_day)* 3600 *24 + simTime.secDay
         print(f'VCWG: Update needed time index[accumulated seconds]: {vcwg_time_index_in_seconds}\n')

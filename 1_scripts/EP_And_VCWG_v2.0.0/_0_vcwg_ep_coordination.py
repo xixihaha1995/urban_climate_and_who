@@ -13,8 +13,8 @@ def init_variables_for_vcwg_ep():
     vcwg_canTemp_K = 0
     vcwg_canSpecHum_Ratio = 0
     vcwg_canPress_Pa = 0
-    ep_indoorTemp_C = 0
-    ep_indoorHum_Ratio = 0
+    ep_indoorTemp_C = 20
+    ep_indoorHum_Ratio = 0.006
     ep_sensCoolDemand_w_m2 = 0
     ep_sensHeatDemand_w_m2 = 0
     ep_coolConsump_w_m2 = 0
