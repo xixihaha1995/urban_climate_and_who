@@ -16273,6 +16273,9 @@
 
   Output:Meter,WaterSystems:NaturalGas,hourly;
 
+  Output:Variable,*,Surface Inside Face Temperature,hourly;
+  Output:Variable,*,Surface Outside Face Temperature,hourly;
+
   Output:Variable,*,Surface Inside Face Convection Heat Gain Rate per Area,hourly;
   Output:Variable,*,Surface Inside Face Net Surface Thermal Radiation Heat Gain Rate per Area,hourly;
   Output:Variable,*,Surface Inside Face Internal Gains Radiation Heat Gain Rate per Area,hourly;

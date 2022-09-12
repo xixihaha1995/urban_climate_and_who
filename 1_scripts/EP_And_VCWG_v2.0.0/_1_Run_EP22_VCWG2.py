@@ -39,7 +39,9 @@ def time_step_handler(state):
         wall_interior_swr_lights_handle, wall_interior_swr_solar_handle, \
         roof_interior_conv_handle, roof_interior_lwr_otr_faces_handle, \
         roof_interior_lwr_intGain_handle, roof_interior_lwr_hvac_handle, \
-        roof_interior_swr_lights_handle, roof_interior_swr_solar_handle
+        roof_interior_swr_lights_handle, roof_interior_swr_solar_handle,\
+        floor_Text_handle, wall_Text_handle, roof_Text_handle, \
+        floor_Tint_handle, wall_Tint_handle, roof_Tint_handle
 
     if one_time:
         if not api.exchange.api_data_fully_ready(state):
@@ -150,6 +152,19 @@ def time_step_handler(state):
             api.exchange.get_variable_handle(state,
                                             "Surface Inside Face Solar Radiation Heat Gain Rate per Area",
                                             "t Roof S1A")
+        floor_Text_handle = api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
+                                                                "t GFloor S1A")
+        floor_Tint_handle = api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
+                                                                "t GFloor S1A")
+        wall_Text_handle = api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
+                                                                "t SWall S1A")
+        wall_Tint_handle = api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
+                                                                "t SWall S1A")
+        roof_Text_handle = api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
+                                                                "t Roof S1A")
+        roof_Tint_handle = api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
+                                                                "t Roof S1A")
+
 
     warm_up = api.exchange.warmup_flag(state)
     if not warm_up:
@@ -243,18 +258,31 @@ def time_step_handler(state):
         roof_flux = roof_interior_conv + roof_interior_lwr_otr_faces + roof_interior_lwr_intGain + \
                         roof_interior_lwr_hvac + roof_interior_swr_lights + roof_interior_swr_solar
 
+        floor_Text_C = api.exchange.get_variable_value(state, floor_Text_handle)
+        floor_Tint_C = api.exchange.get_variable_value(state, floor_Tint_handle)
+        wall_Text_C = api.exchange.get_variable_value(state, wall_Text_handle)
+        wall_Tint_C = api.exchange.get_variable_value(state, wall_Tint_handle)
+        roof_Text_C = api.exchange.get_variable_value(state, roof_Text_handle)
+        roof_Tint_C = api.exchange.get_variable_value(state, roof_Tint_handle)
+
 
         api.exchange.set_actuator_value(state, odb_actuator_handle, coordiantion.vcwg_canTemp_K - 273.15)
         api.exchange.set_actuator_value(state, orh_actuator_handle, rh)
+        coordiantion.ep_elecTotal_w_m2 = elec_bld_meter_w_m2
+        coordiantion.ep_sensWaste_w_m2 = hvac_waste_w_m2
+        coordiantion.ep_floor_Text_K = floor_Text_C + 273.15
+        coordiantion.ep_floor_Tint_K = floor_Tint_C + 273.15
+        coordiantion.ep_wall_Text_K = wall_Text_C + 273.15
+        coordiantion.ep_wall_Tint_K = wall_Tint_C + 273.15
+        coordiantion.ep_roof_Text_K = roof_Text_C + 273.15
+        coordiantion.ep_roof_Tint_K = roof_Tint_C + 273.15
+
         coordiantion.ep_indoorTemp_C = zone_indor_temp_value
         coordiantion.ep_indoorHum_Ratio = zone_indor_spe_hum_value
         coordiantion.ep_sensCoolDemand_w_m2 = sens_cool_demand_w_m2_value
         coordiantion.ep_sensHeatDemand_w_m2 = sens_heat_demand_w_m2_value
         coordiantion.ep_coolConsump_w_m2 = cool_consumption_w_m2_value
         coordiantion.ep_heatConsump_w_m2 = heat_consumption_w_m2_value
-        coordiantion.ep_elecTotal_w_m2 = elec_bld_meter_w_m2
-        coordiantion.ep_sensWaste_w_m2 = hvac_waste_w_m2
-
         coordiantion.ep_floor_fluxMass_w_m2 = floor_flux
         coordiantion.ep_fluxWall_w_m2 = wall_flux
         coordiantion.ep_fluxRoof_w_m2 = roof_flux
@@ -296,7 +324,7 @@ def run_vcwg():
     VCWGParamFileName = 'initialize_Basel_MOST.uwg'
     ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
     # Case name to append output file names with
-    case = 'Basel_MOST'
+    case = '_bypass_Basel_MOST'
 
     # Initialize the UWG object and run the simulation
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
