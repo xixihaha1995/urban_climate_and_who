@@ -736,7 +736,7 @@ class VCWG_Hydro(object):
 
         Write_WB(self.case,self.FractionsRoof, self.FractionsGround, self.ParTree,self.WBRoofData,self.WBCanyonData,self.time,Output_dir)
 
-        # Write_BEM(self.BEMData,self.time,self.case,Output_dir)
+        Write_BEM(self.BEMData,self.time,self.case,Output_dir)
 
         # Generate output text file for deep ground temperature profiles in the urban area
         # SurfType = 1 (GroundImp), 2 (GroundVeg), 3 (GroundBare)

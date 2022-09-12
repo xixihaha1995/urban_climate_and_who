@@ -31,20 +31,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_0_ep_files\_3_available_api.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_0_ep_files\outputs\eplustbl.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_1_plots_related\time_alignment_accumulation_ep_1min_vcwg5min.csv">
           <value>
             <Attribute>
@@ -360,6 +346,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD11\BLD11_BuildingSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD11\BLD11_LocationSummary.csv">
           <value>
             <Attribute>
@@ -417,6 +410,13 @@
           </value>
         </entry>
         <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD16\BLD16_BuildingSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD16\BLD16_LocationSummary.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

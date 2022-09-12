@@ -45,7 +45,35 @@ def BEMCalc_Element(canTemp,canHum, BEM, simTime, MeteoData,FractionsRoof):
     BEM_building.fluxRoof = coordination.ep_fluxRoof_w_m2
     BEM_building.fluxMass = coordination.ep_floor_fluxMass_w_m2
 
-
+    BEM_building.indoorRhum = 0.6
+    BEM_building.sensWasteCoolHeatDehum = 0.0  # Sensible waste heat per unit building footprint area only including cool, heat, and dehum [W m-2]
+    BEM_building.dehumDemand = 0.0  # Latent heat demand for dehumidification of air per unit building footprint area [W m^-2]
+    BEM_building.dehumDemand = 0.5
+    BEM_building.fluxSolar = 0.5
+    BEM_building.fluxWindow = 0.5
+    BEM_building.fluxInterior = 0.5
+    BEM_building.fluxInfil = 0.5
+    BEM_building.fluxVent = 0.5
+    BEM_building.QWater = 0.5
+    BEM_building.QGas = 0.5
+    BEM_building.Qhvac = 0.5
+    BEM_building.Qheat = 0.5
+    BEM_building.GasTotal = 0.5
+    # wall load per unit building footprint area [W m^-2]
+    BEM_building.QWall = 0.5
+    # other surfaces load per unit building footprint area [W m^-2]
+    BEM_building.QMass = 0.5
+    # window load due to temperature difference per unit building footprint area [W m^-2]
+    BEM_building.QWindow = 0.5
+    # ceiling load per unit building footprint area [W m^-2]
+    BEM_building.QCeil = 0.5
+    # infiltration load per unit building footprint area [W m^-2]
+    BEM_building.QInfil = 0.5
+    # ventilation load per unit building footprint area [W m^-2]
+    BEM_building.QVen = 0.5
+    BEM_building.QWindowSolar = 0.5
+    BEM_building.elecDomesticDemand = 0.5
+    BEM_building.sensWaterHeatDemand = 0.5
 
     coordination.sem_vcwg.release()
 

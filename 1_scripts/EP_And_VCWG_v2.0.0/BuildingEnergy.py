@@ -132,7 +132,7 @@ class Building(object):
     def is_near_zero(self,val,tol=1e-14):
         return abs(float(val)) < tol
 
-    def BEMCalc(self,canTemp,canHum,BEM,MeteoData,ParCalculation,simTime,Geometry_m,FractionsRoof,SWR):
+    def _deleted_BEMCalc(self,canTemp,canHum,BEM,MeteoData,ParCalculation,simTime,Geometry_m,FractionsRoof,SWR):
 
         """
         ------
@@ -182,7 +182,7 @@ class Building(object):
         QWater: energy consumption for domestic hot water [W m^-2]
         QGas: energy consumption for gas [W m^-2]
         """
-        coordination.sem_energyplus.acquire()
+        # coordination.sem_energyplus.acquire()
         self.logger.debug("Logging at {} {}".format(__name__, self.__repr__()))
 
         # Building Energy Model
@@ -508,7 +508,7 @@ class Building(object):
         # coordination.ep_accumulated_waste_heat = 0
         # coordination.ep_oat = canTemp - 273.15
         # # print("VCWG: updated sensWaste", self.sensWaste)
-        coordination.sem_vcwg.release()
+        # coordination.sem_vcwg.release()
 
         # Calculate total gas consumption per unit floor area [W m^-2] which is equal to gas consumption per unit floor area +
         # energy consumption for domestic hot water per unit floor area + energy consumption of the heating system per unit floor area
