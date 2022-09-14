@@ -24,7 +24,28 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_01_ep_5zone\5ZoneAirCooledMeter.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_02_ep_midRiseApartment\api.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_0_ep_smallOffice\_3_available_api.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_0_ep_smallOffice\outputs\eplustbl.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -424,6 +445,13 @@
           </value>
         </entry>
         <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD1\BLD1_BuildingSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD1\BLD1_LocationSummary.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

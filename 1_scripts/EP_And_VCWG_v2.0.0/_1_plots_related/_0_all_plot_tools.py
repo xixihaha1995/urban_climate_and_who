@@ -40,7 +40,7 @@ def filter_df_with_new_heights(df, heights_arr):
         df_new.loc[heigh] = certain_height_one_day(df, heigh)
     return df_new
 
-def plot_24_hours_comparison_for_multiple_heights(df1, df2, height, all_rmse):
+def plot_24_hours_comparison_for_multiple_heights(df1, df2, height, all_rmse,case_name):
     '''
     In total, there are len(height) figures
     df index is
@@ -58,7 +58,7 @@ def plot_24_hours_comparison_for_multiple_heights(df1, df2, height, all_rmse):
     ax[1,0].set_xlabel('Hours')
     ax[0,0].set_ylabel('Temperature (K)')
     fig.suptitle(
-        f'RMSE (VCWGv1.3.2 - BUBBLE):1.06;(VCWGv2.0.0 - BUBBLE): 0.56; (VCWGv2.0.0 - Bypass):{np.mean(all_rmse):.2f}')
+        f'RMSE(VCWGv2.0.0 - {case_name}):{np.mean(all_rmse):.2f}')
     plt.show()
 
 

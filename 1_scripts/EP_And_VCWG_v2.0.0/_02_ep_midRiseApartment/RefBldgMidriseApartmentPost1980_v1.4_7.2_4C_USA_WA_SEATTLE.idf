@@ -16273,18 +16273,18 @@
 
   Output:Meter,WaterSystems:NaturalGas,hourly;
 
-  Output:Variable,*,Surface Inside Face Temperature,hourly;
-  Output:Variable,*,Surface Outside Face Temperature,hourly;
+  Output:Variable,*,Surface Inside Face Temperature,timestep;
+  Output:Variable,*,Surface Outside Face Temperature,timestep;
 
-  Output:Variable,*,Surface Inside Face Convection Heat Gain Rate per Area,hourly;
-  Output:Variable,*,Surface Inside Face Net Surface Thermal Radiation Heat Gain Rate per Area,hourly;
-  Output:Variable,*,Surface Inside Face Internal Gains Radiation Heat Gain Rate per Area,hourly;
-  Output:Variable,*,Surface Inside Face System Radiation Heat Gain Rate per Area,hourly;
-  Output:Variable,*,Surface Inside Face Lights Radiation Heat Gain Rate per Area,hourly;
-  Output:Variable,*,Surface Inside Face Solar Radiation Heat Gain Rate per Area,hourly;
-  Output:Variable,*,Zone Air Temperature,hourly;
-  Output:Variable,*,Zone Air Humidity Ratio,hourly;
-  Output:Variable,*,Zone Air System Sensible Cooling Rate,hourly;
-  Output:Variable,*,Zone Air System Sensible Heating Rate,hourly;
-  Output:Variable,*,Heating Coil Heating Rate,hourly;
-  Output:Variable,*,Cooling Coil Electricity Rate,hourly;
+  Output:Variable,*,Surface Inside Face Convection Heat Gain Rate per Area,timestep;
+  Output:Variable,*,Surface Inside Face Net Surface Thermal Radiation Heat Gain Rate per Area,timestep;
+  Output:Variable,*,Surface Inside Face Internal Gains Radiation Heat Gain Rate per Area,timestep;
+  Output:Variable,*,Surface Inside Face System Radiation Heat Gain Rate per Area,timestep;
+  Output:Variable,*,Surface Inside Face Lights Radiation Heat Gain Rate per Area,timestep;
+  Output:Variable,*,Surface Inside Face Solar Radiation Heat Gain Rate per Area,timestep;
+  Output:Variable,*,Zone Air Temperature,timestep;
+  Output:Variable,*,Zone Air Humidity Ratio,timestep;
+  Output:Variable,*,Zone Air System Sensible Cooling Rate,timestep;
+  Output:Variable,*,Zone Air System Sensible Heating Rate,timestep;
+  Output:Variable,*,Heating Coil Heating Rate,timestep;
+  Output:Variable,*,Cooling Coil Electricity Rate,timestep;

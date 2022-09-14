@@ -1,5 +1,5 @@
 import _0_vcwg_ep_coordination as coordination
-def BEMCalc_Element(canTemp,canHum, BEM, simTime, MeteoData,FractionsRoof):
+def BEMCalc_Element(canTemp,canHum, BEM, simTime, MeteoData,FractionsRoof, Geometry_m):
     """
     type(self.BEM[i])
     <class 'BEMDef.BEMDef'>
@@ -8,6 +8,9 @@ def BEMCalc_Element(canTemp,canHum, BEM, simTime, MeteoData,FractionsRoof):
     <class 'BuildingEnergy.Building'>
     """
     coordination.sem_energyplus.acquire()
+    BEM_building = BEM.building
+    BEM_building.nFloor = max(Geometry_m.Height_canyon / float(BEM_building.floorHeight), 1)
+
     start_day = 9
     vcwg_time_index_in_seconds = (simTime.day - start_day) * 3600 * 24 + simTime.secDay
     print(f'VCWG: Update needed time index[accumulated seconds]: {vcwg_time_index_in_seconds}\n')
@@ -16,9 +19,8 @@ def BEMCalc_Element(canTemp,canHum, BEM, simTime, MeteoData,FractionsRoof):
     coordination.vcwg_canSpecHum_Ratio = canHum
     coordination.vcwg_canPress_Pa = MeteoData.Pre
 
-    BEM_building = BEM.building
-    BEM_building.sensWaste = coordination.ep_sensWaste_w_m2
-    BEM_building.ElecTotal = coordination.ep_elecTotal_w_m2
+    BEM_building.sensWaste = coordination.ep_elecTotal_w_m2_per_floor_area * BEM_building.nFloor
+    BEM_building.ElecTotal = coordination.ep_sensWaste_w_m2_per_floor_area * BEM_building.nFloor
 
     BEM.mass.Text = coordination.ep_floor_Text_K
     BEM.mass.Tint = coordination.ep_floor_Tint_K

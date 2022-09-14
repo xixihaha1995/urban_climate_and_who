@@ -40,8 +40,9 @@ def time_step_handler(state):
         roof_interior_conv_handle, roof_interior_lwr_otr_faces_handle, \
         roof_interior_lwr_intGain_handle, roof_interior_lwr_hvac_handle, \
         roof_interior_swr_lights_handle, roof_interior_swr_solar_handle,\
-        floor_Text_handle, wall_Text_handle, roof_Text_handle, \
-        floor_Tint_handle, wall_Tint_handle, roof_Tint_handle
+        floor_Text_handle, roof_Text_handle, \
+        floor_Tint_handle, roof_Tint_handle, \
+        wall_t_Text_handle, wall_t_Tint_handle, wall_m_Text_handle, wall_m_Tint_handle, wall_g_Text_handle, wall_g_Tint_handle
 
     if one_time:
         if not api.exchange.api_data_fully_ready(state):
@@ -156,10 +157,18 @@ def time_step_handler(state):
                                                                 "t GFloor S1A")
         floor_Tint_handle = api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
                                                                 "t GFloor S1A")
-        wall_Text_handle = api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
+        wall_t_Text_handle = api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
                                                                 "t SWall S1A")
-        wall_Tint_handle = api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
+        wall_t_Tint_handle = api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
                                                                 "t SWall S1A")
+        wall_m_Text_handle = api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
+                                                              "m SWall S1A")
+        wall_m_Tint_handle = api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
+                                                                "m SWall S1A")
+        wall_g_Text_handle = api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
+                                                                "g SWall S1A")
+        wall_g_Tint_handle = api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
+                                                                "g SWall S1A")
         roof_Text_handle = api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
                                                                 "t Roof S1A")
         roof_Tint_handle = api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
@@ -260,16 +269,24 @@ def time_step_handler(state):
 
         floor_Text_C = api.exchange.get_variable_value(state, floor_Text_handle)
         floor_Tint_C = api.exchange.get_variable_value(state, floor_Tint_handle)
-        wall_Text_C = api.exchange.get_variable_value(state, wall_Text_handle)
-        wall_Tint_C = api.exchange.get_variable_value(state, wall_Tint_handle)
+        wall_t_Text_C = api.exchange.get_variable_value(state, wall_t_Text_handle)
+        wall_t_Tint_C = api.exchange.get_variable_value(state, wall_t_Tint_handle)
+        wall_m_Text_C = api.exchange.get_variable_value(state, wall_m_Text_handle)
+        wall_m_Tint_C = api.exchange.get_variable_value(state, wall_m_Tint_handle)
+        wall_g_Text_C = api.exchange.get_variable_value(state, wall_g_Text_handle)
+        wall_g_Tint_C = api.exchange.get_variable_value(state, wall_g_Tint_handle)
+
+        wall_Text_C = (wall_t_Text_C + wall_m_Text_C + wall_g_Text_C) / 3
+        wall_Tint_C = (wall_t_Tint_C + wall_m_Tint_C + wall_g_Tint_C) / 3
+
         roof_Text_C = api.exchange.get_variable_value(state, roof_Text_handle)
         roof_Tint_C = api.exchange.get_variable_value(state, roof_Tint_handle)
 
 
         api.exchange.set_actuator_value(state, odb_actuator_handle, coordiantion.vcwg_canTemp_K - 273.15)
         api.exchange.set_actuator_value(state, orh_actuator_handle, rh)
-        coordiantion.ep_elecTotal_w_m2 = elec_bld_meter_w_m2
-        coordiantion.ep_sensWaste_w_m2 = hvac_waste_w_m2
+        coordiantion.ep_elecTotal_w_m2_per_floor_area = elec_bld_meter_w_m2
+        coordiantion.ep_sensWaste_w_m2_per_floor_area = hvac_waste_w_m2
         coordiantion.ep_floor_Text_K = floor_Text_C + 273.15
         coordiantion.ep_floor_Tint_K = floor_Tint_C + 273.15
         coordiantion.ep_wall_Text_K = wall_Text_C + 273.15
@@ -324,7 +341,7 @@ def run_vcwg():
     VCWGParamFileName = 'initialize_Basel_MOST.uwg'
     ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
     # Case name to append output file names with
-    case = '_bypass_Basel_MOST'
+    case = '_bypass_3in1_Basel_MOST'
 
     # epwFileName = None
     # TopForcingFileName = 'Vancouver2008_ERA5_Jul.csv'
