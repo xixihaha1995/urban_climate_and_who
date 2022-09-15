@@ -3,7 +3,19 @@ import numpy as np, pandas as pd, matplotlib.pyplot as plt
 def RMSE(y_true, y_pred):
     return np.sqrt(np.mean(np.square(y_pred - y_true)))
 
-def read_text_as_csv(file_path):
+def bias_rmse_r2(df1, df2):
+    '''
+    df1 is measurement data, [date, sensible/latent]
+    df2 is simulated data, [date, sensible/latent]
+    '''
+    bias = df1 - df2
+    rmse = np.sqrt(np.mean(np.square(bias)))
+    r2 = 1 - np.sum(np.square(bias)) / np.sum(np.square(df1 - np.mean(df1)))
+    bias_mean = np.mean(abs(bias))
+    # return number with 2 decimal places
+    return round(bias_mean,2), round(rmse,2), round(r2,2)
+
+def read_text_as_csv(file_path, header=None, index_col=0, skiprows=3):
     '''
     df first column is index
     '''
@@ -84,19 +96,42 @@ def time_interval_convertion(df):
     return df_new
 
 # plot the comparisons between Vancouver Sunset dataset versus simulated (VCWGv2.0.0, VCWG-Bypass)
-def plot_comparison_measurement_simulated(df1, df2, case_name):
-    '''
-    df1 is measurement data, [date, sensible/latent]
-    df2 is simulated data, [date, sensible/latent]
-    '''
+def plot_comparison_measurement_simulated(df, error_infor):
     figure, ax = plt.subplots(figsize=(10,5))
-    ax.plot(df1.iloc[:,0], label='Measurement')
-    ax.plot(df2.iloc[:,0], label='Simulated')
+    ax.plot(df.iloc[:,0], label='Measurement')
+    ax.plot(df.iloc[:,1], label='Simulated (VCWG-Replicate)')
+    # ax.plot(df.iloc[:,2], label='Simulated (VCWG-Bypass)')
     ax.legend()
-
+    # add  to the plot
+    # add text below the plot, outside the plot
+    txt = f'Bias Mean(W m-2), RMSE(W m-2), R2(-)\n' \
+          f'SUEWS:(-, 39.1, 0.77)\n' \
+          f'VCWGv2.0.0:(0.65, 18.1, 0.94)\n' \
+          f'VCWG-Rep:{error_infor[0]}\n' \
+          # f'VCWG-Bypass:{error_infor[1]}'
+    ax.text(0.5, 1, txt, transform=ax.transAxes, fontsize=6,
+        verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+    ax.set_title('Comparison for Sensible Heat Flux (Best available) (28.80m)')
     # set x name, y name, and title
     ax.set_xlabel('Date')
     ax.set_ylabel('Sensible Heat Flux (W/m2)')
 
     plt.show()
 
+def add_date_index(df, start_date, time_interval):
+    '''
+    df is [date, sensible/latent]
+    '''
+    date = pd.date_range(start_date, periods=len(df), freq='{}S'.format(time_interval))
+    date = pd.Series(date)
+    # update dataframe index
+    df.index = date
+    return df
+
+def merge_multiple_df(df_list, column_name):
+    '''
+    df_list is a list of dataframes
+    '''
+    df = pd.concat(df_list, axis=1)
+    df.columns = column_name
+    return df
