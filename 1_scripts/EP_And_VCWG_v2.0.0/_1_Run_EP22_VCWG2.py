@@ -324,9 +324,9 @@ def run_ep_api():
     # api.exchange.request_variable(state, "Surface Inside Face Solar Radiation Heat Gain Rate per Area", "g EWall NWA")
 
     global ep_files_path
-    ep_files_path = '_02_ep_midRiseApartment'
+    ep_files_path = '_03_midRiseApartment_Vancouver'
 
-    epwFileName = 'ERA5_Basel_Jun.epw'
+    epwFileName = 'TopForcing_debugged.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
 
     output_path = os.path.join(ep_files_path, 'ep_outputs')
@@ -336,19 +336,19 @@ def run_ep_api():
     api.runtime.run_energyplus(state, sys_args)
 
 def run_vcwg():
-    epwFileName = 'ERA5_Basel_Jun.epw'
-    TopForcingFileName = None
-    VCWGParamFileName = 'initialize_Basel_MOST.uwg'
-    ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
-    # Case name to append output file names with
-    case = '_bypass_3in1_Basel_MOST'
-
-    # epwFileName = None
-    # TopForcingFileName = 'Vancouver2008_ERA5_Jul.csv'
-    # VCWGParamFileName = 'initialize_Vancouver_LCZ1.uwg'
-    # ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
+    # epwFileName = 'ERA5_Basel_Jun.epw'
+    # TopForcingFileName = None
+    # VCWGParamFileName = 'initialize_Basel_MOST.uwg'
+    # ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
     # # Case name to append output file names with
-    # case = 'Vancouver_LCZ1'
+    # case = '_bypass_3in1_Basel_MOST'
+
+    epwFileName = None
+    TopForcingFileName = 'Vancouver2008_ERA5_Jul.csv'
+    VCWGParamFileName = 'initialize_Vancouver_LCZ1.uwg'
+    ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
+    # Case name to append output file names with
+    case = '_bypass_Vancouver_LCZ1'
 
     # Initialize the UWG object and run the simulation
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)

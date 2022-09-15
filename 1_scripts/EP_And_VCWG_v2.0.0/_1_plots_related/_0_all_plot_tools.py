@@ -61,4 +61,29 @@ def plot_24_hours_comparison_for_multiple_heights(df1, df2, height, all_rmse,cas
         f'RMSE(VCWGv2.0.0 - {case_name}):{np.mean(all_rmse):.2f}')
     plt.show()
 
+def data_cleaning(df):
+    '''
+    string to number
+    Nan to 0
+    '''
+    df = df.apply(pd.to_numeric, errors='coerce')
+    df = df.fillna(0)
+    return df
+
+# plot the comparisons between Vancouver Sunset dataset versus simulated (VCWGv2.0.0, VCWG-Bypass)
+def plot_comparison_measurement_simulated(df1, df2, case_name):
+    '''
+    df1 is measurement data, [date, sensible/latent]
+    df2 is simulated data, [date, sensible/latent]
+    '''
+    figure, ax = plt.subplots(figsize=(10,5))
+    ax.plot(df1.iloc[:,0], label='Measurement')
+    ax.plot(df2.iloc[:,0], label='Simulated')
+    ax.legend()
+
+    # set x name, y name, and title
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Sensible Heat Flux (W/m2)')
+
+    plt.show()
 
