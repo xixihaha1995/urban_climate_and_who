@@ -70,6 +70,19 @@ def data_cleaning(df):
     df = df.fillna(0)
     return df
 
+def time_interval_convertion(df):
+    '''
+    Original data is 30 mins interval,
+    Convert it to hourly data
+    Original data has [index, sensible]
+    Replace sensible with hourly average
+    '''
+    df_new = pd.DataFrame(columns=df.columns)
+    for i in range(0, len(df), 2):
+        df_new.loc[df.index[i]] = df.iloc[i:i+2].mean()
+        # df_new.iloc[i,0] = df.iloc[i:i+2,0].mean()
+    return df_new
+
 # plot the comparisons between Vancouver Sunset dataset versus simulated (VCWGv2.0.0, VCWG-Bypass)
 def plot_comparison_measurement_simulated(df1, df2, case_name):
     '''
