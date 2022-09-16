@@ -98,17 +98,19 @@ def time_interval_convertion(df):
 # plot the comparisons between Vancouver Sunset dataset versus simulated (VCWGv2.0.0, VCWG-Bypass)
 def plot_comparison_measurement_simulated(df, error_infor):
     figure, ax = plt.subplots(figsize=(10,5))
+
     ax.plot(df.iloc[:,0], label='Measurement')
-    ax.plot(df.iloc[:,1], label='Simulated (VCWG-Replicate)')
-    # ax.plot(df.iloc[:,2], label='Simulated (VCWG-Bypass)')
+    ax.plot(df.iloc[:,1], label= df.columns[1])
+    ax.plot(df.iloc[:,2], label= df.columns[2])
     ax.legend()
     # add  to the plot
     # add text below the plot, outside the plot
     txt = f'Bias Mean(W m-2), RMSE(W m-2), R2(-)\n' \
           f'SUEWS:(-, 39.1, 0.77)\n' \
           f'VCWGv2.0.0:(0.65, 18.1, 0.94)\n' \
-          f'VCWG-Rep:{error_infor[0]}\n' \
-          # f'VCWG-Bypass:{error_infor[1]}'
+          f'{df.columns[1]}:{error_infor[0]}\n' \
+          f'{df.columns[2]}:{error_infor[1]}'
+    print(txt)
     ax.text(0.5, 1, txt, transform=ax.transAxes, fontsize=6,
         verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
     ax.set_title('Comparison for Sensible Heat Flux (Best available) (28.80m)')
