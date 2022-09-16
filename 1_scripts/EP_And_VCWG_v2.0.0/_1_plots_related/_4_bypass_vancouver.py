@@ -16,7 +16,7 @@ import _0_all_plot_tools as plt_tools
 results_folder = r'vancouver'
 start_time_with_spin_up = '2008-07-01 00:00:00'
 start_time = '2008-07-02 00:00:00'
-end_time = '2008-07-31 23:00:00'
+end_time = '2008-07-03 23:00:00'
 
 vcwg_output_time_interval_seconds = 3600
 
@@ -46,6 +46,13 @@ vcwg_bypass_hour_all_Hlfux_date = plt_tools.add_date_index(vcwg_bypass_hour_all_
                                                             start_time_with_spin_up, vcwg_output_time_interval_seconds)
 vcwg_bypass_hour_all_Hlfux = vcwg_bypass_hour_all_Hlfux_date.loc[start_time:end_time]
 
+# read HlufxProfiles
+vcwg_original_hour_all_HlfuxProfiles = plt_tools.read_text_as_csv(f'{results_folder}'
+                                                                            f'\\HfluxProf_profilesMay_Vancouver_LCZ1.txt')
+# select 28.8 m, which is the height of the Sensible Heat Fluxes sensor
+vcwg_original_hour_all_HlfuxProfiles_28m = plt_tools.certain_height_one_day(vcwg_original_hour_all_HlfuxProfiles, 28.8)
+
+# sequence based index convert to date
 
 
 all_df_list = [df_hourly_sens_measure, vcwg_original_hour_all_Hlfux, vcwg_bypass_hour_all_Hlfux]

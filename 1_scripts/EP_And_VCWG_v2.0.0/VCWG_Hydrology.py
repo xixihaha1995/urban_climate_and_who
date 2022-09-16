@@ -29,7 +29,7 @@ from Material import Material
 from psychrometrics import HumFromRHumTemp
 from EPWGenerator import write_epw
 
-import _2_bypass as bypass_functions
+import _0_vcwg_ep_coordination
 """
 Main VCWG script 
 Developed by Mohsen Moradi and Amir A. Aliabadi
@@ -617,8 +617,9 @@ class VCWG_Hydro(object):
                 #   Bypassing the following function BEMCal():
                 # self.BEM[i].building.BEMCalc(canTemp,canHum,self.BEM[i],MeteoData,ParCalculation,self.simTime,self.Geometry_m,
                 #                              self.FractionsRoof,self.EBCanyon.SWR)
-                self.BEM[i] = bypass_functions.BEMCalc_Element(canTemp,canHum, self.BEM[i], it, self.simTime,
+                self.BEM[i] = _0_vcwg_ep_coordination.BEMCalc_Element(canTemp,canHum, self.BEM[i], it, self.simTime,
                                                                MeteoData, self.FractionsRoof, self.Geometry_m)
+
                 # Electricity consumption of urban area [W]
                 self.BEM[i].ElecTotal = self.BEM[i].building.ElecTotal * self.BEM[i].fl_area
 

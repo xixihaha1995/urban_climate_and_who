@@ -5,7 +5,7 @@ import numpy
 import copy
 
 # Lichen: import the parent coordination class needed for EP and VCWG
-import _0_vcwg_ep_coordination as coordination
+
 """
 Calculate building characteristics
 Developed by Mohsen Moradi and Amir A. Aliabadi

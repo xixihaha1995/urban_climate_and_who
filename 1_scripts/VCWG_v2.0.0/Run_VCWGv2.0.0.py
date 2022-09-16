@@ -21,10 +21,10 @@ case = 'Basel_MOST'
 epwFileName = 'TopForcing_year.epw'
 TopForcingFileName = None
 # TopForcingFileName = 'Vancouver2008_ERA5.csv'
-VCWGParamFileName = 'initialize_Vancouver_LCZ1.uwg'
+VCWGParamFileName = 'replicate_Vancouver_LCZ1.uwg'
 ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
 # Case name to append output file names with
-case = 'May_Vancouver_LCZ1'
+case = 'Replicate_Vancouver_LCZ1'
 
 
 # Initialize the UWG object and run the simulation
