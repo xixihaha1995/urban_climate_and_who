@@ -617,7 +617,7 @@ class VCWG_Hydro(object):
                 #   Bypassing the following function BEMCal():
                 # self.BEM[i].building.BEMCalc(canTemp,canHum,self.BEM[i],MeteoData,ParCalculation,self.simTime,self.Geometry_m,
                 #                              self.FractionsRoof,self.EBCanyon.SWR)
-                self.BEM[i] = bypass_functions.BEMCalc_Element(canTemp,canHum, self.BEM[i], self.simTime,
+                self.BEM[i] = bypass_functions.BEMCalc_Element(canTemp,canHum, self.BEM[i], it, self.simTime,
                                                                MeteoData, self.FractionsRoof, self.Geometry_m)
                 # Electricity consumption of urban area [W]
                 self.BEM[i].ElecTotal = self.BEM[i].building.ElecTotal * self.BEM[i].fl_area

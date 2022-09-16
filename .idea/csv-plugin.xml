@@ -577,6 +577,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\VCWG_v2.0.0\resources\TopForcing\Vancouver2008_ERA5_Jul.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\only_ep\ASHRAE901_OfficeSmall_STD2019_DenverTable.csv">
           <value>
             <Attribute>

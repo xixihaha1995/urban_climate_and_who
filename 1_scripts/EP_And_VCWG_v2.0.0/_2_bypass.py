@@ -1,5 +1,5 @@
 import _0_vcwg_ep_coordination as coordination
-def BEMCalc_Element(canTemp,canHum, BEM, simTime, MeteoData,FractionsRoof, Geometry_m):
+def BEMCalc_Element(canTemp,canHum, BEM, it, simTime, MeteoData,FractionsRoof, Geometry_m):
     """
     type(self.BEM[i])
     <class 'BEMDef.BEMDef'>
@@ -11,8 +11,7 @@ def BEMCalc_Element(canTemp,canHum, BEM, simTime, MeteoData,FractionsRoof, Geome
     BEM_building = BEM.building
     BEM_building.nFloor = max(Geometry_m.Height_canyon / float(BEM_building.floorHeight), 1)
 
-    start_day = 1
-    vcwg_time_index_in_seconds = (simTime.day - start_day) * 3600 * 24 + simTime.secDay
+    vcwg_time_index_in_seconds = (it + 1) * simTime.dt
     print(f'VCWG: Update needed time index[accumulated seconds]: {vcwg_time_index_in_seconds}\n')
     coordination.vcwg_needed_time_idx_in_seconds = vcwg_time_index_in_seconds
     coordination.vcwg_canTemp_K = canTemp

@@ -205,7 +205,7 @@ def time_step_handler(state):
         coordiantion.sem_vcwg.acquire()
         curr_sim_time_in_hours = api.exchange.current_sim_time(state)
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
-        print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
+        # print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
         # if curr_sim_time_in_seconds != ep_last_time_index_in_seconds:
         #     print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
         #     print("EP: ep_last_time_index_in_seconds: ", ep_last_time_index_in_seconds)
@@ -326,7 +326,7 @@ def run_ep_api():
     global ep_files_path
     ep_files_path = '_03_midRiseApartment_Vancouver'
 
-    epwFileName = 'TopForcing_debugged.epw'
+    epwFileName = 'TopForcing_year_debugged.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
 
     output_path = os.path.join(ep_files_path, 'ep_outputs')
@@ -343,12 +343,14 @@ def run_vcwg():
     # # Case name to append output file names with
     # case = '_bypass_3in1_Basel_MOST'
 
-    epwFileName = None
-    TopForcingFileName = 'Vancouver2008_ERA5_Jul.csv'
+
+    epwFileName = 'TopForcing_year.epw'
+    TopForcingFileName = None
+    # TopForcingFileName = 'Vancouver2008_ERA5.csv'
     VCWGParamFileName = 'initialize_Vancouver_LCZ1.uwg'
     ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
     # Case name to append output file names with
-    case = '_bypass_Vancouver_LCZ1'
+    case = '_bypass_year_Vancouver_LCZ1'
 
     # Initialize the UWG object and run the simulation
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)

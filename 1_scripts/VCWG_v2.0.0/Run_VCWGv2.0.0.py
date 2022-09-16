@@ -18,8 +18,8 @@ case = 'Basel_MOST'
 
 #Vancouver
 
-epwFileName = None
-TopForcingFileName = 'Vancouver2008_ERA5_Jul.csv'
+epwFileName = 'TopForcing_year.epw'
+TopForcingFileName = None
 # TopForcingFileName = 'Vancouver2008_ERA5.csv'
 VCWGParamFileName = 'initialize_Vancouver_LCZ1.uwg'
 ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
