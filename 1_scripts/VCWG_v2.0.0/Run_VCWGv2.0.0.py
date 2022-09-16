@@ -24,7 +24,7 @@ TopForcingFileName = None
 VCWGParamFileName = 'initialize_Vancouver_LCZ1.uwg'
 ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
 # Case name to append output file names with
-case = 'Vancouver_LCZ1'
+case = 'May_Vancouver_LCZ1'
 
 
 # Initialize the UWG object and run the simulation

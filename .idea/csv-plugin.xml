@@ -45,6 +45,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_1_plots_related\5zone_ep_1min_vcwg_5min_waste_heat.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_1_plots_related\5zone_ep_5min_vcwg_5min_waste_heat.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_1_plots_related\time_alignment_accumulation_ep_1min_vcwg5min.csv">
           <value>
             <Attribute>
@@ -585,6 +599,13 @@
           </value>
         </entry>
         <entry key="\1_scripts\only_ep\ASHRAE901_OfficeSmall_STD2019_DenverTable.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\2_shared_zip\ep_1min_vcwg_5min_waste_heat.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
