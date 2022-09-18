@@ -206,18 +206,19 @@ def time_step_handler(state):
         curr_sim_time_in_hours = api.exchange.current_sim_time(state)
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
         # print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
-        # if curr_sim_time_in_seconds != ep_last_time_index_in_seconds:
-        #     print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
-        #     print("EP: ep_last_time_index_in_seconds: ", ep_last_time_index_in_seconds)
-        #     coordination.ep_accumulated_waste_heat += _this_waste_heat
-        #     records.append([ep_last_time_index_in_seconds, curr_sim_time_in_seconds,
-        #                     coordination.vcwg_needed_time_idx_in_seconds, coordination.ep_accumulated_waste_heat])
-        #     ep_last_time_index_in_seconds = curr_sim_time_in_seconds
+        if curr_sim_time_in_seconds != ep_last_time_index_in_seconds:
+            # print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
+            # print("EP: ep_last_time_index_in_seconds: ", ep_last_time_index_in_seconds)
+            # coordination.ep_accumulated_waste_heat += _this_waste_heat
+            # records.append([ep_last_time_index_in_seconds, curr_sim_time_in_seconds,
+            #                 coordination.vcwg_needed_time_idx_in_seconds, coordination.ep_accumulated_waste_heat])
+            ep_last_time_index_in_seconds = curr_sim_time_in_seconds
         time_index_alignment_bool =  1 > abs(curr_sim_time_in_seconds - coordination.vcwg_needed_time_idx_in_seconds)
 
         if not time_index_alignment_bool:
             print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
             print("EP: vcwg_needed_time_idx_in_seconds: ", coordination.vcwg_needed_time_idx_in_seconds)
+            print("EP: ep_last_time_index_in_seconds: ", ep_last_time_index_in_seconds)
             coordination.sem_vcwg.release()
             return
 
@@ -312,9 +313,9 @@ def run_ep_api():
     api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handler)
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
     global ep_files_path
-    ep_files_path = '_03_midRiseApartment_Vancouver'
+    ep_files_path = '_02_ep_midRiseApartment_Basel'
 
-    epwFileName = 'TopForcing_year_debugged.epw'
+    epwFileName = 'ERA5_Basel.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
 
     output_path = os.path.join(ep_files_path, 'ep_outputs')
@@ -324,21 +325,21 @@ def run_ep_api():
     api.runtime.run_energyplus(state, sys_args)
 
 def run_vcwg():
-    # epwFileName = 'ERA5_Basel_Jun.epw'
-    # TopForcingFileName = None
-    # VCWGParamFileName = 'initialize_Basel_MOST.uwg'
-    # ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
-    # # Case name to append output file names with
-    # case = '_bypass_3in1_Basel_MOST'
-
-
-    epwFileName = 'TopForcing_year.epw'
+    epwFileName = 'ERA5_Basel.epw'
     TopForcingFileName = None
-    # TopForcingFileName = 'Vancouver2008_ERA5.csv'
-    VCWGParamFileName = 'initialize_Vancouver_LCZ1.uwg'
-    ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
+    VCWGParamFileName = 'replicate_Basel_MOST.uwg'
+    ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
     # Case name to append output file names with
-    case = '_bypass_year_Vancouver_LCZ1'
+    case = 'bypass_Basel_MOST'
+
+
+    # epwFileName = 'TopForcing_year.epw'
+    # TopForcingFileName = None
+    # # TopForcingFileName = 'Vancouver2008_ERA5.csv'
+    # VCWGParamFileName = 'initialize_Vancouver_LCZ1.uwg'
+    # ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
+    # # Case name to append output file names with
+    # case = '_bypass_year_Vancouver_LCZ1'
 
     # Initialize the UWG object and run the simulation
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)

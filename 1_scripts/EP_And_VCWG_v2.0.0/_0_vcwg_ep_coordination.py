@@ -52,7 +52,7 @@ def BEMCalc_Element(canTemp,canHum, BEM, it, simTime, MeteoData,FractionsRoof, G
     BEM_building.nFloor = max(Geometry_m.Height_canyon / float(BEM_building.floorHeight), 1)
 
     vcwg_time_index_in_seconds = (it + 1) * simTime.dt
-    print(f'VCWG: Update needed time index[accumulated seconds]: {vcwg_time_index_in_seconds}\n')
+    # print(f'VCWG: Update needed time index[accumulated seconds]: {vcwg_time_index_in_seconds}\n')
     vcwg_needed_time_idx_in_seconds = vcwg_time_index_in_seconds
     vcwg_canTemp_K = canTemp
     vcwg_canSpecHum_Ratio = canHum

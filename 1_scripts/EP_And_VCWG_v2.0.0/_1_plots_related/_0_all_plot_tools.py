@@ -19,10 +19,21 @@ def read_text_as_csv(file_path, header=None, index_col=0, skiprows=3):
     '''
     df first column is index
     '''
-    df = pd.read_csv(file_path, skiprows=3, header= None, index_col=0, sep= '[ ^]+', engine='python')
+    df = pd.read_csv(file_path, skiprows= skiprows, header= header, index_col=index_col, sep= '[ ^]+', engine='python')
     # set index to first column
     # df.set_index(df.iloc[:,0], inplace=True)
     return df
+
+def clean_bubble_iop(df):
+    df.index = pd.to_datetime(df.index + ' ' + df.iloc[:, 0])
+    # drop the 0th column, according to the index instead of column name
+    df.drop(df.columns[0], axis=1, inplace=True)
+    # 0 to 5 column is number with comma, convert them to number
+    df.iloc[:, 0:5] = df.iloc[:, 0:5].apply(lambda x: x.str.replace(',', '')).astype(float)
+    # convert 10 min interval to 1 hour interval
+    df = time_interval_convertion(df, original_time_interval_min=10)
+    return df
+
 
 def multiple_days_hour_data_to_one_day_hour_data(df):
     '''
@@ -82,17 +93,20 @@ def data_cleaning(df):
     df = df.fillna(0)
     return df
 
-def time_interval_convertion(df):
+def time_interval_convertion(df, original_time_interval_min = 30 ):
     '''
     Original data is 30 mins interval,
     Convert it to hourly data
     Original data has [index, sensible]
     Replace sensible with hourly average
     '''
+    original_time_num = 60 // original_time_interval_min
     df_new = pd.DataFrame(columns=df.columns)
-    for i in range(0, len(df), 2):
-        df_new.loc[df.index[i]] = df.iloc[i:i+2].mean()
+    for i in range(0, len(df), original_time_num):
+        df_new.loc[df.index[i]] = df.iloc[i:i+original_time_num:,].mean()
         # df_new.iloc[i,0] = df.iloc[i:i+2,0].mean()
+    # floor index (YYYY-MM-DD HH:MM:SS) to (YYYY-MM-DD HH:00:00)
+    df_new.index = df_new.index.floor('H')
     return df_new
 
 # plot the comparisons between Vancouver Sunset dataset versus simulated (VCWGv2.0.0, VCWG-Bypass)
@@ -101,18 +115,18 @@ def plot_comparison_measurement_simulated(df, error_infor):
 
     ax.plot(df.iloc[:,0], label='Measurement')
     ax.plot(df.iloc[:,1], label= df.columns[1])
-    ax.plot(df.iloc[:,2], label= df.columns[2])
+    # ax.plot(df.iloc[:,2], label= df.columns[2])
     ax.legend()
     # add  to the plot
     # add text below the plot, outside the plot
-    txt = f'Bias Mean(W m-2), RMSE(W m-2), R2(-)\n' \
-          f'SUEWS:(-, 39.1, 0.77)\n' \
-          f'VCWGv2.0.0:(0.65, 18.1, 0.94)\n' \
-          f'{df.columns[1]}:{error_infor[0]}\n' \
-          f'{df.columns[2]}:{error_infor[1]}'
-    print(txt)
-    ax.text(0.5, 1, txt, transform=ax.transAxes, fontsize=6,
-        verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+    # txt = f'Bias Mean(W m-2), RMSE(W m-2), R2(-)\n' \
+    #       f'SUEWS:(-, 39.1, 0.77)\n' \
+    #       f'VCWGv2.0.0:(0.65, 18.1, 0.94)\n' \
+    #       f'{df.columns[1]}:{error_infor[0]}\n' \
+    #       f'{df.columns[2]}:{error_infor[1]}'
+    # print(txt)
+    # ax.text(0.5, 1, txt, transform=ax.transAxes, fontsize=6,
+    #     verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
     ax.set_title('Comparison for Sensible Heat Flux (Best available) (28.80m)')
     # set x name, y name, and title
     ax.set_xlabel('Date')

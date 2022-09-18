@@ -20,9 +20,9 @@ import _0_all_plot_tools as plt_tools
 results_folder = r'..\\_2_saved\\vancouver'
 start_time_with_spin_up = '2008-07-01 00:00:00'
 start_time = '2008-07-01 00:00:00'
-end_time = '2008-07-02 23:00:00'
+end_time = '2008-07-09 23:00:00'
 
-profile_height = 12
+profile_height = 5
 
 vcwg_output_time_interval_seconds = 3600
 

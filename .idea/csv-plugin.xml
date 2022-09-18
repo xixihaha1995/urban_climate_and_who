@@ -59,6 +59,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_1_plots_related\Energy_Efficient_Building.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_1_plots_related\Normal_Building.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_1_plots_related\time_alignment_accumulation_ep_1min_vcwg5min.csv">
           <value>
             <Attribute>
