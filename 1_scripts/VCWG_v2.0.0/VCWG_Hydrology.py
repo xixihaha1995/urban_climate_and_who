@@ -35,6 +35,7 @@ Developed by Mohsen Moradi and Amir A. Aliabadi
 Atmospheric Innovations Research (AIR) Laboratory, University of Guelph, Guelph, Canada
 Last update: May 2020
 """
+import numpy as np, _0_global_save
 
 class VCWG_Hydro(object):
 
@@ -612,6 +613,19 @@ class VCWG_Hydro(object):
                 # Calculate one-point temperature and humidity in the canyon: Using 1-D profiles in the canyon
                 canTemp = numpy.mean(self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u])
                 canHum = numpy.mean(self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u])
+
+
+                # self.UCM.VerticalProfUrban.presProf is a list
+                # generate a new list by dividing each element by 1000
+                canTemp_not_potential =np.array(self.UCM.VerticalProfUrban.th) *\
+                                        (np.array(self.UCM.VerticalProfUrban.presProf)/100000)**0.286
+                # we have an array to save all the time steps, _0_global_save.canTemp_NotPotential_Arr
+                # canTemp_not_potential is the current time step data, shape is (1, 50)
+                # we need vertically concatenate them, the final shape is (time steps, 50)
+                # the initial shape of _0_global_save.canTemp_NotPotential_Arr is (0, 50)
+                # so we need to use np.vstack
+                _0_global_save.canTemp_NotPotential_Arr = np.vstack((_0_global_save.canTemp_NotPotential_Arr,
+                                                                     canTemp_not_potential))
                 self.BEM[i].building.BEMCalc(canTemp,canHum,self.BEM[i],MeteoData,ParCalculation,self.simTime,self.Geometry_m,
                                              self.FractionsRoof,self.EBCanyon.SWR)
 
@@ -721,6 +735,10 @@ class VCWG_Hydro(object):
     def write_output(self):
 
         Output_dir =  "Results"
+
+        # save canTemp_NotPotential array to a csv, named as th_not_potential.csv
+        np.savetxt(os.path.join(Output_dir, "th_not_potential.csv"),
+                   _0_global_save.canTemp_NotPotential_Arr, delimiter=",")
 
         Write_Forcing(self.case,self.ForcingData,self.time,Output_dir)
 

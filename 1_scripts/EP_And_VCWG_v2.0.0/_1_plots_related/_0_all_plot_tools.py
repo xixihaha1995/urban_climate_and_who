@@ -25,7 +25,11 @@ def read_text_as_csv(file_path, header=None, index_col=0, skiprows=3):
     return df
 
 def clean_bubble_iop(df):
-    df.index = pd.to_datetime(df.index + ' ' + df.iloc[:, 0])
+    # current index format is DD.MM.YYYY
+    df.index = pd.to_datetime(df.index, format='%d.%m.%Y')
+    # index format is YYYY-MM-DD HH:MM:SS
+    # replace HH:MM with first 5 char of 0th column, convert to datetime
+    df.index = pd.to_datetime(df.index.strftime('%Y-%m-%d') + ' ' + df.iloc[:,0].str[:5])
     # drop the 0th column, according to the index instead of column name
     df.drop(df.columns[0], axis=1, inplace=True)
     # 0 to 5 column is number with comma, convert them to number
@@ -110,27 +114,26 @@ def time_interval_convertion(df, original_time_interval_min = 30 ):
     return df_new
 
 # plot the comparisons between Vancouver Sunset dataset versus simulated (VCWGv2.0.0, VCWG-Bypass)
-def plot_comparison_measurement_simulated(df, error_infor):
+def plot_comparison_measurement_simulated(df, txt_info):
+
     figure, ax = plt.subplots(figsize=(10,5))
 
     ax.plot(df.iloc[:,0], label='Measurement')
     ax.plot(df.iloc[:,1], label= df.columns[1])
-    # ax.plot(df.iloc[:,2], label= df.columns[2])
+    ax.plot(df.iloc[:,2], label= df.columns[2])
     ax.legend()
     # add  to the plot
     # add text below the plot, outside the plot
-    # txt = f'Bias Mean(W m-2), RMSE(W m-2), R2(-)\n' \
-    #       f'SUEWS:(-, 39.1, 0.77)\n' \
-    #       f'VCWGv2.0.0:(0.65, 18.1, 0.94)\n' \
-    #       f'{df.columns[1]}:{error_infor[0]}\n' \
-    #       f'{df.columns[2]}:{error_infor[1]}'
-    # print(txt)
-    # ax.text(0.5, 1, txt, transform=ax.transAxes, fontsize=6,
-    #     verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
-    ax.set_title('Comparison for Sensible Heat Flux (Best available) (28.80m)')
+    txt = f'Bias Mean(W m-2), RMSE(W m-2), R2(-)\n' \
+          f'{df.columns[1]}:{txt_info[1]}\n' \
+          f'{df.columns[2]}:{txt_info[2]}'
+    print(txt)
+    ax.text(0.5, 1, txt, transform=ax.transAxes, fontsize=6,
+        verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+    ax.set_title(txt_info[0][0])
     # set x name, y name, and title
-    ax.set_xlabel('Date')
-    ax.set_ylabel('Sensible Heat Flux (W/m2)')
+    ax.set_xlabel(txt_info[0][1])
+    ax.set_ylabel(txt_info[0][2])
 
     plt.show()
 

@@ -1,3 +1,5 @@
+import numpy as np
+
 from VCWG_Hydrology import VCWG_Hydro
 
 """
@@ -33,7 +35,8 @@ ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
 # Case name to append output file names with
 case = 'Replicate_Vancouver_LCZ1'
 '''
-
+import _0_global_save
+_0_global_save.init_save_arr()
 # Initialize the UWG object and run the simulation
 VCWG = VCWG_Hydro(epwFileName,TopForcingFileName,VCWGParamFileName,ViewFactorFileName,case)
 VCWG.run()

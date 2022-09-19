@@ -207,18 +207,18 @@ def time_step_handler(state):
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
         # print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
         if curr_sim_time_in_seconds != ep_last_time_index_in_seconds:
-            # print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
-            # print("EP: ep_last_time_index_in_seconds: ", ep_last_time_index_in_seconds)
-            # coordination.ep_accumulated_waste_heat += _this_waste_heat
-            # records.append([ep_last_time_index_in_seconds, curr_sim_time_in_seconds,
-            #                 coordination.vcwg_needed_time_idx_in_seconds, coordination.ep_accumulated_waste_heat])
+            hvac_heat_rejection_J = api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
+            hvac_waste_w_m2 = hvac_heat_rejection_J / time_step_seconds / blf_floor_area_m2
+            coordination.ep_sensWaste_w_m2_per_floor_area += hvac_waste_w_m2
             ep_last_time_index_in_seconds = curr_sim_time_in_seconds
+
         time_index_alignment_bool =  1 > abs(curr_sim_time_in_seconds - coordination.vcwg_needed_time_idx_in_seconds)
 
         if not time_index_alignment_bool:
             print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
-            print("EP: vcwg_needed_time_idx_in_seconds: ", coordination.vcwg_needed_time_idx_in_seconds)
             print("EP: ep_last_time_index_in_seconds: ", ep_last_time_index_in_seconds)
+
+            print("EP: vcwg_needed_time_idx_in_seconds: ", coordination.vcwg_needed_time_idx_in_seconds)
             coordination.sem_vcwg.release()
             return
 
@@ -238,9 +238,6 @@ def time_step_handler(state):
 
         elec_bld_meter_j_hourly = api.exchange.get_variable_value(state, elec_bld_meter_handle)
         elec_bld_meter_w_m2 = elec_bld_meter_j_hourly / 3600 / blf_floor_area_m2
-
-        hvac_heat_rejection_J = api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
-        hvac_waste_w_m2 = hvac_heat_rejection_J / time_step_seconds/blf_floor_area_m2
 
         floor_interior_conv = api.exchange.get_variable_value(state, floor_interior_conv_handle)
         floor_interior_lwr_otr_faces = api.exchange.get_variable_value(state, floor_interior_lwr_otr_faces_handle)

@@ -610,8 +610,18 @@ class VCWG_Hydro(object):
                 self.BEM[i].T_roofin = self.FractionsRoof.fimp*self.BEM[i].roofImp.Tint+self.FractionsRoof.fveg*self.BEM[i].roofVeg.Tint
 
                 # Calculate one-point temperature and humidity in the canyon: Using 1-D profiles in the canyon
-                canTemp = numpy.mean(self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u])
+                # poentail temperature, theta [K], temperature, T [K], and specific humidity [kg/kg]
+                #  theta = T * (1000/pres)^0.286
+                # T = theta * (pres/100,000 pa)^0.286
+
+                canTemp_potential = numpy.mean(self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u])
                 canHum = numpy.mean(self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u])
+                canPres = numpy.mean(self.UCM.VerticalProfUrban.presProf[0:self.Geometry_m.nz_u])
+
+                # canTemp is potential temperature, convert to temperature
+
+                # temperature = p
+                canTemp = canTemp_potential*(canPres/100000)**0.286
 
                 # Lichen:
                 #   Bypassing the following function BEMCal():
