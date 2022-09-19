@@ -9,16 +9,12 @@ def api_to_csv(state):
     newFile = open(api_path, "wb")
     newFile.write(newFileByteArray)
     newFile.close()
+
 def run_ep_api():
     state = api.state_manager.new_state()
     api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
-                                                                  _01_ep_time_step_handlers.time_step_handler_bypass)
+                                                                  _01_ep_time_step_handlers._nested_ep_then_vcwg)
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
-    global ep_files_path
-    ep_files_path = '_02_ep_midRiseApartment_Basel'
-
-    epwFileName = 'ERA5_Basel.epw'
-    idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
 
     output_path = os.path.join(ep_files_path, 'ep_outputs')
     weather_file_path = os.path.join(ep_files_path, epwFileName)
@@ -27,6 +23,10 @@ def run_ep_api():
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
+    ep_files_path = '_02_ep_midRiseApartment_Basel'
+    epwFileName = 'ERA5_Basel.epw'
+    idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
+
     # Lichen: init the synchronization lock related settings: locks, shared variables.
     coordination.init_ep_api()
     api = coordination.ep_api

@@ -1,11 +1,31 @@
-import _0_vcwg_ep_coordination as coordination, _02_run_vcwg
+import _0_vcwg_ep_coordination as coordination
 from threading import Thread
+from VCWG_Hydrology import VCWG_Hydro
 
 one_time = True
 one_time_call_vcwg = True
-records = []
 
-def time_step_handler_bypass(state):
+def run_vcwg():
+    epwFileName = 'ERA5_Basel.epw'
+    TopForcingFileName = None
+    VCWGParamFileName = 'replicate_Basel_MOST.uwg'
+    ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
+    # Case name to append output file names with
+    case = 'bypass_Basel_MOST'
+
+
+    # epwFileName = 'TopForcing_year.epw'
+    # TopForcingFileName = None
+    # # TopForcingFileName = 'Vancouver2008_ERA5.csv'
+    # VCWGParamFileName = 'initialize_Vancouver_LCZ1.uwg'
+    # ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
+    # # Case name to append output file names with
+    # case = '_bypass_year_Vancouver_LCZ1'
+
+    # Initialize the UWG object and run the simulation
+    VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
+    VCWG.run()
+def _nested_ep_then_vcwg(state):
     global one_time,one_time_call_vcwg,ep_last_time_index_in_seconds ,oat_sensor_handle, records,\
         odb_actuator_handle, orh_actuator_handle,\
         zone_indor_temp_sensor_handle, zone_indor_spe_hum_sensor_handle,\
@@ -165,7 +185,7 @@ def time_step_handler_bypass(state):
             time_step_seconds = 3600 / coordination.ep_api.exchange.num_time_steps_in_hour(state)
             zone_floor_area_m2 = coordination.ep_api.exchange.get_internal_variable_value(state,zone_flr_area_handle)
             one_time_call_vcwg = False
-            Thread(target=_02_run_vcwg.run_vcwg).start()
+            Thread(target=run_vcwg).start()
         '''
         Lichen: sync EP and VCWG
         1. EP: get the current time in seconds

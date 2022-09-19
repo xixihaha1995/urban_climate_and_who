@@ -10,10 +10,6 @@ def init_semaphore_lock_settings():
     sem_vcwg = threading.Semaphore(0)
     sem_energyplus = threading.Semaphore(1)
 
-def init_ep_hanle_related_variables():
-    global one_time
-    one_time = False
-
 def init_variables_for_vcwg_ep():
     global vcwg_needed_time_idx_in_seconds,\
         vcwg_canTemp_K, vcwg_canSpecHum_Ratio, vcwg_canPress_Pa,\
