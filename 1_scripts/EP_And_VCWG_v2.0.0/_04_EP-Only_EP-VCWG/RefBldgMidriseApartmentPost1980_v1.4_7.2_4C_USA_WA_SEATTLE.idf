@@ -92,7 +92,7 @@
     9,                       !- Begin Day of Month
     ,                        !- Begin Year
     6,                      !- End Month
-    11,                      !- End Day of Month
+    8,                      !- End Day of Month
     ,                        !- End Year
     Sunday,                  !- Day of Week for Start Day
     No,                      !- Use Weather File Holidays and Special Days
@@ -16272,20 +16272,5 @@
   Output:Meter,InteriorEquipment:NaturalGas,hourly;
 
   Output:Meter,WaterSystems:NaturalGas,hourly;
-
-  Output:Variable,*,Surface Inside Face Temperature,detailed;
-  Output:Variable,*,Surface Outside Face Temperature,detailed;
-  Output:Variable,*,Surface Inside Face Convection Heat Gain Rate per Area,detailed;
-  Output:Variable,*,Surface Inside Face Net Surface Thermal Radiation Heat Gain Rate per Area,detailed;
-  Output:Variable,*,Surface Inside Face Internal Gains Radiation Heat Gain Rate per Area,detailed;
-  Output:Variable,*,Surface Inside Face System Radiation Heat Gain Rate per Area,detailed;
-  Output:Variable,*,Surface Inside Face Lights Radiation Heat Gain Rate per Area,detailed;
-  Output:Variable,*,Surface Inside Face Solar Radiation Heat Gain Rate per Area,detailed;
-  Output:Variable,*,Zone Air Temperature,detailed;
-  Output:Variable,*,Zone Air Humidity Ratio,detailed;
-  Output:Variable,*,Zone Air System Sensible Cooling Rate,detailed;
-  Output:Variable,*,Zone Air System Sensible Heating Rate,detailed;
-  Output:Variable,*,Heating Coil Heating Rate,detailed;
-  Output:Variable,*,Cooling Coil Electricity Rate,detailed;
 
   Output:Variable,*,HVAC System Total Heat Rejection Energy,detailed;
