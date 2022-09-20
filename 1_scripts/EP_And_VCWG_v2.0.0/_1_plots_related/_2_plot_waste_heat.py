@@ -15,13 +15,13 @@ df_nested_ep_only_timed = plt_tools.sequence_time_to_pandas_time(df_nested_ep_on
 # according to the index of df_nested_ep_only_timed, select all the corresponding observations from df_ep_only_timed
 df_ep_only_timed_aligned = df_ep_only_timed.loc[df_nested_ep_only_timed.index]
 
-bias_rmse_r2 = plt_tools.bias_rmse_r2(df_ep_only_timed_aligned['SimHVAC:HVAC System Total Heat Rejection Energy [J](Each Call)'],
+bias_rmse_r2 = plt_tools.bias_rmse_r2(df_ep_only_timed_aligned['SimHVAC:HVAC System Total Heat Rejection Energy [J](TimeStep) '],
                                       df_nested_ep_only_timed['coordination.ep_accumulated_waste_heat'])
 
 # plot
 fig, ax = plt.subplots()
-ax.plot(df_nested_ep_only_timed.index, df_ep_only_timed_aligned['SimHVAC:HVAC System Total Heat Rejection Energy [J](Each Call)'],
-        label='5 min Accumulated (EP Software)')
+ax.plot(df_nested_ep_only_timed.index, df_ep_only_timed_aligned['SimHVAC:HVAC System Total Heat Rejection Energy [J](TimeStep) '],
+        label='5 min TimeStep (EP Software)')
 ax.plot(df_nested_ep_only_timed.index, df_nested_ep_only_timed['coordination.ep_accumulated_waste_heat'],
         label='5 min Accumulated (EP Python-API)')
 ax.set(xlabel='Time [h]', ylabel='HVAC System Total Heat Rejection Energy [J]',
