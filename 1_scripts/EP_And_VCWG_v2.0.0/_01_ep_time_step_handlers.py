@@ -6,17 +6,15 @@ one_time = True
 one_time_call_vcwg = True
 accu_hvac_heat_rejection_J = 0
 zone_time_step_seconds = 0
-ep_last_time_index_in_seconds = 0
 ep_last_accumulated_time_index_in_seconds = 0
 
 def _nested_ep_only(state):
-    global one_time, ep_last_time_index_in_seconds, accu_hvac_heat_rejection_J,zone_time_step_seconds \
+    global one_time, accu_hvac_heat_rejection_J,zone_time_step_seconds \
         ,hvac_heat_rejection_sensor_handle, ep_last_accumulated_time_index_in_seconds
     if one_time:
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
             return
         one_time = False
-        ep_last_time_index_in_seconds = 0
         zone_time_step_seconds = 3600 / coordination.ep_api.exchange.num_time_steps_in_hour(state)
 
         hvac_heat_rejection_sensor_handle = \
@@ -27,17 +25,13 @@ def _nested_ep_only(state):
     if not warm_up:
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
-        if curr_sim_time_in_seconds == ep_last_time_index_in_seconds:
-            print("EP: iterating time step")
-        ep_last_time_index_in_seconds = curr_sim_time_in_seconds
-
         accumulation_time_step_in_seconds = curr_sim_time_in_seconds - ep_last_accumulated_time_index_in_seconds
         accumulated_bool = 1 > abs(accumulation_time_step_in_seconds - zone_time_step_seconds)
 
         accu_hvac_heat_rejection_J += coordination.ep_api.exchange.get_variable_value(state,
                                                                                       hvac_heat_rejection_sensor_handle)
         if accumulated_bool:
-            coordination.saving_data.append([ep_last_time_index_in_seconds, curr_sim_time_in_seconds,
+            coordination.saving_data.append([curr_sim_time_in_seconds,
                                              accu_hvac_heat_rejection_J])
             accu_hvac_heat_rejection_J = 0
             ep_last_accumulated_time_index_in_seconds = curr_sim_time_in_seconds
@@ -62,7 +56,7 @@ def run_vcwg():
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
     VCWG.run()
 def _nested_ep_then_vcwg(state):
-    global one_time,one_time_call_vcwg,ep_last_time_index_in_seconds ,oat_sensor_handle, records,\
+    global one_time,one_time_call_vcwg,oat_sensor_handle, records,\
         odb_actuator_handle, orh_actuator_handle,\
         zone_indor_temp_sensor_handle, zone_indor_spe_hum_sensor_handle,\
         zone_flr_area_handle,\
@@ -86,7 +80,6 @@ def _nested_ep_then_vcwg(state):
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
             return
         one_time = False
-        ep_last_time_index_in_seconds = 0
         # coordination.ep_api_to_csv(state)
         oat_sensor_handle = \
             coordination.ep_api.exchange.get_variable_handle(state,
@@ -211,8 +204,6 @@ def _nested_ep_then_vcwg(state):
                                                                 "t Roof S1A")
         roof_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
                                                                 "t Roof S1A")
-
-
     warm_up = coordination.ep_api.exchange.warmup_flag(state)
     if not warm_up:
         # Lichen: After EP warm up, start to call VCWG
@@ -225,37 +216,28 @@ def _nested_ep_then_vcwg(state):
         '''
         Lichen: sync EP and VCWG
         1. EP: get the current time in seconds
-        2. EP: compare the current time with the last time
-            if the current time is larger than the last time,
-                then do accumulation: coordination.ep_accumulated_waste_heat += _this_waste_heat * 1e-4
-        3. Compare EP_time_idx_in_seconds with vcwg_needed_time_idx_in_seconds
-            a. if true, 
+        2. Compare EP_time_idx_in_seconds with vcwg_needed_time_idx_in_seconds
+            a. if true (converged), 
                 global_hvac_waste <- ep:hvac_heat_rejection_sensor_handle
                 global_oat -> ep:odb_actuator_handle
                 release the lock for vcwg, denoted as coordination.sem_energyplus.release()
-            b. if false 
-                (HVAC is converging, probably we need run many HVAC iteration loops for the same ep time index)
-                or
+            b. if false (converged)
                 (HVAC is accumulating, probably we need run many HVAC iteration loops for the following ep time indices)
                 release the lock for EP, denoted as coordination.sem_vcwg.release()
         '''
         coordination.sem_vcwg.acquire()
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
-        # print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
-        if curr_sim_time_in_seconds != ep_last_time_index_in_seconds:
-            hvac_heat_rejection_J = coordination.ep_api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
-            # TODO: accumulate the Joules first, then convert to per unit floor area
-            hvac_waste_w_m2 = hvac_heat_rejection_J / time_step_seconds / coordination.blf_floor_area_m2
-            coordination.ep_sensWaste_w_m2_per_floor_area += hvac_waste_w_m2
-            ep_last_time_index_in_seconds = curr_sim_time_in_seconds
+
+        hvac_heat_rejection_J = coordination.ep_api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
+        hvac_waste_w_m2 = hvac_heat_rejection_J / time_step_seconds / coordination.blf_floor_area_m2
+        # Should always accumulate, since system time always advances
+        coordination.ep_sensWaste_w_m2_per_floor_area += hvac_waste_w_m2
 
         time_index_alignment_bool =  1 > abs(curr_sim_time_in_seconds - coordination.vcwg_needed_time_idx_in_seconds)
 
         if not time_index_alignment_bool:
             print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
-            print("EP: ep_last_time_index_in_seconds: ", ep_last_time_index_in_seconds)
-
             print("EP: vcwg_needed_time_idx_in_seconds: ", coordination.vcwg_needed_time_idx_in_seconds)
             coordination.sem_vcwg.release()
             return
@@ -341,27 +323,3 @@ def _nested_ep_then_vcwg(state):
         coordination.ep_fluxRoof_w_m2 = roof_flux
 
         coordination.sem_energyplus.release()
-        
-#         
-# def time_step_handler(state):
-#     global one_time,one_time_call_vcwg,ep_last_time_index_in_seconds ,oat_sensor_handle, records,\
-#         odb_actuator_handle, orh_actuator_handle,\
-#         zone_indor_temp_sensor_handle, zone_indor_spe_hum_sensor_handle,\
-#         zone_flr_area_handle,\
-#         sens_cool_demand_sensor_handle, sens_heat_demand_sensor_handle, \
-#         cool_consumption_sensor_handle, heat_consumption_sensor_handle, \
-#         hvac_heat_rejection_sensor_handle, elec_bld_meter_handle,\
-#         floor_interior_conv_handle, floor_interior_lwr_otr_faces_handle, \
-#         floor_interior_lwr_intGain_handle, floor_interior_lwr_hvac_handle,\
-#         floor_interior_swr_lights_handle, floor_interior_swr_solar_handle, \
-#         wall_interior_conv_handle, wall_interior_lwr_otr_faces_handle, \
-#         wall_interior_lwr_intGain_handle, wall_interior_lwr_hvac_handle, \
-#         wall_interior_swr_lights_handle, wall_interior_swr_solar_handle, \
-#         roof_interior_conv_handle, roof_interior_lwr_otr_faces_handle, \
-#         roof_interior_lwr_intGain_handle, roof_interior_lwr_hvac_handle, \
-#         roof_interior_swr_lights_handle, roof_interior_swr_solar_handle,\
-#         floor_Text_handle, roof_Text_handle, \
-#         floor_Tint_handle, roof_Tint_handle, \
-#         wall_t_Text_handle, wall_t_Tint_handle, wall_m_Text_handle, wall_m_Tint_handle, wall_g_Text_handle, wall_g_Tint_handle
-# 
-#

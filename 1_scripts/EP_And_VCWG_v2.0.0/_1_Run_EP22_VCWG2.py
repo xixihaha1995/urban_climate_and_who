@@ -15,7 +15,7 @@ def run_ep_api():
     # api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
     #                                                               _01_ep_time_step_handlers._nested_ep_then_vcwg)
     api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
-                                                                  _01_ep_time_step_handlers._nested_ep_only)
+                                                                  _01_ep_time_step_handlers._nested_ep_then_vcwg)
     # api.runtime.callback_end_zone_timestep_before_zone_reporting(state,
     #                                                               _01_ep_time_step_handlers._nested_ep_only)
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
@@ -27,7 +27,7 @@ def run_ep_api():
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    ep_files_path = '_04_EP-Only_EP-VCWG'
+    ep_files_path = '_02_ep_midRiseApartment_Basel'
     epwFileName = 'ERA5_Basel.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
 
@@ -44,10 +44,10 @@ if __name__ == '__main__':
     # Lichen: wait for ep_thread to finish to post process some accumulated records
     ep_thread.join()
     # # Lichen: post process, such as [timestamp, waste heat] * time_steps_num
-    records_arr = np.array(coordination.saving_data)
-    # # array to df
-    records_df = pd.DataFrame(records_arr, columns=['last_time_in_seconds', 'curr_sim_time_in_seconds',
-                                                    'coordination.ep_accumulated_waste_heat'])
-    saved_records_name = ep_files_path + '/records_df.csv'
-    records_df.to_csv(saved_records_name, index=False)
+    # records_arr = np.array(coordination.saving_data)
+    # # # array to df
+    # records_df = pd.DataFrame(records_arr, columns=['last_time_in_seconds', 'curr_sim_time_in_seconds',
+    #                                                 'coordination.ep_accumulated_waste_heat'])
+    # saved_records_name = ep_files_path + '/records_df.csv'
+    # records_df.to_csv(saved_records_name, index=False)
 
