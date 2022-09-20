@@ -102,6 +102,14 @@ def certain_height_one_day(df, height):
     height_index = np.argmin(np.abs(df.index - height))
     return df.iloc[height_index,:]
 
+def average_temperature_below_height(df, height):
+    '''
+    df index is different heights, resolution is 0.5 m
+    '''
+    # find the closest height
+    height_index = np.argmin(np.abs(df.index - height))
+    return df.iloc[:height_index,:].mean(axis=0)
+
 def filter_df_with_new_heights(df, heights_arr):
     # new df with heights as index
     df_new = pd.DataFrame(index=heights_arr, columns=df.columns)
@@ -161,8 +169,9 @@ def plot_comparison_measurement_simulated(df, txt_info):
     figure, ax = plt.subplots(figsize=(10,5))
 
     ax.plot(df.iloc[:,0], label='Measurement')
-    # ax.plot(df.iloc[:,1], label= df.columns[1])
-    # ax.plot(df.iloc[:,2], label= df.columns[2])
+    ax.plot(df.iloc[:,1], label= df.columns[1])
+    ax.plot(df.iloc[:,2], label= df.columns[2])
+    ax.plot(df.iloc[:,3], label= df.columns[3])
     ax.legend()
     # add  to the plot
     # add text below the plot, outside the plot
