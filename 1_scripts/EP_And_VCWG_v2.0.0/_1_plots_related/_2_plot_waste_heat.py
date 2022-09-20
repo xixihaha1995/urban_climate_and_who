@@ -6,8 +6,8 @@ import pandas as pd, matplotlib.pyplot as plt, _0_all_plot_tools as plt_tools
 results_folder = r'..\\_2_saved\\accumulated_confirmation'
 start_time = '2002-June-09 00:05:00'
 
-df_ep_only = pd.read_csv(results_folder + r'\\RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.csv')
-df_nested_ep_only = pd.read_csv(results_folder + r'\\records_df.csv')
+df_ep_only = pd.read_csv(results_folder + r'\\RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE_year.csv')
+df_nested_ep_only = pd.read_csv(results_folder + r'\\records_df_year.csv')
 
 df_ep_only_timed = plt_tools.ep_time_to_pandas_time(df_ep_only,start_time)
 df_nested_ep_only_timed = plt_tools.sequence_time_to_pandas_time(df_nested_ep_only, 300, start_time)

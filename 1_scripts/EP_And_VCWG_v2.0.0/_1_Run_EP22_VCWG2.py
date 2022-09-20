@@ -16,6 +16,8 @@ def run_ep_api():
     #                                                               _01_ep_time_step_handlers._nested_ep_then_vcwg)
     api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
                                                                   _01_ep_time_step_handlers._nested_ep_only)
+    # api.runtime.callback_end_zone_timestep_before_zone_reporting(state,
+    #                                                               _01_ep_time_step_handlers._nested_ep_only)
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
 
     output_path = os.path.join(ep_files_path, 'ep_outputs')
