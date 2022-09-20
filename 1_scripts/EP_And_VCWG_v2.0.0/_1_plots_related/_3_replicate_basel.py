@@ -4,8 +4,9 @@ results_folder = r'..\_2_saved\vcwg_potential_real_confirmation'
 sensor_height = 2.6
 building_height = 15
 start_time_with_spin_up = '2002-06-09 00:00:00'
-start_time = '2002-06-10 00:00:00'
-end_time = '2002-06-30 23:00:00'
+v132_start_timewith_spin_up = '2002-06-15 00:00:00'
+start_time = '2002-06-15 00:00:00'
+end_time = '2002-06-29 23:00:00'
 vcwg_output_time_interval_seconds = 3600
 
 # Read air temperature measurements
@@ -26,6 +27,14 @@ potential_temp_profile_hours_height_spin_date = plt_tools.add_date_index(potenti
                                                                     start_time_with_spin_up,
                                                                     vcwg_output_time_interval_seconds)
 potential_temp_profile_hours_height_K = potential_temp_profile_hours_height_spin_date.loc[start_time:end_time]
+
+v132_turban_profile_hours = plt_tools.read_text_as_csv(f'{results_folder}\\v132_Tu_profiles_hourly.txt')
+v132_turban_profile_hours_height_spin = plt_tools.certain_height_one_day(v132_turban_profile_hours, sensor_height)
+v132_turban_profile_hours_height_spin_date = plt_tools.add_date_index(v132_turban_profile_hours_height_spin,
+                                                                    v132_start_timewith_spin_up,
+                                                                    vcwg_output_time_interval_seconds)
+v132_turban_profile_hours_height_K = v132_turban_profile_hours_height_spin_date.loc[start_time:end_time]
+
 
 # read the real temperature profile time series from csv
 dynamic_p0_real_temp_profile_timestep = pd.read_csv(f'{results_folder}\\th_real_dynamic_p0.csv', header=None, index_col=None)
@@ -68,9 +77,12 @@ constant_p0_real_temp_profile_hours_height_K = constant_p0_real_temp_profile_hou
 dynamic_p0_real_temp_profile_hours_height_C = dynamic_p0_real_temp_profile_hours_height_K - 273.15
 constant_p0_real_temp_profile_hours_height_C = constant_p0_real_temp_profile_hours_height_K - 273.15
 potential_temp_profile_hours_height_C = potential_temp_profile_hours_height_K - 273.15
+v132_turban_profile_hours_height_C = v132_turban_profile_hours_height_K - 273.15
 
-all_df_names = ['measurements_hour', 'potential_temp_profile_hours_height','real_temp_profile_hours_height_constant_p0']
-all_df = [measurements_hour_C, potential_temp_profile_hours_height_C, constant_p0_real_temp_profile_hours_height_C]
+all_df_names = ['measurements_hour', 'v200_potential_temp','v200_real_temp',
+                'v132_potential_temp']
+all_df = [measurements_hour_C, potential_temp_profile_hours_height_C, constant_p0_real_temp_profile_hours_height_C,
+            v132_turban_profile_hours_height_C]
 all_in_one_df = plt_tools.merge_multiple_df(all_df, all_df_names)
 
 # bias_rmse_r2_th_rep = plt_tools.bias_rmse_r2(all_in_one_df['measurements_hour'],
