@@ -416,6 +416,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\VCWG_v2.0.0\Results\th_not_potential.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD10\BLD10_BuildingSummary.csv">
           <value>
             <Attribute>

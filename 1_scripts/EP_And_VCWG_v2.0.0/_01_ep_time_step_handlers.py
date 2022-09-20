@@ -7,6 +7,7 @@ one_time_call_vcwg = True
 accu_hvac_heat_rejection_J = 0
 zone_time_step_seconds = 0
 ep_last_accumulated_time_index_in_seconds = 0
+ep_last_call_time_seconds = 0
 
 def _nested_ep_only(state):
     global one_time, accu_hvac_heat_rejection_J,zone_time_step_seconds \
@@ -208,8 +209,8 @@ def _nested_ep_then_vcwg(state):
     if not warm_up:
         # Lichen: After EP warm up, start to call VCWG
         if one_time_call_vcwg:
-            global time_step_seconds, zone_floor_area_m2
-            time_step_seconds = 3600 / coordination.ep_api.exchange.num_time_steps_in_hour(state)
+            global zone_time_step_seconds, zone_floor_area_m2, ep_last_call_time_seconds
+            zone_time_step_seconds = 3600 / coordination.ep_api.exchange.num_time_steps_in_hour(state)
             zone_floor_area_m2 = coordination.ep_api.exchange.get_internal_variable_value(state,zone_flr_area_handle)
             one_time_call_vcwg = False
             Thread(target=run_vcwg).start()
@@ -229,9 +230,11 @@ def _nested_ep_then_vcwg(state):
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
 
-        hvac_heat_rejection_J = coordination.ep_api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
-        hvac_waste_w_m2 = hvac_heat_rejection_J / time_step_seconds / coordination.blf_floor_area_m2
         # Should always accumulate, since system time always advances
+        accumulated_time_in_seconds = curr_sim_time_in_seconds - ep_last_call_time_seconds
+        ep_last_call_time_seconds = curr_sim_time_in_seconds
+        hvac_heat_rejection_J = coordination.ep_api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
+        hvac_waste_w_m2 = hvac_heat_rejection_J / accumulated_time_in_seconds / coordination.blf_floor_area_m2
         coordination.ep_sensWaste_w_m2_per_floor_area += hvac_waste_w_m2
 
         time_index_alignment_bool =  1 > abs(curr_sim_time_in_seconds - coordination.vcwg_needed_time_idx_in_seconds)
