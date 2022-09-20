@@ -115,13 +115,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_2_saved\accumulated_confirmation\RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=":" />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD10\BLD10_BuildingSummary.csv">
           <value>
             <Attribute>
