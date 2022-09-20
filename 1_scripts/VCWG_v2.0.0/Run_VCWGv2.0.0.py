@@ -9,21 +9,21 @@ Atmospheric Innovations Research (AIR) Laboratory, University of Guelph, Guelph,
 Last update: December 2020
 """
 #Basel
-'''
+# '''
 epwFileName = 'ERA5_Basel_Jun.epw'
 TopForcingFileName = None
 VCWGParamFileName = 'initialize_Basel_MOST.uwg'
 ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
 # Case name to append output file names with
 case = 'Basel_MOST'
-'''
+# '''
 
-epwFileName = 'ERA5_Basel.epw'
-TopForcingFileName = None
-VCWGParamFileName = 'replicate_Basel_MOST.uwg'
-ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
-# Case name to append output file names with
-case = 'replicate_Basel_MOST'
+# epwFileName = 'ERA5_Basel.epw'
+# TopForcingFileName = None
+# VCWGParamFileName = 'replicate_Basel_MOST.uwg'
+# ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
+# # Case name to append output file names with
+# case = 'replicate_Basel_MOST'
 
 #Vancouver
 '''
@@ -36,7 +36,7 @@ ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
 case = 'Replicate_Vancouver_LCZ1'
 '''
 import _0_global_save
-_0_global_save.init_save_arr()
+# _0_global_save.init_save_arr()
 # Initialize the UWG object and run the simulation
 VCWG = VCWG_Hydro(epwFileName,TopForcingFileName,VCWGParamFileName,ViewFactorFileName,case)
 VCWG.run()

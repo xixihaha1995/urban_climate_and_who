@@ -33,9 +33,8 @@ def ep_time_to_pandas_time(df, start_time):
     # update dataframe index
     df.index = df['date']
     # drop 0th column, date related data
-    df.drop(df.columns[0], axis=1, inplace=True)
     # drop month, day, hour, minute, second, date
-    df.drop(['month', 'day', 'hour', 'minute', 'second', 'date'], axis=1, inplace=True)
+    df.drop(['month', 'day', 'hour', 'minute', 'second', 'date','year','Date/Time'], axis=1, inplace=True)
     #  if date is earlier than start_time, increase one year
     df.index = df.index + pd.Timedelta(days=365) * (df.index < start_time)
     return df
@@ -172,6 +171,7 @@ def plot_comparison_measurement_simulated(df, txt_info):
     ax.plot(df.iloc[:,1], label= df.columns[1])
     ax.plot(df.iloc[:,2], label= df.columns[2])
     ax.plot(df.iloc[:,3], label= df.columns[3])
+    ax.plot(df.iloc[:,4], label= df.columns[4])
     ax.legend()
     # add  to the plot
     # add text below the plot, outside the plot
@@ -186,6 +186,18 @@ def plot_comparison_measurement_simulated(df, txt_info):
     ax.set_xlabel(txt_info[0][1])
     ax.set_ylabel(txt_info[0][2])
 
+    plt.show()
+
+def general_time_series_comparision(df, txt_info):
+    # df has many columns, itearte to plot each column
+    figure, ax = plt.subplots(figsize=(10, 5))
+    for i in range(0, len(df.columns)):
+        ax.plot(df.iloc[:,i], label= df.columns[i])
+    ax.legend()
+    ax.set_title(txt_info[0])
+    # set x name, y name, and title
+    ax.set_xlabel(txt_info[1])
+    ax.set_ylabel(txt_info[2])
     plt.show()
 
 def add_date_index(df, start_date, time_interval):

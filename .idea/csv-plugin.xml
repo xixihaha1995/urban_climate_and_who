@@ -647,20 +647,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\1_scripts\only_ep\ASHRAE901_OfficeSmall_STD2019_DenverTable.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\1_scripts\only_ep\ASHRAE901_OfficeSmall_STD2019_Denver_5min_detailed.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=":" />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\2_shared_zip\ep_1min_vcwg_5min_waste_heat.csv">
           <value>
             <Attribute>

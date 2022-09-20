@@ -45,6 +45,13 @@ real_temp_profile_hours_height_spin = plt_tools.certain_height_one_day(real_temp
 real_temp_profile_hours_height_spin_date = plt_tools.add_date_index(real_temp_profile_hours_height_spin,
                                                                     start_time_with_spin_up,
                                                                     vcwg_output_time_interval_seconds)
+real_temp_profile_hours_height_avg = plt_tools.average_temperature_below_height(real_temp_profile_hours_height,
+                                                                                 building_height)
+real_temp_profile_hours_height_avg_date = plt_tools.add_date_index(real_temp_profile_hours_height_avg,
+                                                                    start_time_with_spin_up,
+                                                                    vcwg_output_time_interval_seconds)
+real_temp_profile_hours_build_avg_K = real_temp_profile_hours_height_avg_date.loc[start_time:end_time]
+
 # select time period
 real_temp_profile_hours_height_K = real_temp_profile_hours_height_spin_date.loc[start_time:end_time]
 
@@ -52,11 +59,13 @@ real_temp_profile_hours_height_K = real_temp_profile_hours_height_spin_date.loc[
 potential_temp_profile_hours_height_C = potential_temp_profile_hours_height_K - 273.15
 real_temp_profile_hours_height_C = real_temp_profile_hours_height_K - 273.15
 potential_temp_profile_hours_build_avg_C = potential_temp_profile_hours_build_avg_K - 273.15
+real_temp_profile_hours_build_avg_C = real_temp_profile_hours_build_avg_K - 273.15
 
 all_df_names = ['measurements_hour', 'potential_temp_profile_hours_height',
-                'real_temp_profile_hours_height', 'potential_temp_profile_hours_build_avg']
+                'real_temp_profile_hours_height', f'potential_temp_profile_hours_build_avg_{ building_height} m',
+                f'real_temp_profile_hours_build_avg_{ building_height} m']
 all_df = [measurements_hour_C, potential_temp_profile_hours_height_C,
-          real_temp_profile_hours_height_C, potential_temp_profile_hours_build_avg_C]
+          real_temp_profile_hours_height_C, potential_temp_profile_hours_build_avg_C,real_temp_profile_hours_build_avg_C]
 all_in_one_df = plt_tools.merge_multiple_df(all_df, all_df_names)
 
 # bias_rmse_r2_th_rep = plt_tools.bias_rmse_r2(all_in_one_df['measurements_hour'],
