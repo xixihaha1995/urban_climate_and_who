@@ -24,7 +24,28 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_01_ep_5zone\5ZoneAirCooled.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_01_ep_5zone\5ZoneAirCooledMeter.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_04_EP-Only_EP-VCWG\RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_04_EP-Only_EP-VCWG\records_df.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -45,6 +66,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_1_plots_related\5ZoneAirCooled_eachcall.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_1_plots_related\5zone_ep_1min_vcwg_5min_waste_heat.csv">
           <value>
             <Attribute>
@@ -56,6 +84,13 @@
           <value>
             <Attribute>
               <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_1_plots_related\ASHRAE901_OfficeSmall_STD2019_Denver_5min_detailed.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
             </Attribute>
           </value>
         </entry>
@@ -77,6 +112,13 @@
           <value>
             <Attribute>
               <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_2_saved\accumulated_confirmation\RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
             </Attribute>
           </value>
         </entry>
@@ -602,6 +644,13 @@
           <value>
             <Attribute>
               <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\only_ep\ASHRAE901_OfficeSmall_STD2019_Denver_5min_detailed.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
             </Attribute>
           </value>
         </entry>

@@ -1,4 +1,4 @@
-import os
+import os, numpy as np, pandas as pd
 from threading import Thread
 import _0_vcwg_ep_coordination as coordination, _01_ep_time_step_handlers
 
@@ -12,8 +12,10 @@ def api_to_csv(state):
 
 def run_ep_api():
     state = api.state_manager.new_state()
+    # api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
+    #                                                               _01_ep_time_step_handlers._nested_ep_then_vcwg)
     api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
-                                                                  _01_ep_time_step_handlers._nested_ep_then_vcwg)
+                                                                  _01_ep_time_step_handlers._nested_ep_only)
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
 
     output_path = os.path.join(ep_files_path, 'ep_outputs')
@@ -23,11 +25,12 @@ def run_ep_api():
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    ep_files_path = '_02_ep_midRiseApartment_Basel'
+    ep_files_path = '_04_EP-Only_EP-VCWG'
     epwFileName = 'ERA5_Basel.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
 
     # Lichen: init the synchronization lock related settings: locks, shared variables.
+    coordination.init_saving_data()
     coordination.init_ep_api()
     api = coordination.ep_api
     coordination.init_semaphore_lock_settings()
@@ -38,14 +41,11 @@ if __name__ == '__main__':
     ep_thread.start()
     # Lichen: wait for ep_thread to finish to post process some accumulated records
     ep_thread.join()
-
     # # Lichen: post process, such as [timestamp, waste heat] * time_steps_num
-    # records_arr = np.array(records)
+    records_arr = np.array(coordination.saving_data)
     # # array to df
-    # records_df = pd.DataFrame(records_arr, columns=['last_time_in_seconds', 'curr_sim_time_in_seconds',
-    #                                                 'vcwg_needed_time_idx_in_seconds',
-    #                                                 'coordination.ep_accumulated_waste_heat'])
-    # saved_records_name = ep_files_path + '/records_df.csv'
-    # saved_records_path = os.path.join('_1_plots_related',saved_records_name)
-    # records_df.to_csv(saved_records_path, index=False)
+    records_df = pd.DataFrame(records_arr, columns=['last_time_in_seconds', 'curr_sim_time_in_seconds',
+                                                    'coordination.ep_accumulated_waste_heat'])
+    saved_records_name = ep_files_path + '/records_df.csv'
+    records_df.to_csv(saved_records_name, index=False)
 

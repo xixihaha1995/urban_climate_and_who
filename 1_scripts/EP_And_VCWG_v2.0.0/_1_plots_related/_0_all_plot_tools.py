@@ -3,6 +3,48 @@ import numpy as np, pandas as pd, matplotlib.pyplot as plt
 def RMSE(y_true, y_pred):
     return np.sqrt(np.mean(np.square(y_pred - y_true)))
 
+def ep_time_to_pandas_time(df, start_time):
+    '''
+    for 0th column, find all the observation with 24:00:00, and change it to 00:00:00, and add one day
+    0th column is date related data, however, it has rare format, so it is not easy to convert to pandas time
+
+    extract month, day, hour, minute, second from 0th column
+    0th column current format is one string, " MM/DD  HH:MM:SS"
+    '''
+    index_24 = df[df.iloc[:, 0].str.contains('24:00:00')].index
+    # replace 24:00:00 with 00:00:00
+    df.iloc[index_24, 0] = df.iloc[index_24, 0].str.replace('24:00:00', '00:00:00')
+    # extract month from 0th column
+    df['month'] = df.iloc[:, 0].str.extract('(\d{2})/').astype(int)
+    # extract day from 0th column
+    df['day'] = df.iloc[:, 0].str.extract('/(\d{2})').astype(int)
+    # extract hour from 0th column
+    df['hour'] = df.iloc[:, 0].str.extract('(\d{2}):').astype(int)
+    # extract minute from 0th column
+    df['minute'] = df.iloc[:, 0].str.extract(':(\d{2}):').astype(int)
+    # extract second from 0th column, second is the last 2 index of 0th column
+    df['second'] = df.iloc[:, 0].str[-2:].astype(int)
+    # we dont have year, so we use the first 4 char of start_time
+    df['year'] = start_time[:4]
+    # convert to pandas time
+    df['date'] = pd.to_datetime(df[['year', 'month', 'day', 'hour', 'minute', 'second']])
+    # add one day to index_24
+    df.loc[index_24, 'date'] = df.loc[index_24, 'date'] + pd.Timedelta(days=1)
+    # update dataframe index
+    df.index = df['date']
+    # drop 0th column, date related data
+    df.drop(df.columns[0], axis=1, inplace=True)
+    # drop month, day, hour, minute, second, date
+    df.drop(['month', 'day', 'hour', 'minute', 'second', 'date'], axis=1, inplace=True)
+    #  if date is earlier than start_time, increase one year
+    df.index = df.index + pd.Timedelta(days=365) * (df.index < start_time)
+    return df
+def sequence_time_to_pandas_time(dataframe, delta_t,start_time):
+    date = pd.date_range(start_time, periods=len(dataframe), freq='{}S'.format(delta_t))
+    date = pd.Series(date)
+    # update dataframe index
+    dataframe.index = date
+    return dataframe
 def bias_rmse_r2(df1, df2):
     '''
     df1 is measurement data, [date, sensible/latent]
@@ -119,17 +161,17 @@ def plot_comparison_measurement_simulated(df, txt_info):
     figure, ax = plt.subplots(figsize=(10,5))
 
     ax.plot(df.iloc[:,0], label='Measurement')
-    ax.plot(df.iloc[:,1], label= df.columns[1])
-    ax.plot(df.iloc[:,2], label= df.columns[2])
+    # ax.plot(df.iloc[:,1], label= df.columns[1])
+    # ax.plot(df.iloc[:,2], label= df.columns[2])
     ax.legend()
     # add  to the plot
     # add text below the plot, outside the plot
-    txt = f'Bias Mean(W m-2), RMSE(W m-2), R2(-)\n' \
-          f'{df.columns[1]}:{txt_info[1]}\n' \
-          f'{df.columns[2]}:{txt_info[2]}'
-    print(txt)
-    ax.text(0.5, 1, txt, transform=ax.transAxes, fontsize=6,
-        verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+    # txt = f'Bias Mean(W m-2), RMSE(W m-2), R2(-)\n' \
+    #       f'{df.columns[1]}:{txt_info[1]}\n' \
+    #       f'{df.columns[2]}:{txt_info[2]}'
+    # print(txt)
+    # ax.text(0.5, 1, txt, transform=ax.transAxes, fontsize=6,
+    #     verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
     ax.set_title(txt_info[0][0])
     # set x name, y name, and title
     ax.set_xlabel(txt_info[0][1])

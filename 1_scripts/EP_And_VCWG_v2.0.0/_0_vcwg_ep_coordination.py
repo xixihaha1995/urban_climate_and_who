@@ -5,6 +5,10 @@ from pyenergyplus.api import EnergyPlusAPI
 def init_ep_api():
     global ep_api
     ep_api = EnergyPlusAPI()
+
+def init_saving_data():
+    global saving_data
+    saving_data = []
 def init_semaphore_lock_settings():
     global sem_vcwg, sem_energyplus
     sem_vcwg = threading.Semaphore(0)

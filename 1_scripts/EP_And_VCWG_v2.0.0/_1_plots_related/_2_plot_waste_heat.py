@@ -1,42 +1,33 @@
 # read csv, then plot
-import pandas as pd
-import matplotlib.pyplot as plt
+import pandas as pd, matplotlib.pyplot as plt, _0_all_plot_tools as plt_tools
 
-def ep_time_to_pandas_time(dataframe, delta_t):
-    start_time = '2017-July-01 00:00:00'
-    date = pd.date_range(start_time, periods=len(dataframe), freq='{}S'.format(delta_t))
-    date = pd.Series(date)
-    # update dataframe index
-    dataframe.index = date
-    return dataframe
 
-# add header to df
 
-# read csv
-df = pd.read_csv('ASHRAE901_OfficeSmall_STD2019_Denver_5min.csv', header=0, index_col=0)
-df2 = pd.read_csv('ASHRAE901_OfficeSmall_STD2019_Denver_15min.csv', header=0, index_col=0)
-df5 = pd.read_csv('ASHRAE901_OfficeSmall_STD2019_Denver_1min.csv', header=0, index_col=0)
+results_folder = r'..\\_2_saved\\accumulated_confirmation'
+start_time = '2002-June-09 00:05:00'
 
-df4 = pd.read_csv('5ZoneAirCooled_eachcall.csv', header=0)
-df3 = pd.read_csv('5zone_ep_5min_vcwg_5min_waste_heat.csv', header=0)
-# add column names
+df_ep_only = pd.read_csv(results_folder + r'\\RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.csv')
+df_nested_ep_only = pd.read_csv(results_folder + r'\\records_df.csv')
 
-df = ep_time_to_pandas_time(df, 300)
-df2 = ep_time_to_pandas_time(df2, 900)
-df5 = ep_time_to_pandas_time(df5, 60)
-df4 = ep_time_to_pandas_time(df4, 300)
-df3 = ep_time_to_pandas_time(df3, 300)
+df_ep_only_timed = plt_tools.ep_time_to_pandas_time(df_ep_only,start_time)
+df_nested_ep_only_timed = plt_tools.sequence_time_to_pandas_time(df_nested_ep_only, 300, start_time)
+
+# according to the index of df_nested_ep_only_timed, select all the corresponding observations from df_ep_only_timed
+df_ep_only_timed_aligned = df_ep_only_timed.loc[df_nested_ep_only_timed.index]
+
+bias_rmse_r2 = plt_tools.bias_rmse_r2(df_ep_only_timed_aligned['SimHVAC:HVAC System Total Heat Rejection Energy [J](Each Call)'],
+                                      df_nested_ep_only_timed['coordination.ep_accumulated_waste_heat'])
 
 # plot
 fig, ax = plt.subplots()
-# ax.plot(df5.index, df5['SimHVAC:HVAC System Total Heat Rejection Energy [J](TimeStep) '], label='1 min Accumulated (1 min EP)')
-ax.plot(df4.index, df4['SimHVAC:HVAC System Total Heat Rejection Energy [J](Each Call)'], label='5 min Accumulated (5 min EP)')
-ax.plot(df3.index, df3['coordiantion.ep_accumulated_waste_heat'], label='5 min Accumulated (5 min EP+ 5 min VCWG)')
-# ax.plot(df2.index, df2['SimHVAC:HVAC System Total Heat Rejection Energy [J](TimeStep) '], label='15 min  EP')
-# ax.plot(df3[0], df3[1], label='15 min, EP+VCWG')
+ax.plot(df_nested_ep_only_timed.index, df_ep_only_timed_aligned['SimHVAC:HVAC System Total Heat Rejection Energy [J](Each Call)'],
+        label='5 min Accumulated (EP Software)')
+ax.plot(df_nested_ep_only_timed.index, df_nested_ep_only_timed['coordination.ep_accumulated_waste_heat'],
+        label='5 min Accumulated (EP Python-API)')
 ax.set(xlabel='Time [h]', ylabel='HVAC System Total Heat Rejection Energy [J]',
          title='Accumulated Waste Heat in different software (EP only, EP+VCWG)')
 ax.legend()
+plt.title(f'Bias, RMSE, R2: {bias_rmse_r2}')
 plt.show()
 
 
