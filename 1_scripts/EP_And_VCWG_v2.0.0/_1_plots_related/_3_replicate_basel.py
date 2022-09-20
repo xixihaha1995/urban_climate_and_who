@@ -5,7 +5,7 @@ sensor_height = 2.6
 building_height = 15
 start_time_with_spin_up = '2002-06-09 00:00:00'
 start_time = '2002-06-10 00:00:00'
-end_time = '2002-06-19 23:00:00'
+end_time = '2002-06-30 23:00:00'
 vcwg_output_time_interval_seconds = 3600
 
 # Read air temperature measurements
@@ -18,54 +18,59 @@ measurements_all_sites_hour = plt_tools.clean_bubble_iop(measurements_all_sites_
 measurements_hour_height = measurements_all_sites_hour.iloc[:,0]
 # select the time period
 measurements_hour_C = measurements_hour_height[start_time:end_time]
-
-potential_temp_profile_hours = plt_tools.read_text_as_csv(f'{results_folder}\\th_profilesreplicate_Basel_MOST.txt')
+# ORIGINAL_th_profilesBasel_MOST
+# th_profilesBasel_MOST
+potential_temp_profile_hours = plt_tools.read_text_as_csv(f'{results_folder}\\ORIGINAL_th_profilesBasel_MOST.txt')
 potential_temp_profile_hours_height_spin = plt_tools.certain_height_one_day(potential_temp_profile_hours, sensor_height)
 potential_temp_profile_hours_height_spin_date = plt_tools.add_date_index(potential_temp_profile_hours_height_spin,
                                                                     start_time_with_spin_up,
                                                                     vcwg_output_time_interval_seconds)
 potential_temp_profile_hours_height_K = potential_temp_profile_hours_height_spin_date.loc[start_time:end_time]
 
-potential_temp_profile_hours_build_avg_spin = plt_tools.average_temperature_below_height(potential_temp_profile_hours,
-                                                                                         building_height)
-potential_temp_profile_hours_build_avg_spin_date = plt_tools.add_date_index(potential_temp_profile_hours_build_avg_spin,
-                                                                    start_time_with_spin_up,
-                                                                    vcwg_output_time_interval_seconds)
-potential_temp_profile_hours_build_avg_K = potential_temp_profile_hours_build_avg_spin_date.loc[start_time:end_time]
-
 # read the real temperature profile time series from csv
-real_temp_profile_hours_T = pd.read_csv(f'{results_folder}\\th_real.csv', header=None, index_col=None)
-# transpose
-real_temp_profile_hours = real_temp_profile_hours_T.T
+dynamic_p0_real_temp_profile_timestep = pd.read_csv(f'{results_folder}\\th_real_dynamic_p0.csv', header=None, index_col=None)
+dynamic_p0_real_temp_profile_hours = plt_tools.time_interval_convertion(dynamic_p0_real_temp_profile_timestep,
+                                                             need_date=True,
+                                                             original_time_interval_min = 5,
+                                                             start_time = start_time_with_spin_up)
 #add height index from potential_profile_hours
-real_temp_profile_hours_height = real_temp_profile_hours.set_index(potential_temp_profile_hours.index)
+dynamic_p0_real_temp_profile_hours_all_height = dynamic_p0_real_temp_profile_hours.T
 #select height
-real_temp_profile_hours_height_spin = plt_tools.certain_height_one_day(real_temp_profile_hours_height, sensor_height)
+dynamic_p0_real_temp_profile_hours_height_spin = plt_tools.certain_height_one_day(
+    dynamic_p0_real_temp_profile_hours_all_height, sensor_height)
 # add date index
-real_temp_profile_hours_height_spin_date = plt_tools.add_date_index(real_temp_profile_hours_height_spin,
-                                                                    start_time_with_spin_up,
-                                                                    vcwg_output_time_interval_seconds)
-real_temp_profile_hours_height_avg = plt_tools.average_temperature_below_height(real_temp_profile_hours_height,
-                                                                                 building_height)
-real_temp_profile_hours_height_avg_date = plt_tools.add_date_index(real_temp_profile_hours_height_avg,
-                                                                    start_time_with_spin_up,
-                                                                    vcwg_output_time_interval_seconds)
-real_temp_profile_hours_build_avg_K = real_temp_profile_hours_height_avg_date.loc[start_time:end_time]
+dynamic_p0_real_temp_profile_hours_height_spin_date = plt_tools.add_date_index(
+    dynamic_p0_real_temp_profile_hours_height_spin,start_time_with_spin_up,vcwg_output_time_interval_seconds)
+dynamic_p0_real_temp_profile_hours_height_avg = plt_tools.average_temperature_below_height(
+    dynamic_p0_real_temp_profile_hours_all_height,building_height)
+dynamic_p0_real_temp_profile_hours_height_avg_date = plt_tools.add_date_index(
+    dynamic_p0_real_temp_profile_hours_height_avg,start_time_with_spin_up,vcwg_output_time_interval_seconds)
+dynamic_p0_real_temp_profile_hours_height_K = dynamic_p0_real_temp_profile_hours_height_spin_date.loc[start_time:end_time]
 
-# select time period
-real_temp_profile_hours_height_K = real_temp_profile_hours_height_spin_date.loc[start_time:end_time]
+constant_p0_real_temp_profile_timestep = pd.read_csv(f'{results_folder}\\th_real.csv',
+                                                     header=None, index_col=None)
+constant_p0_real_temp_profile_hours = plt_tools.time_interval_convertion(constant_p0_real_temp_profile_timestep,
+                                                                need_date=True,
+                                                                original_time_interval_min = 5,
+                                                                start_time = start_time_with_spin_up)
+#add height index from potential_profile_hours
+constant_p0_real_temp_profile_hours_all_height = constant_p0_real_temp_profile_hours.T
+#select height
+constant_p0_real_temp_profile_hours_height_spin = plt_tools.certain_height_one_day(
+    constant_p0_real_temp_profile_hours_all_height, sensor_height)
+# add date index
+constant_p0_real_temp_profile_hours_height_spin_date = plt_tools.add_date_index(
+    constant_p0_real_temp_profile_hours_height_spin,start_time_with_spin_up,vcwg_output_time_interval_seconds)
+# select the time period
+constant_p0_real_temp_profile_hours_height_K = constant_p0_real_temp_profile_hours_height_spin_date.loc[start_time:end_time]
 
 # K to C
+dynamic_p0_real_temp_profile_hours_height_C = dynamic_p0_real_temp_profile_hours_height_K - 273.15
+constant_p0_real_temp_profile_hours_height_C = constant_p0_real_temp_profile_hours_height_K - 273.15
 potential_temp_profile_hours_height_C = potential_temp_profile_hours_height_K - 273.15
-real_temp_profile_hours_height_C = real_temp_profile_hours_height_K - 273.15
-potential_temp_profile_hours_build_avg_C = potential_temp_profile_hours_build_avg_K - 273.15
-real_temp_profile_hours_build_avg_C = real_temp_profile_hours_build_avg_K - 273.15
 
-all_df_names = ['measurements_hour', 'potential_temp_profile_hours_height',
-                'real_temp_profile_hours_height', f'potential_temp_profile_hours_build_avg_{ building_height} m',
-                f'real_temp_profile_hours_build_avg_{ building_height} m']
-all_df = [measurements_hour_C, potential_temp_profile_hours_height_C,
-          real_temp_profile_hours_height_C, potential_temp_profile_hours_build_avg_C,real_temp_profile_hours_build_avg_C]
+all_df_names = ['measurements_hour', 'potential_temp_profile_hours_height','real_temp_profile_hours_height_constant_p0']
+all_df = [measurements_hour_C, potential_temp_profile_hours_height_C, constant_p0_real_temp_profile_hours_height_C]
 all_in_one_df = plt_tools.merge_multiple_df(all_df, all_df_names)
 
 # bias_rmse_r2_th_rep = plt_tools.bias_rmse_r2(all_in_one_df['measurements_hour'],
@@ -73,8 +78,7 @@ all_in_one_df = plt_tools.merge_multiple_df(all_df, all_df_names)
 # bias_rmse_r2_th_bypass = plt_tools.bias_rmse_r2(all_in_one_df['measurements_hour'],
 #                                             all_in_one_df['bypass_profile_hours_height'])
 case_txt = (f"Air Temperature at {sensor_height}m\n", "Date", "Temperature (K)")
-txt_info = [case_txt, "something"]
-plt_tools.plot_comparison_measurement_simulated(all_in_one_df,txt_info)
+plt_tools.general_time_series_comparision(all_in_one_df,case_txt)
 
 
 

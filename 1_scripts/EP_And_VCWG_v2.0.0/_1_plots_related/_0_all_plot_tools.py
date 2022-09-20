@@ -146,7 +146,8 @@ def data_cleaning(df):
     df = df.fillna(0)
     return df
 
-def time_interval_convertion(df, original_time_interval_min = 30 ):
+def time_interval_convertion(df, original_time_interval_min = 30, need_date = False,
+                             start_time = '2018-01-01 00:00:00'):
     '''
     Original data is 30 mins interval,
     Convert it to hourly data
@@ -159,7 +160,10 @@ def time_interval_convertion(df, original_time_interval_min = 30 ):
         df_new.loc[df.index[i]] = df.iloc[i:i+original_time_num:,].mean()
         # df_new.iloc[i,0] = df.iloc[i:i+2,0].mean()
     # floor index (YYYY-MM-DD HH:MM:SS) to (YYYY-MM-DD HH:00:00)
-    df_new.index = df_new.index.floor('H')
+    if not need_date:
+        df_new.index = df_new.index.floor('H')
+    else:
+        df_new = add_date_index(df_new, start_time, 3600)
     return df_new
 
 # plot the comparisons between Vancouver Sunset dataset versus simulated (VCWGv2.0.0, VCWG-Bypass)

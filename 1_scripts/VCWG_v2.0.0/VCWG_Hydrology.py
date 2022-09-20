@@ -617,7 +617,7 @@ class VCWG_Hydro(object):
                 print(pres_ref_0)
                 canTemp_real =np.array(self.UCM.VerticalProfUrban.th) *\
                                         (np.array(self.UCM.VerticalProfUrban.presProf)/pres_ref_0)**0.286
-                # _0_global_save.canTemp_NotPotential_Arr.append(canTemp_real)
+                _0_global_save.canTemp_NotPotential_Arr.append(canTemp_real)
 
                 self.BEM[i].building.BEMCalc(canTemp,canHum,self.BEM[i],MeteoData,ParCalculation,self.simTime,self.Geometry_m,
                                              self.FractionsRoof,self.EBCanyon.SWR)
