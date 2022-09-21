@@ -37,13 +37,14 @@ def _nested_ep_only(state):
             accu_hvac_heat_rejection_J = 0
             ep_last_accumulated_time_index_in_seconds = curr_sim_time_in_seconds
 def run_vcwg():
-    epwFileName = 'ERA5_Basel.epw'
+    epwFileName = 'Basel.epw'
     TopForcingFileName = None
-    VCWGParamFileName = 'replicate_Basel_MOST.uwg'
+    VCWGParamFileName = 'initialize_Basel_MOST.uwg'
     ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
     # Case name to append output file names with
     case = 'bypass_Basel_MOST'
 
+    # '''
 
     # epwFileName = 'TopForcing_year.epw'
     # TopForcingFileName = None
@@ -229,7 +230,7 @@ def _nested_ep_then_vcwg(state):
         coordination.sem_vcwg.acquire()
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
-
+        print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
         # Should always accumulate, since system time always advances
         accumulated_time_in_seconds = curr_sim_time_in_seconds - ep_last_call_time_seconds
         ep_last_call_time_seconds = curr_sim_time_in_seconds
@@ -240,8 +241,8 @@ def _nested_ep_then_vcwg(state):
         time_index_alignment_bool =  1 > abs(curr_sim_time_in_seconds - coordination.vcwg_needed_time_idx_in_seconds)
 
         if not time_index_alignment_bool:
-            print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
-            print("EP: vcwg_needed_time_idx_in_seconds: ", coordination.vcwg_needed_time_idx_in_seconds)
+            # print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
+            # print("EP: vcwg_needed_time_idx_in_seconds: ", coordination.vcwg_needed_time_idx_in_seconds)
             coordination.sem_vcwg.release()
             return
 

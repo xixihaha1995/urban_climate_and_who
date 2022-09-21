@@ -758,6 +758,8 @@ class VCWG_Hydro(object):
         Write_TdeepProfiles("Tdeep_bare",self.FractionsGround,3,self.GroundBareData,self.GroundBareData[0].z_depth[1:],self.time,self.case,Output_dir)
 
         # Generate output text file for Qn profile
+        Write_1Dprofiles("presProf", self.UCMData, 'VerticalProfUrban', 'presProf', self.Geometry_m.z, self.time, self.case,
+                         Output_dir)
         Write_1Dprofiles("Qn",self.UCMData,'VerticalProfUrban','qn',self.Geometry_m.z,self.time,self.case,Output_dir)
         # Generate output text file for tke profile
         Write_1Dprofiles("TKE",self.UCMData,'VerticalProfUrban','tke',self.Geometry_m.z,self.time,self.case,Output_dir)
