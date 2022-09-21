@@ -31,6 +31,7 @@ potential_temp_profile_hours_height_spin_date = plt_tools.add_date_index(potenti
                                                                     vcwg_output_time_interval_seconds)
 potential_temp_profile_hours_height_K = potential_temp_profile_hours_height_spin_date.loc[start_time:end_time]
 
+
 # Real temperature, T = Potential temperature * (presProf / p0) ** (0.286)
 # read the pressure profile
 presProf_hour = plt_tools.read_text_as_csv(f'{results_folder}\\presProf_profilesv132_Basel_MOST.txt')
@@ -55,16 +56,24 @@ v132_trural_profile_hours_height_spin_date = plt_tools.add_date_index(v132_trura
                                                                     vcwg_output_time_interval_seconds)
 v132_trural_profile_hours_height_K = v132_trural_profile_hours_height_spin_date.loc[start_time:end_time]
 
+#v132_epw
+v132_epw_hours = plt_tools.read_text_as_csv(f'{results_folder}\\v132_Tepw_hourly.txt')
+v132_epw_hours_date = plt_tools.add_date_index(v132_epw_hours, v132_start_timewith_spin_up,
+                                               vcwg_output_time_interval_seconds)
+v132_epw_hours_K = v132_epw_hours_date.loc[start_time:end_time]
+
 # K to C
 potential_temp_profile_hours_height_C = potential_temp_profile_hours_height_K - 273.15
 real_temp_profile_hours_height_C = real_temp_profile_hours_height_K - 273.15
 v132_turban_profile_hours_height_C = v132_turban_profile_hours_height_K - 273.15
 v132_trural_profile_hours_height_C = v132_trural_profile_hours_height_K - 273.15
+v132_epw_hours_C = v132_epw_hours_K - 273.15
+
 
 all_df_names = ['measurements_hour', '(v132_Basel_BUBBLE.epw)potential_temp','(v132_Basel_BUBBLE.epw)real_temp',
-                'v132_turban_potential_temp','v132_trural_potential_temp']
+                'v132_turban_potential_temp','v132_trural_potential_temp','v132_epw_temp']
 all_df = [measurements_hour_C, potential_temp_profile_hours_height_C, real_temp_profile_hours_height_C,
-            v132_turban_profile_hours_height_C, v132_trural_profile_hours_height_C]
+            v132_turban_profile_hours_height_C, v132_trural_profile_hours_height_C, v132_epw_hours_C]
 all_in_one_df = plt_tools.merge_multiple_df(all_df, all_df_names)
 
 case_txt = (f"Air Temperature at {sensor_height}m\n", "Date", "Temperature (K)")
