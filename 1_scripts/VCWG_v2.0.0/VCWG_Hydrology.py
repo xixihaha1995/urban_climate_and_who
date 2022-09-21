@@ -613,11 +613,11 @@ class VCWG_Hydro(object):
                 # Calculate one-point temperature and humidity in the canyon: Using 1-D profiles in the canyon
                 canTemp = numpy.mean(self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u])
                 canHum = numpy.mean(self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u])
-                pres_ref_0 = self.MeteoDataRaw_intp.pressure_atm[0]
-                print(pres_ref_0)
-                canTemp_real =np.array(self.UCM.VerticalProfUrban.th) *\
-                                        (np.array(self.UCM.VerticalProfUrban.presProf)/pres_ref_0)**0.286
-                _0_global_save.canTemp_NotPotential_Arr.append(canTemp_real)
+                # pres_ref_0 = self.MeteoDataRaw_intp.pressure_atm[0]
+                # print(pres_ref_0)
+                # canTemp_real =np.array(self.UCM.VerticalProfUrban.th) *\
+                #                         (np.array(self.UCM.VerticalProfUrban.presProf)/pres_ref_0)**0.286
+                # _0_global_save.canTemp_NotPotential_Arr.append(canTemp_real)
 
                 self.BEM[i].building.BEMCalc(canTemp,canHum,self.BEM[i],MeteoData,ParCalculation,self.simTime,self.Geometry_m,
                                              self.FractionsRoof,self.EBCanyon.SWR)
@@ -729,9 +729,9 @@ class VCWG_Hydro(object):
 
         Output_dir =  "Results"
 
-        # save canTemp_NotPotential array to a csv, named as th_not_potential.csv
-        np.savetxt(os.path.join(Output_dir, "th_real.csv"),
-                   _0_global_save.canTemp_NotPotential_Arr, delimiter=",")
+        # # save canTemp_NotPotential array to a csv, named as th_not_potential.csv
+        # np.savetxt(os.path.join(Output_dir, "th_real.csv"),
+        #            _0_global_save.canTemp_NotPotential_Arr, delimiter=",")
 
         Write_Forcing(self.case,self.ForcingData,self.time,Output_dir)
 
@@ -754,6 +754,8 @@ class VCWG_Hydro(object):
         Write_TdeepProfiles("Tdeep_bare",self.FractionsGround,3,self.GroundBareData,self.GroundBareData[0].z_depth[1:],self.time,self.case,Output_dir)
 
         # Generate output text file for Qn profile
+        Write_1Dprofiles("presProf", self.UCMData, 'VerticalProfUrban', 'presProf', self.Geometry_m.z, self.time, self.case,
+                         Output_dir)
         Write_1Dprofiles("Qn",self.UCMData,'VerticalProfUrban','qn',self.Geometry_m.z,self.time,self.case,Output_dir)
         # Generate output text file for tke profile
         Write_1Dprofiles("TKE",self.UCMData,'VerticalProfUrban','tke',self.Geometry_m.z,self.time,self.case,Output_dir)
