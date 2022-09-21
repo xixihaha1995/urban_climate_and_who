@@ -21,7 +21,8 @@ measurements_hour_height = measurements_all_sites_hour.iloc[:,0]
 measurements_hour_C = measurements_hour_height[start_time:end_time]
 # ORIGINAL_th_profilesBasel_MOST
 # th_profilesBasel_MOST
-potential_temp_profile_hours = plt_tools.read_text_as_csv(f'{results_folder}\\ORIGINAL_th_profilesBasel_MOST.txt')
+# BaselEPW_th_profilesBasel_MOST
+potential_temp_profile_hours = plt_tools.read_text_as_csv(f'{results_folder}\\BaselEPW_th_profilesBasel_MOST.txt')
 potential_temp_profile_hours_height_spin = plt_tools.certain_height_one_day(potential_temp_profile_hours, sensor_height)
 potential_temp_profile_hours_height_spin_date = plt_tools.add_date_index(potential_temp_profile_hours_height_spin,
                                                                     start_time_with_spin_up,
@@ -56,11 +57,11 @@ dynamic_p0_real_temp_profile_hours_height_avg_date = plt_tools.add_date_index(
     dynamic_p0_real_temp_profile_hours_height_avg,start_time_with_spin_up,vcwg_output_time_interval_seconds)
 dynamic_p0_real_temp_profile_hours_height_K = dynamic_p0_real_temp_profile_hours_height_spin_date.loc[start_time:end_time]
 
-constant_p0_real_temp_profile_timestep = pd.read_csv(f'{results_folder}\\th_real.csv',
+constant_p0_real_temp_profile_timestep = pd.read_csv(f'{results_folder}\\BaselEPW_th_real.csv',
                                                      header=None, index_col=None)
 constant_p0_real_temp_profile_hours = plt_tools.time_interval_convertion(constant_p0_real_temp_profile_timestep,
                                                                 need_date=True,
-                                                                original_time_interval_min = 5,
+                                                                original_time_interval_min = 1,
                                                                 start_time = start_time_with_spin_up)
 #add height index from potential_profile_hours
 constant_p0_real_temp_profile_hours_all_height = constant_p0_real_temp_profile_hours.T
@@ -79,8 +80,8 @@ constant_p0_real_temp_profile_hours_height_C = constant_p0_real_temp_profile_hou
 potential_temp_profile_hours_height_C = potential_temp_profile_hours_height_K - 273.15
 v132_turban_profile_hours_height_C = v132_turban_profile_hours_height_K - 273.15
 
-all_df_names = ['measurements_hour', 'v200_potential_temp','v200_real_temp',
-                'v132_potential_temp']
+all_df_names = ['measurements_hour', '(Basel.epw)v200_potential_temp','(Basel.epw)v200_real_temp',
+                '(Basel_BUBBLE.epw)v132_potential_temp']
 all_df = [measurements_hour_C, potential_temp_profile_hours_height_C, constant_p0_real_temp_profile_hours_height_C,
             v132_turban_profile_hours_height_C]
 all_in_one_df = plt_tools.merge_multiple_df(all_df, all_df_names)
