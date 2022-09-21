@@ -44,7 +44,7 @@ def sequence_time_to_pandas_time(dataframe, delta_t,start_time):
     # update dataframe index
     dataframe.index = date
     return dataframe
-def bias_rmse_r2(df1, df2):
+def bias_rmse_r2(df1, df2, df2_name):
     '''
     df1 is measurement data, [date, sensible/latent]
     df2 is simulated data, [date, sensible/latent]
@@ -53,8 +53,9 @@ def bias_rmse_r2(df1, df2):
     rmse = np.sqrt(np.mean(np.square(bias)))
     r2 = 1 - np.sum(np.square(bias)) / np.sum(np.square(df1 - np.mean(df1)))
     bias_mean = np.mean(abs(bias))
+    # df2 name
     # return number with 2 decimal places
-    return round(bias_mean,2), round(rmse,2), round(r2,2)
+    return df2_name, round(bias_mean,2), round(rmse,2), round(r2,2)
 
 def read_text_as_csv(file_path, header=None, index_col=0, skiprows=3):
     '''
@@ -198,10 +199,19 @@ def general_time_series_comparision(df, txt_info):
     for i in range(0, len(df.columns)):
         ax.plot(df.iloc[:,i], label= df.columns[i])
     ax.legend()
-    ax.set_title(txt_info[0])
+    # from 1 iteraterat through all columns, make a txt for error info
+    txt = f'Bias Mean(W m-2), RMSE(W m-2), R2(-)'
+    for i in range(1, len(df.columns)):
+        txt += f'\n{txt_info[i]}'
+    print(txt)
+    ax.text(0.5, 1, txt, transform=ax.transAxes, fontsize=6,
+        verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+    # lim
+    ax.set_ylim(10, 40)
+    ax.set_title(txt_info[0][0])
     # set x name, y name, and title
-    ax.set_xlabel(txt_info[1])
-    ax.set_ylabel(txt_info[2])
+    ax.set_xlabel(txt_info[0][1])
+    ax.set_ylabel(txt_info[0][2])
     plt.show()
 
 def add_date_index(df, start_date, time_interval):

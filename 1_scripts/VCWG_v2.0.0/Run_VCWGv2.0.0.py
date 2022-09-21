@@ -15,7 +15,7 @@ TopForcingFileName = None
 VCWGParamFileName = 'initialize_Basel_MOST.uwg'
 ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
 # Case name to append output file names with
-case = 'v132_Basel_MOST'
+case = '_v132_BaselEPW_Basel_MOST'
 # '''
 
 # epwFileName = 'ERA5_Basel.epw'
