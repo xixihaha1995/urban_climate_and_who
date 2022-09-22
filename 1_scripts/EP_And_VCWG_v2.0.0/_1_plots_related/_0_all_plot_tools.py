@@ -38,6 +38,31 @@ def ep_time_to_pandas_time(df, start_time):
     #  if date is earlier than start_time, increase one year
     df.index = df.index + pd.Timedelta(days=365) * (df.index < start_time)
     return df
+
+def clean_epw(df, start_time):
+    '''
+    df 0th column is year,
+    df 1st column is month,
+    df 2nd column is day,
+    df 3rd column is hour, range from 1 to 24, make it to 0 to 23
+    df 4th column is minute, always 60
+    '''
+    # convert hour to 0 to 23
+    df.iloc[:, 3] = df.iloc[:, 3] - 1
+    # convert columns year, month, day, hour, all of them is numpy.int64
+    # convert to pandas time
+    # combine the 4 columns to one string column, in format of 'year-month-day hour:00:00'
+    df['string_combined'] = df.iloc[:, 0].astype(str) + '-' + df.iloc[:, 1].astype(str) + '-' \
+                            + df.iloc[:, 2].astype(str) + ' ' + df.iloc[:, 3].astype(str) + ':00:00'
+    # convert to pandas time
+    df['date'] = pd.to_datetime(df['string_combined'])
+    # update dataframe index
+    df.index = df['date']
+    df.drop(['date', 'string_combined'], axis=1, inplace=True)
+    #  overwrite the index year as start_time year
+    start_time_year = start_time[:4]
+    df.index = df.index.strftime('%Y-%m-%d %H:%M:%S').str.replace('2012', start_time_year)
+    return df
 def sequence_time_to_pandas_time(dataframe, delta_t,start_time):
     date = pd.date_range(start_time, periods=len(dataframe), freq='{}S'.format(delta_t))
     date = pd.Series(date)
@@ -52,7 +77,8 @@ def bias_rmse_r2(df1, df2, df2_name):
     bias = df1 - df2
     rmse = np.sqrt(np.mean(np.square(bias)))
     r2 = 1 - np.sum(np.square(bias)) / np.sum(np.square(df1 - np.mean(df1)))
-    bias_mean = np.mean(abs(bias))
+    # bias_mean = np.mean(abs(bias))
+    bias_mean = np.mean(bias)
     # df2 name
     # return number with 2 decimal places
     return df2_name, round(bias_mean,2), round(rmse,2), round(r2,2)
@@ -66,7 +92,7 @@ def read_text_as_csv(file_path, header=None, index_col=0, skiprows=3):
     # df.set_index(df.iloc[:,0], inplace=True)
     return df
 
-def clean_bubble_iop(df):
+def clean_bubble_iop(df, start_time='2018-01-01 00:00:00', end_time='2018-12-31 23:59:59'):
     # current index format is DD.MM.YYYY
     df.index = pd.to_datetime(df.index, format='%d.%m.%Y')
     # index format is YYYY-MM-DD HH:MM:SS
@@ -74,10 +100,11 @@ def clean_bubble_iop(df):
     df.index = pd.to_datetime(df.index.strftime('%Y-%m-%d') + ' ' + df.iloc[:,0].str[:5])
     # drop the 0th column, according to the index instead of column name
     df.drop(df.columns[0], axis=1, inplace=True)
-    # 0 to 5 column is number with comma, convert them to number
-    df.iloc[:, 0:5] = df.iloc[:, 0:5].apply(lambda x: x.str.replace(',', '')).astype(float)
+    # except the last column, all columns are number with comma, convert them to number
+    df.iloc[:, :-1] = df.iloc[:, :-1].apply(lambda x: x.str.replace(',', '')).astype(float)
+    df = df[start_time:end_time]
     # convert 10 min interval to 1 hour interval
-    df = time_interval_convertion(df, original_time_interval_min=10)
+    df = time_interval_convertion(df, original_time_interval_min=10, start_time=start_time)
     return df
 
 
@@ -197,14 +224,22 @@ def general_time_series_comparision(df, txt_info):
     # df has many columns, itearte to plot each column
     figure, ax = plt.subplots(figsize=(10, 5))
     for i in range(0, len(df.columns)):
-        ax.plot(df.iloc[:,i], label= df.columns[i])
+        if 'Urban' in df.columns[i]:
+            ax.plot(df.iloc[:,i], label= df.columns[i], color='black', linestyle='--')
+        elif 'Rural' in df.columns[i]:
+            ax.plot(df.iloc[:,i], label= df.columns[i], color='black', linestyle=':')
+        else:
+            ax.plot(df.iloc[:,i], label= df.columns[i])
     ax.legend()
     # from 1 iteraterat through all columns, make a txt for error info
-    txt = f'Bias Mean(W m-2), RMSE(W m-2), R2(-)'
-    for i in range(1, len(df.columns)):
+    txt = f'Bias Mean(K), RMSE(K), R2(-)'
+    txt += '\nMaximum Daily UHI effect: 5.2 K'
+    txt +='\nUWG Monthly MBE: -0.6, RMSE: 0.9'
+    txt +='\nVCWGv2.0.0 MBE: -0.53, RMSE: 0.56, R2: 0.98'
+    for i in range(1, len(txt_info)):
         txt += f'\n{txt_info[i]}'
     print(txt)
-    ax.text(0.5, 1, txt, transform=ax.transAxes, fontsize=6,
+    ax.text(0.1, 0.9, txt, transform=ax.transAxes, fontsize=10,
         verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
     # lim
     ax.set_ylim(10, 40)

@@ -1,150 +1,60 @@
 import _0_all_plot_tools as plt_tools
 import pandas as pd
-results_folder = r'..\_2_saved\vcwg_epw_confirmation'
-p0 = 98320
-sensor_height = 3.5
-v132_urban_sensor_height = 7
-building_height = 15
-start_time_with_spin_up = '2002-06-14 00:00:00'
-v132_start_timewith_spin_up = '2002-06-15 00:00:00'
-start_time = '2002-06-15 00:00:00'
-end_time = '2002-06-27 23:00:00'
-vcwg_output_time_interval_seconds = 3600
-
+results_folder = r'..\_2_saved\BUBBLE_which_epw'
+start_time = '2002-06-10 01:00:00'
+IOP_end_time = '2002-07-09 22:50:00'
+end_time = '2002-07-09 22:00:00'
+ue1_col_idx = 0
+re1_col_idx = 7
 # Read air temperature measurements
-measurements_all_sites_10min_dirty = plt_tools.read_text_as_csv(f'{results_folder}\\BUBBLE_BSPR_AT_PROFILE_IOP.txt',
+urban_all_sites_10min_dirty = plt_tools.read_text_as_csv(f'{results_folder}\\BUBBLE_BSPR_AT_PROFILE_IOP.txt',
                                                           header=0, index_col=0, skiprows=16)
 # clean the measurements
-measurements_all_sites_hour = plt_tools.clean_bubble_iop(measurements_all_sites_10min_dirty)
+urban_all_sites_hour = plt_tools.clean_bubble_iop(urban_all_sites_10min_dirty,
+                                                  start_time = start_time, end_time = IOP_end_time)
 # select the 0th column as the comparison data
-measurements_hour_height = measurements_all_sites_hour.iloc[:,0]
-# select the time period
-measurements_hour_C = measurements_hour_height[start_time:end_time]
+urban_2p6_hour_c = urban_all_sites_hour.iloc[:,ue1_col_idx]
 
-# ORIGINAL_th_profilesBasel_MOST
-# th_profilesBasel_MOST
-# BaselEPW_th_profilesBasel_MOST
-potential_temp_profile_hours = plt_tools.read_text_as_csv(f'{results_folder}\\th_profiles_v132_BaselEPW_Basel_MOST.txt')
-potential_temp_profile_hours_height_spin = plt_tools.certain_height_one_day(potential_temp_profile_hours,
-                                                                                      sensor_height)
-potential_temp_profile_hours_height_spin_date = plt_tools.add_date_index(potential_temp_profile_hours_height_spin,
-                                                                    start_time_with_spin_up,
-                                                                    vcwg_output_time_interval_seconds)
-potential_temp_profile_hours_height_K = potential_temp_profile_hours_height_spin_date.loc[start_time:end_time]
+mixed_all_sites_10min_dirty = plt_tools.read_text_as_csv(f'{results_folder}\\BUBBLE_AT_IOP.txt',
+                                                            header=0, index_col=0, skiprows=25)
+# clean the measurements
+mixed_all_sites_hour = plt_tools.clean_bubble_iop(mixed_all_sites_10min_dirty,
+                                                    start_time = start_time, end_time = IOP_end_time)
+# Keep original index, only select one column and keep the column name
+rural_1p5_hour_c = mixed_all_sites_hour.iloc[:,re1_col_idx]
 
-# Real temperature, T = Potential temperature * (presProf / p0) ** (0.286)
-# read the pressure profile
-presProf_hour = plt_tools.read_text_as_csv(f'{results_folder}\\presProf_profiles_v132_BaselEPW_Basel_MOST.txt')
-presProf_hour_height_spin = plt_tools.certain_height_one_day(presProf_hour, sensor_height)
-presProf_hour_height_spin_date = plt_tools.add_date_index(presProf_hour_height_spin, start_time_with_spin_up,
-                                                          vcwg_output_time_interval_seconds)
-presProf_hour_height = presProf_hour_height_spin_date.loc[start_time:end_time]
-real_temp_profile_hours_height_K = potential_temp_profile_hours_height_K * (presProf_hour_height / p0) ** (0.286)
+#read general txt based file as dataframe
+v200_Basel_epw_all_dirty = pd.read_csv( f'{results_folder}\\v200_Basel.epw',
+                                 skiprows= 8, header= None, index_col=None,)
+v200_Basel_epw_all_clean = plt_tools.clean_epw(v200_Basel_epw_all_dirty,
+                                               start_time = start_time)
+v200_Basel_epw_air_temp_all = v200_Basel_epw_all_clean.iloc[:,6]
+v200_Basel_epw_air_temp = v200_Basel_epw_air_temp_all[start_time:end_time]
 
-bypass_th_profile_hours = plt_tools.read_text_as_csv(f'{results_folder}\\th_profilesbypass_Basel_MOST.txt')
-bypass_th_profile_hours_height_spin = plt_tools.certain_height_one_day(bypass_th_profile_hours, sensor_height)
-bypass_th_profile_hours_height_spin_date = plt_tools.add_date_index(bypass_th_profile_hours_height_spin,
-                                                                     start_time_with_spin_up,
-                                                                    vcwg_output_time_interval_seconds)
-bypass_th_profile_hours_height_K = bypass_th_profile_hours_height_spin_date.loc[start_time:end_time]
+v200_ERA5_Basel_epw_all_dirty = pd.read_csv( f'{results_folder}\\v200_ERA5_Basel.epw',
+                                    skiprows= 8, header= None, index_col=None,)
+v200_ERA5_Basel_epw_all_clean = plt_tools.clean_epw(v200_ERA5_Basel_epw_all_dirty,
+                                                    start_time = start_time)
+v200_ERA5_Basel_epw_air_temp_all = v200_ERA5_Basel_epw_all_clean.iloc[:,6]
+v200_ERA5_Basel_epw_air_temp = v200_ERA5_Basel_epw_air_temp_all[start_time:end_time]
 
-# Real temperature, T = Potential temperature * (presProf / p0) ** (0.286)
-# read the pressure profile
-bypass_presProf_hour = plt_tools.read_text_as_csv(f'{results_folder}\\presProf_profilesbypass_Basel_MOST.txt')
-bypass_presProf_hour_height_spin = plt_tools.certain_height_one_day(bypass_presProf_hour, sensor_height)
-bypass_presProf_hour_height_spin_date = plt_tools.add_date_index(bypass_presProf_hour_height_spin, start_time_with_spin_up,
-                                                            vcwg_output_time_interval_seconds)
-bypass_presProf_hour_height = bypass_presProf_hour_height_spin_date.loc[start_time:end_time]
-bypass_real_temp_profile_hours_height_K = bypass_th_profile_hours_height_K * (bypass_presProf_hour_height / p0) ** (0.286)
+v132_Basel_BUBBLE_epw_all_dirty = pd.read_csv( f'{results_folder}\\v132_Basel_BUBBLE.epw',
+                                    skiprows= 8, header= None, index_col=None,)
+v132_Basel_BUBBLE_epw_all_clean = plt_tools.clean_epw(v132_Basel_BUBBLE_epw_all_dirty,
+                                                    start_time = start_time)
+v132_Basel_BUBBLE_epw_air_temp_all = v132_Basel_BUBBLE_epw_all_clean.iloc[:,6]
+v132_Basel_BUBBLE_epw_air_temp = v132_Basel_BUBBLE_epw_air_temp_all[start_time:end_time]
 
-v200_BaselEPW_th_profile_hours = plt_tools.read_text_as_csv(f'{results_folder}\\th_profiles_v200_BaselEPW_Basel_MOST.txt')
-v200_BaselEPW_th_profile_hours_height_spin = plt_tools.certain_height_one_day(v200_BaselEPW_th_profile_hours, sensor_height)
-v200_BaselEPW_th_profile_hours_height_spin_date = plt_tools.add_date_index(v200_BaselEPW_th_profile_hours_height_spin,
-                                                                    start_time_with_spin_up,
-                                                                    vcwg_output_time_interval_seconds)
-v200_BaselEPW_th_profile_hours_height_K = v200_BaselEPW_th_profile_hours_height_spin_date.loc[start_time:end_time]
 
-v200_BaselEPW_presProf_hour = plt_tools.read_text_as_csv(f'{results_folder}\\presProf_profiles_v200_BaselEPW_Basel_MOST.txt')
-v200_BaselEPW_presProf_hour_height_spin = plt_tools.certain_height_one_day(v200_BaselEPW_presProf_hour, sensor_height)
-v200_BaselEPW_presProf_hour_height_spin_date = plt_tools.add_date_index(v200_BaselEPW_presProf_hour_height_spin,
-                                                                    start_time_with_spin_up,
-                                                                    vcwg_output_time_interval_seconds)
-v200_BaselEPW_presProf_hour_height = v200_BaselEPW_presProf_hour_height_spin_date.loc[start_time:end_time]
-v200_BaselEPW_real_temp_profile_hours_height_K = v200_BaselEPW_th_profile_hours_height_K * \
-                                                 (v200_BaselEPW_presProf_hour_height / p0) ** (0.286)
+#column name is original column name
 
-v200_ERA5_JunEpw_th_profile_hours = plt_tools.read_text_as_csv(f'{results_folder}\\ORIGINAL_th_profilesBasel_MOST.txt')
-v200_ERA5_JunEpw_th_profile_hours_height_spin = plt_tools.certain_height_one_day(v200_ERA5_JunEpw_th_profile_hours, sensor_height)
-v200_ERA5_JunEpw_th_profile_hours_height_spin_date = plt_tools.add_date_index(v200_ERA5_JunEpw_th_profile_hours_height_spin,
-                                                                    start_time_with_spin_up,
-                                                                    vcwg_output_time_interval_seconds)
-v200_ERA5_JunEpw_th_profile_hours_height_K = v200_ERA5_JunEpw_th_profile_hours_height_spin_date.loc[start_time:end_time]
+all_df_names = ['urban_2p6_hour_c', 'rural_1p5_hour_c', 'v200_Basel_epw_air_temp',]
+all_df_lst = [urban_2p6_hour_c, rural_1p5_hour_c, v200_Basel_epw_air_temp]
+all_in_one_df = plt_tools.merge_multiple_df(all_df_lst,all_df_names)
 
-#v132_tUrban_Basel_MOST
-v132_turban_profile_hours = plt_tools.read_text_as_csv(f'{results_folder}\\v132_Tu_profiles_hourly.txt')
-v132_turban_profile_hours_height_spin = plt_tools.certain_height_one_day(v132_turban_profile_hours, v132_urban_sensor_height)
-v132_turban_profile_hours_height_spin_date = plt_tools.add_date_index(v132_turban_profile_hours_height_spin,
-                                                                    v132_start_timewith_spin_up,
-                                                                    vcwg_output_time_interval_seconds)
-v132_turban_profile_hours_height_K = v132_turban_profile_hours_height_spin_date.loc[start_time:end_time]
-#v132_tRural_Basel_MOST
-v132_trural_profile_hours = plt_tools.read_text_as_csv(f'{results_folder}\\v132_Tr_profiles_hourly.txt')
-v132_trural_profile_hours_height_spin = plt_tools.certain_height_one_day(v132_trural_profile_hours, sensor_height)
-v132_trural_profile_hours_height_spin_date = plt_tools.add_date_index(v132_trural_profile_hours_height_spin,
-                                                                    v132_start_timewith_spin_up,
-                                                                    vcwg_output_time_interval_seconds)
-v132_trural_profile_hours_height_K = v132_trural_profile_hours_height_spin_date.loc[start_time:end_time]
-
-#v132_epw
-v132_epw_hours = plt_tools.read_text_as_csv(f'{results_folder}\\v132_Tepw_hourly.txt')
-v132_epw_hours_date = plt_tools.add_date_index(v132_epw_hours, v132_start_timewith_spin_up,
-                                               vcwg_output_time_interval_seconds)
-v132_epw_hours_K = v132_epw_hours_date.loc[start_time:end_time]
-
-# K to C
-potential_temp_profile_hours_height_C = potential_temp_profile_hours_height_K - 273.15
-real_temp_profile_hours_height_C = real_temp_profile_hours_height_K - 273.15
-v200_BaselEPW_real_temp_profile_hours_height_C = v200_BaselEPW_real_temp_profile_hours_height_K - 273.15
-v200_ERA5_JunEpw_th_profile_hours_height_C = v200_ERA5_JunEpw_th_profile_hours_height_K - 273.15
-bypass_th_profile_hours_height_C = bypass_th_profile_hours_height_K - 273.15
-bypass_real_temp_profile_hours_height_C = bypass_real_temp_profile_hours_height_K - 273.15
-
-v132_turban_profile_hours_height_C = v132_turban_profile_hours_height_K - 273.15
-v132_trural_profile_hours_height_C = v132_trural_profile_hours_height_K - 273.15
-v200_BaselEPW_th_profile_hours_height_C = v200_BaselEPW_th_profile_hours_height_K - 273.15
-
-v132_epw_hours_C = v132_epw_hours_K - 273.15
-
-all_df_names = ['measurements_hour',
-                'v200_BaselEPW_th_profile_hours_height_C', 'v200_BaselEPW_real_temp_profile_hours_height_C',
-                'by_pass_th_profile_hours_height_C', 'by_pass_real_temp_profile_hours_height_C',
-                'v132_turban_potential_temp']
-all_df = [measurements_hour_C,
-          v200_BaselEPW_th_profile_hours_height_C, v200_BaselEPW_real_temp_profile_hours_height_C,
-            bypass_th_profile_hours_height_C, bypass_real_temp_profile_hours_height_C,
-          v132_turban_profile_hours_height_C]
-all_in_one_df = plt_tools.merge_multiple_df(all_df, all_df_names)
-
-mbe_rmse_r2_v200_BaselEPW_th = plt_tools.bias_rmse_r2(all_in_one_df['measurements_hour'],
-                                                        all_in_one_df['v200_BaselEPW_th_profile_hours_height_C'],
-                                                        'v200_BaselEPW_th_profile_hours_height_C')
-mbe_rmse_r2_v200_BaselEPW_real = plt_tools.bias_rmse_r2(all_in_one_df['measurements_hour'],
-                                                        all_in_one_df['v200_BaselEPW_real_temp_profile_hours_height_C'],
-                                                        'v200_BaselEPW_real_temp_profile_hours_height_C')
-mbe_rmse_r2_bypass_th = plt_tools.bias_rmse_r2(all_in_one_df['measurements_hour'],
-                                                all_in_one_df['by_pass_th_profile_hours_height_C'],
-                                                'by_pass_th_profile_hours_height_C')
-mbe_rmse_r2_bypass_real = plt_tools.bias_rmse_r2(all_in_one_df['measurements_hour'],
-                                                all_in_one_df['by_pass_real_temp_profile_hours_height_C'],
-                                                'by_pass_real_temp_profile_hours_height_C')
-mbe_rmse_r2_turban = plt_tools.bias_rmse_r2(all_in_one_df['measurements_hour'],
-                                            all_in_one_df['v132_turban_potential_temp'],
-                                            'v132_turban_potential_temp')
-case_txt = (f"Air Temperature at {sensor_height}m\n", "Date", "Temperature (C)")
-txt_info = [case_txt,
-            mbe_rmse_r2_v200_BaselEPW_th, mbe_rmse_r2_v200_BaselEPW_real,
-            mbe_rmse_r2_bypass_th, mbe_rmse_r2_bypass_real, mbe_rmse_r2_turban]
-plt_tools.general_time_series_comparision(all_in_one_df,txt_info)
+cast_txt = ("Hourly air temperature for Urban Canyon (2.6m) and Rural Site (1.5m)", "Date", "Temperature (C)")
+txt_info = [cast_txt]
+plt_tools.general_time_series_comparision(all_in_one_df, txt_info)
 
 
 
