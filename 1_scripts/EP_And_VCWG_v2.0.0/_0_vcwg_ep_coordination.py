@@ -1,14 +1,10 @@
-
 import threading, sys
+import numpy as np
 sys.path.insert(0, 'C:\EnergyPlusV22-1-0')
 from pyenergyplus.api import EnergyPlusAPI
 def init_ep_api():
     global ep_api
     ep_api = EnergyPlusAPI()
-
-def init_saving_data():
-    global saving_data
-    saving_data = []
 def init_semaphore_lock_settings():
     global sem_vcwg, sem_energyplus
     sem_vcwg = threading.Semaphore(0)
@@ -43,7 +39,15 @@ def init_variables_for_vcwg_ep():
     ep_wall_Text_K = 300
     ep_wall_Tint_K = 300
 
-def BEMCalc_Element(canTemp,canHum, BEM, it, simTime, MeteoData,FractionsRoof, Geometry_m):
+def init_saving_data():
+    global saving_data
+    saving_data = {}
+    saving_data['canTempProfile_K'] = []
+    saving_data['canSpecHumProfile_Ratio'] = []
+    saving_data['canPressProfile_Pa'] = []
+    saving_data['aveaged_temp_k_specHum_ratio_press_pa'] = []
+
+def BEMCalc_Element(canTempProf_cur,canHumProf_cur, canPresProf_cur,BEM, it, simTime, FractionsRoof, Geometry_m):
     """
     type(self.BEM[i])
     <class 'BEMDef.BEMDef'>
@@ -56,17 +60,28 @@ def BEMCalc_Element(canTemp,canHum, BEM, it, simTime, MeteoData,FractionsRoof, G
         ep_indoorTemp_C, ep_indoorHum_Ratio, ep_sensCoolDemand_w_m2, ep_sensHeatDemand_w_m2, ep_coolConsump_w_m2, ep_heatConsump_w_m2,\
         ep_elecTotal_w_m2_per_floor_area, ep_sensWaste_w_m2_per_floor_area, ep_floor_fluxMass_w_m2, ep_fluxRoof_w_m2, ep_fluxWall_w_m2, \
         ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, ep_wall_Text_K, ep_wall_Tint_K
-    
+
     sem_energyplus.acquire()
+    vcwg_time_index_in_seconds = (it + 1) * simTime.dt
+    saving_data['canTempProfile_K'].append(canTempProf_cur)
+    saving_data['canSpecHumProfile_Ratio'].append(canHumProf_cur)
+    saving_data['canPressProfile_Pa'].append(canPresProf_cur)
+
+    canTemp = np.mean(canTempProf_cur)
+    canHum = np.mean(canHumProf_cur)
+    vcwg_canPress_Pa = np.mean(canPresProf_cur)
+
+    saving_data['aveaged_temp_k_specHum_ratio_press_pa'].append([canTemp, canHum, vcwg_canPress_Pa])
+
     BEM_building = BEM.building
     BEM_building.nFloor = max(Geometry_m.Height_canyon / float(BEM_building.floorHeight), 1)
 
-    vcwg_time_index_in_seconds = (it + 1) * simTime.dt
+
     # print(f'VCWG: Update needed time index[accumulated seconds]: {vcwg_time_index_in_seconds}\n')
     vcwg_needed_time_idx_in_seconds = vcwg_time_index_in_seconds
     vcwg_canTemp_K = canTemp
     vcwg_canSpecHum_Ratio = canHum
-    vcwg_canPress_Pa = MeteoData.Pre
+
 
     BEM_building.ElecTotal = ep_sensWaste_w_m2_per_floor_area * BEM_building.nFloor
     ep_sensWaste_w_m2_per_floor_area = 0

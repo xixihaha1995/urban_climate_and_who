@@ -617,7 +617,9 @@ class VCWG_Hydro(object):
                 canTemp = numpy.mean(self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u])
                 canHum = numpy.mean(self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u])
                 # canPres = numpy.mean(self.UCM.VerticalProfUrban.presProf[0:self.Geometry_m.nz_u])
-
+                canTempProf = self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u]
+                canHumProf = self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u]
+                canPresProf = self.UCM.VerticalProfUrban.presProf[0:self.Geometry_m.nz_u]
                 # canTemp is potential temperature, convert to temperature
 
                 # temperature = p
@@ -627,8 +629,8 @@ class VCWG_Hydro(object):
                 #   Bypassing the following function BEMCal():
                 # self.BEM[i].building.BEMCalc(canTemp,canHum,self.BEM[i],MeteoData,ParCalculation,self.simTime,self.Geometry_m,
                 #                              self.FractionsRoof,self.EBCanyon.SWR, it)
-                self.BEM[i] = _0_vcwg_ep_coordination.BEMCalc_Element(canTemp,canHum, self.BEM[i], it, self.simTime,
-                                                               MeteoData, self.FractionsRoof, self.Geometry_m)
+                self.BEM[i] = _0_vcwg_ep_coordination.BEMCalc_Element(canTempProf,canHumProf, canPresProf,
+                                            self.BEM[i], it, self.simTime, self.FractionsRoof, self.Geometry_m)
 
                 # Electricity consumption of urban area [W]
                 self.BEM[i].ElecTotal = self.BEM[i].building.ElecTotal * self.BEM[i].fl_area

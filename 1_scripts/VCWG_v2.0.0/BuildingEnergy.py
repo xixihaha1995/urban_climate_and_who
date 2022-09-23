@@ -3,6 +3,8 @@ from psychrometrics import psychrometrics, moist_air_density
 import logging
 import numpy
 import copy
+
+import _0_global_save
 """
 Calculate building characteristics
 Developed by Mohsen Moradi and Amir A. Aliabadi
@@ -129,7 +131,8 @@ class Building(object):
     def is_near_zero(self,val,tol=1e-14):
         return abs(float(val)) < tol
 
-    def BEMCalc(self,canTemp,canHum,BEM,MeteoData,ParCalculation,simTime,Geometry_m,FractionsRoof,SWR):
+    def BEMCalc(self,canTemp,canHum,BEM,MeteoData,ParCalculation,simTime,Geometry_m,FractionsRoof,SWR,
+                canTempProf_cur,canHumProf_cur, canPresProf_cur):
 
         """
         ------
@@ -179,6 +182,12 @@ class Building(object):
         QWater: energy consumption for domestic hot water [W m^-2]
         QGas: energy consumption for gas [W m^-2]
         """
+        vcwg_canPress_Pa = numpy.mean(canPresProf_cur)
+        _0_global_save.saving_data['canTempProfile_K'].append(canTempProf_cur)
+        _0_global_save.saving_data['canSpecHumProfile_Ratio'].append(canHumProf_cur)
+        _0_global_save.saving_data['canPressProfile_Pa'].append(canPresProf_cur)
+        _0_global_save.saving_data['aveaged_temp_k_specHum_ratio_press_pa'].\
+            append([canTemp, canHum, vcwg_canPress_Pa])
 
         self.logger.debug("Logging at {} {}".format(__name__, self.__repr__()))
 

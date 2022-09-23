@@ -92,7 +92,8 @@ def read_text_as_csv(file_path, header=None, index_col=0, skiprows=3):
     # df.set_index(df.iloc[:,0], inplace=True)
     return df
 
-def clean_bubble_iop(df, start_time='2018-01-01 00:00:00', end_time='2018-12-31 23:59:59'):
+def clean_bubble_iop(df, start_time='2018-01-01 00:00:00', end_time='2018-12-31 23:59:59',
+                     to_hourly = True):
     # current index format is DD.MM.YYYY
     df.index = pd.to_datetime(df.index, format='%d.%m.%Y')
     # index format is YYYY-MM-DD HH:MM:SS
@@ -104,7 +105,8 @@ def clean_bubble_iop(df, start_time='2018-01-01 00:00:00', end_time='2018-12-31 
     df.iloc[:, :-1] = df.iloc[:, :-1].apply(lambda x: x.str.replace(',', '')).astype(float)
     df = df[start_time:end_time]
     # convert 10 min interval to 1 hour interval
-    df = time_interval_convertion(df, original_time_interval_min=10, start_time=start_time)
+    if to_hourly:
+        df = time_interval_convertion(df, original_time_interval_min=10, start_time=start_time)
     return df
 
 
@@ -194,6 +196,19 @@ def time_interval_convertion(df, original_time_interval_min = 30, need_date = Fa
         df_new = add_date_index(df_new, start_time, 3600)
     return df_new
 
+def _5min_to_10min(df):
+    '''
+    Original data is 5 mins interval,
+    Convert it to 10 mins interval
+    Original data has [index, sensible]
+    Replace sensible with 10 mins average
+    '''
+    df_new = pd.DataFrame(columns=df.columns)
+    for i in range(0, len(df), 2):
+        df_new.loc[df.index[i]] = df.iloc[i:i+2,].mean()
+    # floor index (YYYY-MM-DD HH:MM:SS) to (YYYY-MM-DD HH:MM:00)
+    return df_new
+
 # plot the comparisons between Vancouver Sunset dataset versus simulated (VCWGv2.0.0, VCWG-Bypass)
 def plot_comparison_measurement_simulated(df, txt_info):
 
@@ -250,11 +265,11 @@ def general_time_series_comparision(df, txt_info):
     ax.set_ylabel(txt_info[0][2])
     plt.show()
 
-def add_date_index(df, start_date, time_interval):
+def add_date_index(df, start_date, time_interval_sec):
     '''
     df is [date, sensible/latent]
     '''
-    date = pd.date_range(start_date, periods=len(df), freq='{}S'.format(time_interval))
+    date = pd.date_range(start_date, periods=len(df), freq='{}S'.format(time_interval_sec))
     date = pd.Series(date)
     # update dataframe index
     df.index = date

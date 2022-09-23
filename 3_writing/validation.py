@@ -33,5 +33,34 @@ Sites introduction
 Large city map: https://www.mcr.unibas.ch/dolueg2/projects/campaigns/BUBBLE/images/maps/map_bubble_big.gif.
 
 These sites were equipped with towers reaching from street level up to 2 to 2.5 times the mean building height zH.
+'''
 
+'''
+The building type is based on the mid rise apartments, but not exactly the same.
+
+3D morphometric parameters of Basel-Sperrstrasse for a circle of 250 m around the tower 
+site and the physical properties of urban elements used in the model.
+
+BEM has satisfactorily passed different evaluation processes, including 
+testing its modelling assumptions, 
+verifying that the chosen equations are solved correctly, and 
+validating the model with field data.
+
+Detailed Model vs Simplified Model
+
+The building height, verticalto-horizontal building area ratio, roof-to-horizontal building area ratio, 
+glazing ratio, construction configuration of the enclosure (materials and layers), total internal heat gains, 
+and infiltration air flowrate are the same as the DM (Table 1).
+
+It resolves the surface boundary layer (SBL) inside and above urban canopy by including a drag force approach
+ to account for the vertical effects of buildings as is done in Martilli’s parameterization except that 
+ only one surface energy balance per wall is resolved.
+'''
+
+'''
+It looks like as for the meterological related simulation verification/validation,
+canyon temperature, specific humidity, wind speed,
+energy balance should be enough.
+
+The critical point is why they choose the above parameters to be the verification/validation parameters.
 '''
