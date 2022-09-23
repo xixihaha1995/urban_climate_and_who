@@ -105,7 +105,7 @@ mbe_rmse_r2_real_original = plt_tools.bias_rmse_r2(urban_2p6_10min_c_compare,
                                                     'VCWG-Real Temperature error')
 
 
-case_name = (f"{compare_start_time} to {compare_end_time}-Hourly Canyon Temperature. p0 {p0} pa",
+case_name = (f"{compare_start_time} to {compare_end_time}-10min Canyon Temperature. p0 {p0} pa",
              "Date", "Temperature (C)")
 txt_info = [case_name, mbe_rmse_r2_th_original, mbe_rmse_r2_real_original,
             mbe_rmse_r2_th, mbe_rmse_r2_real]

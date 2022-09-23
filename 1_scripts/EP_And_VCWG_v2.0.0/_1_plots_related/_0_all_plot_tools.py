@@ -78,10 +78,12 @@ def bias_rmse_r2(df1, df2, df2_name):
     rmse = np.sqrt(np.mean(np.square(bias)))
     r2 = 1 - np.sum(np.square(bias)) / np.sum(np.square(df1 - np.mean(df1)))
     # bias_mean = np.mean(abs(bias))
+    mean_bias_percent = np.mean(abs(bias)) / np.mean(df1) * 100
+    cvrmse = rmse / np.mean(df1) * 100
     bias_mean = np.mean(bias)
     # df2 name
     # return number with 2 decimal places
-    return df2_name, round(bias_mean,2), round(rmse,2), round(r2,2)
+    return df2_name, round(mean_bias_percent,2), round(cvrmse,2), round(r2,2)
 
 def read_text_as_csv(file_path, header=None, index_col=0, skiprows=3):
     '''
@@ -245,17 +247,19 @@ def general_time_series_comparision(df, txt_info):
             ax.plot(df.iloc[:,i], label= df.columns[i], color='black', linestyle=':')
         else:
             ax.plot(df.iloc[:,i], label= df.columns[i])
-    ax.legend()
+    # make legend located at the best position
+    ax.legend(loc='best')
     # from 1 iteraterat through all columns, make a txt for error info
 
     txt = 'Maximum Daily UHI effect: 5.2 K'
+    txt +='\nVCWGv2.0.0 (Monthly) MBE: -0.53, RMSE: 0.56, R2: 0.98'
     txt +='\nUWG Monthly MBE: -0.6, RMSE: 0.9'
-    txt += f'\nBias Mean(K), RMSE(K), R2(-)'
-    txt +='\nVCWGv2.0.0 MBE: -0.53, RMSE: 0.56, R2: 0.98'
+    txt += f'\nNMBE(%), CV-RMSE(%), R2(-)'
+
     for i in range(1, len(txt_info)):
         txt += f'\n{txt_info[i]}'
     print(txt)
-    ax.text(0.1, 0.9, txt, transform=ax.transAxes, fontsize=10,
+    ax.text(0.05, 1, txt, transform=ax.transAxes, fontsize=10,
         verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
     # lim
     ax.set_ylim(10, 40)
