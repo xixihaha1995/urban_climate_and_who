@@ -90,6 +90,8 @@ all_df_dc_names = ['Urban(2.6 m)',
                    f'VCWG(idf-Refining)-Potential Temperature ({v200_sensor_height} m)',
                    f'VCWG(idf-Refining)-Real Temperature ({v200_sensor_height} m)']
 all_df_dc_in_one = plt_tools.merge_multiple_df(all_df_dc_lst, all_df_dc_names)
+# save the data
+all_df_dc_in_one.to_csv(f'{results_folder}\\all_df_dc_in_one.csv')
 
 mbe_rmse_r2_th = plt_tools.bias_rmse_r2(urban_2p6_10min_c_compare,
                                         bypass_refining_th_sensor_10min_c_compare_series,
