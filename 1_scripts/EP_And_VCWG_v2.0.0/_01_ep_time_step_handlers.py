@@ -230,7 +230,7 @@ def _nested_ep_then_vcwg(state):
         coordination.sem_vcwg.acquire()
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
-        print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
+        # print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
         # Should always accumulate, since system time always advances
         accumulated_time_in_seconds = curr_sim_time_in_seconds - ep_last_call_time_seconds
         ep_last_call_time_seconds = curr_sim_time_in_seconds
@@ -308,7 +308,7 @@ def _nested_ep_then_vcwg(state):
         coordination.ep_api.exchange.set_actuator_value(state, odb_actuator_handle, coordination.vcwg_canTemp_K - 273.15)
         coordination.ep_api.exchange.set_actuator_value(state, orh_actuator_handle, rh)
         coordination.ep_elecTotal_w_m2_per_floor_area = elec_bld_meter_w_m2
-        coordination.ep_sensWaste_w_m2_per_floor_area = hvac_waste_w_m2
+        print(f"EP, {curr_sim_time_in_seconds}, sensHVAC:{coordination.ep_sensWaste_w_m2_per_floor_area}")
         coordination.ep_floor_Text_K = floor_Text_C + 273.15
         coordination.ep_floor_Tint_K = floor_Tint_C + 273.15
         coordination.ep_wall_Text_K = wall_Text_C + 273.15

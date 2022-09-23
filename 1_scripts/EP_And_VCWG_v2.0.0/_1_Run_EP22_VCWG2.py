@@ -28,7 +28,7 @@ def run_ep_api():
 
 if __name__ == '__main__':
     ep_files_path = '_02_ep_midRiseApartment_Basel'
-    epwFileName = 'ERA5_Basel.epw'
+    epwFileName = 'Basel.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
 
     # Lichen: init the synchronization lock related settings: locks, shared variables.
