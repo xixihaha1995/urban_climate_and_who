@@ -27,7 +27,7 @@ def run_ep_api():
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    ep_files_path = '_02_ep_midRiseApartment_Basel'
+    ep_files_path = '_05_vcwg-ep-overwriting-midRiseApartment_Basel'
     epwFileName = 'Basel.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
 

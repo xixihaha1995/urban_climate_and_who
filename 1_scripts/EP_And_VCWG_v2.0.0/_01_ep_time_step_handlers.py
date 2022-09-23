@@ -42,7 +42,7 @@ def run_vcwg():
     VCWGParamFileName = 'initialize_Basel_MOST.uwg'
     ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
     # Case name to append output file names with
-    case = 'bypass_Basel_MOST'
+    case = '_Refinement_Basel_MOST'
 
     # '''
 

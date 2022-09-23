@@ -329,6 +329,12 @@
     Steel Frame Res Wall Insulation,  !- Layer 2
     1/2IN Gypsum;            !- Layer 3
 
+  Construction,
+    BaselWall-VCWG-EP,!- Name
+    1IN Stucco,             !- Outside Layer
+    8IN CONCRETE HW,  !- Layer 2
+    1/2IN Gypsum;            !- Layer 3
+
   Material,
     Steel Frame Res Wall Insulation,  !- Name
     MediumRough,             !- Roughness
@@ -348,6 +354,22 @@
     IEAD Res Roof Insulation,!- Layer 2
     Metal Decking;           !- Layer 3
 
+  Construction,
+    BaselRoof-VCWG-EP,           !- Name
+    RoofMat1,           !- Outside Layer
+    RoofMat1;!- Layer 2
+
+  Material,
+    RoofMat1,!- Name
+    MediumRough,             !- Roughness
+    0.05819,       !- Thickness {m}
+    0.94,                   !- Conductivity {W/m-K}
+    265.0000,                !- Density {kg/m3}
+    5291.8000,                !- Specific Heat {J/kg-K}
+    0.9000,                  !- Thermal Absorptance
+    0.7000,                  !- Solar Absorptance
+    0.7000;                  !- Visible Absorptance
+
   Material,
     IEAD Res Roof Insulation,!- Name
     MediumRough,             !- Roughness
@@ -365,6 +387,10 @@
     ext-slab,                !- Name
     HW CONCRETE,             !- Outside Layer
     CP02 CARPET PAD;         !- Layer 2
+
+  Construction,
+    BaselFloor-VCWG-EP,                !- Name
+    HW CONCRETE;             !- Outside Layer
 
 ! Interior Walls
 
@@ -1001,7 +1027,7 @@
   BuildingSurface:Detailed,
     g SWall SWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     G SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1018,7 +1044,7 @@
   BuildingSurface:Detailed,
     g WWall SWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     G SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1035,7 +1061,7 @@
   BuildingSurface:Detailed,
     g GFloor SWA,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    BaselFloor-VCWG-EP,                !- Construction Name
     G SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -1105,7 +1131,7 @@
   BuildingSurface:Detailed,
     g NWall NWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     G NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1122,7 +1148,7 @@
   BuildingSurface:Detailed,
     g WWall NWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     G NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1139,7 +1165,7 @@
   BuildingSurface:Detailed,
     g GFloor NWA,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    BaselFloor-VCWG-EP,                !- Construction Name
     G NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -1209,7 +1235,7 @@
   BuildingSurface:Detailed,
     g SWall SEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     Office,                  !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1226,7 +1252,7 @@
   BuildingSurface:Detailed,
     g EWall SEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     Office,                  !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1243,7 +1269,7 @@
   BuildingSurface:Detailed,
     g GFloor SEA,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    BaselFloor-VCWG-EP,                !- Construction Name
     Office,                  !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -1313,7 +1339,7 @@
   BuildingSurface:Detailed,
     g NWall NEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     G NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1330,7 +1356,7 @@
   BuildingSurface:Detailed,
     g EWall NEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     G NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1347,7 +1373,7 @@
   BuildingSurface:Detailed,
     g GFloor NEA,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    BaselFloor-VCWG-EP,                !- Construction Name
     G NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -1417,7 +1443,7 @@
   BuildingSurface:Detailed,
     g NWall N1A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     G N1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1434,7 +1460,7 @@
   BuildingSurface:Detailed,
     g GFloor N1A,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    BaselFloor-VCWG-EP,                !- Construction Name
     G N1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -1521,7 +1547,7 @@
   BuildingSurface:Detailed,
     g NWall N2A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     G N2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1538,7 +1564,7 @@
   BuildingSurface:Detailed,
     g GFloor N2A,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    BaselFloor-VCWG-EP,                !- Construction Name
     G N2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -1625,7 +1651,7 @@
   BuildingSurface:Detailed,
     g SWall S1A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     G S1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1642,7 +1668,7 @@
   BuildingSurface:Detailed,
     g GFloor S1A,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    BaselFloor-VCWG-EP,                !- Construction Name
     G S1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -1729,7 +1755,7 @@
   BuildingSurface:Detailed,
     g SWall S2A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     G S2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1746,7 +1772,7 @@
   BuildingSurface:Detailed,
     g GFloor S2A,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    BaselFloor-VCWG-EP,                !- Construction Name
     G S2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -1833,7 +1859,7 @@
   BuildingSurface:Detailed,
     m WWall SWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     M SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1884,7 +1910,7 @@
   BuildingSurface:Detailed,
     m SWall SWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     M SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1937,7 +1963,7 @@
   BuildingSurface:Detailed,
     m NWall NWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     M NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1954,7 +1980,7 @@
   BuildingSurface:Detailed,
     m WWall NWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     M NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2041,7 +2067,7 @@
   BuildingSurface:Detailed,
     m EWall SEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     M SE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2092,7 +2118,7 @@
   BuildingSurface:Detailed,
     m SWall SEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     M SE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2145,7 +2171,7 @@
   BuildingSurface:Detailed,
     m NWall NEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     M NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2162,7 +2188,7 @@
   BuildingSurface:Detailed,
     m EWall NEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     M NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2249,7 +2275,7 @@
   BuildingSurface:Detailed,
     m NWall N1A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     M N1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2353,7 +2379,7 @@
   BuildingSurface:Detailed,
     m NWall N2A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     M N2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2491,7 +2517,7 @@
   BuildingSurface:Detailed,
     m SWall S1A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     M S1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2595,7 +2621,7 @@
   BuildingSurface:Detailed,
     m SWall S2A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     M S2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2665,7 +2691,7 @@
   BuildingSurface:Detailed,
     t WWall SWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     T SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2699,7 +2725,7 @@
   BuildingSurface:Detailed,
     t Roof SWA,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    BaselRoof-VCWG-EP,           !- Construction Name
     T SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2716,7 +2742,7 @@
   BuildingSurface:Detailed,
     t SWall SWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     T SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2769,7 +2795,7 @@
   BuildingSurface:Detailed,
     t NWall NWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     T NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2786,7 +2812,7 @@
   BuildingSurface:Detailed,
     t WWall NWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     T NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2820,7 +2846,7 @@
   BuildingSurface:Detailed,
     t Roof NWA,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    BaselRoof-VCWG-EP,           !- Construction Name
     T NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2873,7 +2899,7 @@
   BuildingSurface:Detailed,
     t EWall SEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     T SE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2907,7 +2933,7 @@
   BuildingSurface:Detailed,
     t Roof SEA,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    BaselRoof-VCWG-EP,           !- Construction Name
     T SE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2924,7 +2950,7 @@
   BuildingSurface:Detailed,
     t SWall SEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     T SE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2977,7 +3003,7 @@
   BuildingSurface:Detailed,
     t NWall NEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     T NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2994,7 +3020,7 @@
   BuildingSurface:Detailed,
     t EWall NEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     T NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3028,7 +3054,7 @@
   BuildingSurface:Detailed,
     t Roof NEA,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    BaselRoof-VCWG-EP,           !- Construction Name
     T NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3081,7 +3107,7 @@
   BuildingSurface:Detailed,
     t NWall N1A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     T N1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3115,7 +3141,7 @@
   BuildingSurface:Detailed,
     t Roof N1A,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    BaselRoof-VCWG-EP,           !- Construction Name
     T N1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3185,7 +3211,7 @@
   BuildingSurface:Detailed,
     t NWall N2A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     T N2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3219,7 +3245,7 @@
   BuildingSurface:Detailed,
     t Roof N2A,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    BaselRoof-VCWG-EP,           !- Construction Name
     T N2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3306,7 +3332,7 @@
   BuildingSurface:Detailed,
     t Roof S1A,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    BaselRoof-VCWG-EP,           !- Construction Name
     T S1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3323,7 +3349,7 @@
   BuildingSurface:Detailed,
     t SWall S1A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     T S1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3410,7 +3436,7 @@
   BuildingSurface:Detailed,
     t Roof S2A,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    BaselRoof-VCWG-EP,           !- Construction Name
     T S2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3427,7 +3453,7 @@
   BuildingSurface:Detailed,
     t SWall S2A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     T S2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3497,7 +3523,7 @@
   BuildingSurface:Detailed,
     t WWall C,               !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     T Corridor,              !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3514,7 +3540,7 @@
   BuildingSurface:Detailed,
     t EWall C,               !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     T Corridor,              !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3531,7 +3557,7 @@
   BuildingSurface:Detailed,
     t Roof C,                !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    BaselRoof-VCWG-EP,           !- Construction Name
     T Corridor,              !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3703,7 +3729,7 @@
   BuildingSurface:Detailed,
     g WWall C,               !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     G Corridor,              !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3737,7 +3763,7 @@
   BuildingSurface:Detailed,
     g Floor C,               !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    BaselFloor-VCWG-EP,                !- Construction Name
     G Corridor,              !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -3788,7 +3814,7 @@
   BuildingSurface:Detailed,
     g EWall C,               !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     G Corridor,              !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3909,7 +3935,7 @@
   BuildingSurface:Detailed,
     m WWall C,               !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     M Corridor,              !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3926,7 +3952,7 @@
   BuildingSurface:Detailed,
     m EWall C,               !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    BaselWall-VCWG-EP,!- Construction Name
     M Corridor,              !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition

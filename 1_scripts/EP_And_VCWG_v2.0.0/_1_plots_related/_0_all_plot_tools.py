@@ -232,9 +232,10 @@ def general_time_series_comparision(df, txt_info):
             ax.plot(df.iloc[:,i], label= df.columns[i])
     ax.legend()
     # from 1 iteraterat through all columns, make a txt for error info
-    txt = f'Bias Mean(K), RMSE(K), R2(-)'
-    txt += '\nMaximum Daily UHI effect: 5.2 K'
+
+    txt = 'Maximum Daily UHI effect: 5.2 K'
     txt +='\nUWG Monthly MBE: -0.6, RMSE: 0.9'
+    txt += f'\nBias Mean(K), RMSE(K), R2(-)'
     txt +='\nVCWGv2.0.0 MBE: -0.53, RMSE: 0.56, R2: 0.98'
     for i in range(1, len(txt_info)):
         txt += f'\n{txt_info[i]}'
