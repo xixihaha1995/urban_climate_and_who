@@ -76,11 +76,11 @@ def bias_rmse_r2(df1, df2, df2_name):
     '''
     bias = df1 - df2
     rmse = np.sqrt(np.mean(np.square(bias)))
-    r2 = 1 - np.sum(np.square(bias)) / np.sum(np.square(df1 - np.mean(df1)))
-    # bias_mean = np.mean(abs(bias))
-    mean_bias_percent = np.mean(abs(bias)) / np.mean(df1) * 100
     cvrmse = rmse / np.mean(df1) * 100
-    bias_mean = np.mean(bias)
+    r2 = 1 - np.sum(np.square(bias)) / np.sum(np.square(df1 - np.mean(df1)))
+    mean_bias_percent = np.mean(abs(bias)) / np.mean(df1) * 100
+
+    # bias_mean = np.mean(bias)
     # df2 name
     # return number with 2 decimal places
     return df2_name, round(mean_bias_percent,2), round(cvrmse,2), round(r2,2)
@@ -252,8 +252,8 @@ def general_time_series_comparision(df, txt_info):
     # from 1 iteraterat through all columns, make a txt for error info
 
     txt = 'Maximum Daily UHI effect: 5.2 K'
-    txt +='\nVCWGv2.0.0 (Monthly) MBE: -0.53, RMSE: 0.56, R2: 0.98'
-    txt +='\nUWG Monthly MBE: -0.6, RMSE: 0.9'
+    txt +='\nVCWGv2.0.0 (Monthly) MeanBiasError: -0.53(K), RMSE: 0.56(K), R2: 0.98(-)'
+    txt +='\nUWG Monthly MBE: -0.6(K), RMSE: 0.9(K)'
     txt += f'\nNMBE(%), CV-RMSE(%), R2(-)'
 
     for i in range(1, len(txt_info)):
