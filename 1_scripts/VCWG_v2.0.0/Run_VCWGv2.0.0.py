@@ -1,6 +1,26 @@
 import numpy as np
-
+import pandas as pd, os
 from VCWG_Hydrology import VCWG_Hydro
+import _0_global_save
+def add_date_index(df, start_date, time_interval_sec):
+    '''
+    df is [date, sensible/latent]
+    '''
+    date = pd.date_range(start_date, periods=len(df), freq='{}S'.format(time_interval_sec))
+    date = pd.Series(date)
+    # update dataframe index
+    df.index = date
+    return df
+def save_data_to_csv(df, file_name):
+    data_arr = np.array(_0_global_save.saving_data[file_name])
+    df = pd.DataFrame(data_arr)
+    if file_name == 'can_Averaged_temp_k_specHum_ratio_press_pa':
+        df.columns = ['Temp_K', 'SpecHum_Ratio', 'Press_Pa']
+    else:
+        df.columns = [f'(m) {file_name}_' + str(0.5 + i) for i in range(len(df.columns))]
+    df = add_date_index(df, start_time, time_interval_sec)
+    # save to excel
+    df.to_excel(os.path.join(_0_global_save.vcwg_ep_saving_path, f'vcwg_{file_name}.xlsx'))
 
 """
 Specify file and case names
@@ -35,47 +55,21 @@ ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
 # Case name to append output file names with
 case = 'Replicate_Vancouver_LCZ1'
 '''
-import _0_global_save
-_0_global_save.init_save_arr()
+_0_global_save.init_save_arr(_in_vcwg_ep_saving_path=
+                             '..\EP_And_VCWG_v2.0.0\_2_saved\BUBBLE_VCWG-EP-detailed')
 # Initialize the UWG object and run the simulation
 VCWG = VCWG_Hydro(epwFileName,TopForcingFileName,VCWGParamFileName,ViewFactorFileName,case)
 VCWG.run()
 
-vcwg_ep_saving_path = '..\EP_And_VCWG_v2.0.0\_2_saved\BUBBLE_VCWG-EP-detailed'
 # Lichen: post process, such as [timestamp, waste heat] * time_steps_num
-import pandas as pd, os
-def add_date_index(df, start_date, time_interval_sec):
-    '''
-    df is [date, sensible/latent]
-    '''
-    date = pd.date_range(start_date, periods=len(df), freq='{}S'.format(time_interval_sec))
-    date = pd.Series(date)
-    # update dataframe index
-    df.index = date
-    return df
 
 start_time = '2002-06-10 00:00:00'
 time_interval_sec = 300
-canTempProfile = np.array(_0_global_save.saving_data['canTempProfile_K'])
-df_canTempProfile = pd.DataFrame(canTempProfile)
-df_canTempProfile.columns = ['(m) canTemp_' + str(0.5 + i + 1) for i in range(14)]
-df_canTemp = add_date_index(df_canTempProfile, start_time, time_interval_sec)
-df_canTemp.to_csv(os.path.join(vcwg_ep_saving_path, 'vcwg_canTempProfile.csv'))
+data_name_lst = ['TempProfile_K', 'SpecHumProfile_Ratio', 'PressProfile_Pa', 'wind_vxProfile_mps',
+                 'wind_vyProfile_mps', 'wind_SpeedProfile_mps', 'turbulence_tkeProfile_m2s2',
+                 'air_densityProfile_kgm3', 'sensible_heat_fluxProfile_Wm2', 'latent_heat_fluxProfile_Wm2',
+                 'can_Averaged_temp_k_specHum_ratio_press_pa']
+for data_name in data_name_lst:
+    save_data_to_csv(_0_global_save.saving_data[data_name], data_name)
 
-canSpeHumProfile = np.array(_0_global_save.saving_data['canSpecHumProfile_Ratio'])
-df_canSpeHumProfile = pd.DataFrame(canSpeHumProfile)
-df_canSpeHumProfile.columns = ['(m) canSpeHum_' + str(0.5 + i + 1) for i in range(14)]
-df_canSpeHum = add_date_index(df_canSpeHumProfile, start_time, time_interval_sec)
-df_canSpeHum.to_csv(os.path.join(vcwg_ep_saving_path, 'vcwg_canSpeHumProfile.csv'))
 
-canPresProfile = np.array(_0_global_save.saving_data['canPressProfile_Pa'])
-df_canPresProfile = pd.DataFrame(canPresProfile)
-df_canPresProfile.columns = ['(m) canPres_' + str(0.5 + i + 1) for i in range(14)]
-df_canPres =add_date_index(df_canPresProfile, start_time, time_interval_sec)
-df_canPres.to_csv(os.path.join(vcwg_ep_saving_path, 'vcwg_canPresProfile.csv'))
-
-canAvged = np.array(_0_global_save.saving_data['aveaged_temp_k_specHum_ratio_press_pa'])
-df_canAvged = pd.DataFrame(canAvged)
-df_canAvged.columns = ['Temp_K', 'SpecHum_Ratio', 'Press_Pa']
-df_canAvged = add_date_index(df_canAvged, start_time, time_interval_sec)
-df_canAvged.to_csv(os.path.join(vcwg_ep_saving_path, 'vcwg_canAvged.csv'))

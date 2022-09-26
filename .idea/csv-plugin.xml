@@ -38,6 +38,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_03_midRiseApartment_Vancouver\ep_outputs\eplusssz.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\_04_EP-Only_EP-VCWG\RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.csv">
           <value>
             <Attribute>
@@ -157,6 +164,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD12\BLD12_ZoneSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD13\BLD13_BuildingSummary.csv">
           <value>
             <Attribute>
@@ -165,6 +179,13 @@
           </value>
         </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD13\BLD13_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD13\BLD13_ZoneSummary.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -185,6 +206,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD14\BLD14_ZoneSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD15\BLD15_BuildingSummary.csv">
           <value>
             <Attribute>
@@ -199,6 +227,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD15\BLD15_ZoneSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD16\BLD16_BuildingSummary.csv">
           <value>
             <Attribute>
@@ -207,6 +242,13 @@
           </value>
         </entry>
         <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD16\BLD16_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v2.0.0\resources\DOERefBuildings\BLD16\BLD16_ZoneSummary.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -521,7 +563,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD1\BLD1_ZoneSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD2\BLD2_BuildingSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD2\BLD2_LocationSummary.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -542,6 +598,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD3\BLD3_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD3\BLD3_ZoneSummary.csv">
           <value>
             <Attribute>
@@ -556,7 +619,35 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD4\BLD4_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD4\BLD4_ZoneSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD5\BLD5_BuildingSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD5\BLD5_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD5\BLD5_ZoneSummary.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -626,6 +717,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\VCWG_v2.0.0\resources\DOERefBuildings\BLD9\BLD9_ZoneSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\VCWG_v2.0.0\resources\TopForcing\Vancouver2008_ERA5.csv">
           <value>
             <Attribute>
@@ -634,6 +732,20 @@
           </value>
         </entry>
         <entry key="\1_scripts\VCWG_v2.0.0\resources\TopForcing\Vancouver2008_ERA5_Jul.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\only_ep\mid_rise_apartment\180_deg\RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE_180_degSsz.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\1_scripts\only_ep\mid_rise_apartment\90_deg\RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE_90_degSsz.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

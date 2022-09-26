@@ -132,7 +132,7 @@ class Building(object):
         return abs(float(val)) < tol
 
     def BEMCalc(self,canTemp,canHum,BEM,MeteoData,ParCalculation,simTime,Geometry_m,FractionsRoof,SWR,
-                canTempProf_cur,canHumProf_cur, canPresProf_cur):
+                VerticalProfUrban):
 
         """
         ------
@@ -182,11 +182,36 @@ class Building(object):
         QWater: energy consumption for domestic hot water [W m^-2]
         QGas: energy consumption for gas [W m^-2]
         """
+        # canTempProf_cur = self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u]
+        # canHumProf_cur = self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u]
+        # canPresProf_cur = self.UCM.VerticalProfUrban.presProf[0:self.Geometry_m.nz_u]
+
+        TempProf_cur = VerticalProfUrban.th
+        HumProf_cur = VerticalProfUrban.qn
+        PresProf_cur = VerticalProfUrban.presProf
+        vxProf = VerticalProfUrban.vx
+        vyProf = VerticalProfUrban.vy
+        wind_magnitudeProf = VerticalProfUrban.s
+        tkeProf = VerticalProfUrban.tke
+        rhoProf = VerticalProfUrban.rho
+        HfluxProf = VerticalProfUrban.Hflux
+        LEfluxProf = VerticalProfUrban.LEflux
+
+        _0_global_save.saving_data['TempProfile_K'].append(TempProf_cur)
+        _0_global_save.saving_data['SpecHumProfile_Ratio'].append(HumProf_cur)
+        _0_global_save.saving_data['PressProfile_Pa'].append(PresProf_cur)
+        _0_global_save.saving_data['wind_vxProfile_mps'].append(vxProf)
+        _0_global_save.saving_data['wind_vyProfile_mps'].append(vyProf)
+        _0_global_save.saving_data['wind_SpeedProfile_mps'].append(wind_magnitudeProf)
+        _0_global_save.saving_data['turbulence_tkeProfile_m2s2'].append(tkeProf)
+        _0_global_save.saving_data['air_densityProfile_kgm3'].append(rhoProf)
+        _0_global_save.saving_data['sensible_heat_fluxProfile_Wm2'].append(HfluxProf)
+        _0_global_save.saving_data['latent_heat_fluxProfile_Wm2'].append(LEfluxProf)
+
+
+        canPresProf_cur = PresProf_cur[0:Geometry_m.nz_u]
         vcwg_canPress_Pa = numpy.mean(canPresProf_cur)
-        _0_global_save.saving_data['canTempProfile_K'].append(canTempProf_cur)
-        _0_global_save.saving_data['canSpecHumProfile_Ratio'].append(canHumProf_cur)
-        _0_global_save.saving_data['canPressProfile_Pa'].append(canPresProf_cur)
-        _0_global_save.saving_data['aveaged_temp_k_specHum_ratio_press_pa'].\
+        _0_global_save.saving_data['can_Averaged_temp_k_specHum_ratio_press_pa'].\
             append([canTemp, canHum, vcwg_canPress_Pa])
 
         self.logger.debug("Logging at {} {}".format(__name__, self.__repr__()))

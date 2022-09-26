@@ -618,14 +618,12 @@ class VCWG_Hydro(object):
                 # canTemp_real =np.array(self.UCM.VerticalProfUrban.th) *\
                 #                         (np.array(self.UCM.VerticalProfUrban.presProf)/pres_ref_0)**0.286
                 # _0_global_save.canTemp_NotPotential_Arr.append(canTemp_real)
-                canTempProf_cur = self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u]
-                canHumProf_cur = self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u]
-                canPresProf_cur = self.UCM.VerticalProfUrban.presProf[0:self.Geometry_m.nz_u]
+
 
 
                 self.BEM[i].building.BEMCalc(canTemp,canHum,self.BEM[i],MeteoData,ParCalculation,self.simTime,self.Geometry_m,
                                              self.FractionsRoof,self.EBCanyon.SWR,
-                                             canTempProf_cur,canHumProf_cur, canPresProf_cur)
+                                             self.UCM.VerticalProfUrban)
 
                 # Electricity consumption of urban area [W]
                 self.BEM[i].ElecTotal = self.BEM[i].building.ElecTotal * self.BEM[i].fl_area
