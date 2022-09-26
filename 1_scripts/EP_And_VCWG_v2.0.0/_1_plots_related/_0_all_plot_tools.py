@@ -297,3 +297,36 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
     df = add_date_index(df, start_time, time_interval_sec)
     # save to excel
     df.to_excel(os.path.join(vcwg_ep_saving_path, f'{case_name}_{file_name}.xlsx'))
+
+def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, v200_sensor_height,compare_start_time,
+                               compare_end_time):
+    th_profie_5min = pd.read_excel(f'{results_folder}\\{filename}_TempProfile_K.xlsx',
+                                                   sheet_name='Sheet1', header=0, index_col=0)
+    # from heights profile array, find the closed index for sensor height
+    sensor_idx = np.argmin(np.abs(np.array(heights_profile) - v200_sensor_height))
+    th_sensor_5min = th_profie_5min.iloc[:, sensor_idx]
+    th_sensor_5min_K_compare = th_sensor_5min[compare_start_time:compare_end_time]
+    th_sensor_5min_K_compare_df = pd.DataFrame(th_sensor_5min_K_compare)
+    th_sensor_10min_K_compare = _5min_to_10min(th_sensor_5min_K_compare_df)
+    th_sensor_10min_c_compare = th_sensor_10min_K_compare - 273.15
+    th_sensor_10min_c_compare_series = pd.Series(th_sensor_10min_c_compare.iloc[:, 0])
+
+    pres_profile_5min = pd.read_excel(f'{results_folder}\\{filename}_PressProfile_Pa.xlsx',
+                                                      sheet_name='Sheet1', header=0, index_col=0)
+    pres_sensor_5min = pres_profile_5min.iloc[:, sensor_idx]
+    pres_sensor_5min_pa_compare = pres_sensor_5min[compare_start_time:compare_end_time]
+    pres_sensor_5min_pa_compare_df = pd.DataFrame(pres_sensor_5min_pa_compare)
+    pres_sensor_10min_pa_compare = _5min_to_10min(
+        pres_sensor_5min_pa_compare_df)
+    # pres_sensor_10min_pa_compare is df, convert to series
+    pres_sensor_10min_pa_compare = pres_sensor_10min_pa_compare.iloc[:, 0]
+
+    # real temperature  = potential temperature * (p0/p)^0.286
+    real_sensor_10min_c_compare_arr = th_sensor_10min_c_compare_series.values * \
+                                                      (pres_sensor_10min_pa_compare.values / p0) ** 0.286
+    real_sensor_10min_c_compare = pd.DataFrame(real_sensor_10min_c_compare_arr,
+                                                               index=pres_sensor_10min_pa_compare.index, )
+    real_sensor_10min_c_compare_series = pd.Series(
+        real_sensor_10min_c_compare.iloc[:, 0])
+
+    return th_sensor_10min_c_compare_series, real_sensor_10min_c_compare_series
