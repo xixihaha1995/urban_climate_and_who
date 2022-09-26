@@ -57,7 +57,7 @@ all_df_dc_names = [f'Urban ({v200_sensor_height} m)',
                    f'VCWG(idf-Refining)-Real Temperature ({v200_sensor_height} m)']
 all_df_dc_in_one = plt_tools.merge_multiple_df(all_df_dc_lst, all_df_dc_names)
 # save the data as excel
-# all_df_dc_in_one.to_excel(f'{results_folder}\\_8_basel_5min_10min_all_in_one.xlsx')
+all_df_dc_in_one.to_excel(f'{results_folder}\\ue2_all_in_one.xlsx')
 
 mbe_rmse_r2_th_original = plt_tools.bias_rmse_r2(urban_2p6_10min_c_compare,
                                                 original_th_sensor_10min_c_compare_series,

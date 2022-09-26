@@ -47,10 +47,12 @@ v132_Basel_BUBBLE_epw_air_temp = v132_Basel_BUBBLE_epw_air_temp_all[start_time:e
 
 
 #column name is original column name
-
+v200_Basel_epw_air_temp.index = pd.to_datetime(v200_Basel_epw_air_temp.index)
 all_df_names = ['urban_2p6_hour_c', 'rural_1p5_hour_c', 'v200_Basel_epw_air_temp',]
 all_df_lst = [urban_2p6_hour_c, rural_1p5_hour_c, v200_Basel_epw_air_temp]
 all_in_one_df = plt_tools.merge_multiple_df(all_df_lst,all_df_names)
+
+all_in_one_df.to_excel(f'{results_folder}\\epw_all_in_one.xlsx')
 
 cast_txt = ("Hourly air temperature for Urban Canyon (2.6m) and Rural Site (1.5m)", "Date", "Temperature (C)")
 txt_info = [cast_txt]
