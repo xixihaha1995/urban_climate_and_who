@@ -39,15 +39,25 @@ def init_variables_for_vcwg_ep():
     ep_wall_Text_K = 300
     ep_wall_Tint_K = 300
 
-def init_saving_data():
-    global saving_data
+def init_saving_data(_in_vcwg_ep_saving_path = '_2_saved\BUBBLE_VCWG-EP-detailed'):
+    global saving_data, vcwg_ep_saving_path
     saving_data = {}
-    saving_data['canTempProfile_K'] = []
-    saving_data['canSpecHumProfile_Ratio'] = []
-    saving_data['canPressProfile_Pa'] = []
-    saving_data['aveaged_temp_k_specHum_ratio_press_pa'] = []
+    saving_data['TempProfile_K'] = []
+    saving_data['SpecHumProfile_Ratio'] = []
+    saving_data['PressProfile_Pa'] = []
+    saving_data['wind_vxProfile_mps'] = []
+    saving_data['wind_vyProfile_mps'] = []
+    saving_data['wind_SpeedProfile_mps'] = []
+    saving_data['turbulence_tkeProfile_m2s2'] = []
+    saving_data['air_densityProfile_kgm3'] = []
+    saving_data['sensible_heat_fluxProfile_Wm2'] = []
+    saving_data['latent_heat_fluxProfile_Wm2'] = []
 
-def BEMCalc_Element(canTempProf_cur,canHumProf_cur, canPresProf_cur,BEM, it, simTime, FractionsRoof, Geometry_m):
+    saving_data['can_Averaged_temp_k_specHum_ratio_press_pa'] = []
+
+    vcwg_ep_saving_path = _in_vcwg_ep_saving_path
+
+def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_m):
     """
     type(self.BEM[i])
     <class 'BEMDef.BEMDef'>
@@ -63,20 +73,40 @@ def BEMCalc_Element(canTempProf_cur,canHumProf_cur, canPresProf_cur,BEM, it, sim
 
     sem_energyplus.acquire()
     vcwg_time_index_in_seconds = (it + 1) * simTime.dt
-    saving_data['canTempProfile_K'].append(canTempProf_cur)
-    saving_data['canSpecHumProfile_Ratio'].append(canHumProf_cur)
-    saving_data['canPressProfile_Pa'].append(canPresProf_cur)
 
+    TempProf_cur = VerticalProfUrban.th
+    HumProf_cur = VerticalProfUrban.qn
+    PresProf_cur = VerticalProfUrban.presProf
+    vxProf = VerticalProfUrban.vx
+    vyProf = VerticalProfUrban.vy
+    wind_magnitudeProf = VerticalProfUrban.s
+    tkeProf = VerticalProfUrban.tke
+    rhoProf = VerticalProfUrban.rho
+    HfluxProf = VerticalProfUrban.Hflux
+    LEfluxProf = VerticalProfUrban.LEflux
+
+    saving_data['TempProfile_K'].append(TempProf_cur)
+    saving_data['SpecHumProfile_Ratio'].append(HumProf_cur)
+    saving_data['PressProfile_Pa'].append(PresProf_cur)
+    saving_data['wind_vxProfile_mps'].append(vxProf)
+    saving_data['wind_vyProfile_mps'].append(vyProf)
+    saving_data['wind_SpeedProfile_mps'].append(wind_magnitudeProf)
+    saving_data['turbulence_tkeProfile_m2s2'].append(tkeProf)
+    saving_data['air_densityProfile_kgm3'].append(rhoProf)
+    saving_data['sensible_heat_fluxProfile_Wm2'].append(HfluxProf)
+    saving_data['latent_heat_fluxProfile_Wm2'].append(LEfluxProf)
+
+    canTempProf_cur = TempProf_cur[0:Geometry_m.nz_u]
+    canSpecHumProf_cur = HumProf_cur[0:Geometry_m.nz_u]
+    canPressProf_cur = PresProf_cur[0:Geometry_m.nz_u]
     canTemp = np.mean(canTempProf_cur)
-    canHum = np.mean(canHumProf_cur)
-    vcwg_canPress_Pa = np.mean(canPresProf_cur)
+    canHum = np.mean(canSpecHumProf_cur)
+    vcwg_canPress_Pa = np.mean(canPressProf_cur)
 
-    saving_data['aveaged_temp_k_specHum_ratio_press_pa'].append([canTemp, canHum, vcwg_canPress_Pa])
+    saving_data['can_Averaged_temp_k_specHum_ratio_press_pa'].append([canTemp, canHum, vcwg_canPress_Pa])
 
     BEM_building = BEM.building
     BEM_building.nFloor = max(Geometry_m.Height_canyon / float(BEM_building.floorHeight), 1)
-
-
     # print(f'VCWG: Update needed time index[accumulated seconds]: {vcwg_time_index_in_seconds}\n')
     vcwg_needed_time_idx_in_seconds = vcwg_time_index_in_seconds
     vcwg_canTemp_K = canTemp

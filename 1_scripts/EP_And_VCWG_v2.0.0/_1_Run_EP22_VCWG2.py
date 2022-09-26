@@ -1,6 +1,7 @@
 import os, numpy as np, pandas as pd
 from threading import Thread
 import _0_vcwg_ep_coordination as coordination, _01_ep_time_step_handlers
+from _1_plots_related import _0_all_plot_tools as plot_tools
 
 def api_to_csv(state):
     orig = api.exchange.list_available_api_data_csv(state)
@@ -45,32 +46,19 @@ if __name__ == '__main__':
     ep_thread.join()
 
     vcwg_ep_saving_path = '_2_saved\BUBBLE_VCWG-EP-detailed'
-    # Lichen: post process, such as [timestamp, waste heat] * time_steps_num
-    from _1_plots_related import _0_all_plot_tools as plot_tools
     start_time = '2002-06-10 00:00:00'
     time_interval_sec = 300
-    canTempProfile = np.array(coordination.saving_data['canTempProfile_K'])
-    df_canTempProfile = pd.DataFrame(canTempProfile)
-    df_canTempProfile.columns = ['(m) canTemp_' + str(0.5 + i + 1) for i in range(14)]
-    df_canTemp = plot_tools.add_date_index(df_canTempProfile, start_time, time_interval_sec)
-    df_canTemp.to_csv(os.path.join(vcwg_ep_saving_path, 'bypass_refining_idf_canTempProfile.csv'))
+    # Lichen: post process, such as [timestamp, waste heat] * time_steps_num
+    case_name = 'bypass_refining_idf'
 
-    canSpeHumProfile = np.array(coordination.saving_data['canSpecHumProfile_Ratio'])
-    df_canSpeHumProfile = pd.DataFrame(canSpeHumProfile)
-    df_canSpeHumProfile.columns = ['(m) canSpeHum_' + str(0.5 + i + 1) for i in range(14)]
-    df_canSpeHum = plot_tools.add_date_index(df_canSpeHumProfile, start_time, time_interval_sec)
-    df_canSpeHum.to_csv(os.path.join(vcwg_ep_saving_path, 'bypass_refining_idf_canSpeHumProfile.csv'))
+    data_name_lst = ['TempProfile_K', 'SpecHumProfile_Ratio', 'PressProfile_Pa', 'wind_vxProfile_mps',
+                     'wind_vyProfile_mps', 'wind_SpeedProfile_mps', 'turbulence_tkeProfile_m2s2',
+                     'air_densityProfile_kgm3', 'sensible_heat_fluxProfile_Wm2', 'latent_heat_fluxProfile_Wm2',
+                     'can_Averaged_temp_k_specHum_ratio_press_pa']
 
-    canPresProfile = np.array(coordination.saving_data['canPressProfile_Pa'])
-    df_canPresProfile = pd.DataFrame(canPresProfile)
-    df_canPresProfile.columns = ['(m) canPres_' + str(0.5 + i + 1) for i in range(14)]
-    df_canPres = plot_tools.add_date_index(df_canPresProfile, start_time, time_interval_sec)
-    df_canPres.to_csv(os.path.join(vcwg_ep_saving_path, 'bypass_refining_idf_canPresProfile.csv'))
+    for data_name in data_name_lst:
+        plot_tools.save_data_to_csv(coordination.saving_data, data_name,case_name,
+                                    start_time, time_interval_sec, vcwg_ep_saving_path)
 
-    canAvged = np.array(coordination.saving_data['aveaged_temp_k_specHum_ratio_press_pa'])
-    df_canAvged = pd.DataFrame(canAvged)
-    df_canAvged.columns = ['Temp_K', 'SpecHum_Ratio', 'Press_Pa']
-    df_canAvged = plot_tools.add_date_index(df_canAvged, start_time, time_interval_sec)
-    df_canAvged.to_csv(os.path.join(vcwg_ep_saving_path, 'bypass_refining_idf_canAvged.csv'))
 
 

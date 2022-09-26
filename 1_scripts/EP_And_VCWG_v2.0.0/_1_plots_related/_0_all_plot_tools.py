@@ -1,5 +1,5 @@
 #RMSE function
-import numpy as np, pandas as pd, matplotlib.pyplot as plt
+import numpy as np, pandas as pd, matplotlib.pyplot as plt, os
 def RMSE(y_true, y_pred):
     return np.sqrt(np.mean(np.square(y_pred - y_true)))
 
@@ -286,3 +286,14 @@ def merge_multiple_df(df_list, column_name):
     df = pd.concat(df_list, axis=1)
     df.columns = column_name
     return df
+
+def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval_sec, vcwg_ep_saving_path):
+    data_arr = np.array(saving_data[file_name])
+    df = pd.DataFrame(data_arr)
+    if file_name == 'can_Averaged_temp_k_specHum_ratio_press_pa':
+        df.columns = ['Temp_K', 'SpecHum_Ratio', 'Press_Pa']
+    else:
+        df.columns = [f'(m) {file_name}_' + str(0.5 + i) for i in range(len(df.columns))]
+    df = add_date_index(df, start_time, time_interval_sec)
+    # save to excel
+    df.to_excel(os.path.join(vcwg_ep_saving_path, f'{case_name}_{file_name}.xlsx'))
