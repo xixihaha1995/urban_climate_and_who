@@ -347,20 +347,25 @@ def stacked_comparison_plot(merged_df, sensor_heights):
     # merged_df has 3 *  len(sensor_heights) columns
     # sensor_heights is a list of sensor heights
     # the first len(sensor_heights) columns are the measurements data
-    # the second len(sensor_heights) columns are the BEMCalc based predictions data
-    # the third len(sensor_heights) columns are the _Bypass based predictions data
+    # the second len(sensor_heights) columns are the BEMCalc based potential predictions data
+    # the third len(sensor_heights) columns are the BEMCalc based real predictions data
+    # the fourth len(sensor_heights) columns are the Bypass based potential predictions data
+    # the fifth len(sensor_heights) columns are the Bypass based real predictions data
 
     # In total, there will be len(sensor_heights) plots
-    # each plot has 3 lines
+    # each plot has 5 lines
     # the first line is the measurements data, with linestyle='--'
-    # the second line is the BEMCalc based predictions data, with linestyle='-'
-    # the third line is the Bypass based predictions data, with linestyle='-.'
+
     fig, ax = plt.subplots(len(sensor_heights), 1, figsize=(10, 10))
     for i in range(len(sensor_heights)):
         ax[i].plot(merged_df.iloc[:, i], linestyle='--', label='Measurement')
-        ax[i].plot(merged_df.iloc[:, i + len(sensor_heights)], linestyle='-', label='BEMCalc')
-        ax[i].plot(merged_df.iloc[:, i + 2 * len(sensor_heights)], linestyle='-.', label='Bypass')
+        ax[i].plot(merged_df.iloc[:, i + len(sensor_heights)], label='BEMCalc Potential')
+        ax[i].plot(merged_df.iloc[:, i + 2 * len(sensor_heights)], label='BEMCalc Real')
+        ax[i].plot(merged_df.iloc[:, i + 3 * len(sensor_heights)], label='Bypass Potential')
+        ax[i].plot(merged_df.iloc[:, i + 4 * len(sensor_heights)], label='Bypass Real')
         ax[i].set_ylabel(f'Height {sensor_heights[i]} m')
         ax[i].legend()
     ax[-1].set_xlabel('Time')
+    # set the overall title
+    fig.suptitle('Comparison of Temperature Profiles')
     plt.show()
