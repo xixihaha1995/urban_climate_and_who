@@ -1,5 +1,5 @@
-import threading, sys
-import numpy as np
+import threading, sys, pandas as pd
+import numpy as np, time
 sys.path.insert(0, 'C:\EnergyPlusV22-1-0')
 from pyenergyplus.api import EnergyPlusAPI
 def init_ep_api():
@@ -113,6 +113,12 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     vcwg_canSpecHum_Ratio = canHum
 
     BEM_building.sensWaste = ep_sensWaste_w_m2_per_floor_area * BEM_building.nFloor
+    # transfer accumulated seconds to Day, Hour, Minute, Second
+    day_hour_min_sec = time.strftime("%d day %H hour %M minute %S second", time.gmtime(vcwg_time_index_in_seconds))
+
+    print(f"BEMCalc_Element(), {day_hour_min_sec}, "
+          f"sensWaste (Currently only HVAC Rejection):{BEM_building.sensWaste} watts/ unit footprint area")
+
     ep_sensWaste_w_m2_per_floor_area = 0
 
     BEM_building.ElecTotal = ep_elecTotal_w_m2_per_floor_area * BEM_building.nFloor
