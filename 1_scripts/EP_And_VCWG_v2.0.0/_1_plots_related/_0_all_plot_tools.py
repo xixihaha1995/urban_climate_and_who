@@ -85,6 +85,17 @@ def bias_rmse_r2(df1, df2, df2_name):
     # return number with 2 decimal places
     return df2_name, round(mean_bias_percent,2), round(cvrmse,2), round(r2,2)
 
+def calculate_cvrmse(df1, df2):
+    '''
+    df1 is measurement data, [date, sensible/latent]
+    df2 is simulated data, [date, sensible/latent]
+    '''
+    bias = df1 - df2
+    rmse = np.sqrt(np.mean(np.square(bias)))
+    cvrmse = rmse / np.mean(df1) * 100
+    return round(cvrmse, 2)
+
+
 def read_text_as_csv(file_path, header=None, index_col=0, skiprows=3):
     '''
     df first column is index
@@ -312,8 +323,6 @@ def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue
     th_sensor_5min_K_compare = th_sensor_5min[compare_start_time:compare_end_time]
     th_sensor_5min_K_compare_df = pd.DataFrame(th_sensor_5min_K_compare)
     th_sensor_10min_K_compare = _5min_to_10min(th_sensor_5min_K_compare_df)
-    th_sensor_10min_c_compare = th_sensor_10min_K_compare - 273.15
-    th_sensor_10min_c_compare_series = pd.Series(th_sensor_10min_c_compare.iloc[:, 0])
 
     pres_profile_5min = pd.read_excel(f'{results_folder}\\{filename}_PressProfile_Pa.xlsx',
                                                       sheet_name='Sheet1', header=0, index_col=0)
@@ -322,15 +331,14 @@ def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue
     pres_sensor_5min_pa_compare_df = pd.DataFrame(pres_sensor_5min_pa_compare)
     pres_sensor_10min_pa_compare = _5min_to_10min(
         pres_sensor_5min_pa_compare_df)
-    # pres_sensor_10min_pa_compare is df, convert to series
-    pres_sensor_10min_pa_compare = pres_sensor_10min_pa_compare.iloc[:, 0]
-
-    # real temperature  = potential temperature * (p0/p)^0.286
-    real_sensor_10min_c_compare_arr = th_sensor_10min_c_compare_series.values * \
-                                                      (pres_sensor_10min_pa_compare.values / p0) ** 0.286
-    real_sensor_10min_c_compare = pd.DataFrame(real_sensor_10min_c_compare_arr,
-                                                               index=pres_sensor_10min_pa_compare.index, )
-    real_sensor_10min_c_compare_series = pd.Series(
-        real_sensor_10min_c_compare.iloc[:, 0])
-
-    return th_sensor_10min_c_compare_series, real_sensor_10min_c_compare_series
+    # real temperature  = th_sensor_10min_c_compare * (pres_sensor_10min_pa_compare/p0)^0.286
+    # both pres_sensor_10min_pa_compare and th_sensor_10min_c_compare have 6 columns
+    # get real_sensor_10min_c_compare (element wise calculation)
+    real_sensor_10min_K_compare_arr = th_sensor_10min_K_compare.values * \
+                                      (pres_sensor_10min_pa_compare.values / p0) ** 0.286
+    real_sensor_10min_K_compare = pd.DataFrame(real_sensor_10min_K_compare_arr,
+                                                  index=th_sensor_10min_K_compare.index,
+                                                    columns=th_sensor_10min_K_compare.columns)
+    th_sensor_10min_c_compare = th_sensor_10min_K_compare - 273.15
+    real_sensor_10min_c_compare = real_sensor_10min_K_compare - 273.15
+    return th_sensor_10min_c_compare, real_sensor_10min_c_compare

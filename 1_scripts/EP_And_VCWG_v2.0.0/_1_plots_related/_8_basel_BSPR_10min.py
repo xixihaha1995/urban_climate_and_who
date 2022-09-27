@@ -28,37 +28,45 @@ urban_all_sites_10min_clean = plt_tools.clean_bubble_iop(urban_all_sites_10min_d
 # select the 0th column as the comparison data
 urban_2p6_10min_c_compare = urban_all_sites_10min_clean[compare_start_time:compare_end_time]
 
-#bypass_refining_idf_TempProfile_K
-bypass_refining_th_sensor_10min_c_compare_series, bypass_refining_real_sensor_10min_c_compare_series = \
-    plt_tools.excel_to_potential_real_df(bypass_filename, results_folder, p0, heights_profile, ue1_heights,
-                                         compare_start_time,compare_end_time)
-original_th_sensor_10min_c_compare_series, original_real_sensor_10min_c_compare_series = \
+original_th_sensor_10min_c_compare, original_real_sensor_10min_c_compare = \
     plt_tools.excel_to_potential_real_df(original_filename, results_folder, p0, heights_profile, ue1_heights,
                                          compare_start_time,compare_end_time)
+bypass_refining_th_sensor_10min_c_compare, bypass_refining_real_sensor_10min_c_compare = \
+    plt_tools.excel_to_potential_real_df(bypass_filename, results_folder, p0, heights_profile, ue1_heights,
+                                         compare_start_time,compare_end_time)
+# urban_2p6_10min_c_compare are the measurements, column length is 6, which is for 6 heights
+# original_real_sensor_10min_c_compare are the associated original predictions, column length is 6
+# bypass_refining_real_sensor_10min_c_compare are the associated bypass predictions, column length is 6
 
-all_df_dc_lst = [urban_2p6_10min_c_compare,
-                 original_real_sensor_10min_c_compare_series,
-                 bypass_refining_real_sensor_10min_c_compare_series]
-all_df_dc_names = [f'Urban ({v200_sensor_height} m)',
-                   f'VCWG-Real Temperature ({v200_sensor_height} m)',
-                   f'VCWG(idf-Refining)-Real Temperature ({v200_sensor_height} m)']
-all_df_dc_in_one = plt_tools.merge_multiple_df(all_df_dc_lst, all_df_dc_names)
-# save the data as excel
-# all_df_dc_in_one.to_excel(f'{results_folder}\\_8_basel_5min_10min_all_in_one.xlsx')
-mbe_rmse_r2_real_original = plt_tools.bias_rmse_r2(urban_2p6_10min_c_compare,
-                                                    original_real_sensor_10min_c_compare_series,
-                                                    'VCWG-Real Temperature error')
-mbe_rmse_r2_real = plt_tools.bias_rmse_r2(urban_2p6_10min_c_compare,
-                                            bypass_refining_real_sensor_10min_c_compare_series,
-                                            'VCWG(idf-Refining)-Real Temperature error')
+# for each height, calculate the RMSE
+original_real_10min_c_compare_cvrmse = []
+bypass_refining_real_10min_c_compare_cvrmse = []
+for i in range(len(ue1_heights)):
+    original_real_10min_c_compare_cvrmse.append(
+        plt_tools.calculate_cvrmse(urban_2p6_10min_c_compare.iloc[:, i],
+                                   original_real_sensor_10min_c_compare.iloc[:, i]))
+    bypass_refining_real_10min_c_compare_cvrmse.append(
+        plt_tools.calculate_cvrmse(urban_2p6_10min_c_compare.iloc[:, i],
+                                   bypass_refining_real_sensor_10min_c_compare.iloc[:, i]))
 
-case_name = (f"BSPR:{compare_start_time} to {compare_end_time}-10min Canyon Temperature. p0 {p0} pa",
-             "Date", "Temperature (C)")
-txt_info = [case_name,
-            mbe_rmse_r2_real_original,
-            mbe_rmse_r2_real]
-# plot
-plt_tools.general_time_series_comparision(all_df_dc_in_one, txt_info)
+# print the results
+print(f"BSPR CVRMSE:{compare_start_time} to {compare_end_time}-10min Canyon Temperature. p0 {p0} pa")
+for i in range(len(ue1_heights)):
+    print(f'Height {ue1_heights[i]}m. Original: {original_real_10min_c_compare_cvrmse[i]}%, '
+          f'{bypass_filename}: {bypass_refining_real_10min_c_compare_cvrmse[i]}%')
+
+# # merge them together
+merged_df = pd.concat([urban_2p6_10min_c_compare, original_real_sensor_10min_c_compare,
+                          bypass_refining_real_sensor_10min_c_compare], axis=1)
+# rename the above columns
+# get ue1_heights length
+heights_length = len(ue1_heights)
+# add original_ to the next heights_length columns
+merged_df.columns = merged_df.columns[:heights_length].tolist() + \
+                    ['original_' + str(i) for i in merged_df.columns[heights_length:heights_length*2]] + \
+                    ['bypass_' + str(i) for i in merged_df.columns[heights_length*2:]]
+# save the merged_df to an Excel file
+merged_df.to_excel(f'{results_folder}\\BSPR_10min_C_compare.xlsx')
 
 
 
