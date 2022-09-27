@@ -52,7 +52,7 @@ for i in range(len(ue1_heights)):
 # print the results
 print(f"BSPR CVRMSE:{compare_start_time} to {compare_end_time}-10min Canyon Temperature. p0 {p0} pa")
 for i in range(len(ue1_heights)):
-    print(f'Height {ue1_heights[i]}m. Original: {original_real_10min_c_compare_cvrmse[i]}%, '
+    print(f'Height {ue1_heights[i]}m. BEMCalc-VCWG: {original_real_10min_c_compare_cvrmse[i]}%, '
           f'{bypass_filename}: {bypass_refining_real_10min_c_compare_cvrmse[i]}%')
 
 # # merge them together
@@ -63,10 +63,11 @@ merged_df = pd.concat([urban_2p6_10min_c_compare, original_real_sensor_10min_c_c
 heights_length = len(ue1_heights)
 # add original_ to the next heights_length columns
 merged_df.columns = merged_df.columns[:heights_length].tolist() + \
-                    ['original_' + str(i) for i in merged_df.columns[heights_length:heights_length*2]] + \
+                    ['BEMCalc-VCWG' + str(i) for i in merged_df.columns[heights_length:heights_length*2]] + \
                     ['bypass_' + str(i) for i in merged_df.columns[heights_length*2:]]
 # save the merged_df to an Excel file
 merged_df.to_excel(f'{results_folder}\\BSPR_10min_C_compare.xlsx')
 
-
+# staggered/stacked comparison plot
+plt_tools.stacked_comparison_plot(merged_df, ue1_heights)
 

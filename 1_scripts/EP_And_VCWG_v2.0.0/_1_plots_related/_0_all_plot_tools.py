@@ -342,3 +342,25 @@ def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue
     th_sensor_10min_c_compare = th_sensor_10min_K_compare - 273.15
     real_sensor_10min_c_compare = real_sensor_10min_K_compare - 273.15
     return th_sensor_10min_c_compare, real_sensor_10min_c_compare
+
+def stacked_comparison_plot(merged_df, sensor_heights):
+    # merged_df has 3 *  len(sensor_heights) columns
+    # sensor_heights is a list of sensor heights
+    # the first len(sensor_heights) columns are the measurements data
+    # the second len(sensor_heights) columns are the BEMCalc based predictions data
+    # the third len(sensor_heights) columns are the _Bypass based predictions data
+
+    # In total, there will be len(sensor_heights) plots
+    # each plot has 3 lines
+    # the first line is the measurements data, with linestyle='--'
+    # the second line is the BEMCalc based predictions data, with linestyle='-'
+    # the third line is the Bypass based predictions data, with linestyle='-.'
+    fig, ax = plt.subplots(len(sensor_heights), 1, figsize=(10, 10))
+    for i in range(len(sensor_heights)):
+        ax[i].plot(merged_df.iloc[:, i], linestyle='--', label='Measurement')
+        ax[i].plot(merged_df.iloc[:, i + len(sensor_heights)], linestyle='-', label='BEMCalc')
+        ax[i].plot(merged_df.iloc[:, i + 2 * len(sensor_heights)], linestyle='-.', label='Bypass')
+        ax[i].set_ylabel(f'Height {sensor_heights[i]} m')
+        ax[i].legend()
+    ax[-1].set_xlabel('Time')
+    plt.show()
