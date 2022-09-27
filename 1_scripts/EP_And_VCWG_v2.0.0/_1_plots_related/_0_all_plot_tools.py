@@ -298,13 +298,17 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
     # save to excel
     df.to_excel(os.path.join(vcwg_ep_saving_path, f'{case_name}_{file_name}.xlsx'))
 
-def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, v200_sensor_height,compare_start_time,
+def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue1_heights,compare_start_time,
                                compare_end_time):
     th_profie_5min = pd.read_excel(f'{results_folder}\\{filename}_TempProfile_K.xlsx',
                                                    sheet_name='Sheet1', header=0, index_col=0)
-    # from heights profile array, find the closed index for sensor height
-    sensor_idx = np.argmin(np.abs(np.array(heights_profile) - v200_sensor_height))
-    th_sensor_5min = th_profie_5min.iloc[:, sensor_idx]
+    # ue1_heights is sensor heights, heights_profile is the heights of predictions
+    # find the mapped indices in heights_profile
+    heights_profile = np.array(heights_profile)
+    ue1_heights = np.array(ue1_heights)
+    mapped_indices = [np.argmin(np.abs(heights_profile - i)) for i in ue1_heights]
+    # sensor_idx = np.argmin(np.abs(np.array(heights_profile) - v200_sensor_height))
+    th_sensor_5min = th_profie_5min.iloc[:, mapped_indices]
     th_sensor_5min_K_compare = th_sensor_5min[compare_start_time:compare_end_time]
     th_sensor_5min_K_compare_df = pd.DataFrame(th_sensor_5min_K_compare)
     th_sensor_10min_K_compare = _5min_to_10min(th_sensor_5min_K_compare_df)
@@ -313,7 +317,7 @@ def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, v2
 
     pres_profile_5min = pd.read_excel(f'{results_folder}\\{filename}_PressProfile_Pa.xlsx',
                                                       sheet_name='Sheet1', header=0, index_col=0)
-    pres_sensor_5min = pres_profile_5min.iloc[:, sensor_idx]
+    pres_sensor_5min = pres_profile_5min.iloc[:, mapped_indices]
     pres_sensor_5min_pa_compare = pres_sensor_5min[compare_start_time:compare_end_time]
     pres_sensor_5min_pa_compare_df = pd.DataFrame(pres_sensor_5min_pa_compare)
     pres_sensor_10min_pa_compare = _5min_to_10min(

@@ -10,14 +10,13 @@ v200_end_time = '2002-07-09 23:55:00'
 compare_start_time = '2002-06-10 01:00:00'
 compare_end_time = '2002-07-09 22:00:00'
 
-bypass_filename = '_BSPR_bypass_refining_idf'
+bypass_filename = '_BSPR_bypass_refining_M2'
 original_filename = 'vcwg'
 
-v200_sensor_height = 2.6
+# v200_sensor_height = 2.6
 heights_profile = [0.5 + i for i in range(50)]
 p0 = 100000
 ue1_heights = [2.6, 13.9, 17.5, 21.5, 25.5, 31.2]
-ue1_sensor_idx = np.argmin(np.abs(np.array(ue1_heights) - v200_sensor_height))
 
 # Read air temperature measurements
 urban_all_sites_10min_dirty = plt_tools.read_text_as_csv(f'{results_folder}\\BUBBLE_BSPR_AT_PROFILE_IOP.txt',
@@ -27,15 +26,14 @@ urban_all_sites_10min_clean = plt_tools.clean_bubble_iop(urban_all_sites_10min_d
                                                   start_time = IOP_start_time, end_time = IOP_end_time,
                                                   to_hourly= False)
 # select the 0th column as the comparison data
-urban_2p6_10min_ = urban_all_sites_10min_clean.iloc[:,ue1_sensor_idx]
-urban_2p6_10min_c_compare = urban_2p6_10min_[compare_start_time:compare_end_time]
+urban_2p6_10min_c_compare = urban_all_sites_10min_clean[compare_start_time:compare_end_time]
 
 #bypass_refining_idf_TempProfile_K
 bypass_refining_th_sensor_10min_c_compare_series, bypass_refining_real_sensor_10min_c_compare_series = \
-    plt_tools.excel_to_potential_real_df(bypass_filename, results_folder, p0, heights_profile, v200_sensor_height,
+    plt_tools.excel_to_potential_real_df(bypass_filename, results_folder, p0, heights_profile, ue1_heights,
                                          compare_start_time,compare_end_time)
 original_th_sensor_10min_c_compare_series, original_real_sensor_10min_c_compare_series = \
-    plt_tools.excel_to_potential_real_df(original_filename, results_folder, p0, heights_profile, v200_sensor_height,
+    plt_tools.excel_to_potential_real_df(original_filename, results_folder, p0, heights_profile, ue1_heights,
                                          compare_start_time,compare_end_time)
 
 all_df_dc_lst = [urban_2p6_10min_c_compare,
