@@ -29,6 +29,7 @@ def run_ep_api():
 
 if __name__ == '__main__':
     ep_files_path = '_06_Basel_BSPA_ue2\\refining'
+    # ep_files_path = '_05_Basel_BSPR_ue1\\refining'
     epwFileName = 'Basel.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
 
@@ -45,11 +46,14 @@ if __name__ == '__main__':
     # Lichen: wait for ep_thread to finish to post process some accumulated records
     ep_thread.join()
 
-    vcwg_ep_saving_path = '_2_saved\_1_BUBBLE_BSPA_detailed'
+    case_name = '_BSPA_bypass_refining_idf'
+    # case_name = '_BSPR_bypass_refining_idf'
+    vcwg_ep_saving_path = '_2_saved\_2_BUBBLE_BSPA'
+    # vcwg_ep_saving_path = '_2_saved\_1_BUBBLE_BSPR'
+
     start_time = '2002-06-10 00:00:00'
     time_interval_sec = 300
     # Lichen: post process, such as [timestamp, waste heat] * time_steps_num
-    case_name = '_BSPA_bypass_refining_idf'
 
     data_name_lst = ['TempProfile_K', 'SpecHumProfile_Ratio', 'PressProfile_Pa', 'wind_vxProfile_mps',
                      'wind_vyProfile_mps', 'wind_SpeedProfile_mps', 'turbulence_tkeProfile_m2s2',

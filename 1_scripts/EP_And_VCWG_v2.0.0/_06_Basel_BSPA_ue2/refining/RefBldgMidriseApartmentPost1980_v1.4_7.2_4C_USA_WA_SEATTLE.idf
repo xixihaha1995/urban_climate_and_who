@@ -14657,7 +14657,7 @@
     Temperature,             !- Schedule Type Limits Name
     THROUGH: 12/31,          !- Field 1
     FOR:AllDays,             !- Field 2
-    UNTIL: 24:00,23.9;       !- Field 3
+    UNTIL: 24:00,60;       !- Field 3
 
   Schedule:Compact,
     APT_HTGSETP_SCH,         !- Name
@@ -14684,13 +14684,13 @@
     Temperature,             !- Schedule Type Limits Name
     THROUGH: 12/31,          !- Field 1
     FOR:Weekdays SummerDesignDay, !- Field 2
-    UNTIL: 7:00,29.4,        !- Field 3
-    UNTIL: 8:00,26.7,        !- Field 5
-    UNTIL:17:00,23.9,        !- Field 7
-    UNTIL: 18:00,26.7,       !- Field 9
-    UNTIL: 24:00,29.4,       !- Field 11
+    UNTIL: 7:00,60,        !- Field 3
+    UNTIL: 8:00,60,        !- Field 5
+    UNTIL:17:00,60,        !- Field 7
+    UNTIL: 18:00,60,       !- Field 9
+    UNTIL: 24:00,60,       !- Field 11
     FOR: AllOtherDays,       !- Field 13
-    UNTIL: 24:00,29.4;       !- Field 14
+    UNTIL: 24:00,60;       !- Field 14
 
   Schedule:Compact,
     Dual Zone Control Type Sched,  !- Name

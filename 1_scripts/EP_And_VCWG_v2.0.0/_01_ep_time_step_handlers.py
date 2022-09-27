@@ -39,12 +39,13 @@ def _nested_ep_only(state):
 def run_vcwg():
     epwFileName = 'Basel.epw'
     TopForcingFileName = None
-    VCWGParamFileName = 'initialize_Basel_MOST.uwg'
-    # '_BSPA_ViewFactor_Basel_MOST.txt'
-    # ViewFactorFileName = 'ViewFactor_Basel_MOST.txt'
+    VCWGParamFileName = 'initialize_Basel_BSPA_MOST.uwg'
+    # VCWGParamFileName = 'initialize_Basel_BSPR_MOST.uwg'
     ViewFactorFileName = '_BSPA_ViewFactor_Basel_MOST.txt'
+    # ViewFactorFileName = '_BSPR_ViewFactor_Basel_MOST.txt'
     # Case name to append output file names with
     case = '_BSPA_Refinement_Basel_MOST'
+    # case = '_BSPR_Refinement_Basel_MOST'
 
     # '''
 
@@ -300,8 +301,8 @@ def _nested_ep_then_vcwg(state):
         wall_g_Text_C = coordination.ep_api.exchange.get_variable_value(state, wall_g_Text_handle)
         wall_g_Tint_C = coordination.ep_api.exchange.get_variable_value(state, wall_g_Tint_handle)
 
-        wall_Text_C = (wall_t_Text_C + wall_m_Text_C + wall_g_Text_C) / 3
-        wall_Tint_C = (wall_t_Tint_C + wall_m_Tint_C + wall_g_Tint_C) / 3
+        wall_Text_C = (wall_t_Text_C + wall_m_Text_C*2 + wall_g_Text_C) / 4
+        wall_Tint_C = (wall_t_Tint_C + wall_m_Tint_C*2 + wall_g_Tint_C) / 4
 
         roof_Text_C = coordination.ep_api.exchange.get_variable_value(state, roof_Text_handle)
         roof_Tint_C = coordination.ep_api.exchange.get_variable_value(state, roof_Tint_handle)
