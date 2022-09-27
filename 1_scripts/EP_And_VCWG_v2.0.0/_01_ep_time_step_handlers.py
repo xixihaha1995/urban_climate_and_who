@@ -40,12 +40,12 @@ def run_vcwg():
     epwFileName = 'Basel.epw'
     TopForcingFileName = None
     VCWGParamFileName = 'initialize_Basel_BSPA_MOST.uwg'
-    # VCWGParamFileName = 'initialize_Basel_BSPR_MOST.uwg'
+    VCWGParamFileName = 'initialize_Basel_BSPR_MOST.uwg'
     ViewFactorFileName = '_BSPA_ViewFactor_Basel_MOST.txt'
-    # ViewFactorFileName = '_BSPR_ViewFactor_Basel_MOST.txt'
+    ViewFactorFileName = '_BSPR_ViewFactor_Basel_MOST.txt'
     # Case name to append output file names with
-    case = '_BSPA_Refinement_Basel_MOST'
-    # case = '_BSPR_Refinement_Basel_MOST'
+    case = '_BSPA_Refinement_M2_Basel_MOST'
+    case = '_BSPR_Refinement_M2_Basel_MOST'
 
     # '''
 
