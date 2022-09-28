@@ -11,7 +11,7 @@ def run_ep_api():
     # api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
     #                                                               _01_ep_time_step_handlers._nested_ep_then_vcwg)
     api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
-                                                                  time_step_handlers._nested_ep_then_vcwg_ver0)
+                                                                  time_step_handlers._nested_ep_then_vcwg)
     # api.runtime.callback_end_zone_timestep_before_zone_reporting(state,
     #                                                               _01_ep_time_step_handlers._nested_ep_only)
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
@@ -23,6 +23,7 @@ def run_ep_api():
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
+    time_step_handler_ver = 2
     ep_files_path = '_1_case_analysis\\cases\\_05_Basel_BSPR_ue1\\refining_M2'
     epwFileName = 'Basel.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M2.idf'
@@ -32,7 +33,7 @@ if __name__ == '__main__':
     coordination.init_ep_api()
     api = coordination.ep_api
     coordination.init_semaphore_lock_settings()
-    coordination.init_variables_for_vcwg_ep(ep_files_path)
+    coordination.init_variables_for_vcwg_ep(ep_files_path, time_step_handler_ver)
 
     # Lichen: run ep_thread first, wait for EP warm up and ep_thread will call run VCWG_thread
     ep_thread = Thread(target=run_ep_api)
@@ -41,7 +42,7 @@ if __name__ == '__main__':
     ep_thread.join()
 
     case_name = '_BSPR_bypass_refining_M2'
-    vcwg_ep_saving_path = ep_files_path + '\\vcwg_ep_saving\\ver0'
+    vcwg_ep_saving_path = ep_files_path + f'\\vcwg_ep_saving\\ver{time_step_handler_ver}'
 
     start_time = '2002-06-10 00:00:00'
     time_interval_sec = 300

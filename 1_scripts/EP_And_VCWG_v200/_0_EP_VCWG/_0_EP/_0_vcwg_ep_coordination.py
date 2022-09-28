@@ -10,15 +10,18 @@ def init_semaphore_lock_settings():
     sem_vcwg = threading.Semaphore(0)
     sem_energyplus = threading.Semaphore(1)
 
-def init_variables_for_vcwg_ep(_in_ep_files_path):
+def init_variables_for_vcwg_ep(_in_ep_files_path, _in_ver):
     global vcwg_needed_time_idx_in_seconds,\
-        vcwg_canTemp_K, vcwg_canSpecHum_Ratio, vcwg_canPress_Pa,\
+        vcwg_canTemp_K, vcwg_canSpecHum_Ratio, vcwg_canPress_Pa, vcwg_wsp_mps, vcwg_wdir_deg,\
         ep_indoorTemp_C, ep_indoorHum_Ratio, ep_sensCoolDemand_w_m2, ep_sensHeatDemand_w_m2, ep_coolConsump_w_m2, ep_heatConsump_w_m2,\
         ep_elecTotal_w_m2_per_floor_area, ep_sensWaste_w_m2_per_floor_area, ep_floor_fluxMass_w_m2, ep_fluxRoof_w_m2, ep_fluxWall_w_m2, \
-        ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, ep_wall_Text_K, ep_wall_Tint_K, blf_floor_area_m2,\
-        time_step_version, ep_files_path
+        ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, \
+        ep_wallSun_Text_K, ep_wallSun_Tint_K,ep_wallShade_Text_K, ep_wallShade_Tint_K,\
+        blf_floor_area_m2, time_step_version, ep_files_path
+    vcwg_wsp_mps = 0
+    vcwg_wdir_deg = 0
     ep_files_path = _in_ep_files_path
-    time_step_version = 0
+    time_step_version = _in_ver
     blf_floor_area_m2 = 3135
     vcwg_needed_time_idx_in_seconds = 0
     vcwg_canTemp_K = 0
@@ -39,8 +42,10 @@ def init_variables_for_vcwg_ep(_in_ep_files_path):
     ep_floor_Tint_K = 300
     ep_roof_Text_K = 300
     ep_roof_Tint_K = 300
-    ep_wall_Text_K = 300
-    ep_wall_Tint_K = 300
+    ep_wallSun_Text_K = 300
+    ep_wallSun_Tint_K = 300
+    ep_wallShade_Text_K = 300
+    ep_wallShade_Tint_K = 300
 
 def init_saving_data(_in_vcwg_ep_saving_path = '_2_saved\BUBBLE_VCWG-EP-detailed'):
     global saving_data, vcwg_ep_saving_path
@@ -69,7 +74,7 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     <class 'BuildingEnergy.Building'>
     """
     global vcwg_needed_time_idx_in_seconds,\
-        vcwg_canTemp_K, vcwg_canSpecHum_Ratio, vcwg_canPress_Pa,\
+        vcwg_canTemp_K, vcwg_canSpecHum_Ratio, vcwg_canPress_Pa, vcwg_wsp_mps, vcwg_wdir_deg,\
         ep_indoorTemp_C, ep_indoorHum_Ratio, ep_sensCoolDemand_w_m2, ep_sensHeatDemand_w_m2, ep_coolConsump_w_m2, ep_heatConsump_w_m2,\
         ep_elecTotal_w_m2_per_floor_area, ep_sensWaste_w_m2_per_floor_area, ep_floor_fluxMass_w_m2, ep_fluxRoof_w_m2, ep_fluxWall_w_m2, \
         ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, ep_wall_Text_K, ep_wall_Tint_K
@@ -99,12 +104,20 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     saving_data['sensible_heat_fluxProfile_Wm2'].append(HfluxProf)
     saving_data['latent_heat_fluxProfile_Wm2'].append(LEfluxProf)
 
+
     canTempProf_cur = TempProf_cur[0:Geometry_m.nz_u]
     canSpecHumProf_cur = HumProf_cur[0:Geometry_m.nz_u]
     canPressProf_cur = PresProf_cur[0:Geometry_m.nz_u]
+    canWspdProf_cur = wind_magnitudeProf[0:Geometry_m.nz_u]
+    # tan(wdir) = vx/vy, wdir unit is degree from 0 to 360, 0 is north, 90 is east, 180 is south, 270 is west
+    canWdirProf_cur = np.arctan(vxProf[0:Geometry_m.nz_u] / vyProf[0:Geometry_m.nz_u]) * 180 / np.pi
+
     canTemp = np.mean(canTempProf_cur)
     canHum = np.mean(canSpecHumProf_cur)
     vcwg_canPress_Pa = np.mean(canPressProf_cur)
+    vcwg_wsp_mps = np.mean(canWspdProf_cur)
+    vcwg_wdir_deg = np.mean(canWdirProf_cur)
+
 
     saving_data['can_Averaged_temp_k_specHum_ratio_press_pa'].append([canTemp, canHum, vcwg_canPress_Pa])
 
@@ -128,10 +141,10 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
 
     BEM.mass.Text = ep_floor_Text_K
     BEM.mass.Tint = ep_floor_Tint_K
-    BEM.wallSun.Text = ep_wall_Text_K
-    BEM.wallSun.Tint = ep_wall_Tint_K
-    BEM.wallShade.Text = ep_wall_Text_K
-    BEM.wallShade.Tint = ep_wall_Tint_K
+    BEM.wallSun.Text = ep_wallSun_Text_K
+    BEM.wallSun.Tint = ep_wallSun_Tint_K
+    BEM.wallShade.Text = ep_wallShade_Text_K
+    BEM.wallShade.Tint = ep_wallShade_Tint_K
 
     # floor mass, wallSun, wallShade, roofImp, roofVeg
     if FractionsRoof.fimp > 0:

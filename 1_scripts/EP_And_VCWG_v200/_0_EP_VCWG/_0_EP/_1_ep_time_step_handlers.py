@@ -9,7 +9,13 @@ accu_hvac_heat_rejection_J = 0
 zone_time_step_seconds = 0
 ep_last_accumulated_time_index_in_seconds = 0
 ep_last_call_time_seconds = 0
-
+def api_to_csv(state):
+    orig = coordination.ep_api.exchange.list_available_api_data_csv(state)
+    newFileByteArray = bytearray(orig)
+    api_path = os.path.join(os.path.dirname(__file__), '..','..',coordination.ep_files_path, 'api_data.csv')
+    newFile = open(api_path, "wb")
+    newFile.write(newFileByteArray)
+    newFile.close()
 def _nested_ep_only(state):
     global one_time, accu_hvac_heat_rejection_J,zone_time_step_seconds \
         ,hvac_heat_rejection_sensor_handle, ep_last_accumulated_time_index_in_seconds
@@ -62,18 +68,10 @@ def run_vcwg():
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
     VCWG.run()
 
-def api_to_csv(state):
-    orig = coordination.ep_api.exchange.list_available_api_data_csv(state)
-    newFileByteArray = bytearray(orig)
-    api_path = os.path.join(os.path.dirname(__file__), '..','..',coordination.ep_files_path, 'api_data.csv')
-    newFile = open(api_path, "wb")
-    newFile.write(newFileByteArray)
-    newFile.close()
-def _nested_ep_then_vcwg_ver0(state):
-    global one_time,one_time_call_vcwg,oat_sensor_handle, records,\
-        odb_actuator_handle, orh_actuator_handle,\
-        zone_indor_temp_sensor_handle, zone_indor_spe_hum_sensor_handle,\
-        zone_flr_area_handle,\
+def _nested_ep_then_vcwg(state):
+    global one_time,one_time_call_vcwg,\
+        odb_actuator_handle, orh_actuator_handle, wsped_mps_actuator_handle, wdir_deg_actuator_handle,\
+        zone_indor_temp_sensor_handle, zone_indor_spe_hum_sensor_handle, zone_flr_area_handle,\
         sens_cool_demand_sensor_handle, sens_heat_demand_sensor_handle, \
         cool_consumption_sensor_handle, heat_consumption_sensor_handle, \
         hvac_heat_rejection_sensor_handle, elec_bld_meter_handle,\
@@ -88,23 +86,27 @@ def _nested_ep_then_vcwg_ver0(state):
         roof_interior_swr_lights_handle, roof_interior_swr_solar_handle,\
         floor_Text_handle, roof_Text_handle, \
         floor_Tint_handle, roof_Tint_handle, \
-        wall_t_Text_handle, wall_t_Tint_handle, wall_m_Text_handle, wall_m_Tint_handle, wall_g_Text_handle, wall_g_Tint_handle
+        s_wall_t_Text_handle, s_wall_t_Tint_handle, s_wall_m_Text_handle, s_wall_m_Tint_handle, \
+        s_wall_g_Text_handle, s_wall_g_Tint_handle,\
+        n_wall_t_Text_handle, n_wall_t_Tint_handle, n_wall_m_Text_handle, n_wall_m_Tint_handle, \
+        n_wall_g_Text_handle, n_wall_g_Tint_handle
 
     if one_time:
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
             return
         one_time = False
         api_to_csv(state)
-        oat_sensor_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                             "Site Outdoor Air Drybulb Temperature",
-                                             "ENVIRONMENT")
         odb_actuator_handle = coordination.ep_api.exchange.get_actuator_handle(
             state, "Weather Data", "Outdoor Dry Bulb",
             "Environment")
         orh_actuator_handle = coordination.ep_api.exchange.get_actuator_handle(
             state, "Weather Data", "Outdoor Relative Humidity",
             "Environment")
+
+        wsped_mps_actuator_handle = coordination.ep_api.exchange.get_actuator_handle(
+            state, "Weather Data", "Wind Speed", "Environment")
+        wdir_deg_actuator_handle = coordination.ep_api.exchange.get_actuator_handle(
+            state, "Weather Data", "Wind Direction", "Environment")
 
         zone_indor_temp_sensor_handle = coordination.ep_api.exchange.get_variable_handle(state,"Zone Air Temperature","T S1 APARTMENT")
         zone_indor_spe_hum_sensor_handle = coordination.ep_api.exchange.get_variable_handle(state,"Zone Air Humidity Ratio","T S1 APARTMENT")
@@ -202,18 +204,30 @@ def _nested_ep_then_vcwg_ver0(state):
                                                                 "t GFloor S1A")
         floor_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
                                                                 "t GFloor S1A")
-        wall_t_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
+        s_wall_t_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
                                                                 "t SWall S1A")
-        wall_t_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
+        s_wall_t_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
                                                                 "t SWall S1A")
-        wall_m_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
+        s_wall_m_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
                                                               "m SWall S1A")
-        wall_m_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
+        s_wall_m_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
                                                                 "m SWall S1A")
-        wall_g_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
+        s_wall_g_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
                                                                 "g SWall S1A")
-        wall_g_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
+        s_wall_g_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
                                                                 "g SWall S1A")
+        n_wall_t_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
+                                                                                "t NWall N1A")
+        n_wall_t_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
+                                                                                "t NWall N1A")
+        n_wall_m_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
+                                                                                "m NWall N1A")
+        n_wall_m_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
+                                                                                "m NWall N1A")
+        n_wall_g_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
+                                                                                "g NWall N1A")
+        n_wall_g_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
+                                                                                "g NWall N1A")
         roof_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
                                                                 "t Roof S1A")
         roof_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
@@ -303,28 +317,47 @@ def _nested_ep_then_vcwg_ver0(state):
 
         floor_Text_C = coordination.ep_api.exchange.get_variable_value(state, floor_Text_handle)
         floor_Tint_C = coordination.ep_api.exchange.get_variable_value(state, floor_Tint_handle)
-        wall_t_Text_C = coordination.ep_api.exchange.get_variable_value(state, wall_t_Text_handle)
-        wall_t_Tint_C = coordination.ep_api.exchange.get_variable_value(state, wall_t_Tint_handle)
-        wall_m_Text_C = coordination.ep_api.exchange.get_variable_value(state, wall_m_Text_handle)
-        wall_m_Tint_C = coordination.ep_api.exchange.get_variable_value(state, wall_m_Tint_handle)
-        wall_g_Text_C = coordination.ep_api.exchange.get_variable_value(state, wall_g_Text_handle)
-        wall_g_Tint_C = coordination.ep_api.exchange.get_variable_value(state, wall_g_Tint_handle)
+        s_wall_t_Text_C = coordination.ep_api.exchange.get_variable_value(state, s_wall_t_Text_handle)
+        s_wall_t_Tint_C = coordination.ep_api.exchange.get_variable_value(state, s_wall_t_Tint_handle)
+        s_wall_m_Text_C = coordination.ep_api.exchange.get_variable_value(state, s_wall_m_Text_handle)
+        s_wall_m_Tint_C = coordination.ep_api.exchange.get_variable_value(state, s_wall_m_Tint_handle)
+        s_wall_g_Text_C = coordination.ep_api.exchange.get_variable_value(state, s_wall_g_Text_handle)
+        s_wall_g_Tint_C = coordination.ep_api.exchange.get_variable_value(state, s_wall_g_Tint_handle)
+        n_wall_t_Text_C = coordination.ep_api.exchange.get_variable_value(state, n_wall_t_Text_handle)
+        n_wall_t_Tint_C = coordination.ep_api.exchange.get_variable_value(state, n_wall_t_Tint_handle)
+        n_wall_m_Text_C = coordination.ep_api.exchange.get_variable_value(state, n_wall_m_Text_handle)
+        n_wall_m_Tint_C = coordination.ep_api.exchange.get_variable_value(state, n_wall_m_Tint_handle)
+        n_wall_g_Text_C = coordination.ep_api.exchange.get_variable_value(state, n_wall_g_Text_handle)
+        n_wall_g_Tint_C = coordination.ep_api.exchange.get_variable_value(state, n_wall_g_Tint_handle)
 
-        wall_Text_C = (wall_t_Text_C + wall_m_Text_C*2 + wall_g_Text_C) / 4
-        wall_Tint_C = (wall_t_Tint_C + wall_m_Tint_C*2 + wall_g_Tint_C) / 4
+        s_wall_Text_C = (s_wall_t_Text_C + s_wall_m_Text_C*2 + s_wall_g_Text_C) / 4
+        s_wall_Tint_C = (s_wall_t_Tint_C + s_wall_m_Tint_C*2 + s_wall_g_Tint_C) / 4
+        n_wall_Text_C = (n_wall_t_Text_C + n_wall_m_Text_C*2 + n_wall_g_Text_C) / 4
+        n_wall_Tint_C = (n_wall_t_Tint_C + n_wall_m_Tint_C*2 + n_wall_g_Tint_C) / 4
 
         roof_Text_C = coordination.ep_api.exchange.get_variable_value(state, roof_Text_handle)
         roof_Tint_C = coordination.ep_api.exchange.get_variable_value(state, roof_Tint_handle)
 
-
         coordination.ep_api.exchange.set_actuator_value(state, odb_actuator_handle, coordination.vcwg_canTemp_K - 273.15)
         coordination.ep_api.exchange.set_actuator_value(state, orh_actuator_handle, rh)
-        coordination.ep_elecTotal_w_m2_per_floor_area = elec_bld_meter_w_m2
 
+        if coordination.time_step_version == 2:
+            coordination.ep_api.exchange.set_actuator_value(state, wsped_mps_actuator_handle, coordination.vcwg_wsp_mps)
+            coordination.ep_api.exchange.set_actuator_value(state, wdir_deg_actuator_handle, coordination.vcwg_wdir_deg)
+
+        coordination.ep_elecTotal_w_m2_per_floor_area = elec_bld_meter_w_m2
         coordination.ep_floor_Text_K = floor_Text_C + 273.15
         coordination.ep_floor_Tint_K = floor_Tint_C + 273.15
-        coordination.ep_wall_Text_K = wall_Text_C + 273.15
-        coordination.ep_wall_Tint_K = wall_Tint_C + 273.15
+        if coordination.time_step_version == 0:
+            coordination.ep_wallSun_Text_K = s_wall_Text_C + 273.15
+            coordination.ep_wallSun_Tint_K = s_wall_Tint_C + 273.15
+            coordination.ep_wallShade_Text_K = s_wall_Text_C + 273.15
+            coordination.ep_wallShade_Tint_K = s_wall_Tint_C + 273.15
+        else:
+            coordination.ep_wallSun_Text_K = s_wall_Text_C + 273.15
+            coordination.ep_wallSun_Tint_K = s_wall_Tint_C + 273.15
+            coordination.ep_wallShade_Text_K = n_wall_Text_C + 273.15
+            coordination.ep_wallShade_Tint_K = n_wall_Tint_C + 273.15
         coordination.ep_roof_Text_K = roof_Text_C + 273.15
         coordination.ep_roof_Tint_K = roof_Tint_C + 273.15
 
