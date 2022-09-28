@@ -306,7 +306,9 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
     else:
         df.columns = [f'(m) {file_name}_' + str(0.5 + i) for i in range(len(df.columns))]
     df = add_date_index(df, start_time, time_interval_sec)
-    # save to excel
+    # save to excel, if non-exist, create one
+    if not os.path.exists(vcwg_ep_saving_path):
+        os.makedirs(vcwg_ep_saving_path)
     df.to_excel(os.path.join(vcwg_ep_saving_path, f'{case_name}_{file_name}.xlsx'))
 
 def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue1_heights,compare_start_time,

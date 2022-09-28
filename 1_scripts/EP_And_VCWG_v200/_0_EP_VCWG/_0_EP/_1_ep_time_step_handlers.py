@@ -40,9 +40,9 @@ def run_vcwg():
     epwFileName = 'Basel.epw'
     TopForcingFileName = None
     # VCWGParamFileName = 'initialize_Basel_BSPA_MOST.uwg'
-    VCWGParamFileName = 'initialize_Basel_BSPR_MOST.uwg'
+    VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
     # ViewFactorFileName = '_BSPA_ViewFactor_Basel_MOST.txt'
-    ViewFactorFileName = '_BSPR_ViewFactor_Basel_MOST.txt'
+    ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
     # Case name to append output file names with
     # case = '_BSPA_Refinement_M2_Basel_MOST'
     case = '_BSPR_Refinement_M2_Basel_MOST'
@@ -60,7 +60,7 @@ def run_vcwg():
     # Initialize the UWG object and run the simulation
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
     VCWG.run()
-def _nested_ep_then_vcwg(state):
+def _nested_ep_then_vcwg_ver0(state):
     global one_time,one_time_call_vcwg,oat_sensor_handle, records,\
         odb_actuator_handle, orh_actuator_handle,\
         zone_indor_temp_sensor_handle, zone_indor_spe_hum_sensor_handle,\

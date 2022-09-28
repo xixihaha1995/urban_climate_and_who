@@ -11,8 +11,8 @@ Last update: February 2021
 
 def Write_Forcing(case,ForcingData,time,Output_dir):
 
-    timeseriesFilename = os.path.join(Output_dir,"Forcing" + case + ".txt")
-    outputFile_Forcing = open(timeseriesFilename, "w")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"Forcing" + case + ".txt")
+    outputFile_Forcing = open(os.path.join(os.path.dirname(__file__), timeseriesFilename), "w")
     outputFile_Forcing.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_Forcing.write("# Forcing parameters near surface or top of the domain based on user's choice \n")
     outputFile_Forcing.write("# 0:time [hr] 1:T [K] 2:S [m s^-1] 3:RH [-] 4:q [kg kg^-1] 5:Pressure [Pa] 6:Rain [mm s^-1] \n")
@@ -23,8 +23,7 @@ def Write_Forcing(case,ForcingData,time,Output_dir):
     outputFile_Forcing.close()
 
 def Write_EB(case,FractionsRoof,FractionsGround,ParTree,RSMParam, EBRoofData,EBCanyonData,EBRuralData,UCMData,time,Output_dir):
-
-    timeseriesFilename = os.path.join(Output_dir,"SWR"+case+".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"SWR"+case+".txt")
     outputFile_SWR = open(timeseriesFilename, "w")
     outputFile_SWR.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_SWR.write("# Shortwave radiative fluxes at the surfaces \n")
@@ -90,7 +89,7 @@ def Write_EB(case,FractionsRoof,FractionsGround,ParTree,RSMParam, EBRoofData,EBC
     outputFile_SWR.close()
 
 
-    timeseriesFilename = os.path.join(Output_dir,"LWR"+case+".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"LWR"+case+".txt")
     outputFile_LWR = open(timeseriesFilename, "w")
     outputFile_LWR.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_LWR.write("# Longwave radiative fluxes at the surfaces \n")
@@ -155,7 +154,7 @@ def Write_EB(case,FractionsRoof,FractionsGround,ParTree,RSMParam, EBRoofData,EBC
                                 EBRuralData[i].EnergyFlux.LWRabsRural))
     outputFile_LWR.close()
 
-    timeseriesFilename = os.path.join(Output_dir,"Hfluxes"+case+".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"Hfluxes"+case+".txt")
     outputFile_Hflux = open(timeseriesFilename, "w")
     outputFile_Hflux.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_Hflux.write("# Sensible heat fluxes at the surfaces \n")
@@ -189,7 +188,7 @@ def Write_EB(case,FractionsRoof,FractionsGround,ParTree,RSMParam, EBRoofData,EBC
                                 UCMData[i].UrbanFlux_H))
     outputFile_Hflux.close()
 
-    timeseriesFilename = os.path.join(Output_dir,"LEfluxes"+case+".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"LEfluxes"+case+".txt")
     outputFile_LEfluxes = open(timeseriesFilename, "w")
     outputFile_LEfluxes.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_LEfluxes.write("# Latent heat fluxes at the surfaces \n")
@@ -244,7 +243,7 @@ def Write_EB(case,FractionsRoof,FractionsGround,ParTree,RSMParam, EBRoofData,EBC
                                 EBRuralData[i].EnergyFlux.LEfluxRural,UCMData[i].UrbanFlux_LE))
     outputFile_LEfluxes.close()
 
-    timeseriesFilename = os.path.join(Output_dir,"Gfluxes"+case+".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"Gfluxes"+case+".txt")
     outputFile_Gfluxes = open(timeseriesFilename, "w")
     outputFile_Gfluxes.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_Gfluxes.write("# Conductive heat fluxes at the surfaces \n")
@@ -274,7 +273,7 @@ def Write_EB(case,FractionsRoof,FractionsGround,ParTree,RSMParam, EBRoofData,EBC
                                 EBRuralData[i].EnergyFlux.GfluxRural))
     outputFile_Gfluxes.close()
 
-    timeseriesFilename = os.path.join(Output_dir,"Efluxes"+case+".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"Efluxes"+case+".txt")
     outputFile_Efluxes = open(timeseriesFilename, "w")
     outputFile_Efluxes.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_Efluxes.write("# Evaporative fluxes at the surfaces \n")
@@ -334,7 +333,7 @@ def Write_Tsurf(case,FractionsRoof,FractionsGround,ParTree,RoofImpData,RoofVegDa
             TextRural = [RSMParam.fimp*RuralGroundImpData[i].Text+RSMParam.fbare*RuralGroundBareData[i].Text+
                          RSMParam.fveg*RuralGroundVegData[i].Text for i in range(len(RuralGroundVegData))]
 
-    timeseriesFilename = os.path.join(Output_dir,"Tsurf" + case + ".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"Tsurf" + case + ".txt")
     outputFile_Tsurf = open(timeseriesFilename, "w")
     outputFile_Tsurf.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_Tsurf.write("# Temperature at the surfaces \n")
@@ -368,7 +367,7 @@ def Write_Tsurf(case,FractionsRoof,FractionsGround,ParTree,RoofImpData,RoofVegDa
 def Write_WB(case,FractionsRoof,FractionsGround,ParTree, WBRoofData,WBCanyonData,time,Output_dir):
 
     # Generate output text file for leakage
-    timeseriesFilename = os.path.join(Output_dir,"Leakage" + case + ".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"Leakage" + case + ".txt")
     outputFile_Lk = open(timeseriesFilename, "w")
     outputFile_Lk.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_Lk.write("# Water leakage from roof and ground \n")
@@ -396,7 +395,7 @@ def Write_WB(case,FractionsRoof,FractionsGround,ParTree, WBRoofData,WBCanyonData
     outputFile_Lk.close()
 
     # Generate output text file for dInt_dt
-    timeseriesFilename = os.path.join(Output_dir,"InterceptionChange" + case + ".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"InterceptionChange" + case + ".txt")
     outputFile_dInt = open(timeseriesFilename, "w")
     outputFile_dInt.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_dInt.write("# Change in water interception at roof and ground \n")
@@ -431,7 +430,7 @@ def Write_WB(case,FractionsRoof,FractionsGround,ParTree, WBRoofData,WBCanyonData
     outputFile_dInt.close()
 
     # Generate output text file for Infiltration
-    timeseriesFilename = os.path.join(Output_dir,"Infiltration" + case + ".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"Infiltration" + case + ".txt")
     outputFile_Inf = open(timeseriesFilename, "w")
     outputFile_Inf.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_Inf.write("# Infiltration at roof and ground \n")
@@ -457,7 +456,7 @@ def Write_WB(case,FractionsRoof,FractionsGround,ParTree, WBRoofData,WBCanyonData
     outputFile_Inf.close()
 
     # Generate output text file for Runoff
-    timeseriesFilename = os.path.join(Output_dir,"Runoff" + case + ".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"Runoff" + case + ".txt")
     outputFile_Runoff = open(timeseriesFilename, "w")
     outputFile_Runoff.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_Runoff.write("# Runoff at roof and ground \n")
@@ -497,7 +496,7 @@ def Write_WB(case,FractionsRoof,FractionsGround,ParTree, WBRoofData,WBCanyonData
     outputFile_Runoff.close()
 
     # Generate output text file for Runon
-    timeseriesFilename = os.path.join(Output_dir,"Runon" + case + ".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"Runon" + case + ".txt")
     outputFile_Runon = open(timeseriesFilename, "w")
     outputFile_Runon.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_Runon.write("# Runon at roof and ground \n")
@@ -511,7 +510,7 @@ def Write_WB(case,FractionsRoof,FractionsGround,ParTree, WBRoofData,WBCanyonData
     outputFile_Runon.close()
 
     # Generate output text file for dVwater
-    timeseriesFilename = os.path.join(Output_dir,"SoilWaterVolumeChange" + case + ".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"SoilWaterVolumeChange" + case + ".txt")
     outputFile_dVwater = open(timeseriesFilename, "w")
     outputFile_dVwater.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_dVwater.write("# Change in water volume of soil \n")
@@ -535,7 +534,7 @@ def Write_WB(case,FractionsRoof,FractionsGround,ParTree, WBRoofData,WBCanyonData
     outputFile_dVwater.close()
 
     # Generate output text file for WB_OtherParam
-    timeseriesFilename = os.path.join(Output_dir,"OtherWaterTerms" + case + ".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"OtherWaterTerms" + case + ".txt")
     outputFile_WB_OtherParam = open(timeseriesFilename, "w")
     outputFile_WB_OtherParam.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_WB_OtherParam.write("# Other water terms \n")
@@ -564,7 +563,7 @@ def Write_WB(case,FractionsRoof,FractionsGround,ParTree, WBRoofData,WBCanyonData
     outputFile_WB_OtherParam.close()
 
     # Generate output text file for TE
-    timeseriesFilename = os.path.join(Output_dir,"Transpiration" + case + ".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"Transpiration" + case + ".txt")
     outputFile_TE = open(timeseriesFilename, "w")
     outputFile_TE.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_TE.write("# Transpiration from low and high vegetation \n")
@@ -591,7 +590,7 @@ def Write_WB(case,FractionsRoof,FractionsGround,ParTree, WBRoofData,WBCanyonData
     outputFile_TE.close()
 
     # Generate output text file for WBIndv
-    timeseriesFilename = os.path.join(Output_dir,"WaterBalanceResiduals" + case + ".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"WaterBalanceResiduals" + case + ".txt")
     outputFile_WB = open(timeseriesFilename, "w")
     outputFile_WB.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_WB.write("# Water balance residual terms \n")
@@ -622,7 +621,7 @@ def Write_WB(case,FractionsRoof,FractionsGround,ParTree, WBRoofData,WBCanyonData
     outputFile_WB.close()
 
     # Generate output text file for SoilPotW
-    timeseriesFilename = os.path.join(Output_dir,"SoilWaterPotential" + case + ".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"SoilWaterPotential" + case + ".txt")
     outputFile_SoilPotW = open(timeseriesFilename, "w")
     outputFile_SoilPotW.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_SoilPotW.write("# Soil water potential \n")
@@ -644,7 +643,7 @@ def Write_TdeepProfiles(var_string,FractionsGround,SurfType,Surface,z_depth_grou
         Values_format = Values_format0 + " %f "
         Values_format0 = Values_format
     Values_format_all = Values_format + str('\n')
-    ProfilesFilename = os.path.join(Output_dir,var_string+"_profiles"+case+".txt")
+    ProfilesFilename = os.path.join(os.path.dirname(__file__),Output_dir,var_string+"_profiles"+case+".txt")
     outputFileProf = open(ProfilesFilename, "w")
     outputFileProf.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFileProf.write("# "+var_string+" profile in the urban area \n")
@@ -677,7 +676,7 @@ def Write_1Dprofiles(var_string,SiteModel,object_var,var,z,time,case,Output_dir)
         Values_format = Values_format0 + " %f "
         Values_format0 = Values_format
     Values_format_all = Values_format + str('\n')
-    ProfilesFilename = os.path.join(Output_dir,var_string+"_profiles"+case+".txt")
+    ProfilesFilename = os.path.join(os.path.dirname(__file__),Output_dir,var_string+"_profiles"+case+".txt")
     outputFileProf = open(ProfilesFilename, "w")
     outputFileProf.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFileProf.write("# " + var_string + "profile in the urban area \n")
@@ -698,7 +697,7 @@ def Write_Ruralprofiles(var_string,RuralModelName,SiteModel,var,z,time,case,Outp
         Values_format = Values_format0 + " %f "
         Values_format0 = Values_format
     Values_format_all = Values_format + str('\n')
-    ProfilesFilename = os.path.join(Output_dir,var_string+"_profiles"+case+".txt")
+    ProfilesFilename = os.path.join(os.path.dirname(__file__),Output_dir,var_string+"_profiles"+case+".txt")
     outputFileProf = open(ProfilesFilename, "w")
     outputFileProf.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFileProf.write("# " + var_string + "profile in the urban area \n")
@@ -789,7 +788,7 @@ def Write_BEM(BEMData,time,case,Output_dir):
             sensWaterHeatDemand[i] = sensWaterHeatDemand[i] + BEM[j].frac*BEM[j].building.sensWaterHeatDemand
 
     # Generate output text file for BEM
-    timeseriesFilename = os.path.join(Output_dir,"BEM"+case+".txt")
+    timeseriesFilename = os.path.join(os.path.dirname(__file__),Output_dir,"BEM"+case+".txt")
     outputFile_BEM = open(timeseriesFilename, "w")
     outputFile_BEM.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
     outputFile_BEM.write("# Building energy model terms \n")
