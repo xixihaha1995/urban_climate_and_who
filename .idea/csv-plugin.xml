@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="\1_scripts\EP_And_VCWG_v200\_0_EP_VCWG\_0_Modified_VCWG200\resources\DOERefBuildings\BLD6\BLD6_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\VCWG_v2.0.0\Results\th_not_potential.csv">
           <value>
             <Attribute>

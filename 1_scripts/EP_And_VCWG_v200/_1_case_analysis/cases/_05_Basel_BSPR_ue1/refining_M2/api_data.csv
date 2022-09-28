@@ -7821,6 +7821,99 @@ OutputVariable,Electric Equipment Electricity Energy,T N1 APARTMENT_PLUGMISC_EQU
 OutputVariable,Electric Equipment Electricity Energy,T N2 APARTMENT_PLUGMISC_EQUIP
 OutputVariable,Electric Equipment Electricity Energy,T S1 APARTMENT_PLUGMISC_EQUIP
 OutputVariable,Electric Equipment Electricity Energy,T S2 APARTMENT_PLUGMISC_EQUIP
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,G SWALL SWA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,G WWALL SWA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,GWINDOW1
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,GWINDOW2
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,G NWALL NWA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,G WWALL NWA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,GWINDOW4
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,GWINDOW6
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,G SWALL SEA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,G EWALL SEA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,GWINDOW3
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,GWINDOW7
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,G NWALL NEA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,G EWALL NEA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,GWINDOW5
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,GWINDOW8
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,G NWALL N1A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,GWINDOW9
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,G NWALL N2A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,GWINDOW10
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,G SWALL S1A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,GWINDOW11
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,G SWALL S2A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,GWINDOW12
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,M WWALL SWA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,M SWALL SWA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,MWINDOW2
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,MWINDOW1
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,M NWALL NWA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,M WWALL NWA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,MWINDOW4
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,MWINDOW6
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,M EWALL SEA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,M SWALL SEA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,MWINDOW7
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,MWINDOW3
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,M NWALL NEA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,M EWALL NEA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,MWINDOW5
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,MWINDOW8
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,M NWALL N1A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,MWINDOW9
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,M NWALL N2A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,MWINDOW10
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,M SWALL S1A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,MWINDOW11
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,M SWALL S2A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,MWINDOW12
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T WWALL SWA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T SWALL SWA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T ROOF SWA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,TWINDOW2
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,TWINDOW1
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T NWALL NWA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T WWALL NWA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T ROOF NWA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,TWINDOW4
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,TWINDOW6
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T EWALL SEA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T SWALL SEA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T ROOF SEA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,TWINDOW7
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,TWINDOW3
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T NWALL NEA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T EWALL NEA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T ROOF NEA
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,TWINDOW5
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,TWINDOW8
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T NWALL N1A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T ROOF N1A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,TWINDOW9
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T NWALL N2A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T ROOF N2A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,TWINDOW10
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T SWALL S1A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T ROOF S1A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,TWINDOW11
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T SWALL S2A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T ROOF S2A
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,TWINDOW12
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T WWALL C
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T EWALL C
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,T ROOF C
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,TWINDOW13
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,TWINDOW14
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,G WWALL C
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,G EWALL C
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,GWINDOW13
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,EAST_DOOR
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,M WWALL C
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,M EWALL C
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,MWINDOW13
+OutputVariable,Surface Outside Face Incident Solar Radiation Rate per Area,MWINDOW14
 OutputVariable,Surface Inside Face Temperature,G SWALL SWA
 OutputVariable,Surface Outside Face Temperature,G SWALL SWA
 OutputVariable,Surface Inside Face Convection Heat Gain Rate per Area,G SWALL SWA

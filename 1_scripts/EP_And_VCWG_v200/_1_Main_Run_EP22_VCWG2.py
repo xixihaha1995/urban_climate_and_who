@@ -23,7 +23,7 @@ def run_ep_api():
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    time_step_handler_ver = 2
+    time_step_handler_ver = 1
     ep_files_path = '_1_case_analysis\\cases\\_05_Basel_BSPR_ue1\\refining_M2'
     epwFileName = 'Basel.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M2.idf'

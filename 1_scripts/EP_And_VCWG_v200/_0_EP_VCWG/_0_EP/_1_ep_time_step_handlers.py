@@ -89,7 +89,8 @@ def _nested_ep_then_vcwg(state):
         s_wall_t_Text_handle, s_wall_t_Tint_handle, s_wall_m_Text_handle, s_wall_m_Tint_handle, \
         s_wall_g_Text_handle, s_wall_g_Tint_handle,\
         n_wall_t_Text_handle, n_wall_t_Tint_handle, n_wall_m_Text_handle, n_wall_m_Tint_handle, \
-        n_wall_g_Text_handle, n_wall_g_Tint_handle
+        n_wall_g_Text_handle, n_wall_g_Tint_handle,\
+        s_wall_solar_w_m2_sensor_handle, n_wall_solar_w_m2_sensor_handle
 
     if one_time:
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
@@ -228,6 +229,14 @@ def _nested_ep_then_vcwg(state):
                                                                                 "g NWall N1A")
         n_wall_g_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
                                                                                 "g NWall N1A")
+
+        s_wall_solar_w_m2_sensor_handle = coordination.ep_api.exchange.get_variable_handle(state,
+                                                       "Surface Outside Face Incident Solar Radiation Rate per Area",
+                                                                                           "m SWall S1A")
+        n_wall_solar_w_m2_sensor_handle = coordination.ep_api.exchange.get_variable_handle(state,
+                                                       "Surface Outside Face Incident Solar Radiation Rate per Area",
+                                                                                           "m NWall N1A")
+
         roof_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
                                                                 "t Roof S1A")
         roof_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
@@ -341,6 +350,9 @@ def _nested_ep_then_vcwg(state):
         coordination.ep_api.exchange.set_actuator_value(state, odb_actuator_handle, coordination.vcwg_canTemp_K - 273.15)
         coordination.ep_api.exchange.set_actuator_value(state, orh_actuator_handle, rh)
 
+        s_wall_solar_w_m2 = coordination.ep_api.exchange.get_variable_value(state, s_wall_solar_w_m2_sensor_handle)
+        n_wall_solar_w_m2 = coordination.ep_api.exchange.get_variable_value(state, n_wall_solar_w_m2_sensor_handle)
+
         if coordination.time_step_version == 2:
             coordination.ep_api.exchange.set_actuator_value(state, wsped_mps_actuator_handle, coordination.vcwg_wsp_mps)
             coordination.ep_api.exchange.set_actuator_value(state, wdir_deg_actuator_handle, coordination.vcwg_wdir_deg)
@@ -354,10 +366,16 @@ def _nested_ep_then_vcwg(state):
             coordination.ep_wallShade_Text_K = s_wall_Text_C + 273.15
             coordination.ep_wallShade_Tint_K = s_wall_Tint_C + 273.15
         else:
-            coordination.ep_wallSun_Text_K = s_wall_Text_C + 273.15
-            coordination.ep_wallSun_Tint_K = s_wall_Tint_C + 273.15
-            coordination.ep_wallShade_Text_K = n_wall_Text_C + 273.15
-            coordination.ep_wallShade_Tint_K = n_wall_Tint_C + 273.15
+            if s_wall_solar_w_m2 > n_wall_solar_w_m2:
+                coordination.ep_wallSun_Text_K = s_wall_Text_C + 273.15
+                coordination.ep_wallSun_Tint_K = s_wall_Tint_C + 273.15
+                coordination.ep_wallShade_Text_K = n_wall_Text_C + 273.15
+                coordination.ep_wallShade_Tint_K = n_wall_Tint_C + 273.15
+            else:
+                coordination.ep_wallSun_Text_K = n_wall_Text_C + 273.15
+                coordination.ep_wallSun_Tint_K = n_wall_Tint_C + 273.15
+                coordination.ep_wallShade_Text_K = s_wall_Text_C + 273.15
+                coordination.ep_wallShade_Tint_K = s_wall_Tint_C + 273.15
         coordination.ep_roof_Text_K = roof_Text_C + 273.15
         coordination.ep_roof_Tint_K = roof_Tint_C + 273.15
 
