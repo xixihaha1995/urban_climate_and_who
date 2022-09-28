@@ -6,11 +6,11 @@ from scipy.interpolate import interp1d
 from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
-from WaterFunctionsDef import IntDef
+from .WaterFunctionsDef import IntDef
 from scipy.optimize import least_squares
 import copy
 
-from Soil_Functions import Soil_Calculations
+from .Soil_Functions import Soil_Calculations
 
 """
 Compute urban surfaces temperature by solving conduction equation

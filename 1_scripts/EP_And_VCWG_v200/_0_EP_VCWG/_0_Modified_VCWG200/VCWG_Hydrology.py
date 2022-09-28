@@ -9,27 +9,27 @@ from scipy.integrate import odeint
 import matplotlib.gridspec as gridspec
 import copy
 import _pickle as cPickle
-from EB_Roof import EnergyBalanceRoof_Def
-from EB_Canyon import EnergyBalanceCanyon_Def
-from EB_Rural import EnergyBalanceRural_Def
-from SurfaceTemperature import Tsurf_Def
-from UrbanModel import UCM_Def
-from WB_Roof import WaterBalanceRoof_Def
-from WB_Canyon import WaterBalanceCanyon_Def
-from weather import Weather
-from forcing import Forcing
-from Simparam import SimParam
-from Write_Output import Write_Forcing,Write_EB,Write_Tsurf,Write_WB,Write_TdeepProfiles,Write_1Dprofiles,\
+from .EB_Roof import EnergyBalanceRoof_Def
+from .EB_Canyon import EnergyBalanceCanyon_Def
+from .EB_Rural import EnergyBalanceRural_Def
+from .SurfaceTemperature import Tsurf_Def
+from .UrbanModel import UCM_Def
+from .WB_Roof import WaterBalanceRoof_Def
+from .WB_Canyon import WaterBalanceCanyon_Def
+from .weather import Weather
+from .forcing import Forcing
+from .Simparam import SimParam
+from .Write_Output import Write_Forcing,Write_EB,Write_Tsurf,Write_WB,Write_TdeepProfiles,Write_1Dprofiles,\
     Write_Ruralprofiles,Write_BEM
-from Radiation_Functions import RadiationFunctions
-from RSM import RSMDef
-from Read_Input import read_VCWG_param,ForcingData,Data_Site
-from ReadDOE import readDOE
-from Material import Material
-from psychrometrics import HumFromRHumTemp
-from EPWGenerator import write_epw
+from .Radiation_Functions import RadiationFunctions
+from .RSM import RSMDef
+from .Read_Input import read_VCWG_param,ForcingData,Data_Site
+from .ReadDOE import readDOE
+from .Material import Material
+from .psychrometrics import HumFromRHumTemp
+from .EPWGenerator import write_epw
 
-import _0_vcwg_ep_coordination
+from .._0_EP import _0_vcwg_ep_coordination
 """
 Main VCWG script 
 Developed by Mohsen Moradi and Amir A. Aliabadi
@@ -176,7 +176,8 @@ class VCWG_Hydro(object):
         # --------------------------
         # Define BEM for each DOE type (read the fraction)
         # Open pickle file in binary form
-        readDOE_file = open('readDOE.PKL', 'rb')
+        # refDOE, refBEM, Schedule = readDOE(False)
+        readDOE_file = open(os.path.join(os.path.dirname(__file__), 'readDOE.PKL'), 'rb')
         refDOE = cPickle.load(readDOE_file)
         refBEM = cPickle.load(readDOE_file)
         refSchedule = cPickle.load(readDOE_file)

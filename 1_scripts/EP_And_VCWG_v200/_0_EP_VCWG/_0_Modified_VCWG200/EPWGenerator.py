@@ -1,6 +1,6 @@
 import numpy
 import pandas as pd
-from psychrometrics import psychrometrics,HumFromRHumTemp
+from .psychrometrics import psychrometrics,HumFromRHumTemp
 import functools
 import os
 

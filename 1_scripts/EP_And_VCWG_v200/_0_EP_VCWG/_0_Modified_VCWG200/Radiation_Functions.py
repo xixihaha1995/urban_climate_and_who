@@ -1337,7 +1337,7 @@ class RadiationFunctions(object):
 
 
         if ViewFactorCal_Param.OPTION_RAY == 1:
-
+            ViewFactor_file_text = os.path.join(os.path.dirname(__file__), ViewFactor_file_text)
             ViewFactor_file = numpy.loadtxt(ViewFactor_file_text)
 
             F_gs_nT = ViewFactor_file[0]

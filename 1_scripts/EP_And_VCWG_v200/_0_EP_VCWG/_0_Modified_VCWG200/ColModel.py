@@ -1,11 +1,11 @@
 import numpy
 import math
-from BuildingColumnModel import BuildingCol
-from DragTurb import TurbCoeff
-from shear import ShearProd
-from Buoyancy import BuoProd
-from NumericalSolver import Diff
-from Invert import Invert
+from .BuildingColumnModel import BuildingCol
+from .DragTurb import TurbCoeff
+from .shear import ShearProd
+from .Buoyancy import BuoProd
+from .NumericalSolver import Diff
+from .Invert import Invert
 import copy
 
 """

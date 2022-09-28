@@ -2,14 +2,14 @@ import sys
 import os
 import _pickle as cPickle
 
-from BuildingEnergy import Building
-from Material import Material
+from .BuildingEnergy import Building
+from .Material import Material
 # from Element import Element
-from BEMDef import BEMDef
-from schdef import SchDef
-from SurfaceTemperature import Tsurf_Def
-from Utilities import read_csv, str2fl
-import Utilities
+from .BEMDef import BEMDef
+from .schdef import SchDef
+from .SurfaceTemperature import Tsurf_Def
+from .Utilities import read_csv, str2fl
+from . import Utilities
 import pandas
 import numpy
 

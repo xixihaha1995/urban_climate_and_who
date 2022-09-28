@@ -1,6 +1,6 @@
-import _0_vcwg_ep_coordination as coordination
 from threading import Thread
-from VCWG_Hydrology import VCWG_Hydro
+from . import _0_vcwg_ep_coordination as coordination
+from .._0_Modified_VCWG200.VCWG_Hydrology import VCWG_Hydro
 
 one_time = True
 one_time_call_vcwg = True

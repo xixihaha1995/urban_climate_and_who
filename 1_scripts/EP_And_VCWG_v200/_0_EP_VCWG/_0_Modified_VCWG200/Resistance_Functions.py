@@ -3,8 +3,8 @@ import numpy
 import math
 from scipy.interpolate import interp1d
 from scipy.optimize import fsolve
-from ResistanceFunctionsDef import ResistanceSoil,CanopyResistanceAnEvolution,PhotosynthesisBiochemical
-from Soil_Functions import Soil_Calculations
+from .ResistanceFunctionsDef import ResistanceSoil,CanopyResistanceAnEvolution,PhotosynthesisBiochemical
+from .Soil_Functions import Soil_Calculations
 import copy
 
 '''

@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 import matplotlib.gridspec as gridspec
 import pandas as pd
-from Soil_Functions import Soil_Calculations
+from .Soil_Functions import Soil_Calculations
 from datetime import datetime
 from datetime import datetime
 
@@ -22,7 +22,7 @@ Last update: February 2021
 def read_VCWG_param(VCWG_param_file_path):
     # Open .uwg file and feed csv data to initializeDataFile
 
-    with open(VCWG_param_file_path) as f:
+    with open(os.path.join(os.path.dirname(__file__), VCWG_param_file_path)) as f:
         lines = f.readlines()
     VCWG_param = []
     for i in range(len(lines)):

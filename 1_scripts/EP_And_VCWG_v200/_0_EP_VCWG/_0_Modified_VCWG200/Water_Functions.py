@@ -4,10 +4,10 @@ import math
 from pprint import pprint
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
-from Soil_Functions import Soil_Calculations
+from .Soil_Functions import Soil_Calculations
 from scipy.integrate import odeint
 from scipy.integrate import solve_ivp
-from WaterFunctionsDef import WaterCanyonDef,WaterVegetationDef,WaterImperviousDef,WaterGroundDef,WaterSoilDef
+from .WaterFunctionsDef import WaterCanyonDef,WaterVegetationDef,WaterImperviousDef,WaterGroundDef,WaterSoilDef
 import copy
 
 '''

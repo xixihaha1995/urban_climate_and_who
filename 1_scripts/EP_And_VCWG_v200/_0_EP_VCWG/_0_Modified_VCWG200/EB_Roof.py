@@ -5,10 +5,10 @@ from pprint import pprint
 from scipy.interpolate import interp1d
 from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
-from Soil_Functions import Soil_Calculations
+from .Soil_Functions import Soil_Calculations
 from scipy.integrate import odeint
-from Resistance_Functions import Ressitance_Calculations
-from Radiation_Functions import RadiationFunctions
+from .Resistance_Functions import Ressitance_Calculations
+from .Radiation_Functions import RadiationFunctions
 from scipy.optimize import least_squares
 import copy
 

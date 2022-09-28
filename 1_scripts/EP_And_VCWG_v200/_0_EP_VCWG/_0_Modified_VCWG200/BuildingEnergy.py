@@ -1,10 +1,10 @@
 
-from psychrometrics import psychrometrics, moist_air_density
+from .psychrometrics import psychrometrics, moist_air_density
 import logging
 import numpy
 import copy
 
-import _0_vcwg_ep_coordination as coordination
+from .._0_EP import _0_vcwg_ep_coordination as coordination
 
 # Lichen: import the parent coordination class needed for EP and VCWG
 

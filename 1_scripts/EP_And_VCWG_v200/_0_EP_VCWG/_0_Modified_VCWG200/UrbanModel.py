@@ -1,8 +1,8 @@
 import numpy
 from scipy.interpolate import interp1d
-from DragLength import Drag_Coef,Length_Scale,Length_Scale_StabilityCorrection
-from Resistance_Functions import Ressitance_Calculations
-from ColModel import ColumnModelCal
+from .DragLength import Drag_Coef,Length_Scale,Length_Scale_StabilityCorrection
+from .Resistance_Functions import Ressitance_Calculations
+from .ColModel import ColumnModelCal
 import copy
 
 """

@@ -1,7 +1,8 @@
 import os, numpy as np, pandas as pd
 from threading import Thread
-import _0_vcwg_ep_coordination as coordination, _01_ep_time_step_handlers
-from _1_plots_related import _0_all_plot_tools as plot_tools
+import _0_EP_VCWG._0_EP._0_vcwg_ep_coordination as coordination, \
+    _0_EP_VCWG._0_EP._01_ep_time_step_handlers as time_step_handlers
+from _1_case_analysis.analysis._1_plots_related import _0_all_plot_tools as plot_tools
 
 def api_to_csv(state):
     orig = api.exchange.list_available_api_data_csv(state)
@@ -16,7 +17,7 @@ def run_ep_api():
     # api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
     #                                                               _01_ep_time_step_handlers._nested_ep_then_vcwg)
     api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
-                                                                  _01_ep_time_step_handlers._nested_ep_then_vcwg)
+                                                                  time_step_handlers._nested_ep_then_vcwg)
     # api.runtime.callback_end_zone_timestep_before_zone_reporting(state,
     #                                                               _01_ep_time_step_handlers._nested_ep_only)
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
@@ -29,7 +30,7 @@ def run_ep_api():
 
 if __name__ == '__main__':
     # ep_files_path = '_06_Basel_BSPA_ue2\\refining_M2'
-    ep_files_path = '_05_Basel_BSPR_ue1\\refining_M2'
+    ep_files_path = '_1_case_analysis\\cases\\_05_Basel_BSPR_ue1\\refining_M2'
     epwFileName = 'Basel.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M2.idf'
 
@@ -49,7 +50,7 @@ if __name__ == '__main__':
     # case_name = '_BSPA_bypass_refining_M2'
     case_name = '_BSPR_bypass_refining_M2'
     # vcwg_ep_saving_path = '_2_saved\_2_BUBBLE_BSPA'
-    vcwg_ep_saving_path = '_2_saved\_1_BUBBLE_BSPR'
+    vcwg_ep_saving_path = ep_files_path + '\\vcwg_ep_saving'
 
     start_time = '2002-06-10 00:00:00'
     time_interval_sec = 300

@@ -2,9 +2,9 @@ import os
 import numpy
 import math
 from scipy.interpolate import interp1d
-from Soil_Functions import Soil_Calculations
-from Resistance_Functions import Ressitance_Calculations
-from SurfaceHeatFluxDef import ForceRestoreConductiveHeatImp,ForceRestoreConductiveHeatSoil
+from .Soil_Functions import Soil_Calculations
+from .Resistance_Functions import Ressitance_Calculations
+from .SurfaceHeatFluxDef import ForceRestoreConductiveHeatImp,ForceRestoreConductiveHeatSoil
 import copy
 
 '''

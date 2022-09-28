@@ -1,7 +1,7 @@
 import numpy
 from scipy.optimize import fsolve
-from UrbanSurfaceHeatFlux import Surface_HeatFlux
-from Radiation_Functions import RadiationFunctions
+from .UrbanSurfaceHeatFlux import Surface_HeatFlux
+from .Radiation_Functions import RadiationFunctions
 from scipy.optimize import least_squares
 import copy
 

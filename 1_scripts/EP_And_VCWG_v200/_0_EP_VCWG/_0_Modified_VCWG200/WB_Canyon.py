@@ -1,7 +1,7 @@
 import numpy
-from Soil_Functions import Soil_Calculations
+from .Soil_Functions import Soil_Calculations
 from scipy.integrate import odeint
-from Water_Functions import Water_Calculations
+from .Water_Functions import Water_Calculations
 import copy
 
 """

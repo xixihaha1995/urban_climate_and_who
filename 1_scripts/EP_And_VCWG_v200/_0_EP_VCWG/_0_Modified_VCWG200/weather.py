@@ -1,6 +1,6 @@
-from Utilities import read_csv, str2fl
+from .Utilities import read_csv, str2fl
 from math import pow, log, exp
-from psychrometrics import HumFromRHumTemp
+from .psychrometrics import HumFromRHumTemp
 import numpy
 import os
 
@@ -39,7 +39,7 @@ class Weather(object):
         EPW_path = os.path.join('resources','epw')
         Climate_file = os.path.join(EPW_path,EPW_file)
         # Open .epw file and feed csv data to self.climate_data
-        with open(Climate_file) as f:
+        with open(os.path.join(os.path.dirname(__file__), Climate_file)) as f:
             lines = f.readlines()
         self.climate_data = []
         for i in range(len(lines)):

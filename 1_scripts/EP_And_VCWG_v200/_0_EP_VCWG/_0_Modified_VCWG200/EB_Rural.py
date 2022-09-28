@@ -1,8 +1,8 @@
 import numpy
 import math
-from Radiation_Functions import RadiationFunctions
+from .Radiation_Functions import RadiationFunctions
 import copy
-from psychrometrics import psychrometrics
+from .psychrometrics import psychrometrics
 
 """
 Surface energy balance model in the rural area 

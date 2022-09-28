@@ -1,7 +1,7 @@
 import os
 import numpy
 import math
-from SoilFunctionsDef import SoilParametersTotal,ConductivitySuction,SoilThermalProperties,SoilParameters,SoilMoistureConductivityUpdate,Infiltration2Def,LeakageBottomDef,SoilWaterMultiLayerDef,VolumeCorrectionDef
+from .SoilFunctionsDef import SoilParametersTotal,ConductivitySuction,SoilThermalProperties,SoilParameters,SoilMoistureConductivityUpdate,Infiltration2Def,LeakageBottomDef,SoilWaterMultiLayerDef,VolumeCorrectionDef
 import copy
 
 '''
