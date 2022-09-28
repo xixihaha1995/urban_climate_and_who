@@ -60,50 +60,50 @@ bypass_potential_10min_c_compare_ver2, bypass_real_10min_c_compare_ver2 = \
 # bypass_refining_real_sensor_10min_c_compare are the associated bypass predictions, column length is 6
 
 # for each height, calculate the RMSE
-original_real_10min_c_compare_cvrmse = []
-bypass_real_10min_c_compare_ver0_cvrmse = []
-bypass_real_10min_c_compare_ver1_cvrmse = []
-bypass_real_10min_c_compare_ver2_cvrmse = []
+original_potential_10min_c_compare_cvrmse = []
+bypass_potential_10min_c_compare_ver0_cvrmse = []
+bypass_potential_10min_c_compare_ver1_cvrmse = []
+bypass_potential_10min_c_compare_ver2_cvrmse = []
 for i in range(len(ue1_heights)):
-    original_real_10min_c_compare_cvrmse.append(plt_tools.calculate_cvrmse(urban_2p6_10min_c_compare.iloc[:,i],
-                                                                            original_real_10min_c_compare.iloc[:,i]))
-    bypass_real_10min_c_compare_ver0_cvrmse.append(plt_tools.calculate_cvrmse(urban_2p6_10min_c_compare.iloc[:,i],
-                                                                            bypass_real_10min_c_compare_ver0.iloc[:,i]))
-    bypass_real_10min_c_compare_ver1_cvrmse.append(plt_tools.calculate_cvrmse(urban_2p6_10min_c_compare.iloc[:,i],
-                                                                            bypass_real_10min_c_compare_ver1.iloc[:,i]))
-    bypass_real_10min_c_compare_ver2_cvrmse.append(plt_tools.calculate_cvrmse(urban_2p6_10min_c_compare.iloc[:,i],
-                                                                            bypass_real_10min_c_compare_ver2.iloc[:,i]))
+    original_potential_10min_c_compare_cvrmse.append(plt_tools.calculate_cvrmse(
+        urban_2p6_10min_c_compare.iloc[:,i], original_potential_10min_c_compare.iloc[:,i]))
+    bypass_potential_10min_c_compare_ver0_cvrmse.append(plt_tools.calculate_cvrmse(
+        urban_2p6_10min_c_compare.iloc[:,i], bypass_potential_10min_c_compare_ver0.iloc[:,i]))
+    bypass_potential_10min_c_compare_ver1_cvrmse.append(plt_tools.calculate_cvrmse(
+        urban_2p6_10min_c_compare.iloc[:,i], bypass_potential_10min_c_compare_ver1.iloc[:,i]))
+    bypass_potential_10min_c_compare_ver2_cvrmse.append(plt_tools.calculate_cvrmse(
+        urban_2p6_10min_c_compare.iloc[:,i], bypass_potential_10min_c_compare_ver2.iloc[:,i]))
 
 # print the results
 print(f"BSPR CVRMSE:{compare_start_time} to {compare_end_time}-10min Canyon Temperature. p0 {p0} pa")
 for i in range(len(ue1_heights)):
-    print(f'Height {ue1_heights[i]}m. Original: {original_real_10min_c_compare_cvrmse[i]:.2f}'
-            f' Bypass ver0: {bypass_real_10min_c_compare_ver0_cvrmse[i]:.2f}'
-            f' Bypass ver1: {bypass_real_10min_c_compare_ver1_cvrmse[i]:.2f}'
-            f' Bypass ver2: {bypass_real_10min_c_compare_ver2_cvrmse[i]:.2f}')
+    print(f'Height {ue1_heights[i]}m. Original: {original_potential_10min_c_compare_cvrmse[i]:.2f}'
+            f' Bypass ver0: {bypass_potential_10min_c_compare_ver0_cvrmse[i]:.2f}'
+            f' Bypass ver1: {bypass_potential_10min_c_compare_ver1_cvrmse[i]:.2f}'
+            f' Bypass ver2: {bypass_potential_10min_c_compare_ver2_cvrmse[i]:.2f}')
 
 # # merge them together
 merged_df = pd.concat([rural_1p5_10min_c_compare,urban_2p6_10min_c_compare,
-                       original_real_10min_c_compare,
-                       bypass_real_10min_c_compare_ver0,
-                       bypass_real_10min_c_compare_ver1,
-                       bypass_real_10min_c_compare_ver2]
-                          , axis=1)
+                       original_potential_10min_c_compare, bypass_potential_10min_c_compare_ver0,
+                          bypass_potential_10min_c_compare_ver1, bypass_potential_10min_c_compare_ver2],
+                        axis=1)
 # rename the above columns
 # get ue1_heights length
 heights_length = len(ue1_heights)
 # first column is rural_1p5_10min_c_compare, no change
 # following the first heights_length columns are urban_2p6_10min_c_compare, no change
-# following the second heights_length columns are original_real_10min_c_compare, add 'original' prefix
-# following the third heights_length columns are bypass_real_10min_c_compare_ver0, add 'bypass_ver0' prefix
-# following the fourth heights_length columns are bypass_real_10min_c_compare_ver1, add 'bypass_ver1' prefix
-# following the fifth heights_length columns are bypass_real_10min_c_compare_ver2, add 'bypass_ver2' prefix
+# following the second heights_length columns are original_potential_10min_c_compare, add 'original' prefix
+# following the third heights_length columns are bypass_potential_10min_c_compare_ver0, add 'bypass_ver0' prefix
+# following the fourth heights_length columns are bypass_potential_10min_c_compare_ver1, add 'bypass_ver1' prefix
+# following the fifth heights_length columns are bypass_potential_10min_c_compare_ver2, add 'bypass_ver2' prefix
+
+# rename the columns
 merged_df.columns = ['rural_1p5_10min_c_compare'] + \
-                    [f'urban_2p6_10min_c_compare_{i}m' for i in ue1_heights] + \
-                    [f'original_real_10min_c_compare_{i}m' for i in ue1_heights] + \
-                    [f'bypass_ver0_real_10min_c_compare_{i}m' for i in ue1_heights] + \
-                    [f'bypass_ver1_real_10min_c_compare_{i}m' for i in ue1_heights] + \
-                    [f'bypass_ver2_real_10min_c_compare_{i}m' for i in ue1_heights]
+                    [f'urban_2p6_10min_c_compare_{i}' for i in range(heights_length)] + \
+                    [f'original_potential_10min_c_compare_{i}' for i in range(heights_length)] + \
+                    [f'bypass_potential_10min_c_compare_ver0_{i}' for i in range(heights_length)] + \
+                    [f'bypass_potential_10min_c_compare_ver1_{i}' for i in range(heights_length)] + \
+                    [f'bypass_potential_10min_c_compare_ver2_{i}' for i in range(heights_length)]
 # save the merged_df to an Excel file
 merged_df.to_excel(f'{all_in_one_saving_path}\\{bypass_filename}_10min_C_compare.xlsx')
-
+plt_tools.stacked_comparison_plot(merged_df, ue1_heights)

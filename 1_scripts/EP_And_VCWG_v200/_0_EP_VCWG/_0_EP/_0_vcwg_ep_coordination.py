@@ -116,7 +116,7 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     canHum = np.mean(canSpecHumProf_cur)
     vcwg_canPress_Pa = np.mean(canPressProf_cur)
     vcwg_wsp_mps = np.mean(canWspdProf_cur)
-    vcwg_wdir_deg = np.mean(canWdirProf_cur)
+    vcwg_wdir_deg = np.mean(canWdirProf_cur) + Geometry_m.theta_canyon
 
 
     saving_data['can_Averaged_temp_k_specHum_ratio_press_pa'].append([canTemp, canHum, vcwg_canPress_Pa])

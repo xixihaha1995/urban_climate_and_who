@@ -56,6 +56,3 @@ if __name__ == '__main__':
     for data_name in data_name_lst:
         plot_tools.save_data_to_csv(coordination.saving_data, data_name,case_name,
                                     start_time, time_interval_sec, vcwg_ep_saving_path)
-
-
-
