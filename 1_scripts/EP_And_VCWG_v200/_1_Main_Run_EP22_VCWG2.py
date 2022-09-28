@@ -4,13 +4,7 @@ import _0_EP_VCWG._0_EP._0_vcwg_ep_coordination as coordination, \
     _0_EP_VCWG._0_EP._1_ep_time_step_handlers as time_step_handlers
 from _1_case_analysis.analysis._1_plots_related import _0_all_plot_tools as plot_tools
 
-def api_to_csv(state):
-    orig = api.exchange.list_available_api_data_csv(state)
-    newFileByteArray = bytearray(orig)
-    api_path = os.path.join(ep_files_path, 'api.csv')
-    newFile = open(api_path, "wb")
-    newFile.write(newFileByteArray)
-    newFile.close()
+
 
 def run_ep_api():
     state = api.state_manager.new_state()
@@ -38,7 +32,7 @@ if __name__ == '__main__':
     coordination.init_ep_api()
     api = coordination.ep_api
     coordination.init_semaphore_lock_settings()
-    coordination.init_variables_for_vcwg_ep()
+    coordination.init_variables_for_vcwg_ep(ep_files_path)
 
     # Lichen: run ep_thread first, wait for EP warm up and ep_thread will call run VCWG_thread
     ep_thread = Thread(target=run_ep_api)

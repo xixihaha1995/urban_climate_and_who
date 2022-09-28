@@ -1,6 +1,7 @@
 from threading import Thread
 from . import _0_vcwg_ep_coordination as coordination
 from .._0_Modified_VCWG200.VCWG_Hydrology import VCWG_Hydro
+import os
 
 one_time = True
 one_time_call_vcwg = True
@@ -60,6 +61,14 @@ def run_vcwg():
     # Initialize the UWG object and run the simulation
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
     VCWG.run()
+
+def api_to_csv(state):
+    orig = coordination.ep_api.exchange.list_available_api_data_csv(state)
+    newFileByteArray = bytearray(orig)
+    api_path = os.path.join(os.path.dirname(__file__), '..','..',coordination.ep_files_path, 'api_data.csv')
+    newFile = open(api_path, "wb")
+    newFile.write(newFileByteArray)
+    newFile.close()
 def _nested_ep_then_vcwg_ver0(state):
     global one_time,one_time_call_vcwg,oat_sensor_handle, records,\
         odb_actuator_handle, orh_actuator_handle,\
@@ -85,7 +94,7 @@ def _nested_ep_then_vcwg_ver0(state):
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
             return
         one_time = False
-        # coordination.ep_api_to_csv(state)
+        api_to_csv(state)
         oat_sensor_handle = \
             coordination.ep_api.exchange.get_variable_handle(state,
                                              "Site Outdoor Air Drybulb Temperature",
