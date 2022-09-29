@@ -208,11 +208,20 @@ class Building(object):
         _0_global_save.saving_data['sensible_heat_fluxProfile_Wm2'].append(HfluxProf)
         _0_global_save.saving_data['latent_heat_fluxProfile_Wm2'].append(LEfluxProf)
 
+        _0_global_save.saving_data['s_wall_Text_K_n_wall_Text_K'].append([BEM.wallSun.Text, BEM.wallShade.Text])
 
+        canWspdProf_cur = wind_magnitudeProf[0:Geometry_m.nz_u]
+        # tan(wdir) = vx/vy, wdir unit is degree from 0 to 360, 0 is north, 90 is east, 180 is south, 270 is west
+        canWdirProf_cur = numpy.arctan(vxProf[0:Geometry_m.nz_u] / vyProf[0:Geometry_m.nz_u]) * 180 / numpy.pi
+        vcwg_wsp_mps = numpy.mean(canWspdProf_cur)
+        vcwg_wdir_deg = numpy.mean(canWdirProf_cur) + Geometry_m.theta_canyon
+        _0_global_save.saving_data['vcwg_wsp_mps_wdir_deg'].append(
+            [vcwg_wsp_mps, vcwg_wdir_deg])
         canPresProf_cur = PresProf_cur[0:Geometry_m.nz_u]
         vcwg_canPress_Pa = numpy.mean(canPresProf_cur)
         _0_global_save.saving_data['can_Averaged_temp_k_specHum_ratio_press_pa'].\
             append([canTemp, canHum, vcwg_canPress_Pa])
+
 
         self.logger.debug("Logging at {} {}".format(__name__, self.__repr__()))
 

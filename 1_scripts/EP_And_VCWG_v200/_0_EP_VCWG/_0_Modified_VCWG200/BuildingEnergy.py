@@ -1,10 +1,9 @@
-
 from .psychrometrics import psychrometrics, moist_air_density
 import logging
 import numpy
 import copy
 
-from .._0_EP import _0_vcwg_ep_coordination as coordination
+from  .._0_EP import _0_vcwg_ep_coordination as _0_global_save
 
 # Lichen: import the parent coordination class needed for EP and VCWG
 
@@ -134,15 +133,16 @@ class Building(object):
     def is_near_zero(self,val,tol=1e-14):
         return abs(float(val)) < tol
 
-    def _deleted_BEMCalc(self,canTemp,canHum,BEM,MeteoData,ParCalculation,simTime,Geometry_m,FractionsRoof,SWR,it):
+    def BEMCalc(self, canTemp, canHum, BEM, MeteoData, ParCalculation, simTime, Geometry_m, FractionsRoof, SWR,
+                VerticalProfUrban):
 
         """
         ------
         INPUT:
         canTemp: Average canyon temperature [K]
-        canHum: Average canyon specific humidity [kg kg^-1] ()
+        canHum: Average canyon specific humidity [kg kg^-1]
         BEM: Building energy parameters
-        MeteoData: Forcing variables (only pressure is used)
+        MeteoData: Forcing variables
         ParCalculation: General calculation parameters
         simTime: Simulation time parameters
         Geometry_m: Geometric parameters
@@ -184,27 +184,66 @@ class Building(object):
         QWater: energy consumption for domestic hot water [W m^-2]
         QGas: energy consumption for gas [W m^-2]
         """
-        coordination.sem_energyplus.acquire()
+        # canTempProf_cur = self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u]
+        # canHumProf_cur = self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u]
+        # canPresProf_cur = self.UCM.VerticalProfUrban.presProf[0:self.Geometry_m.nz_u]
+
+        TempProf_cur = VerticalProfUrban.th
+        HumProf_cur = VerticalProfUrban.qn
+        PresProf_cur = VerticalProfUrban.presProf
+        vxProf = VerticalProfUrban.vx
+        vyProf = VerticalProfUrban.vy
+        wind_magnitudeProf = VerticalProfUrban.s
+        tkeProf = VerticalProfUrban.tke
+        rhoProf = VerticalProfUrban.rho
+        HfluxProf = VerticalProfUrban.Hflux
+        LEfluxProf = VerticalProfUrban.LEflux
+
+        _0_global_save.saving_data['TempProfile_K'].append(TempProf_cur)
+        _0_global_save.saving_data['SpecHumProfile_Ratio'].append(HumProf_cur)
+        _0_global_save.saving_data['PressProfile_Pa'].append(PresProf_cur)
+        _0_global_save.saving_data['wind_vxProfile_mps'].append(vxProf)
+        _0_global_save.saving_data['wind_vyProfile_mps'].append(vyProf)
+        _0_global_save.saving_data['wind_SpeedProfile_mps'].append(wind_magnitudeProf)
+        _0_global_save.saving_data['turbulence_tkeProfile_m2s2'].append(tkeProf)
+        _0_global_save.saving_data['air_densityProfile_kgm3'].append(rhoProf)
+        _0_global_save.saving_data['sensible_heat_fluxProfile_Wm2'].append(HfluxProf)
+        _0_global_save.saving_data['latent_heat_fluxProfile_Wm2'].append(LEfluxProf)
+
+        _0_global_save.saving_data['s_wall_Text_K_n_wall_Text_K'].append([BEM.wallSun.Text, BEM.wallShade.Text])
+
+        canWspdProf_cur = wind_magnitudeProf[0:Geometry_m.nz_u]
+        # tan(wdir) = vx/vy, wdir unit is degree from 0 to 360, 0 is north, 90 is east, 180 is south, 270 is west
+        canWdirProf_cur = numpy.arctan(vxProf[0:Geometry_m.nz_u] / vyProf[0:Geometry_m.nz_u]) * 180 / numpy.pi
+        vcwg_wsp_mps = numpy.mean(canWspdProf_cur)
+        vcwg_wdir_deg = numpy.mean(canWdirProf_cur) + Geometry_m.theta_canyon
+        _0_global_save.saving_data['vcwg_wsp_mps_wdir_deg'].append(
+            [vcwg_wsp_mps, vcwg_wdir_deg])
+        canPresProf_cur = PresProf_cur[0:Geometry_m.nz_u]
+        vcwg_canPress_Pa = numpy.mean(canPresProf_cur)
+        _0_global_save.saving_data['can_Averaged_temp_k_specHum_ratio_press_pa']. \
+            append([canTemp, canHum, vcwg_canPress_Pa])
+
         self.logger.debug("Logging at {} {}".format(__name__, self.__repr__()))
 
         # Building Energy Model
-        self.ElecTotal = 0.0                            # total electricity consumption - (W/m^2) of floor
-        self.nFloor = max(Geometry_m.Height_canyon/float(self.floorHeight),1)   # At least one floor
-        self.Qheat = 0.0                                # total sensible heat added (or heating demand) per unit building footprint area [W m^-2]
-        self.sensCoolDemand = 0.0                       # building sensible cooling demand per unit building footprint area [W m^-2]
-        self.sensHeatDemand = 0.0                       # building sensible heating demand per unit building footprint area [W m^-2]
-        self.sensWaterHeatDemand = 0.0                  # building sensible water heating demand per unit building footprint area [W m^-2]
-        self.coolConsump  = 0.0                         # cooling energy consumption per unit building footprint area OR per unit floor area [W m^-2]
-        self.heatConsump  = 0.0                         # heating energy consumption per unit floor area [W m^-2]
-        self.sensWaste = 0.0                            # Total Sensible waste heat per unit building footprint area including cool, heat, dehum, water, and gas [W m^-2]
-        self.sensWasteCoolHeatDehum = 0.0               # Sensible waste heat per unit building footprint area only including cool, heat, and dehum [W m-2]
-        self.dehumDemand  = 0.0                         # Latent heat demand for dehumidification of air per unit building footprint area [W m^-2]
-        self.Qhvac = 0.0                                # Total heat removed (sensible + latent)
-        self.elecDomesticDemand = 0.0                   # Electricity demand for appliances and lighting (not for energy) per building footprint area [W m^-2]
+        self.ElecTotal = 0.0  # total electricity consumption - (W/m^2) of floor
+        self.nFloor = max(Geometry_m.Height_canyon / float(self.floorHeight), 1)  # At least one floor
+        self.Qheat = 0.0  # total sensible heat added (or heating demand) per unit building footprint area [W m^-2]
+        self.sensCoolDemand = 0.0  # building sensible cooling demand per unit building footprint area [W m^-2]
+        self.sensHeatDemand = 0.0  # building sensible heating demand per unit building footprint area [W m^-2]
+        self.sensWaterHeatDemand = 0.0  # building sensible water heating demand per unit building footprint area [W m^-2]
+        self.coolConsump = 0.0  # cooling energy consumption per unit building footprint area OR per unit floor area [W m^-2]
+        self.heatConsump = 0.0  # heating energy consumption per unit floor area [W m^-2]
+        self.sensWaste = 0.0  # Total Sensible waste heat per unit building footprint area including cool, heat, dehum, water, and gas [W m^-2]
+        self.sensWasteCoolHeatDehum = 0.0  # Sensible waste heat per unit building footprint area only including cool, heat, and dehum [W m-2]
+        self.dehumDemand = 0.0  # Latent heat demand for dehumidification of air per unit building footprint area [W m^-2]
+        self.Qhvac = 0.0  # Total heat removed (sensible + latent)
+        self.elecDomesticDemand = 0.0  # Electricity demand for appliances and lighting (not for energy) per building footprint area [W m^-2]
 
         Qdehum = 0.0
         # Moist air density given dry bulb temperature, humidity ratio, and pressure [kgv m^-3]
-        dens =  moist_air_density(MeteoData.Pre,self.indoorTemp,self.indoorHum)
+        dens = moist_air_density(MeteoData.Pre, self.indoorTemp, self.indoorHum)
         # evaporation efficiency in the condenser for evaporative cooling devices
         evapEff = 1.
         # total ventilation volumetric flow rate per building footprint area [m^3 s^-1 m^-2]
@@ -212,27 +251,28 @@ class Building(object):
         # total infiltration volumetric flow rate per building footprint area [m^3 s^-1 m^-2]
         volInfil = self.infil * Geometry_m.Height_canyon / 3600.
         # Interior wall temperature [K]
-        T_wall = (BEM.wallSun.Tint+BEM.wallShade.Tint)/2
+        T_wall = (BEM.wallSun.Tint + BEM.wallShade.Tint) / 2
         # Solar water heating per building footprint area per hour [kg s^-1 m^-2] (Change of units [hr^-1] to [s^-1]
-        massFlorRateSWH = BEM.SWH * self.nFloor/3600.
+        massFlorRateSWH = BEM.SWH * self.nFloor / 3600.
         # Interior roof temperature [K]
-        T_ceil = FractionsRoof.fimp*BEM.roofImp.Tint+FractionsRoof.fveg*BEM.roofVeg.Tint
-        T_mass = BEM.mass.Text              # Outer layer [K]
-        T_indoor = self.indoorTemp          # Indoor temp (initial) [K]
-        T_can = canTemp                     # Canyon temperature [K]
+        T_ceil = FractionsRoof.fimp * BEM.roofImp.Tint + FractionsRoof.fveg * BEM.roofVeg.Tint
+        T_mass = BEM.mass.Text  # Outer layer [K]
+        T_indoor = self.indoorTemp  # Indoor temp (initial) [K]
+        T_can = canTemp  # Canyon temperature [K]
 
         # Normalize areas to building foot print [m^2/m^2(bld)]
         # Facade (exterior) area per unit building footprint area [m^2 m^-2]
-        facArea = 2*Geometry_m.Height_canyon/numpy.sqrt(Geometry_m.Width_roof*Geometry_m.Width_roof)
-        wallArea = facArea*(1.-self.glazingRatio)       # Wall area per unit building footprint area [m^2 m^-2]
-        winArea = facArea*self.glazingRatio             # Window area per unit building footprint area [m^2 m^-2]
-        massArea = 2*self.nFloor-1                      # ceiling and floor (top & bottom) per unit building footprint area [m^2 m^-2]
-        ceilingArea = 1                                 # ceiling area per unit building footprint area [m^2 m^-2]; must be equal to 1
+        facArea = 2 * Geometry_m.Height_canyon / numpy.sqrt(Geometry_m.Width_roof * Geometry_m.Width_roof)
+        wallArea = facArea * (1. - self.glazingRatio)  # Wall area per unit building footprint area [m^2 m^-2]
+        winArea = facArea * self.glazingRatio  # Window area per unit building footprint area [m^2 m^-2]
+        massArea = 2 * self.nFloor - 1  # ceiling and floor (top & bottom) per unit building footprint area [m^2 m^-2]
+        ceilingArea = 1  # ceiling area per unit building footprint area [m^2 m^-2]; must be equal to 1
 
         # Set temperature set points according to night/day set points in building schedule & simTime; need the time in [hr]
-        isEqualNightStart = self.is_near_zero((simTime.secDay/3600.) - ParCalculation.nightStart)
-        if simTime.secDay/3600. < ParCalculation.nightEnd or (simTime.secDay/3600. > ParCalculation.nightStart or isEqualNightStart):
-            self.logger.debug("{} Night set points @{}".format(__name__,simTime.secDay/3600.))
+        isEqualNightStart = self.is_near_zero((simTime.secDay / 3600.) - ParCalculation.nightStart)
+        if simTime.secDay / 3600. < ParCalculation.nightEnd or (
+                simTime.secDay / 3600. > ParCalculation.nightStart or isEqualNightStart):
+            self.logger.debug("{} Night set points @{}".format(__name__, simTime.secDay / 3600.))
 
             # Set point temperatures in [K]
             T_cool = self.coolSetpointNight
@@ -241,14 +281,14 @@ class Building(object):
             # Internal heat per unit building footprint area [W m^-2]
             self.intHeat = self.intHeatNight * self.nFloor
         else:
-            self.logger.debug("{} Day set points @{}".format(__name__,simTime.secDay/3600.))
+            self.logger.debug("{} Day set points @{}".format(__name__, simTime.secDay / 3600.))
 
             # Set point temperatures in [K]
             T_cool = self.coolSetpointDay
             T_heat = self.heatSetpointDay
 
             # Internal heat per unit building footprint area [W m^-2]
-            self.intHeat = self.intHeatDay*self.nFloor
+            self.intHeat = self.intHeatDay * self.nFloor
 
         # Indoor convection heat transfer coefficients
         # wall convective heat transfer coefficient [W m^-2 K^-1]
@@ -278,7 +318,7 @@ class Building(object):
         # -------------------------------------------------------------
         # Solar Heat Gain on windows per building footprint area [W m^-2]:
         # = radiation intensity [W m^-2] * Solar Heat Gain Coefficient (SHGC) * window area per unit building foot print area [m^2 m^-2]
-        SWRinWall = (SWR.SWRin.SWRinWallSun + SWR.SWRin.SWRinWallShade)/2
+        SWRinWall = (SWR.SWRin.SWRinWallSun + SWR.SWRin.SWRinWallShade) / 2
         self.QWindowSolar = (SWRinWall * self.shgc * winArea)
 
         # QL: Latent heat per unit floor area [W m^-2] from infiltration & ventilation from
@@ -314,19 +354,25 @@ class Building(object):
         # ventilation load per unit building footprint area [W m^-2]
         self.QVen = volVent * dens * ParCalculation.cp_atm * (T_can - T_cool)
         # Heat/Cooling load per unit building footprint area [W m^-2], if any
-        self.sensCoolDemand = max(self.QWall+self.QMass+self.QWindow+self.QCeil+self.intHeat+self.QInfil+self.QVen+self.QWindowSolar,0.)
-        # self.sensCoolDemand = coordination.ep_sensCoolDemand_w_m2
-        self.sensHeatDemand = max(
-            -(wallArea*zac_in_wall*(T_wall-T_heat) +               # wall load per unit building footprint area [W m^-2]
-            massArea*zac_in_mass*(T_mass-T_heat) +                 # other surfaces load per unit building footprint area [W m^-2]
-            winArea*self.uValue*(T_can-T_heat) +                   # window load due to temperature difference per unit building footprint area [W m^-2]
-            zac_in_ceil*(T_ceil-T_heat) +                          # ceiling load per unit building footprint area [W m^-2]
-            self.intHeat +                                         # internal load per unit building footprint area [W m^-2]
-            volInfil*dens*ParCalculation.cp_atm*(T_can-T_heat) +   # infiltration load per unit building footprint area [W m^-2]
-            volVent*dens*ParCalculation.cp_atm*(T_can-T_heat) +    # ventilation load per unit building footprint area [W m^-2]
-            self.QWindowSolar),                                    # solar load through window per unit building footprint area [W m^-2]
+        self.sensCoolDemand = max(
+            self.QWall + self.QMass + self.QWindow + self.QCeil + self.intHeat + self.QInfil + self.QVen + self.QWindowSolar,
             0.)
-        # self.sensHeatDemand = coordination.ep_sensHeatDemand_w_m2
+
+        self.sensHeatDemand = max(
+            -(wallArea * zac_in_wall * (T_wall - T_heat) +  # wall load per unit building footprint area [W m^-2]
+              massArea * zac_in_mass * (
+                          T_mass - T_heat) +  # other surfaces load per unit building footprint area [W m^-2]
+              winArea * self.uValue * (
+                          T_can - T_heat) +  # window load due to temperature difference per unit building footprint area [W m^-2]
+              zac_in_ceil * (T_ceil - T_heat) +  # ceiling load per unit building footprint area [W m^-2]
+              self.intHeat +  # internal load per unit building footprint area [W m^-2]
+              volInfil * dens * ParCalculation.cp_atm * (
+                          T_can - T_heat) +  # infiltration load per unit building footprint area [W m^-2]
+              volVent * dens * ParCalculation.cp_atm * (
+                          T_can - T_heat) +  # ventilation load per unit building footprint area [W m^-2]
+              self.QWindowSolar),  # solar load through window per unit building footprint area [W m^-2]
+            0.)
+
         # -------------------------------------------------------------
         # HVAC system (cooling demand = [W m^-2] bld footprint)
         # -------------------------------------------------------------
@@ -367,18 +413,18 @@ class Building(object):
 
             # Calculate input work required by the refrigeration cycle per unit building footprint area [W m^-2]
             # COP = QL/Win or Win = QL/COP
-            self.coolConsump = (max(self.sensCoolDemand+self.dehumDemand,0.0))/self.copAdj
-            # self.coolConsump = coordination.ep_coolConsump_w_m2
+            self.coolConsump = (max(self.sensCoolDemand + self.dehumDemand, 0.0)) / self.copAdj
 
             # Calculate waste heat from HVAC system per unit building footprint area [W m^-2]
             # Using 1st law of thermodynamics QH = Win + QL
             if (self.condType == 'AIR'):
-                self.sensWasteCoolHeatDehum = max(self.sensCoolDemand+self.dehumDemand,0)+self.coolConsump
+                self.sensWasteCoolHeatDehum = max(self.sensCoolDemand + self.dehumDemand, 0) + self.coolConsump
                 self.latWaste = 0.0
             # We have not tested this option; it must be investigated further
             elif (self.condType == 'WAT'):
-                self.sensWasteCoolHeatDehum = max(self.sensCoolDemand+self.dehumDemand,0)+self.coolConsump*(1.-evapEff)
-                self.latWaste = max(self.sensCoolDemand+self.dehumDemand,0)+self.coolConsump*evapEff
+                self.sensWasteCoolHeatDehum = max(self.sensCoolDemand + self.dehumDemand, 0) + self.coolConsump * (
+                            1. - evapEff)
+                self.latWaste = max(self.sensCoolDemand + self.dehumDemand, 0) + self.coolConsump * evapEff
 
             self.sensHeatDemand = 0.
 
@@ -390,17 +436,15 @@ class Building(object):
         elif self.sensHeatDemand > 0. and canTemp < 288.:
             # Calculate total heating demand in per unit building footprint area [W m^-2]
             # Heating demand must be less than or equal to heating capacity
-            self.Qheat = min(self.sensHeatDemand, self.heatCap*self.nFloor)
+            self.Qheat = min(self.sensHeatDemand, self.heatCap * self.nFloor)
             # Calculate the energy consumption of the heating system per unit building footprint area [W m^-2] from heating demand divided by efficiency
-            self.heatConsump  = self.Qheat / self.heatEff
-            # self.heatConsump = coordination.ep_heatConsump_w_m2
+            self.heatConsump = self.Qheat / self.heatEff
             # Calculate waste heat from HVAC system per unit building footprint area [W m^-2]
             # Using 1st law of thermodynamics QL = Win - QH
             self.sensWasteCoolHeatDehum = self.heatConsump - self.Qheat
             # The heating system model assumes that the indoor air humidity is not controlled
             Qdehum = 0.0
             self.sensCoolDemand = 0.0
-
 
         # -------------------------------------------------------------
         # Evolution of the internal temperature and humidity
@@ -411,32 +455,30 @@ class Building(object):
         # Explicit terms in eq. 2 which either do not contain Tin or contain Tin from previous iteration (Bueno et al., 2012)
         Q = self.intHeat + self.QWindowSolar + self.Qheat - self.sensCoolDemand
 
-        H1 = (T_wall*wallArea*zac_in_wall +
-            T_mass*massArea*zac_in_mass +
-            T_ceil*zac_in_ceil +
-            T_can*winArea*self.uValue +
-            T_can*volInfil * dens * ParCalculation.cp_atm +
-            T_can*volVent * dens * ParCalculation.cp_atm)
+        H1 = (T_wall * wallArea * zac_in_wall +
+              T_mass * massArea * zac_in_mass +
+              T_ceil * zac_in_ceil +
+              T_can * winArea * self.uValue +
+              T_can * volInfil * dens * ParCalculation.cp_atm +
+              T_can * volVent * dens * ParCalculation.cp_atm)
         # Implicit terms in eq. 2 which directly contain coefficient for newest Tin to be solved (Bueno et al., 2012)
-        H2 = (wallArea*zac_in_wall +
-            massArea*zac_in_mass +
-            zac_in_ceil +
-            winArea*self.uValue +
-            volInfil * dens * ParCalculation.cp_atm +
-            volVent * dens * ParCalculation.cp_atm)
+        H2 = (wallArea * zac_in_wall +
+              massArea * zac_in_mass +
+              zac_in_ceil +
+              winArea * self.uValue +
+              volInfil * dens * ParCalculation.cp_atm +
+              volVent * dens * ParCalculation.cp_atm)
 
         # Assumes air temperature of control volume is sum of surface boundary temperatures
         # weighted by area and heat transfer coefficient + generated heat
         # Calculate indoor air temperature [K]
-        self.indoorTemp = (H1 + Q)/H2
-        # self.indoorTemp = coordination.ep_indoorTemp_C + 273.15
+        self.indoorTemp = (H1 + Q) / H2
         # Solve the latent heat balance equation for indoor air, considering effect of internal, infiltration and
         # ventilation latent heat and latent heat demand for dehumidification per unit building footprint area [W m^-2];
         # eq. 3 (Bueno et al., 2012)
         # Calculate indoor specific humidity [kgv kga^-1]
-        self.indoorHum = self.indoorHum + (simTime.dt/(dens * ParCalculation.Lv * Geometry_m.Height_canyon)) * \
-            (QLintload + QLinfil + QLvent - Qdehum)
-        # self.indoorHum = coordination.ep_indoorHum_Ratio
+        self.indoorHum = self.indoorHum + (simTime.dt / (dens * ParCalculation.Lv * Geometry_m.Height_canyon)) * \
+                         (QLintload + QLinfil + QLvent - Qdehum)
 
         # Calculate relative humidity ((Pw/Pws)*100) using pressure, indoor temperature, humidity
         _Tdb, _w, _phi, _h, _Tdp, _v = psychrometrics(self.indoorTemp, self.indoorHum, MeteoData.Pre)
@@ -447,30 +489,26 @@ class Building(object):
         # (will be used for element calculation)
         # Wall heat flux per unit wall area [W m^-2]
         self.fluxWall = zac_in_wall * (T_indoor - T_wall)
-        # self.fluxWall = coordination.ep_fluxWall_w_m2
         # Top ceiling heat flux per unit ceiling or building footprint area [W m^-2]
         self.fluxRoof = zac_in_ceil * (T_indoor - T_ceil)
-        # self.fluxRoof = coordination.ep_fluxRoof_w_m2
         # Inner horizontal heat flux per unit floor area [W m^-2]
-        self.fluxMass = zac_in_mass * (T_indoor - T_mass) + self.intHeat * self.intHeatFRad/massArea
-        # self.fluxMass = coordination.ep_floor_fluxMass_w_m2
+        self.fluxMass = zac_in_mass * (T_indoor - T_mass) + self.intHeat * self.intHeatFRad / massArea
 
         # Calculate heat fluxes per unit floor area [W m^-2] (These are for record keeping only)
-        self.fluxSolar = self.QWindowSolar/self.nFloor
-        self.fluxWindow = winArea * self.uValue *(T_can - T_indoor)/self.nFloor
-        self.fluxInterior = self.intHeat * self.intHeatFRad *(1.-self.intHeatFLat)/self.nFloor
-        self.fluxInfil= volInfil * dens * ParCalculation.cp_atm *(T_can - T_indoor)/self.nFloor
-        self.fluxVent = volVent * dens * ParCalculation.cp_atm *(T_can - T_indoor)/self.nFloor
+        self.fluxSolar = self.QWindowSolar / self.nFloor
+        self.fluxWindow = winArea * self.uValue * (T_can - T_indoor) / self.nFloor
+        self.fluxInterior = self.intHeat * self.intHeatFRad * (1. - self.intHeatFLat) / self.nFloor
+        self.fluxInfil = volInfil * dens * ParCalculation.cp_atm * (T_can - T_indoor) / self.nFloor
+        self.fluxVent = volVent * dens * ParCalculation.cp_atm * (T_can - T_indoor) / self.nFloor
 
         # Total Electricity consumption per unit floor area [W m^-2] which is equal to
         # cooling consumption + electricity consumption + lighting
-        self.ElecTotal = self.coolConsump/self.nFloor + BEM.Elec + BEM.Light
-        # self.ElecTotal = coordination.ep_elecTotal_w_m2
+        self.ElecTotal = self.coolConsump / self.nFloor + BEM.Elec + BEM.Light
         # electricity demand other than cooling consumption per building footprint area [W m^-2]
         self.elecDomesticDemand = self.nFloor * (BEM.Elec + BEM.Light)
         # Sensible hot water heating demand
-        CpH20 = 4200.           # heat capacity of water [J Kg^-1 K^-1]
-        T_hot = 49 + 273.15     # Service water temp (assume no storage) [K]
+        CpH20 = 4200.  # heat capacity of water [J Kg^-1 K^-1]
+        T_hot = 49 + 273.15  # Service water temp (assume no storage) [K]
         self.sensWaterHeatDemand = massFlorRateSWH * CpH20 * (T_hot - MeteoData.waterTemp)
 
         # Calculate total sensible waste heat to canyon per unit building footprint area [W m^-2]
@@ -481,15 +519,8 @@ class Building(object):
         self.QWater = (1 / self.heatEff - 1.) * self.sensWaterHeatDemand
         self.QGas = BEM.Gas * (1 - self.heatEff) * self.nFloor
         self.sensWaste = self.sensWasteCoolHeatDehum + self.QWater + self.QGas
-        vcwg_time_index_in_seconds = (it + 1) * simTime.dt
-        coordination.vcwg_needed_time_idx_in_seconds = vcwg_time_index_in_seconds
-        print(f'VCWG: {vcwg_time_index_in_seconds}, {self.sensWaste}\n')
-        # self.sensWaste = coordination.ep_sensWaste_w_m2
-        coordination.vcwg_canTemp_K = canTemp
-        coordination.vcwg_canSpecHum_Ratio = canHum
-        coordination.vcwg_canPress_Pa = MeteoData.Pre
-        coordination.sem_vcwg.release()
-
         # Calculate total gas consumption per unit floor area [W m^-2] which is equal to gas consumption per unit floor area +
         # energy consumption for domestic hot water per unit floor area + energy consumption of the heating system per unit floor area
-        self.GasTotal = BEM.Gas + (massFlorRateSWH*CpH20*(T_hot - MeteoData.waterTemp)/self.nFloor)/self.heatEff + self.heatConsump/self.nFloor
+        self.GasTotal = BEM.Gas + (massFlorRateSWH * CpH20 * (
+                    T_hot - MeteoData.waterTemp) / self.nFloor) / self.heatEff + self.heatConsump / self.nFloor
+

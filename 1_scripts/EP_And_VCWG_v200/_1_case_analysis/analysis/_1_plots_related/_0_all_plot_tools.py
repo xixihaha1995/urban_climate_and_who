@@ -303,6 +303,10 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
     df = pd.DataFrame(data_arr)
     if file_name == 'can_Averaged_temp_k_specHum_ratio_press_pa':
         df.columns = ['Temp_K', 'SpecHum_Ratio', 'Press_Pa']
+    elif file_name == 's_wall_Text_K_n_wall_Text_K':
+        df.columns = ['s_wall_Text_K', 'n_wall_Text_K']
+    elif file_name == 'vcwg_wsp_mps_wdir_deg':
+        df.columns = ['wsp_mps', 'wdir_deg']
     else:
         df.columns = [f'(m) {file_name}_' + str(0.5 + i) for i in range(len(df.columns))]
     df = add_date_index(df, start_time, time_interval_sec)
