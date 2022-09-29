@@ -12,6 +12,12 @@ def run_ep_api():
     state = api.state_manager.new_state()
     # api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
     #                                                               _01_ep_time_step_handlers._nested_ep_then_vcwg)
+    if coordination.time_step_version == 0:
+        api.runtime.callback_begin_new_environment(state, time_step_handlers_0._nested_ep_then_vcwg)
+    elif coordination.time_step_version == 1:
+        api.runtime.callback_begin_new_environment(state, time_step_handlers_1._nested_ep_then_vcwg)
+    elif coordination.time_step_version == 2:
+        api.runtime.callback_begin_new_environment(state, time_step_handlers_2._nested_ep_then_vcwg)
     api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
                                                                   time_step_handlers_0._nested_ep_then_vcwg)
     # api.runtime.callback_end_zone_timestep_before_zone_reporting(state,
@@ -25,7 +31,7 @@ def run_ep_api():
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    time_step_handler_ver = 2
+    time_step_handler_ver = 0
     ep_files_path = '_1_case_analysis\\cases\\_05_Basel_BSPR_ue1\\refining_M2'
     epwFileName = 'Basel.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M2.idf'
