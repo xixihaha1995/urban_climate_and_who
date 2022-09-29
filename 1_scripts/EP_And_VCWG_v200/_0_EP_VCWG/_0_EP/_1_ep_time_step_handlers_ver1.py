@@ -436,10 +436,6 @@ def _nested_ep_then_vcwg(state):
             coordination.ep_api.exchange.get_variable_handle(state,
                                             "Surface Inside Face Solar Radiation Heat Gain Rate per Area",
                                             "t Roof S1A")
-
-
-
-
     warm_up = coordination.ep_api.exchange.warmup_flag(state)
     if not warm_up:
         # Lichen: After EP warm up, start to call VCWG
@@ -452,9 +448,7 @@ def _nested_ep_then_vcwg(state):
 
         coordination.sem_vcwg.acquire()
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
-        curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
-        # print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
-        # Should always accumulate, since system time always advances
+        curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600        # Should always accumulate, since system time always advances
         accumulated_time_in_seconds = curr_sim_time_in_seconds - ep_last_call_time_seconds
         ep_last_call_time_seconds = curr_sim_time_in_seconds
         hvac_heat_rejection_J = coordination.ep_api.exchange.get_variable_value(state, hvac_heat_rejection_sensor_handle)
@@ -682,7 +676,7 @@ def _nested_ep_then_vcwg(state):
         coordination.ep_roof_Text_K = roof_Text_C + 273.15
         coordination.ep_roof_Tint_K = roof_Tint_C + 273.15
 
-        if s_wall_solar_w_m2 > n_wall_solar_w_m2:
+        if s_wall_solar_w_m2 >= n_wall_solar_w_m2:
             coordination.ep_wallSun_Text_K = s_wall_Text_C + 273.15
             coordination.ep_wallSun_Tint_K = s_wall_Tint_C + 273.15
             coordination.ep_wallShade_Text_K = n_wall_Text_C + 273.15

@@ -1,9 +1,6 @@
 import os, numpy as np, pandas as pd
 from threading import Thread
-import _0_EP_VCWG._0_EP._0_vcwg_ep_coordination as coordination, \
-    _0_EP_VCWG._0_EP._1_ep_time_step_handlers_ver0 as time_step_handlers_0,\
-    _0_EP_VCWG._0_EP._1_ep_time_step_handlers_ver1 as time_step_handlers_1,\
-    _0_EP_VCWG._0_EP._1_ep_time_step_handlers_ver2 as time_step_handlers_2
+import _0_EP_VCWG._0_EP._0_vcwg_ep_coordination as coordination
 from _1_case_analysis.analysis._1_plots_related import _0_all_plot_tools as plot_tools
 
 
@@ -13,13 +10,14 @@ def run_ep_api():
     # api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
     #                                                               _01_ep_time_step_handlers._nested_ep_then_vcwg)
     if coordination.time_step_version == 0:
-        api.runtime.callback_begin_new_environment(state, time_step_handlers_0._nested_ep_then_vcwg)
+        import _0_EP_VCWG._0_EP._1_ep_time_step_handlers_ver0 as time_step_handlers_0
+        api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers_0._nested_ep_then_vcwg)
     elif coordination.time_step_version == 1:
-        api.runtime.callback_begin_new_environment(state, time_step_handlers_1._nested_ep_then_vcwg)
+        import _0_EP_VCWG._0_EP._1_ep_time_step_handlers_ver1 as time_step_handlers_1
+        api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers_1._nested_ep_then_vcwg)
     elif coordination.time_step_version == 2:
-        api.runtime.callback_begin_new_environment(state, time_step_handlers_2._nested_ep_then_vcwg)
-    api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
-                                                                  time_step_handlers_0._nested_ep_then_vcwg)
+        import _0_EP_VCWG._0_EP._1_ep_time_step_handlers_ver2 as time_step_handlers_2
+        api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers_2._nested_ep_then_vcwg)
     # api.runtime.callback_end_zone_timestep_before_zone_reporting(state,
     #                                                               _01_ep_time_step_handlers._nested_ep_only)
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
@@ -31,7 +29,7 @@ def run_ep_api():
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    time_step_handler_ver = 0
+    time_step_handler_ver = 1
     ep_files_path = '_1_case_analysis\\cases\\_05_Basel_BSPR_ue1\\refining_M2'
     epwFileName = 'Basel.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M2.idf'
@@ -55,7 +53,6 @@ if __name__ == '__main__':
     start_time = '2002-06-10 00:00:00'
     time_interval_sec = 300
     # Lichen: post process, such as [timestamp, waste heat] * time_steps_num
-
     data_name_lst = ['TempProfile_K', 'SpecHumProfile_Ratio', 'PressProfile_Pa', 'wind_vxProfile_mps',
                      'wind_vyProfile_mps', 'wind_SpeedProfile_mps', 'turbulence_tkeProfile_m2s2',
                      'air_densityProfile_kgm3', 'sensible_heat_fluxProfile_Wm2', 'latent_heat_fluxProfile_Wm2',

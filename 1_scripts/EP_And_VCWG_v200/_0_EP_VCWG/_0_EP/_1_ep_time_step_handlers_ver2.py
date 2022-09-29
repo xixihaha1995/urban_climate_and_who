@@ -698,7 +698,7 @@ def _nested_ep_then_vcwg(state):
         coordination.ep_roof_Text_K = roof_Text_C + 273.15
         coordination.ep_roof_Tint_K = roof_Tint_C + 273.15
 
-        if s_wall_solar_w_m2 > n_wall_solar_w_m2:
+        if s_wall_solar_w_m2 >= n_wall_solar_w_m2:
             coordination.ep_wallSun_Text_K = s_wall_Text_C + 273.15
             coordination.ep_wallSun_Tint_K = s_wall_Tint_C + 273.15
             coordination.ep_wallShade_Text_K = n_wall_Text_C + 273.15
