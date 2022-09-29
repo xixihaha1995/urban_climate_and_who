@@ -1,7 +1,7 @@
 import os, numpy as np, pandas as pd
 from threading import Thread
 import _0_EP_VCWG._0_EP._0_vcwg_ep_coordination as coordination, \
-    _0_EP_VCWG._0_EP._1_ep_time_step_handlers as time_step_handlers
+    _0_EP_VCWG._0_EP._1_ep_time_step_handlers_ver0 as time_step_handlers_0
 from _1_case_analysis.analysis._1_plots_related import _0_all_plot_tools as plot_tools
 
 
@@ -11,7 +11,7 @@ def run_ep_api():
     # api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
     #                                                               _01_ep_time_step_handlers._nested_ep_then_vcwg)
     api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
-                                                                  time_step_handlers._nested_ep_then_vcwg)
+                                                                  time_step_handlers_0._nested_ep_then_vcwg)
     # api.runtime.callback_end_zone_timestep_before_zone_reporting(state,
     #                                                               _01_ep_time_step_handlers._nested_ep_only)
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")

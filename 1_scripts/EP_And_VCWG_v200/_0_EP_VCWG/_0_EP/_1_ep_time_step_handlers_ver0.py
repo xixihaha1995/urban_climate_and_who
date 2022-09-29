@@ -196,6 +196,9 @@ def _nested_ep_then_vcwg(state):
                                                                                 "t Roof S1A")
         ts2_roof_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
                                                                                 "t Roof S2A")
+        t_cor_roof_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",
+                                                                                  "t Roof C")
+
         gsw_wall_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
                                                                                 "g SWall SWA")
         gse_office_wall_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
@@ -540,7 +543,7 @@ def _nested_ep_then_vcwg(state):
         tn2_roof_Text_c = coordination.ep_api.exchange.get_variable_value(state, tn2_roof_Text_handle)
         ts1_roof_Text_c = coordination.ep_api.exchange.get_variable_value(state, ts1_roof_Text_handle)
         ts2_roof_Text_c = coordination.ep_api.exchange.get_variable_value(state, ts2_roof_Text_handle)
-        t_cor_roof_Text_c = coordination.ep_api.exchange.get_global_handle(state, t_cor_roof_Text_handle)
+        t_cor_roof_Text_c = coordination.ep_api.exchange.get_variable_value(state, t_cor_roof_Text_handle)
 
         tsw_roof_Tint_c = coordination.ep_api.exchange.get_variable_value(state, tsw_roof_Tint_handle)
         tnw_roof_Tint_c = coordination.ep_api.exchange.get_variable_value(state, tnw_roof_Tint_handle)
@@ -550,7 +553,7 @@ def _nested_ep_then_vcwg(state):
         tn2_roof_Tint_c = coordination.ep_api.exchange.get_variable_value(state, tn2_roof_Tint_handle)
         ts1_roof_Tint_c = coordination.ep_api.exchange.get_variable_value(state, ts1_roof_Tint_handle)
         ts2_roof_Tint_c = coordination.ep_api.exchange.get_variable_value(state, ts2_roof_Tint_handle)
-        t_cor_roof_Tint_c = coordination.ep_api.exchange.get_global_handle(state, t_cor_roof_Tint_handle)
+        t_cor_roof_Tint_c = coordination.ep_api.exchange.get_variable_value(state, t_cor_roof_Tint_handle)
 
 
         roof_Text_C = (tsw_roof_Text_c + tnw_roof_Text_c + tse_roof_Text_c + tne_roof_Text_c +
