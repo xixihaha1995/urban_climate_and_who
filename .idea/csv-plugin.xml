@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\1_scripts\EP_And_VCWG_v200\_1_case_analysis\cases\_05_Basel_BSPR_ue1\refining_M2\api_data.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\1_scripts\VCWG_v2.0.0\Results\th_not_potential.csv">
           <value>
             <Attribute>

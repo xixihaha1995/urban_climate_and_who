@@ -18,10 +18,16 @@ def init_variables_for_vcwg_ep(_in_ep_files_path, _in_ver):
         ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, \
         ep_wallSun_Text_K, ep_wallSun_Tint_K,ep_wallShade_Text_K, ep_wallShade_Tint_K,\
         blf_floor_area_m2, time_step_version, ep_files_path
+
     vcwg_wsp_mps = 0
     vcwg_wdir_deg = 0
     ep_files_path = _in_ep_files_path
     time_step_version = _in_ver
+
+    if time_step_version == 2:
+        global ep_wsp_mps, ep_wdir_deg
+        ep_wsp_mps = 0
+        ep_wdir_deg = 0
     blf_floor_area_m2 = 3135
     vcwg_needed_time_idx_in_seconds = 0
     vcwg_canTemp_K = 0
@@ -62,6 +68,8 @@ def init_saving_data(_in_vcwg_ep_saving_path = '_2_saved\BUBBLE_VCWG-EP-detailed
     saving_data['latent_heat_fluxProfile_Wm2'] = []
 
     saving_data['can_Averaged_temp_k_specHum_ratio_press_pa'] = []
+    saving_data['s_wall_Text_K_n_wall_Text_K'] = []
+    saving_data['vcwg_wsp_mps_wdir_deg_ep_wsp_mps_wdir_deg'] = []
 
     vcwg_ep_saving_path = _in_vcwg_ep_saving_path
 
@@ -146,6 +154,9 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     BEM.wallShade.Text = ep_wallShade_Text_K
     BEM.wallShade.Tint = ep_wallShade_Tint_K
 
+    saving_data['s_wall_Text_K_n_wall_Text_K'].append([BEM.wallSun.Text, BEM.wallShade.Text])
+    if time_step_version == 2:
+        saving_data['vcwg_wsp_mps_wdir_deg_ep_wsp_mps_wdir_deg'].append([vcwg_wsp_mps, vcwg_wdir_deg, ep_wsp_mps, ep_wdir_deg])
     # floor mass, wallSun, wallShade, roofImp, roofVeg
     if FractionsRoof.fimp > 0:
         BEM.roofImp.Text = ep_roof_Text_K

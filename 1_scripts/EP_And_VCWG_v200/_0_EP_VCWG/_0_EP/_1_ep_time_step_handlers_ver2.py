@@ -70,6 +70,7 @@ def run_vcwg():
 
 def _nested_ep_then_vcwg(state):
     global one_time,one_time_call_vcwg,\
+        site_wind_speed_mps_sensor_handle, site_wind_direction_deg_sensor_handle, \
         odb_actuator_handle, orh_actuator_handle, wsped_mps_actuator_handle, wdir_deg_actuator_handle,\
         zone_indor_temp_sensor_handle, zone_indor_spe_hum_sensor_handle, zone_flr_area_handle,\
         sens_cool_demand_sensor_handle, sens_heat_demand_sensor_handle, \
@@ -118,6 +119,8 @@ def _nested_ep_then_vcwg(state):
             return
         one_time = False
         api_to_csv(state)
+
+
         odb_actuator_handle = coordination.ep_api.exchange.get_actuator_handle(
             state, "Weather Data", "Outdoor Dry Bulb",
             "Environment")
@@ -129,7 +132,14 @@ def _nested_ep_then_vcwg(state):
             state, "Weather Data", "Wind Speed", "Environment")
         wdir_deg_actuator_handle = coordination.ep_api.exchange.get_actuator_handle(
             state, "Weather Data", "Wind Direction", "Environment")
-
+        site_wind_speed_mps_sensor_handle = \
+            coordination.ep_api.exchange.get_variable_handle(state,
+                                                         "Site Wind Speed",
+                                                         "ENVIRONMENT")
+        site_wind_direction_deg_sensor_handle = \
+            coordination.ep_api.exchange.get_variable_handle(state,
+                                                            "Site Wind Direction",
+                                                            "ENVIRONMENT")
         gsw_flr_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
                                                                              "g GFloor SWA")
         gnw_flr_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
@@ -666,6 +676,10 @@ def _nested_ep_then_vcwg(state):
         coordination.ep_api.exchange.set_actuator_value(state, orh_actuator_handle, rh)
         coordination.ep_api.exchange.set_actuator_value(state, wsped_mps_actuator_handle, coordination.vcwg_wsp_mps)
         coordination.ep_api.exchange.set_actuator_value(state, wdir_deg_actuator_handle, coordination.vcwg_wdir_deg)
+
+        coordination.ep_wsp_mps = coordination.ep_api.exchange.get_variable_value(state, site_wind_speed_mps_sensor_handle)
+        coordination.ep_wdir_deg = coordination.ep_api.exchange.get_variable_value(state, site_wind_direction_deg_sensor_handle)
+
 
         coordination.ep_elecTotal_w_m2_per_floor_area = elec_bld_meter_w_m2
         coordination.ep_indoorTemp_C = zone_indor_temp_value
