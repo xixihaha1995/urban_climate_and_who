@@ -301,10 +301,8 @@ def merge_multiple_df(df_list, column_name):
 def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval_sec, vcwg_ep_saving_path):
     data_arr = np.array(saving_data[file_name])
     df = pd.DataFrame(data_arr)
-    if file_name == 'can_Averaged_temp_k_specHum_ratio_press_pa':
-        df.columns = ['Temp_K', 'SpecHum_Ratio', 'Press_Pa']
-    else:
-        df.columns = [f'(m) {file_name}_' + str(0.5 + i) for i in range(len(df.columns))]
+    df.columns = ['ep_wsp_mps', 'ep_wdir_deg']
+
     df = add_date_index(df, start_time, time_interval_sec)
     # save to excel, if non-exist, create one
     if not os.path.exists(vcwg_ep_saving_path):

@@ -17,18 +17,23 @@ def api_to_csv(state):
     newFile.write(newFileByteArray)
     newFile.close()
 def _nested_ep_only(state):
-    global one_time, accu_hvac_heat_rejection_J,zone_time_step_seconds \
-        ,hvac_heat_rejection_sensor_handle, ep_last_accumulated_time_index_in_seconds
+    global one_time,zone_time_step_seconds, \
+        site_wind_speed_mps_sensor_handle, site_wind_direction_deg_sensor_handle, \
+        ep_last_accumulated_time_index_in_seconds
     if one_time:
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
             return
         one_time = False
         zone_time_step_seconds = 3600 / coordination.ep_api.exchange.num_time_steps_in_hour(state)
 
-        hvac_heat_rejection_sensor_handle = \
+        site_wind_speed_mps_sensor_handle = \
             coordination.ep_api.exchange.get_variable_handle(state,
-                                             "HVAC System Total Heat Rejection Energy",
-                                             "SIMHVAC")
+                                                         "Site Wind Speed",
+                                                         "ENVIRONMENT")
+        site_wind_direction_deg_sensor_handle = \
+            coordination.ep_api.exchange.get_variable_handle(state,
+                                                            "Site Wind Direction",
+                                                            "ENVIRONMENT")
     warm_up = coordination.ep_api.exchange.warmup_flag(state)
     if not warm_up:
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
@@ -36,13 +41,17 @@ def _nested_ep_only(state):
         accumulation_time_step_in_seconds = curr_sim_time_in_seconds - ep_last_accumulated_time_index_in_seconds
         accumulated_bool = 1 > abs(accumulation_time_step_in_seconds - zone_time_step_seconds)
 
-        accu_hvac_heat_rejection_J += coordination.ep_api.exchange.get_variable_value(state,
-                                                                                      hvac_heat_rejection_sensor_handle)
-        if accumulated_bool:
-            coordination.saving_data.append([curr_sim_time_in_seconds,
-                                             accu_hvac_heat_rejection_J])
-            accu_hvac_heat_rejection_J = 0
-            ep_last_accumulated_time_index_in_seconds = curr_sim_time_in_seconds
+        if  not accumulated_bool: return
+        ep_last_accumulated_time_index_in_seconds = curr_sim_time_in_seconds
+        coordination.ep_wsp_mps = coordination.ep_api.exchange.get_variable_value(state,
+                                                                                  site_wind_speed_mps_sensor_handle)
+        coordination.ep_wdir_deg = coordination.ep_api.exchange.get_variable_value(state,
+                                                                                   site_wind_direction_deg_sensor_handle)
+
+        coordination.saving_data['ep_wsp_mps_wdir_deg'].append(
+            [coordination.ep_wsp_mps, coordination.ep_wdir_deg])
+
+
 def run_vcwg():
     epwFileName = 'Basel.epw'
     TopForcingFileName = None
