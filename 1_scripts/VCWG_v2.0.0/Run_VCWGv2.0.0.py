@@ -33,7 +33,7 @@ Last update: December 2020
 epwFileName = 'Basel.epw'
 TopForcingFileName = None
 VCWGParamFileName = 'initialize_Basel_MOST.uwg'
-ViewFactorFileName = '_BSPA_ViewFactor_Basel_MOST.txt'
+ViewFactorFileName = '_case6_BSPA_ViewFactor_Basel_MOST.txt'
 # Case name to append output file names with
 case = 'Basel_MOST'
 # '''
