@@ -21,6 +21,8 @@ def run_ep_api():
     # api.runtime.callback_end_zone_timestep_before_zone_reporting(state,
     #                                                               _01_ep_time_step_handlers._nested_ep_only)
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
+    api.exchange.request_variable(state, "Site Wind Speed", "ENVIRONMENT")
+    api.exchange.request_variable(state, "Site Wind Direction", "ENVIRONMENT")
 
     output_path = os.path.join(ep_files_path, 'ep_outputs')
     weather_file_path = os.path.join(ep_files_path,'..', epwFileName)
@@ -29,7 +31,7 @@ def run_ep_api():
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    time_step_handler_ver = 1
+    time_step_handler_ver = 2
     ep_files_path = '_1_case_analysis\\cases\\_05_Basel_BSPR_ue1\\refining_M2'
     epwFileName = 'Basel.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M2.idf'

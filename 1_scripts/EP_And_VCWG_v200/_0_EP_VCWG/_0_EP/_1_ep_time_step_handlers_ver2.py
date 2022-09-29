@@ -672,13 +672,14 @@ def _nested_ep_then_vcwg(state):
                              mnw_solar_w_m2*2 + mne_solar_w_m2*2 + mn1_solar_w_m2*2 + mn2_solar_w_m2*2 +
                              tnw_solar_w_m2 + tne_solar_w_m2 + tn1_solar_w_m2 + tn2_solar_w_m2)/16
 
+        coordination.ep_wsp_mps = coordination.ep_api.exchange.get_variable_value(state, site_wind_speed_mps_sensor_handle)
+        coordination.ep_wdir_deg = coordination.ep_api.exchange.get_variable_value(state, site_wind_direction_deg_sensor_handle)
+
         coordination.ep_api.exchange.set_actuator_value(state, odb_actuator_handle, coordination.vcwg_canTemp_K - 273.15)
         coordination.ep_api.exchange.set_actuator_value(state, orh_actuator_handle, rh)
         coordination.ep_api.exchange.set_actuator_value(state, wsped_mps_actuator_handle, coordination.vcwg_wsp_mps)
         coordination.ep_api.exchange.set_actuator_value(state, wdir_deg_actuator_handle, coordination.vcwg_wdir_deg)
 
-        coordination.ep_wsp_mps = coordination.ep_api.exchange.get_variable_value(state, site_wind_speed_mps_sensor_handle)
-        coordination.ep_wdir_deg = coordination.ep_api.exchange.get_variable_value(state, site_wind_direction_deg_sensor_handle)
 
 
         coordination.ep_elecTotal_w_m2_per_floor_area = elec_bld_meter_w_m2

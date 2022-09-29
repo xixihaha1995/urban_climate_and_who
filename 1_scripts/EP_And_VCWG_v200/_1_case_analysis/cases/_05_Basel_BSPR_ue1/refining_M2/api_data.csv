@@ -7769,6 +7769,8 @@ OutputMeter,NaturalGasEmissions:Nuclear Low
 OutputMeter,Carbon Equivalent:Facility
 OutputMeter,CarbonEquivalentEmissions:Carbon Equivalent
 **VARIABLES**
+OutputVariable,Site Wind Speed,ENVIRONMENT
+OutputVariable,Site Wind Direction,ENVIRONMENT
 OutputVariable,Lights Electricity Energy,OFFICE_LIGHTS
 OutputVariable,Lights Electricity Energy,G CORRIDOR_LIGHTS
 OutputVariable,Lights Electricity Energy,M CORRIDOR_LIGHTS
