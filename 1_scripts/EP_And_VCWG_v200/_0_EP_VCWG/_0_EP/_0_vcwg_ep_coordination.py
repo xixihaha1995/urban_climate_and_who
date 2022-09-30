@@ -14,10 +14,11 @@ def init_variables_for_vcwg_ep(_in_ep_files_path, _in_ver):
     global vcwg_needed_time_idx_in_seconds,\
         vcwg_canTemp_K, vcwg_canSpecHum_Ratio, vcwg_canPress_Pa, vcwg_wsp_mps, vcwg_wdir_deg,\
         ep_indoorTemp_C, ep_indoorHum_Ratio, ep_sensCoolDemand_w_m2, ep_sensHeatDemand_w_m2, ep_coolConsump_w_m2, ep_heatConsump_w_m2,\
-        ep_elecTotal_w_m2_per_floor_area, ep_sensWaste_w_m2_per_floor_area, ep_floor_fluxMass_w_m2, ep_fluxRoof_w_m2, ep_fluxWall_w_m2, \
+        ep_elecTotal_w_m2_per_floor_area, ep_sensWaste_w_m2_per_floor_area, \
         ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, \
         ep_wallSun_Text_K, ep_wallSun_Tint_K,ep_wallShade_Text_K, ep_wallShade_Tint_K,\
-        blf_floor_area_m2, time_step_version, ep_files_path
+        blf_floor_area_m2, time_step_version, ep_files_path,\
+        ep_oaTemp_C
 
     vcwg_wsp_mps = 0
     vcwg_wdir_deg = 0
@@ -41,9 +42,8 @@ def init_variables_for_vcwg_ep(_in_ep_files_path, _in_ver):
     ep_heatConsump_w_m2 = 0
     ep_elecTotal_w_m2_per_floor_area = 0
     ep_sensWaste_w_m2_per_floor_area = 0
-    ep_floor_fluxMass_w_m2 = 0
-    ep_fluxRoof_w_m2 = 0
-    ep_fluxWall_w_m2 = 0
+    ep_oaTemp_C = 7
+
     ep_floor_Text_K = 300
     ep_floor_Tint_K = 300
     ep_roof_Text_K = 300
@@ -70,6 +70,8 @@ def init_saving_data(_in_vcwg_ep_saving_path = '_2_saved\BUBBLE_VCWG-EP-detailed
     saving_data['can_Averaged_temp_k_specHum_ratio_press_pa'] = []
     saving_data['s_wall_Text_K_n_wall_Text_K'] = []
     saving_data['vcwg_wsp_mps_wdir_deg_ep_wsp_mps_wdir_deg'] = []
+    #'debugging_canyon' includes wallSun, wallShade, floor, roof, sensWaste(W/per unit footprint area), canTemp_ep, canTemp_vcwg
+    saving_data['debugging_canyon']=[]
 
     vcwg_ep_saving_path = _in_vcwg_ep_saving_path
 
@@ -142,6 +144,11 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
 
     print(f"Handler ver{time_step_version}, {day_hour_min_sec}, "
           f"sensWaste (Currently only HVAC Rejection):{BEM_building.sensWaste} watts/ unit footprint area")
+    # 'debugging_canyon' includes wallSun, wallShade, floor, roof, sensWaste(W/per unit footprint area),
+    # canTemp_ep, canTemp_vcwg
+    saving_data['debugging_canyon'].append([BEM.wallSun.Text,
+                                            BEM.wallShade.Text, BEM.mass.Text, ep_roof_Text_K,
+                                            BEM_building.sensWaste, ep_oaTemp_C + 273.15, canTemp])
 
     ep_sensWaste_w_m2_per_floor_area = 0
 
@@ -155,6 +162,8 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     BEM.wallShade.Tint = ep_wallShade_Tint_K
 
     saving_data['s_wall_Text_K_n_wall_Text_K'].append([BEM.wallSun.Text, BEM.wallShade.Text])
+
+
     if time_step_version == 2:
         saving_data['vcwg_wsp_mps_wdir_deg_ep_wsp_mps_wdir_deg'].append([vcwg_wsp_mps, vcwg_wdir_deg, ep_wsp_mps, ep_wdir_deg])
     # floor mass, wallSun, wallShade, roofImp, roofVeg
@@ -171,9 +180,7 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     BEM_building.heatConsump = ep_heatConsump_w_m2
     BEM_building.indoorTemp = ep_indoorTemp_C + 273.15
     BEM_building.indoorHum = ep_indoorHum_Ratio
-    BEM_building.fluxWall = ep_fluxWall_w_m2
-    BEM_building.fluxRoof = ep_fluxRoof_w_m2
-    BEM_building.fluxMass = ep_floor_fluxMass_w_m2
+
 
     BEM_building.indoorRhum = 0.6
     BEM_building.sensWasteCoolHeatDehum = 0.0  # Sensible waste heat per unit building footprint area only including cool, heat, and dehum [W m-2]

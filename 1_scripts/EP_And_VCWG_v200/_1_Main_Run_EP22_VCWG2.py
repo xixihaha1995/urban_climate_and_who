@@ -13,6 +13,7 @@ def run_ep_api():
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
     api.exchange.request_variable(state, "Site Wind Speed", "ENVIRONMENT")
     api.exchange.request_variable(state, "Site Wind Direction", "ENVIRONMENT")
+    api.exchange.request_variable(state, "Site Outdoor Air Drybulb Temperature", "ENVIRONMENT")
 
     output_path = os.path.join(ep_files_path, 'ep_outputs')
     weather_file_path = os.path.join(ep_files_path,'..', epwFileName)
@@ -22,8 +23,10 @@ def run_ep_api():
 
 if __name__ == '__main__':
     time_step_handler_ver = 1
-    ep_files_path = '_1_case_analysis\\cases\\_06_Basel_BSPA_ue2\\refining_M2'
-    case_name = '_BSPA_bypass_refining_M2'
+    # ep_files_path = '_1_case_analysis\\cases\\_06_Basel_BSPA_ue2\\refining_M2'
+    ep_files_path = '_1_case_analysis\\cases\\_05_Basel_BSPR_ue1\\refining_M2'
+    # case_name = '_BSPA_bypass_refining_M2'
+    case_name = '_BSPR_bypass_refining_M2'
     epwFileName = 'Basel.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M2.idf'
 
@@ -48,7 +51,7 @@ if __name__ == '__main__':
     data_name_lst = ['TempProfile_K', 'SpecHumProfile_Ratio', 'PressProfile_Pa', 'wind_vxProfile_mps',
                      'wind_vyProfile_mps', 'wind_SpeedProfile_mps', 'turbulence_tkeProfile_m2s2',
                      'air_densityProfile_kgm3', 'sensible_heat_fluxProfile_Wm2', 'latent_heat_fluxProfile_Wm2',
-                     'can_Averaged_temp_k_specHum_ratio_press_pa','s_wall_Text_K_n_wall_Text_K']
+                     'can_Averaged_temp_k_specHum_ratio_press_pa','s_wall_Text_K_n_wall_Text_K','debugging_canyon']
     for data_name in data_name_lst:
         plot_tools.save_data_to_csv(coordination.saving_data, data_name,case_name,
                                     start_time, time_interval_sec, vcwg_ep_saving_path)

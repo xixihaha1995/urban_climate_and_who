@@ -46,13 +46,13 @@ def _nested_ep_only(state):
 def run_vcwg():
     epwFileName = 'Basel.epw'
     TopForcingFileName = None
-    VCWGParamFileName = '_case6_initialize_Basel_BSPA_MOST.uwg'
-    # VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
-    ViewFactorFileName = '_case6_BSPA_ViewFactor_Basel_MOST.txt'
-    # ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
+    # VCWGParamFileName = '_case6_initialize_Basel_BSPA_MOST.uwg'
+    VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
+    # ViewFactorFileName = '_case6_BSPA_ViewFactor_Basel_MOST.txt'
+    ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
     # Case name to append output file names with
-    case = '_BSPA_Refinement_M2_Basel_MOST'
-    # case = '_BSPR_Refinement_M2_Basel_MOST'
+    # case = '_BSPA_Refinement_M2_Basel_MOST'
+    case = '_BSPR_Refinement_M2_Basel_MOST'
 
     # '''
 
@@ -69,21 +69,12 @@ def run_vcwg():
     VCWG.run()
 
 def _nested_ep_then_vcwg(state):
-    global one_time,one_time_call_vcwg,\
+    global one_time,one_time_call_vcwg, oat_sensor_handle,\
         odb_actuator_handle, orh_actuator_handle, wsped_mps_actuator_handle, wdir_deg_actuator_handle,\
         zone_indor_temp_sensor_handle, zone_indor_spe_hum_sensor_handle, zone_flr_area_handle,\
         sens_cool_demand_sensor_handle, sens_heat_demand_sensor_handle, \
         cool_consumption_sensor_handle, heat_consumption_sensor_handle, \
         hvac_heat_rejection_sensor_handle, elec_bld_meter_handle,\
-        floor_interior_conv_handle, floor_interior_lwr_otr_faces_handle, \
-        floor_interior_lwr_intGain_handle, floor_interior_lwr_hvac_handle,\
-        floor_interior_swr_lights_handle, floor_interior_swr_solar_handle, \
-        wall_interior_conv_handle, wall_interior_lwr_otr_faces_handle, \
-        wall_interior_lwr_intGain_handle, wall_interior_lwr_hvac_handle, \
-        wall_interior_swr_lights_handle, wall_interior_swr_solar_handle, \
-        roof_interior_conv_handle, roof_interior_lwr_otr_faces_handle, \
-        roof_interior_lwr_intGain_handle, roof_interior_lwr_hvac_handle, \
-        roof_interior_swr_lights_handle, roof_interior_swr_solar_handle,\
         gsw_flr_Text_handle, gnw_flr_Text_handle, gse_office_flr_Text_handle, gne_flr_Text_handle, \
         gn1_flr_Text_handle, gn2_flr_Text_handle, gs1_flr_Text_handle, gs2_flr_Text_handle, \
         tsw_roof_Text_handle, tnw_roof_Text_handle, tse_roof_Text_handle, tne_roof_Text_handle, \
@@ -118,6 +109,7 @@ def _nested_ep_then_vcwg(state):
             return
         one_time = False
         api_to_csv(state)
+
         odb_actuator_handle = coordination.ep_api.exchange.get_actuator_handle(
             state, "Weather Data", "Outdoor Dry Bulb",
             "Environment")
@@ -130,6 +122,9 @@ def _nested_ep_then_vcwg(state):
         wdir_deg_actuator_handle = coordination.ep_api.exchange.get_actuator_handle(
             state, "Weather Data", "Wind Direction", "Environment")
 
+        oat_sensor_handle = coordination.ep_api.exchange.get_variable_handle(state,
+                                                                             "Site Outdoor Air Drybulb Temperature",
+                                                                             "Environment")
         gsw_flr_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
                                                                              "g GFloor SWA")
         gnw_flr_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",
@@ -362,80 +357,6 @@ def _nested_ep_then_vcwg(state):
                                              "SIMHVAC")
         elec_bld_meter_handle = coordination.ep_api.exchange.get_meter_handle(state, "Electricity:Building")
 
-        floor_interior_conv_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                             "Surface Inside Face Convection Heat Gain Rate per Area",
-                                             "t GFloor S1A")
-        floor_interior_lwr_otr_faces_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                             "Surface Inside Face Net Surface Thermal Radiation Heat Gain Rate per Area",
-                                             "t GFloor S1A")
-        floor_interior_lwr_intGain_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                             "Surface Inside Face Internal Gains Radiation Heat Gain Rate per Area",
-                                             "t GFloor S1A")
-        floor_interior_lwr_hvac_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                             "Surface Inside Face System Radiation Heat Gain Rate per Area",
-                                             "t GFloor S1A")
-        floor_interior_swr_lights_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                             "Surface Inside Face Lights Radiation Heat Gain Rate per Area",
-                                             "t GFloor S1A")
-        floor_interior_swr_solar_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                             "Surface Inside Face Solar Radiation Heat Gain Rate per Area",
-                                             "t GFloor S1A")
-
-        wall_interior_conv_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                                "Surface Inside Face Convection Heat Gain Rate per Area",
-                                                "t SWall S1A")
-        wall_interior_lwr_otr_faces_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                            "Surface Inside Face Net Surface Thermal Radiation Heat Gain Rate per Area",
-                                            "t SWall S1A")
-        wall_interior_lwr_intGain_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                            "Surface Inside Face Internal Gains Radiation Heat Gain Rate per Area",
-                                            "t SWall S1A")
-        wall_interior_lwr_hvac_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                            "Surface Inside Face System Radiation Heat Gain Rate per Area",
-                                            "t SWall S1A")
-        wall_interior_swr_lights_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                            "Surface Inside Face Lights Radiation Heat Gain Rate per Area",
-                                            "t SWall S1A")
-        wall_interior_swr_solar_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                            "Surface Inside Face Solar Radiation Heat Gain Rate per Area",
-                                            "t SWall S1A")
-
-        roof_interior_conv_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                            "Surface Inside Face Convection Heat Gain Rate per Area",
-                                            "t Roof S1A")
-        roof_interior_lwr_otr_faces_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                            "Surface Inside Face Net Surface Thermal Radiation Heat Gain Rate per Area",
-                                            "t Roof S1A")
-        roof_interior_lwr_intGain_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                            "Surface Inside Face Internal Gains Radiation Heat Gain Rate per Area",
-                                            "t Roof S1A")
-        roof_interior_lwr_hvac_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                            "Surface Inside Face System Radiation Heat Gain Rate per Area",
-                                            "t Roof S1A")
-        roof_interior_swr_lights_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                            "Surface Inside Face Lights Radiation Heat Gain Rate per Area",
-                                            "t Roof S1A")
-        roof_interior_swr_solar_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                            "Surface Inside Face Solar Radiation Heat Gain Rate per Area",
-                                            "t Roof S1A")
     warm_up = coordination.ep_api.exchange.warmup_flag(state)
     if not warm_up:
         # Lichen: After EP warm up, start to call VCWG
@@ -480,31 +401,6 @@ def _nested_ep_then_vcwg(state):
         elec_bld_meter_j_hourly = coordination.ep_api.exchange.get_variable_value(state, elec_bld_meter_handle)
         elec_bld_meter_w_m2 = elec_bld_meter_j_hourly / 3600 / coordination.blf_floor_area_m2
 
-        floor_interior_conv = coordination.ep_api.exchange.get_variable_value(state, floor_interior_conv_handle)
-        floor_interior_lwr_otr_faces = coordination.ep_api.exchange.get_variable_value(state, floor_interior_lwr_otr_faces_handle)
-        floor_interior_lwr_intGain = coordination.ep_api.exchange.get_variable_value(state, floor_interior_lwr_intGain_handle)
-        floor_interior_lwr_hvac = coordination.ep_api.exchange.get_variable_value(state, floor_interior_lwr_hvac_handle)
-        floor_interior_swr_lights = coordination.ep_api.exchange.get_variable_value(state, floor_interior_swr_lights_handle)
-        floor_interior_swr_solar = coordination.ep_api.exchange.get_variable_value(state, floor_interior_swr_solar_handle)
-        floor_flux = floor_interior_conv + floor_interior_lwr_otr_faces + floor_interior_lwr_intGain + \
-                        floor_interior_lwr_hvac + floor_interior_swr_lights + floor_interior_swr_solar
-
-        wall_interior_conv = coordination.ep_api.exchange.get_variable_value(state, wall_interior_conv_handle)
-        wall_interior_lwr_otr_faces = coordination.ep_api.exchange.get_variable_value(state, wall_interior_lwr_otr_faces_handle)
-        wall_interior_lwr_intGain = coordination.ep_api.exchange.get_variable_value(state, wall_interior_lwr_intGain_handle)
-        wall_interior_lwr_hvac = coordination.ep_api.exchange.get_variable_value(state, wall_interior_lwr_hvac_handle)
-        wall_interior_swr_lights = coordination.ep_api.exchange.get_variable_value(state, wall_interior_swr_lights_handle)
-        wall_interior_swr_solar = coordination.ep_api.exchange.get_variable_value(state, wall_interior_swr_solar_handle)
-        wall_flux = wall_interior_conv + wall_interior_lwr_otr_faces + wall_interior_lwr_intGain + \
-                        wall_interior_lwr_hvac + wall_interior_swr_lights + wall_interior_swr_solar
-        roof_interior_conv = coordination.ep_api.exchange.get_variable_value(state, roof_interior_conv_handle)
-        roof_interior_lwr_otr_faces = coordination.ep_api.exchange.get_variable_value(state, roof_interior_lwr_otr_faces_handle)
-        roof_interior_lwr_intGain = coordination.ep_api.exchange.get_variable_value(state, roof_interior_lwr_intGain_handle)
-        roof_interior_lwr_hvac = coordination.ep_api.exchange.get_variable_value(state, roof_interior_lwr_hvac_handle)
-        roof_interior_swr_lights = coordination.ep_api.exchange.get_variable_value(state, roof_interior_swr_lights_handle)
-        roof_interior_swr_solar = coordination.ep_api.exchange.get_variable_value(state, roof_interior_swr_solar_handle)
-        roof_flux = roof_interior_conv + roof_interior_lwr_otr_faces + roof_interior_lwr_intGain + \
-                        roof_interior_lwr_hvac + roof_interior_swr_lights + roof_interior_swr_solar
 
         gsw_flr_Text_c = coordination.ep_api.exchange.get_variable_value(state, gsw_flr_Text_handle)
         gnw_flr_Text_c = coordination.ep_api.exchange.get_variable_value(state, gnw_flr_Text_handle)
@@ -647,7 +543,6 @@ def _nested_ep_then_vcwg(state):
         tn1_solar_w_m2 = coordination.ep_api.exchange.get_variable_value(state, tn1_solar_handle)
         tn2_solar_w_m2 = coordination.ep_api.exchange.get_variable_value(state, tn2_solar_handle)
 
-
         s_wall_solar_w_m2 = (gsw_solar_w_m2 + gse_solar_w_m2 + gs1_solar_w_m2 + gs2_solar_w_m2 +
                              msw_solar_w_m2*2 + mse_solar_w_m2*2 + ms1_solar_w_m2*2 + ms2_solar_w_m2*2 +
                              tsw_solar_w_m2 + tse_solar_w_m2 + ts1_solar_w_m2 + ts2_solar_w_m2)/16
@@ -656,19 +551,12 @@ def _nested_ep_then_vcwg(state):
                              mnw_solar_w_m2*2 + mne_solar_w_m2*2 + mn1_solar_w_m2*2 + mn2_solar_w_m2*2 +
                              tnw_solar_w_m2 + tne_solar_w_m2 + tn1_solar_w_m2 + tn2_solar_w_m2)/16
 
+        oat_temp_c = coordination.ep_api.exchange.get_variable_value(state, oat_sensor_handle)
+
         coordination.ep_api.exchange.set_actuator_value(state, odb_actuator_handle, coordination.vcwg_canTemp_K - 273.15)
         coordination.ep_api.exchange.set_actuator_value(state, orh_actuator_handle, rh)
 
-        coordination.ep_elecTotal_w_m2_per_floor_area = elec_bld_meter_w_m2
-        coordination.ep_indoorTemp_C = zone_indor_temp_value
-        coordination.ep_indoorHum_Ratio = zone_indor_spe_hum_value
-        coordination.ep_sensCoolDemand_w_m2 = sens_cool_demand_w_m2_value
-        coordination.ep_sensHeatDemand_w_m2 = sens_heat_demand_w_m2_value
-        coordination.ep_coolConsump_w_m2 = cool_consumption_w_m2_value
-        coordination.ep_heatConsump_w_m2 = heat_consumption_w_m2_value
-        coordination.ep_floor_fluxMass_w_m2 = floor_flux
-        coordination.ep_fluxWall_w_m2 = wall_flux
-        coordination.ep_fluxRoof_w_m2 = roof_flux
+        coordination.ep_oaTemp_C = oat_temp_c
 
         coordination.ep_floor_Text_K = floor_Text_C + 273.15
         coordination.ep_floor_Tint_K = floor_Tint_C + 273.15
@@ -686,5 +574,13 @@ def _nested_ep_then_vcwg(state):
             coordination.ep_wallSun_Tint_K = n_wall_Tint_C + 273.15
             coordination.ep_wallShade_Text_K = s_wall_Text_C + 273.15
             coordination.ep_wallShade_Tint_K = s_wall_Tint_C + 273.15
+
+        coordination.ep_elecTotal_w_m2_per_floor_area = elec_bld_meter_w_m2
+        coordination.ep_indoorTemp_C = zone_indor_temp_value
+        coordination.ep_indoorHum_Ratio = zone_indor_spe_hum_value
+        coordination.ep_sensCoolDemand_w_m2 = sens_cool_demand_w_m2_value
+        coordination.ep_sensHeatDemand_w_m2 = sens_heat_demand_w_m2_value
+        coordination.ep_coolConsump_w_m2 = cool_consumption_w_m2_value
+        coordination.ep_heatConsump_w_m2 = heat_consumption_w_m2_value
 
         coordination.sem_energyplus.release()
