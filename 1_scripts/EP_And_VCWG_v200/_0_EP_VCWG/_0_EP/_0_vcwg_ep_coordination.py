@@ -211,6 +211,9 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     BEM_building.QWindowSolar = 0.5
     BEM_building.elecDomesticDemand = 0.5
     BEM_building.sensWaterHeatDemand = 0.5
+    BEM_building.fluxWall = 0
+    BEM_building.fluxRoof = 0
+    BEM_building.fluxMass = 0
 
     sem_vcwg.release()
 
