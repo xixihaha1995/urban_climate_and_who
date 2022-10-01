@@ -148,7 +148,7 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     # canTemp_ep, canTemp_vcwg
     saving_data['debugging_canyon'].append([BEM.wallSun.Text,
                                             BEM.wallShade.Text, BEM.mass.Text, ep_roof_Text_K,
-                                            BEM_building.sensWaste, ep_oaTemp_C + 273.15, canTemp])
+                                            ep_sensWaste_w_m2_per_floor_area, ep_oaTemp_C + 273.15, canTemp])
 
     ep_sensWaste_w_m2_per_floor_area = 0
 
