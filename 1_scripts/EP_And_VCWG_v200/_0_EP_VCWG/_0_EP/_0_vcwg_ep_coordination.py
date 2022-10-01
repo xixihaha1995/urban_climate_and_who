@@ -16,3 +16,5 @@ def init_saving_data():
     saving_data['s_wall_Text_K_n_wall_Text_K'] = []
     saving_data['vcwg_wsp_mps_wdir_deg'] = []
     saving_data['can_Averaged_temp_k_specHum_ratio_press_pa'] = []
+    #wallSun_Text_K, wallShade_Text_K, roof_Text_K, sensWaste_w_floor_m2, canTemp_K
+    saving_data['debugging_canyon'] = []

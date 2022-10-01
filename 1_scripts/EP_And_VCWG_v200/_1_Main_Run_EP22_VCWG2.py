@@ -44,7 +44,8 @@ if __name__ == '__main__':
     data_name_lst = ['TempProfile_K', 'SpecHumProfile_Ratio', 'PressProfile_Pa', 'wind_vxProfile_mps',
                      'wind_vyProfile_mps', 'wind_SpeedProfile_mps', 'turbulence_tkeProfile_m2s2',
                      'air_densityProfile_kgm3', 'sensible_heat_fluxProfile_Wm2', 'latent_heat_fluxProfile_Wm2',
-                     'can_Averaged_temp_k_specHum_ratio_press_pa','s_wall_Text_K_n_wall_Text_K', 'vcwg_wsp_mps_wdir_deg']
+                     'can_Averaged_temp_k_specHum_ratio_press_pa','s_wall_Text_K_n_wall_Text_K', 'vcwg_wsp_mps_wdir_deg',
+                     'debugging_canyon']
     for data_name in data_name_lst:
         plot_tools.save_data_to_csv(coordination.saving_data, data_name,case_name,
                                     start_time, time_interval_sec, saving_data_path)
