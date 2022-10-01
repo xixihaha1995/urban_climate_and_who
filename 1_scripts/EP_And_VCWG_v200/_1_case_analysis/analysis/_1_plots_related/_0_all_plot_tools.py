@@ -248,7 +248,7 @@ def plot_comparison_measurement_simulated(df, txt_info):
 
     plt.show()
 
-def general_time_series_comparision(df, txt_info):
+def general_time_series_comparision(df, txt_info, CVRMSE_display = True):
     # df has many columns, itearte to plot each column
     figure, ax = plt.subplots(figsize=(10, 5))
     for i in range(0, len(df.columns)):
@@ -261,17 +261,17 @@ def general_time_series_comparision(df, txt_info):
     # make legend located at the best position
     ax.legend(loc='best')
     # from 1 iteraterat through all columns, make a txt for error info
+    if CVRMSE_display:
+        txt = 'Maximum Daily UHI effect: 5.2 K'
+        txt +='\nVCWGv2.0.0 (Monthly) MeanBiasError: -0.53(K), RMSE: 0.56(K), R2: 0.98(-)'
+        txt +='\nUWG Monthly MBE: -0.6(K), RMSE: 0.9(K)'
+        txt += f'\nNMBE(%), CV-RMSE(%), R2(-)'
 
-    txt = 'Maximum Daily UHI effect: 5.2 K'
-    txt +='\nVCWGv2.0.0 (Monthly) MeanBiasError: -0.53(K), RMSE: 0.56(K), R2: 0.98(-)'
-    txt +='\nUWG Monthly MBE: -0.6(K), RMSE: 0.9(K)'
-    txt += f'\nNMBE(%), CV-RMSE(%), R2(-)'
-
-    for i in range(1, len(txt_info)):
-        txt += f'\n{txt_info[i]}'
-    print(txt)
-    ax.text(0.05, 1, txt, transform=ax.transAxes, fontsize=10,
-        verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+        for i in range(1, len(txt_info)):
+            txt += f'\n{txt_info[i]}'
+        print(txt)
+        ax.text(0.05, 1, txt, transform=ax.transAxes, fontsize=10,
+            verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
     # lim
     ax.set_ylim(10, 40)
     ax.set_title(txt_info[0][0])
