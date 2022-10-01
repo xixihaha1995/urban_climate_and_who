@@ -11,6 +11,7 @@ def run_ep_api():
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
     api.exchange.request_variable(state, "Site Wind Speed", "ENVIRONMENT")
     api.exchange.request_variable(state, "Site Wind Direction", "ENVIRONMENT")
+    api.exchange.request_variable(state, "Site Outdoor Air Drybulb Temperature", "ENVIRONMENT")
 
     output_path = os.path.join(ep_files_path, 'ep_outputs')
     weather_file_path = os.path.join(ep_files_path,'..', epwFileName)
