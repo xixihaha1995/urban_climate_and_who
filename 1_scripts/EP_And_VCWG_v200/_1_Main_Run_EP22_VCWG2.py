@@ -39,7 +39,7 @@ if __name__ == '__main__':
     case_name = 'only_ep'
     start_time = '2002-06-10 00:00:00'
     time_interval_sec = 300
-    data_name_lst = ['ep_wsp_mps_wdir_deg']
+    data_name_lst = ['ep_wsp_mps_wdir_deg', 'debugging_canyon']
 
     for data_name in data_name_lst:
         plot_tools.save_data_to_csv(coordination.saving_data, data_name,case_name,

@@ -7,13 +7,13 @@ def init_ep_api():
     ep_api = EnergyPlusAPI()
 
 def init_variables_for_vcwg_ep():
-    global ep_wsp_mps, ep_wdir_deg
+    global ep_wsp_mps, ep_wdir_deg, bld_floor_area_m2
     ep_wsp_mps = 0
     ep_wdir_deg = 0
+    bld_floor_area_m2 = 3135
 
-def init_saving_data(_in_vcwg_ep_saving_path = '_2_saved\BUBBLE_VCWG-EP-detailed'):
+def init_saving_data():
     global saving_data, vcwg_ep_saving_path
     saving_data = {}
     saving_data['ep_wsp_mps_wdir_deg'] = []
-
-    vcwg_ep_saving_path = _in_vcwg_ep_saving_path
+    saving_data['debugging_canyon'] = []
