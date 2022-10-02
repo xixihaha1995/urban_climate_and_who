@@ -1,6 +1,6 @@
 from threading import Thread
 from . import _0_vcwg_ep_coordination as coordination
-from .._0_Modified_VCWG200.VCWG_Hydrology import VCWG_Hydro
+from .VCWG_Hydrology import VCWG_Hydro
 import os
 
 one_time = True
@@ -12,7 +12,7 @@ ep_last_call_time_seconds = 0
 def api_to_csv(state):
     orig = coordination.ep_api.exchange.list_available_api_data_csv(state)
     newFileByteArray = bytearray(orig)
-    api_path = os.path.join(os.path.dirname(__file__), '..','..',coordination.ep_files_path, 'api_data.csv')
+    api_path = os.path.join(os.path.dirname(__file__), '..',coordination.ep_files_path, 'api_data.csv')
     newFile = open(api_path, "wb")
     newFile.write(newFileByteArray)
     newFile.close()
