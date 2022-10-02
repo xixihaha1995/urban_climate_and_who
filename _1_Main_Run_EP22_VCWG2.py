@@ -8,7 +8,7 @@ from _3_post_process_code import _0_all_plot_tools as plot_tools
 
 def run_ep_api():
     state = api.state_manager.new_state()
-    api.runtime.callback_begin_zone_timestep_before_init_heat_balance(state, time_step_handlers_1.overwrite_ep_weather)
+    api.runtime.callback_begin_zone_timestep_before_set_current_weather(state, time_step_handlers_1.overwrite_ep_weather)
     api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers_1.get_ep_results)
 
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
@@ -27,7 +27,7 @@ if __name__ == '__main__':
     # ep_files_path = '_1_case_analysis\\cases\\_06_Basel_BSPA_ue2\\refining_M2'
     ep_files_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\refining_M2'
     # case_name = '_BSPA_bypass_refining_M2'
-    case_name = '_BSPR_bypass_refining_M2'
+    case_name = '_BSPR_bypass_refining_M2_twoCallings'
     epwFileName = 'Basel.epw'
     idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M2.idf'
 
