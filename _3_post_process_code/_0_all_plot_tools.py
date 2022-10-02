@@ -441,15 +441,15 @@ def why_bypass_overestimated(debug_processed_save_folder,
     ax[1].plot(debug_only_vcwg.iloc[:, 0] - 273.15, linestyle='--', label='Only VCWG (wallSun)')
     ax[1].plot(debug_only_ep.iloc[:, 0] - 273.15, label='Only EP (southFacingWall)')
     ax[1].plot(debug_bypass_ver1.iloc[:, 0] - 273.15, label='Bypass Ver1 (southFacingWall)')
-    ax[1].plot(debug_bypass_ver1p1.iloc[:, 0] - 273.15, label='Bypass Ver1.1 (southFacingWall)')
-    ax[1].set_ylabel('wallSun/southFacingWall (C)')
+    ax[1].plot(debug_bypass_ver1p1.iloc[:, 0] - 273.15, label='Bypass Ver1.1 (northFacingWall)')
+    ax[1].set_ylabel('Wall (C)')
     ax[1].legend()
     # the third figure
     ax[2].plot(debug_only_vcwg.iloc[:, 1] - 273.15, linestyle='--', label='Only VCWG (wallShade)')
     ax[2].plot(debug_only_ep.iloc[:, 1] - 273.15, label='Only EP (northFacingWall)')
     ax[2].plot(debug_bypass_ver1.iloc[:, 1] - 273.15, label='Bypass Ver1 (northFacingWall)')
-    ax[2].plot(debug_bypass_ver1p1.iloc[:, 1] - 273.15, label='Bypass Ver1.1 (northFacingWall)')
-    ax[2].set_ylabel('wallShade/northFacingWall (C)')
+    ax[2].plot(debug_bypass_ver1p1.iloc[:, 1] - 273.15, label='Bypass Ver1.1 (southFacingWall)')
+    ax[2].set_ylabel('Wall (C)')
     ax[2].legend()
     # the fourth figure
     ax[3].plot(debug_only_vcwg.iloc[:, 3], linestyle='--', label='Only VCWG (sensWaste)')
@@ -474,13 +474,13 @@ def why_bypass_overestimated(debug_processed_save_folder,
     df = pd.DataFrame({'Only VCWG (wallSun)': debug_only_vcwg.iloc[:, 0] - 273.15,
                             'Only EP (southFacingWall)': debug_only_ep.iloc[:, 0] - 273.15,
                             'Bypass Ver1 (southFacingWall)': debug_bypass_ver1.iloc[:, 0] - 273.15,
-                            'Bypass Ver1.1 (southFacingWall)': debug_bypass_ver1p1.iloc[:, 0] - 273.15})
+                            'Bypass Ver1.1 (northFacingWall)': debug_bypass_ver1p1.iloc[:, 0] - 273.15})
     df.to_excel(writer, sheet_name='wallSun_southFacingWall')
     #write the third sheet
     df = pd.DataFrame({'Only VCWG (wallShade)': debug_only_vcwg.iloc[:, 1] - 273.15,
                             'Only EP (northFacingWall)': debug_only_ep.iloc[:, 1] - 273.15,
                             'Bypass Ver1 (northFacingWall)': debug_bypass_ver1.iloc[:, 1] - 273.15,
-                            'Bypass Ver1.1 (northFacingWall)': debug_bypass_ver1p1.iloc[:, 1] - 273.15})
+                            'Bypass Ver1.1 (southFacingWall)': debug_bypass_ver1p1.iloc[:, 1] - 273.15})
     df.to_excel(writer, sheet_name='wallShade_northFacingWall')
     #write the fourth sheet
     df = pd.DataFrame({'Only VCWG (sensWaste)': debug_only_vcwg.iloc[:, 3],
