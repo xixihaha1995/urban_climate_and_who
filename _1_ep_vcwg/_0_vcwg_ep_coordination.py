@@ -6,9 +6,12 @@ def init_ep_api():
     global ep_api
     ep_api = EnergyPlusAPI()
 def init_semaphore_lock_settings():
-    global sem_vcwg, sem_energyplus
-    sem_vcwg = threading.Semaphore(0)
-    sem_energyplus = threading.Semaphore(1)
+    global sem0, sem1,sem2,sem3
+    sem0 = threading.Semaphore(0)
+    sem1 = threading.Semaphore(0)
+    sem2 = threading.Semaphore(0)
+    sem3 = threading.Semaphore(1)
+
 
 def init_variables_for_vcwg_ep(_in_ep_files_path, _in_ver):
     global vcwg_needed_time_idx_in_seconds,\
@@ -89,7 +92,7 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
         ep_elecTotal_w_m2_per_floor_area, ep_sensWaste_w_m2_per_floor_area, ep_floor_fluxMass_w_m2, ep_fluxRoof_w_m2, ep_fluxWall_w_m2, \
         ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, ep_wall_Text_K, ep_wall_Tint_K
 
-    sem_energyplus.acquire()
+    sem3.acquire()
     vcwg_time_index_in_seconds = (it + 1) * simTime.dt
 
     TempProf_cur = VerticalProfUrban.th
@@ -127,17 +130,16 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     vcwg_canPress_Pa = np.mean(canPressProf_cur)
     vcwg_wsp_mps = np.mean(canWspdProf_cur)
     vcwg_wdir_deg = np.mean(canWdirProf_cur) + Geometry_m.theta_canyon
-
-
     saving_data['can_Averaged_temp_k_specHum_ratio_press_pa'].append([canTemp, canHum, vcwg_canPress_Pa])
-
     BEM_building = BEM.building
     BEM_building.nFloor = max(Geometry_m.Height_canyon / float(BEM_building.floorHeight), 1)
     # print(f'VCWG: Update needed time index[accumulated seconds]: {vcwg_time_index_in_seconds}\n')
     vcwg_needed_time_idx_in_seconds = vcwg_time_index_in_seconds
     vcwg_canTemp_K = canTemp
     vcwg_canSpecHum_Ratio = canHum
+    sem0.release()
 
+    sem2.acquire()
     BEM_building.sensWaste = ep_sensWaste_w_m2_per_floor_area * BEM_building.nFloor
     # transfer accumulated seconds to Day, Hour, Minute, Second
     day_hour_min_sec = time.strftime("%dd-%HH:%MM:%SS", time.gmtime(vcwg_time_index_in_seconds))
@@ -215,6 +217,6 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     BEM_building.fluxRoof = 0
     BEM_building.fluxMass = 0
 
-    sem_vcwg.release()
+    sem3.release()
 
     return BEM

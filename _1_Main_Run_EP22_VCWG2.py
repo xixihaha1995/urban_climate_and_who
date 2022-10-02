@@ -1,14 +1,15 @@
 import os, numpy as np, pandas as pd
 from threading import Thread
 import _1_ep_vcwg._0_vcwg_ep_coordination as coordination
+from _1_ep_vcwg import _1_ep_time_step_handlers as time_step_handlers_1
 from _3_post_process_code import _0_all_plot_tools as plot_tools
 
 
 
 def run_ep_api():
     state = api.state_manager.new_state()
-    from _1_ep_vcwg import _1_ep_time_step_handlers_ver1 as time_step_handlers_1
-    api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers_1._nested_ep_then_vcwg)
+    api.runtime.callback_begin_zone_timestep_before_init_heat_balance(state, time_step_handlers_1.overwrite_ep_weather)
+    api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers_1.get_ep_results)
 
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
     api.exchange.request_variable(state, "Site Wind Speed", "ENVIRONMENT")
@@ -22,7 +23,7 @@ def run_ep_api():
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    time_step_handler_ver = 1
+    time_step_handler_ver = 1.1
     # ep_files_path = '_1_case_analysis\\cases\\_06_Basel_BSPA_ue2\\refining_M2'
     ep_files_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\refining_M2'
     # case_name = '_BSPA_bypass_refining_M2'

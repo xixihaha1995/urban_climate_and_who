@@ -3,7 +3,8 @@ from . import _0_vcwg_ep_coordination as coordination
 from .VCWG_Hydrology import VCWG_Hydro
 import os
 
-one_time = True
+one_time_to_get_ep_results = True
+one_time_to_overwrite_ep_weather = True
 one_time_call_vcwg = True
 accu_hvac_heat_rejection_J = 0
 zone_time_step_seconds = 0
@@ -16,33 +17,6 @@ def api_to_csv(state):
     newFile = open(api_path, "wb")
     newFile.write(newFileByteArray)
     newFile.close()
-def _nested_ep_only(state):
-    global one_time, accu_hvac_heat_rejection_J,zone_time_step_seconds \
-        ,hvac_heat_rejection_sensor_handle, ep_last_accumulated_time_index_in_seconds
-    if one_time:
-        if not coordination.ep_api.exchange.api_data_fully_ready(state):
-            return
-        one_time = False
-        zone_time_step_seconds = 3600 / coordination.ep_api.exchange.num_time_steps_in_hour(state)
-
-        hvac_heat_rejection_sensor_handle = \
-            coordination.ep_api.exchange.get_variable_handle(state,
-                                             "HVAC System Total Heat Rejection Energy",
-                                             "SIMHVAC")
-    warm_up = coordination.ep_api.exchange.warmup_flag(state)
-    if not warm_up:
-        curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
-        curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
-        accumulation_time_step_in_seconds = curr_sim_time_in_seconds - ep_last_accumulated_time_index_in_seconds
-        accumulated_bool = 1 > abs(accumulation_time_step_in_seconds - zone_time_step_seconds)
-
-        accu_hvac_heat_rejection_J += coordination.ep_api.exchange.get_variable_value(state,
-                                                                                      hvac_heat_rejection_sensor_handle)
-        if accumulated_bool:
-            coordination.saving_data.append([curr_sim_time_in_seconds,
-                                             accu_hvac_heat_rejection_J])
-            accu_hvac_heat_rejection_J = 0
-            ep_last_accumulated_time_index_in_seconds = curr_sim_time_in_seconds
 def run_vcwg():
     epwFileName = 'Basel.epw'
     TopForcingFileName = None
@@ -68,13 +42,43 @@ def run_vcwg():
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
     VCWG.run()
 
-def _nested_ep_then_vcwg(state):
-    global one_time,one_time_call_vcwg, oat_sensor_handle,\
-        odb_actuator_handle, orh_actuator_handle, wsped_mps_actuator_handle, wdir_deg_actuator_handle,\
+def overwrite_ep_weather(state):
+    global one_time_to_overwrite_ep_weather,one_time_call_vcwg,\
+        odb_actuator_handle, orh_actuator_handle, wsped_mps_actuator_handle, wdir_deg_actuator_handle
+
+    if one_time_to_overwrite_ep_weather:
+        if not coordination.ep_api.exchange.api_data_fully_ready(state):
+            return
+        one_time_to_overwrite_ep_weather = False
+        odb_actuator_handle = coordination.ep_api.exchange.\
+            get_actuator_handle(state, "Weather Data", "Site Outdoor Air Drybulb Temperature", "Environment")
+        orh_actuator_handle = coordination.ep_api.exchange.\
+            get_actuator_handle(state, "Weather Data", "Site Outdoor Air Relative Humidity", "Environment")
+
+
+
+    warm_up = coordination.ep_api.exchange.warmup_flag(state)
+    if not warm_up:
+        if one_time_call_vcwg:
+            global zone_time_step_seconds, zone_floor_area_m2, ep_last_call_time_seconds
+            zone_time_step_seconds = 3600 / coordination.ep_api.exchange.num_time_steps_in_hour(state)
+            zone_floor_area_m2 = coordination.ep_api.exchange.get_internal_variable_value(state, zone_flr_area_handle)
+            one_time_call_vcwg = False
+            Thread(target=run_vcwg).start()
+
+        ep_current_time_index_in_seconds = coordination.ep_api.exchange.current_time(state)
+        if ep_current_time_index_in_seconds - ep_last_call_time_seconds >= zone_time_step_seconds:
+            ep_last_call_time_index_in_seconds = ep_current_time_index_in_seconds
+            ep_last_call_time_seconds = ep_current_time_index_in_seconds
+            coordination.ep_api.exchange.set_actuator_value(state, odb_actuator_handle, 0, 10)
+            coordination.ep_api.exchange.set_actuator_value(state, orh_actuator_handle, 0, 50)
+
+def get_ep_results(state):
+    global one_time_to_get_ep_results,one_time_call_vcwg, oat_sensor_handle, \
+        hvac_heat_rejection_sensor_handle, elec_bld_meter_handle, \
         zone_indor_temp_sensor_handle, zone_indor_spe_hum_sensor_handle, zone_flr_area_handle,\
         sens_cool_demand_sensor_handle, sens_heat_demand_sensor_handle, \
         cool_consumption_sensor_handle, heat_consumption_sensor_handle, \
-        hvac_heat_rejection_sensor_handle, elec_bld_meter_handle,\
         gsw_flr_Text_handle, gnw_flr_Text_handle, gse_office_flr_Text_handle, gne_flr_Text_handle, \
         gn1_flr_Text_handle, gn2_flr_Text_handle, gs1_flr_Text_handle, gs2_flr_Text_handle, \
         tsw_roof_Text_handle, tnw_roof_Text_handle, tse_roof_Text_handle, tne_roof_Text_handle, \
@@ -104,23 +108,11 @@ def _nested_ep_then_vcwg(state):
         mnw_solar_handle, mne_solar_handle, mn1_solar_handle, mn2_solar_handle,\
         tnw_solar_handle, tne_solar_handle, tn1_solar_handle, tn2_solar_handle
 
-    if one_time:
+    if one_time_to_get_ep_results:
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
             return
-        one_time = False
+        one_time_to_get_ep_results = False
         api_to_csv(state)
-
-        odb_actuator_handle = coordination.ep_api.exchange.get_actuator_handle(
-            state, "Weather Data", "Outdoor Dry Bulb",
-            "Environment")
-        orh_actuator_handle = coordination.ep_api.exchange.get_actuator_handle(
-            state, "Weather Data", "Outdoor Relative Humidity",
-            "Environment")
-
-        wsped_mps_actuator_handle = coordination.ep_api.exchange.get_actuator_handle(
-            state, "Weather Data", "Wind Speed", "Environment")
-        wdir_deg_actuator_handle = coordination.ep_api.exchange.get_actuator_handle(
-            state, "Weather Data", "Wind Direction", "Environment")
 
         oat_sensor_handle = coordination.ep_api.exchange.get_variable_handle(state,
                                                                              "Site Outdoor Air Drybulb Temperature",
@@ -357,17 +349,8 @@ def _nested_ep_then_vcwg(state):
                                              "SIMHVAC")
         elec_bld_meter_handle = coordination.ep_api.exchange.get_meter_handle(state, "Electricity:Building")
 
-    warm_up = coordination.ep_api.exchange.warmup_flag(state)
-    if not warm_up:
-        # Lichen: After EP warm up, start to call VCWG
-        if one_time_call_vcwg:
-            global zone_time_step_seconds, zone_floor_area_m2, ep_last_call_time_seconds
-            zone_time_step_seconds = 3600 / coordination.ep_api.exchange.num_time_steps_in_hour(state)
-            zone_floor_area_m2 = coordination.ep_api.exchange.get_internal_variable_value(state,zone_flr_area_handle)
-            one_time_call_vcwg = False
-            Thread(target=run_vcwg).start()
 
-        coordination.sem_vcwg.acquire()
+        coordination.sem1.acquire()
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600        # Should always accumulate, since system time always advances
         accumulated_time_in_seconds = curr_sim_time_in_seconds - ep_last_call_time_seconds
