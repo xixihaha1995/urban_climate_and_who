@@ -155,7 +155,6 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     ep_sensWaste_w_m2_per_floor_area = 0
 
     BEM_building.ElecTotal = ep_elecTotal_w_m2_per_floor_area * BEM_building.nFloor
-
     BEM.mass.Text = ep_floor_Text_K
     BEM.mass.Tint = ep_floor_Tint_K
     BEM.wallSun.Text = ep_wallSun_Text_K

@@ -3,11 +3,12 @@ from . import _0_vcwg_ep_coordination as coordination
 from .VCWG_Hydrology import VCWG_Hydro
 import os
 
-one_time_to_get_ep_results = True
-one_time_to_overwrite_ep_weather = True
-one_time_call_vcwg = True
+get_ep_results_inited_handle = False
+overwrite_ep_weather_inited_handle = False
+called_vcwg_bool = False
+
 accu_hvac_heat_rejection_J = 0
-zone_time_step_seconds = 0
+zone_floor_area_m2 = 0
 ep_last_accumulated_time_index_in_seconds = 0
 ep_last_call_time_seconds = 0
 def api_to_csv(state):
@@ -43,38 +44,37 @@ def run_vcwg():
     VCWG.run()
 
 def overwrite_ep_weather(state):
-    global one_time_to_overwrite_ep_weather,one_time_call_vcwg,\
+    global overwrite_ep_weather_inited_handle,called_vcwg_bool,\
         odb_actuator_handle, orh_actuator_handle, wsped_mps_actuator_handle, wdir_deg_actuator_handle
 
-    if one_time_to_overwrite_ep_weather:
+    if not overwrite_ep_weather_inited_handle:
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
             return
-        one_time_to_overwrite_ep_weather = False
+        overwrite_ep_weather_inited_handle = True
         odb_actuator_handle = coordination.ep_api.exchange.\
             get_actuator_handle(state, "Weather Data", "Site Outdoor Air Drybulb Temperature", "Environment")
         orh_actuator_handle = coordination.ep_api.exchange.\
             get_actuator_handle(state, "Weather Data", "Site Outdoor Air Relative Humidity", "Environment")
 
-
-
     warm_up = coordination.ep_api.exchange.warmup_flag(state)
     if not warm_up:
-        if one_time_call_vcwg:
-            global zone_time_step_seconds, zone_floor_area_m2, ep_last_call_time_seconds
-            zone_time_step_seconds = 3600 / coordination.ep_api.exchange.num_time_steps_in_hour(state)
+        if not called_vcwg_bool:
+            global zone_floor_area_m2
             zone_floor_area_m2 = coordination.ep_api.exchange.get_internal_variable_value(state, zone_flr_area_handle)
-            one_time_call_vcwg = False
+            called_vcwg_bool = True
             Thread(target=run_vcwg).start()
+        coordination.sem0.acquire()
+        psychrometric = coordination.ep_api.functional.psychrometrics(state)
+        rh = psychrometric.relative_humidity_b(state, coordination.vcwg_canTemp_K - 273.15,
+                                               coordination.vcwg_canSpecHum_Ratio, coordination.vcwg_canPress_Pa)
+        coordination.ep_api.exchange.set_actuator_value(state, odb_actuator_handle, coordination.vcwg_canTemp_K - 273.15)
+        print(f'EP: set odb to {coordination.vcwg_canTemp_K - 273.15}')
+        coordination.ep_api.exchange.set_actuator_value(state, orh_actuator_handle, rh)
+        coordination.sem1.release()
 
-        ep_current_time_index_in_seconds = coordination.ep_api.exchange.current_time(state)
-        if ep_current_time_index_in_seconds - ep_last_call_time_seconds >= zone_time_step_seconds:
-            ep_last_call_time_index_in_seconds = ep_current_time_index_in_seconds
-            ep_last_call_time_seconds = ep_current_time_index_in_seconds
-            coordination.ep_api.exchange.set_actuator_value(state, odb_actuator_handle, 0, 10)
-            coordination.ep_api.exchange.set_actuator_value(state, orh_actuator_handle, 0, 50)
 
 def get_ep_results(state):
-    global one_time_to_get_ep_results,one_time_call_vcwg, oat_sensor_handle, \
+    global get_ep_results_inited_handle, oat_sensor_handle, \
         hvac_heat_rejection_sensor_handle, elec_bld_meter_handle, \
         zone_indor_temp_sensor_handle, zone_indor_spe_hum_sensor_handle, zone_flr_area_handle,\
         sens_cool_demand_sensor_handle, sens_heat_demand_sensor_handle, \
@@ -108,12 +108,11 @@ def get_ep_results(state):
         mnw_solar_handle, mne_solar_handle, mn1_solar_handle, mn2_solar_handle,\
         tnw_solar_handle, tne_solar_handle, tn1_solar_handle, tn2_solar_handle
 
-    if one_time_to_get_ep_results:
+    if not get_ep_results_inited_handle:
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
             return
-        one_time_to_get_ep_results = False
+        get_ep_results_inited_handle = True
         api_to_csv(state)
-
         oat_sensor_handle = coordination.ep_api.exchange.get_variable_handle(state,
                                                                              "Site Outdoor Air Drybulb Temperature",
                                                                              "Environment")
@@ -349,6 +348,10 @@ def get_ep_results(state):
                                              "SIMHVAC")
         elec_bld_meter_handle = coordination.ep_api.exchange.get_meter_handle(state, "Electricity:Building")
 
+    # get EP results, upload to coordination
+    if called_vcwg_bool:
+        # called vcwg,sem0, sem1
+        global ep_last_call_time_seconds
 
         coordination.sem1.acquire()
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
@@ -360,16 +363,12 @@ def get_ep_results(state):
         coordination.ep_sensWaste_w_m2_per_floor_area += hvac_waste_w_m2
 
         time_index_alignment_bool =  1 > abs(curr_sim_time_in_seconds - coordination.vcwg_needed_time_idx_in_seconds)
-
         if not time_index_alignment_bool:
             # print("EP: curr_sim_time_in_seconds: ", curr_sim_time_in_seconds)
             # print("EP: vcwg_needed_time_idx_in_seconds: ", coordination.vcwg_needed_time_idx_in_seconds)
-            coordination.sem_vcwg.release()
+            coordination.sem1.release()
             return
 
-        psychrometric = coordination.ep_api.functional.psychrometrics(state)
-        rh = psychrometric.relative_humidity_b(state, coordination.vcwg_canTemp_K - 273.15,
-                                               coordination.vcwg_canSpecHum_Ratio, coordination.vcwg_canPress_Pa)
         zone_indor_temp_value = coordination.ep_api.exchange.get_variable_value(state, zone_indor_temp_sensor_handle)
         zone_indor_spe_hum_value = coordination.ep_api.exchange.get_variable_value(state, zone_indor_spe_hum_sensor_handle)
         sens_cool_demand_w_value = coordination.ep_api.exchange.get_variable_value(state, sens_cool_demand_sensor_handle)
@@ -535,10 +534,7 @@ def get_ep_results(state):
                              tnw_solar_w_m2 + tne_solar_w_m2 + tn1_solar_w_m2 + tn2_solar_w_m2)/16
 
         oat_temp_c = coordination.ep_api.exchange.get_variable_value(state, oat_sensor_handle)
-
-        coordination.ep_api.exchange.set_actuator_value(state, odb_actuator_handle, coordination.vcwg_canTemp_K - 273.15)
-        coordination.ep_api.exchange.set_actuator_value(state, orh_actuator_handle, rh)
-
+        print(f"EP OAT: {oat_temp_c}")
         coordination.ep_oaTemp_C = oat_temp_c
 
         coordination.ep_floor_Text_K = floor_Text_C + 273.15
@@ -566,4 +562,4 @@ def get_ep_results(state):
         coordination.ep_coolConsump_w_m2 = cool_consumption_w_m2_value
         coordination.ep_heatConsump_w_m2 = heat_consumption_w_m2_value
 
-        coordination.sem_energyplus.release()
+        coordination.sem2.release()
