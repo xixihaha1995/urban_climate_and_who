@@ -317,7 +317,7 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
     df.to_excel(os.path.join(vcwg_ep_saving_path, f'{case_name}_{file_name}.xlsx'))
 
 def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue1_heights,compare_start_time,
-                               compare_end_time):
+                               compare_end_time, Sensor_Height_Bool = True):
     th_profie_5min = pd.read_excel(f'{results_folder}\\{filename}_TempProfile_K.xlsx',
                                                    sheet_name='Sheet1', header=0, index_col=0)
     # ue1_heights is sensor heights, heights_profile is the heights of predictions
@@ -326,14 +326,20 @@ def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue
     ue1_heights = np.array(ue1_heights)
     mapped_indices = [np.argmin(np.abs(heights_profile - i)) for i in ue1_heights]
     # sensor_idx = np.argmin(np.abs(np.array(heights_profile) - v200_sensor_height))
-    th_sensor_5min = th_profie_5min.iloc[:, mapped_indices]
+    if not Sensor_Height_Bool:
+        th_sensor_5min = th_profie_5min
+    else:
+        th_sensor_5min = th_profie_5min.iloc[:, mapped_indices]
     th_sensor_5min_K_compare = th_sensor_5min[compare_start_time:compare_end_time]
     th_sensor_5min_K_compare_df = pd.DataFrame(th_sensor_5min_K_compare)
     th_sensor_10min_K_compare = _5min_to_10min(th_sensor_5min_K_compare_df)
 
     pres_profile_5min = pd.read_excel(f'{results_folder}\\{filename}_PressProfile_Pa.xlsx',
                                                       sheet_name='Sheet1', header=0, index_col=0)
-    pres_sensor_5min = pres_profile_5min.iloc[:, mapped_indices]
+    if not Sensor_Height_Bool:
+        pres_sensor_5min = pres_profile_5min
+    else:
+        pres_sensor_5min = pres_profile_5min.iloc[:, mapped_indices]
     pres_sensor_5min_pa_compare = pres_sensor_5min[compare_start_time:compare_end_time]
     pres_sensor_5min_pa_compare_df = pd.DataFrame(pres_sensor_5min_pa_compare)
     pres_sensor_10min_pa_compare = _5min_to_10min(
@@ -377,4 +383,34 @@ def stacked_comparison_plot(merged_df, sensor_heights):
     ax[-1].set_xlabel('Time')
     # set the overall title
     fig.suptitle('Comparison of Potential Temperature Profiles')
+    plt.show()
+
+def which_height_match_urban_sensor(df_urban_sensor_measurement, df_prediction_50m):
+    '''
+    sensor height is at 2.6m
+    prediction heights are from 0.5m to 49.5 m
+    The following candidates might be a good match to the sensor measurements
+    1. All predictions below 15m, such as 0.5m, 1.5m, 2.5m, 3.5m, etc.
+    2. All averaged predictions below 15m, such as 0.5m - 1.5m, 0.5m - 2.5m, 0.5m - 3.5m, etc.
+    '''
+    cvrmse_at_heights=[]
+    for i in range(0, 15, 1):
+        cvrmse_at_heights.append(bias_rmse_r2(df_urban_sensor_measurement,
+                                              df_prediction_50m.iloc[:, i], str(i)+'m CVRMSE')[2])
+
+    cvrmse_below_heights=[]
+    for i in range(0, 15, 1):
+        cvrmse_below_heights.append(bias_rmse_r2(df_urban_sensor_measurement,
+                                                 df_prediction_50m.iloc[:, :i+1].mean(axis=1), str(i)+'m CVRMSE')[2])
+
+    #plot the measurement, and all the above candidates
+    fig, ax = plt.subplots(1, 1, figsize=(10, 5))
+    ax.plot(df_urban_sensor_measurement, linestyle='-.', label='Urban Measurement')
+    for i in range(0, 15, 1):
+        ax.plot(df_prediction_50m.iloc[:, i], label=f'At {i}m Prediction')
+    for i in range(0, 15, 1):
+        ax.plot(df_prediction_50m.iloc[:, :i+1].mean(axis=1), linestyle='--', label=f'Below {i}m Averaged Prediction')
+    ax.set_ylabel(f'Temperature (C)')
+    ax.legend()
+    ax.set_xlabel('Time')
     plt.show()
