@@ -415,7 +415,7 @@ def why_bypass_overestimated(debug_processed_save_folder,
     #5. The fifth figure, sensWaste/sensHVAC (debug_only_ep_idx_2, debug_only_vcwg_idx_3, debug_bypass_ver1_idx_4)
 
     # create in total 4 figures
-    fig, ax = plt.subplots(5, 1, figsize=(10, 10))
+    fig, ax = plt.subplots(5, 1, figsize=(10, 10), sharex=True)
     # the first figure
     ax[0].plot(urban_selected_10min_c, linestyle='-.', color = 'black', label='Urban Measurement')
     ax[0].plot(original_real_selected_10min_c, linestyle='--', label='Only VCWG')
@@ -460,10 +460,10 @@ def why_bypass_overestimated(debug_processed_save_folder,
     ax[3].set_ylabel('Roof (C)')
     ax[3].legend()
     # the fifth figure
-    ax[4].plot(debug_only_vcwg.iloc[:, 3] - 273.15, linestyle='--', label='Only VCWG (sensWaste)')
-    ax[4].plot(debug_only_ep.iloc[:, 3] - 273.15, label='Only EP (sensHVAC)')
-    ax[4].plot(debug_bypass_ver1.iloc[:, 4] - 273.15, label='Bypass Ver1 (sensHVAC)')
-    ax[4].plot(debug_bypass_ver1p1.iloc[:, 4] - 273.15, label='Bypass Ver1.1 (sensHVAC)')
+    ax[4].plot(debug_only_vcwg.iloc[:, 3], linestyle='--', label='Only VCWG (sensWaste)')
+    ax[4].plot(debug_only_ep.iloc[:, 3] , label='Only EP (sensHVAC)')
+    ax[4].plot(debug_bypass_ver1.iloc[:, 4] , label='Bypass Ver1 (sensHVAC)')
+    ax[4].plot(debug_bypass_ver1p1.iloc[:, 4] , label='Bypass Ver1.1 (sensHVAC)')
     ax[4].set_ylabel('sensWaste/sensHVAC (W/floorArea)')
     ax[4].legend()
     #save all the used data into one excel file, only one sheet

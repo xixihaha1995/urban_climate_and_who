@@ -145,7 +145,7 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     day_hour_min_sec = time.strftime("%dd-%HH:%MM:%SS", time.gmtime(vcwg_time_index_in_seconds))
 
     print(f"Handler ver{time_step_version}, {day_hour_min_sec}, "
-          f"sensWaste (Currently only HVAC Rejection):{BEM_building.sensWaste} watts/ unit footprint area")
+          f"sensWaste (Currently only HVAC Rejection):{BEM_building.sensWaste} watts/ unit floor area")
     # 'debugging_canyon' includes wallSun, wallShade, floor, roof, sensWaste(W/per unit footprint area),
     # canTemp_ep, canTemp_vcwg
     saving_data['debugging_canyon'].append([BEM.wallSun.Text,
