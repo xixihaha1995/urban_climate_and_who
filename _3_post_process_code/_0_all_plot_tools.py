@@ -402,6 +402,9 @@ def which_height_match_urban_sensor(df_urban_sensor_measurement, df_prediction_5
     for i in range(0, 15, 1):
         cvrmse_below_heights.append(bias_rmse_r2(df_urban_sensor_measurement,
                                                  df_prediction_50m.iloc[:, :i+1].mean(axis=1), str(i)+'m CVRMSE')[2])
+def MouseCrosshair(ax, x, y, color, linewidth=1):
+    ax.axvline(x, color=color, linewidth=linewidth)
+    ax.axhline(y, color=color, linewidth=linewidth)
 
 def why_bypass_overestimated(debug_processed_save_folder,
                              urban_selected_10min_c, original_real_selected_10min_c, bypass_real_selected_10min_c_ver1,
@@ -415,6 +418,8 @@ def why_bypass_overestimated(debug_processed_save_folder,
     #5. The fifth figure, sensWaste/sensHVAC (debug_only_ep_idx_2, debug_only_vcwg_idx_3, debug_bypass_ver1_idx_4)
 
     # create in total 4 figures
+    # overwrite cursor with the snapping cursor
+
     fig, ax = plt.subplots(5, 1, figsize=(10, 10), sharex=True)
     # the first figure
     ax[0].plot(urban_selected_10min_c, linestyle='-.', color = 'black', label='Urban Measurement')
@@ -433,6 +438,7 @@ def why_bypass_overestimated(debug_processed_save_folder,
     txt += f'Only EP: {cvrmses[1][2]:.2f}%\n'
     txt += f'Ver1 Prediction: {cvrmses[2][2]:.2f}%\n'
     txt += f'Ver1.1 Prediction: {cvrmses[3][2]:.2f}%'
+    print(txt)
     # put text at best position
     ax[0].text(0.5, 0.5, txt, transform=ax[0].transAxes, fontsize=12,
             verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
@@ -442,14 +448,14 @@ def why_bypass_overestimated(debug_processed_save_folder,
     ax[1].plot(debug_only_vcwg.iloc[:, 0] - 273.15, linestyle='--', label='Only VCWG (wallSun)')
     ax[1].plot(debug_only_ep.iloc[:, 0] - 273.15, label='Only EP (southFacingWall)')
     ax[1].plot(debug_bypass_ver1.iloc[:, 0] - 273.15, label='Bypass Ver1 (southFacingWall)')
-    ax[1].plot(debug_bypass_ver1p1.iloc[:, 0] - 273.15, label='Bypass Ver1.1 (southFacingWall)')
+    ax[1].plot(debug_bypass_ver1p1.iloc[:, 0] - 273.15, label='Bypass Ver1.1 (wallSun)')
     ax[1].set_ylabel('sun/South Wall (C)')
     ax[1].legend()
     # the third figure
     ax[2].plot(debug_only_vcwg.iloc[:, 1] - 273.15, linestyle='--', label='Only VCWG (wallShade)')
     ax[2].plot(debug_only_ep.iloc[:, 1] - 273.15, label='Only EP (northFacingWall)')
     ax[2].plot(debug_bypass_ver1.iloc[:, 1] - 273.15, label='Bypass Ver1 (northFacingWall)')
-    ax[2].plot(debug_bypass_ver1p1.iloc[:, 1] - 273.15, label='Bypass Ver1.1 (northFacingWall)')
+    ax[2].plot(debug_bypass_ver1p1.iloc[:, 1] - 273.15, label='Bypass Ver1.1 (wallShade)')
     ax[2].set_ylabel('shade/North Wall (C)')
     ax[2].legend()
     # the fourth figure
@@ -466,6 +472,9 @@ def why_bypass_overestimated(debug_processed_save_folder,
     ax[4].plot(debug_bypass_ver1p1.iloc[:, 4] , label='Bypass Ver1.1 (sensHVAC)')
     ax[4].set_ylabel('sensWaste/sensHVAC (W/floorArea)')
     ax[4].legend()
+
+    # add MouseCross
+    plt.show()
     #save all the used data into one excel file, only one sheet
 
     #create a new excel file
@@ -473,7 +482,7 @@ def why_bypass_overestimated(debug_processed_save_folder,
     #write the first sheet
     df = pd.DataFrame({'Urban Measurement': urban_selected_10min_c,
                           'Only VCWG': original_real_selected_10min_c,
-                            'Only EP': debug_only_ep.iloc[:, 3] - 273.15,
+                            'Only EP': debug_only_ep.iloc[:, 4] - 273.15,
                             'Ver1 Prediction': bypass_real_selected_10min_c_ver1,
                             'Ver1.1 Prediction': bypass_real_selected_10min_c_ver1p1})
     df.to_excel(writer, sheet_name='CanyonTemp')
@@ -481,13 +490,13 @@ def why_bypass_overestimated(debug_processed_save_folder,
     df = pd.DataFrame({'Only VCWG (wallSun)': debug_only_vcwg.iloc[:, 0] - 273.15,
                             'Only EP (southFacingWall)': debug_only_ep.iloc[:, 0] - 273.15,
                             'Bypass Ver1 (southFacingWall)': debug_bypass_ver1.iloc[:, 0] - 273.15,
-                            'Bypass Ver1.1 (southFacingWall)': debug_bypass_ver1p1.iloc[:, 0] - 273.15})
+                            'Bypass Ver1.1 (wallSun)': debug_bypass_ver1p1.iloc[:, 0] - 273.15})
     df.to_excel(writer, sheet_name='wallSun_southFacingWall')
     #write the third sheet
     df = pd.DataFrame({'Only VCWG (wallShade)': debug_only_vcwg.iloc[:, 1] - 273.15,
                             'Only EP (northFacingWall)': debug_only_ep.iloc[:, 1] - 273.15,
                             'Bypass Ver1 (northFacingWall)': debug_bypass_ver1.iloc[:, 1] - 273.15,
-                            'Bypass Ver1.1 (northFacingWall)': debug_bypass_ver1p1.iloc[:, 1] - 273.15})
+                            'Bypass Ver1.1 (wallShade)': debug_bypass_ver1p1.iloc[:, 1] - 273.15})
     df.to_excel(writer, sheet_name='wallShade_northFacingWall')
     #write the fourth sheet
     df = pd.DataFrame({'Only VCWG (roof)': debug_only_vcwg.iloc[:, 2] - 273.15,
@@ -497,7 +506,7 @@ def why_bypass_overestimated(debug_processed_save_folder,
     df.to_excel(writer, sheet_name='roof')
     #write the fifth sheet
     df = pd.DataFrame({'Only VCWG (sensWaste)': debug_only_vcwg.iloc[:, 3],
-                            'Only EP (sensHVAC)': debug_only_ep.iloc[:, 2],
+                            'Only EP (sensHVAC)': debug_only_ep.iloc[:, 3],
                             'Bypass Ver1 (sensHVAC)': debug_bypass_ver1.iloc[:, 4],
                             'Bypass Ver1.1 (sensHVAC)': debug_bypass_ver1p1.iloc[:, 4]})
     df.to_excel(writer, sheet_name='sensWaste_sensHVAC')
