@@ -29,7 +29,7 @@ if __name__ == '__main__':
     # case_name = '_BSPA_bypass_refining_M2'
     case_name = '_BSPR_bypass_refining_M2_twoCallings'
     epwFileName = 'Basel.epw'
-    idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M2.idf'
+    idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M2_V2210.idf'
 
     # Lichen: init the synchronization lock related settings: locks, shared variables.
     coordination.init_saving_data()
