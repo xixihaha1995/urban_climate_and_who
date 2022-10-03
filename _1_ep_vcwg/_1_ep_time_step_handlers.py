@@ -1,7 +1,7 @@
 from threading import Thread
 from . import _0_vcwg_ep_coordination as coordination
 from .VCWG_Hydrology import VCWG_Hydro
-import os
+import os, signal
 
 get_ep_results_inited_handle = False
 overwrite_ep_weather_inited_handle = False
@@ -52,11 +52,15 @@ def overwrite_ep_weather(state):
             return
         overwrite_ep_weather_inited_handle = True
         odb_actuator_handle = coordination.ep_api.exchange.\
-            get_actuator_handle(state, "Weather Data", "Site Outdoor Air Drybulb Temperature", "Environment")
+            get_actuator_handle(state, "Weather Data", "Outdoor Dry Bulb", "Environment")
         orh_actuator_handle = coordination.ep_api.exchange.\
-            get_actuator_handle(state, "Weather Data", "Site Outdoor Air Relative Humidity", "Environment")
-        if odb_actuator_handle * orh_actuator_handle < 0:
-            raise ValueError("actuator handle is not valid")
+            get_actuator_handle(state, "Weather Data", "Outdoor Relative Humidity", "Environment")
+        #if one of the above handles is less than 0, then the actuator is not available
+        # the entire program (multithread cooperation) should be terminated here, system exit with print messagePYTHO
+        if odb_actuator_handle < 0 or orh_actuator_handle < 0:
+            print('Actuator not available')
+            os.getpid()
+            os.kill(os.getpid(), signal.SIGTERM)
     warm_up = coordination.ep_api.exchange.warmup_flag(state)
     if not warm_up:
         if not called_vcwg_bool:
@@ -348,6 +352,42 @@ def get_ep_results(state):
                                              "HVAC System Total Heat Rejection Energy",
                                              "SIMHVAC")
         elec_bld_meter_handle = coordination.ep_api.exchange.get_meter_handle(state, "Electricity:Building")
+        if (oat_sensor_handle == -1 or hvac_heat_rejection_sensor_handle == -1 or elec_bld_meter_handle == -1 or \
+            zone_indor_temp_sensor_handle == -1 or zone_indor_spe_hum_sensor_handle == -1 or zone_flr_area_handle == -1 or \
+            sens_cool_demand_sensor_handle == -1 or sens_heat_demand_sensor_handle == -1 or \
+            cool_consumption_sensor_handle == -1 or heat_consumption_sensor_handle == -1 or
+            gsw_flr_Text_handle == -1 or gnw_flr_Text_handle == -1 or gse_office_flr_Text_handle == -1 or gne_flr_Text_handle == -1 or \
+            gn1_flr_Text_handle == -1 or gn2_flr_Text_handle == -1 or gs1_flr_Text_handle == -1 or gs2_flr_Text_handle == -1 or \
+            tsw_roof_Text_handle == -1 or tnw_roof_Text_handle == -1 or tse_roof_Text_handle == -1 or tne_roof_Text_handle == -1 or \
+            tn1_roof_Text_handle == -1 or tn2_roof_Text_handle == -1 or ts1_roof_Text_handle == -1 or ts2_roof_Text_handle == -1 or \
+            t_cor_roof_Text_handle == -1 or \
+            gsw_flr_Tint_handle == -1 or gnw_flr_Tint_handle == -1 or gse_office_flr_Tint_handle == -1 or gne_flr_Tint_handle == -1 or \
+            gn1_flr_Tint_handle == -1 or gn2_flr_Tint_handle == -1 or gs1_flr_Tint_handle == -1 or gs2_flr_Tint_handle == -1 or \
+            tsw_roof_Tint_handle == -1 or tnw_roof_Tint_handle == -1 or tse_roof_Tint_handle == -1 or tne_roof_Tint_handle == -1 or \
+            tn1_roof_Tint_handle == -1 or tn2_roof_Tint_handle == -1 or ts1_roof_Tint_handle == -1 or ts2_roof_Tint_handle == -1 or \
+            t_cor_roof_Tint_handle == -1 or \
+            gsw_wall_Text_handle == -1 or gse_office_wall_Text_handle == -1 or gs1_wall_Text_handle == -1 or gs2_wall_Text_handle == -1 or \
+            msw_wall_Text_handle == -1 or mse_wall_Text_handle == -1 or ms1_wall_Text_handle == -1 or ms2_wall_Text_handle == -1 or \
+            tsw_wall_Text_handle == -1 or tse_wall_Text_handle == -1 or ts1_wall_Text_handle == -1 or ts2_wall_Text_handle == -1 or \
+            gnw_wall_Text_handle == -1 or gne_wall_Text_handle == -1 or gn1_wall_Text_handle == -1 or gn2_wall_Text_handle == -1 or \
+            mnw_wall_Text_handle == -1 or mne_wall_Text_handle == -1 or mn1_wall_Text_handle == -1 or mn2_wall_Text_handle == -1 or \
+            tnw_wall_Text_handle == -1 or tne_wall_Text_handle == -1 or tn1_wall_Text_handle == -1 or tn2_wall_Text_handle == -1 or \
+            gsw_wall_Tint_handle == -1 or gse_office_wall_Tint_handle == -1 or gs1_wall_Tint_handle == -1 or gs2_wall_Tint_handle == -1 or \
+            msw_wall_Tint_handle == -1 or mse_wall_Tint_handle == -1 or ms1_wall_Tint_handle == -1 or ms2_wall_Tint_handle == -1 or \
+            tsw_wall_Tint_handle == -1 or tse_wall_Tint_handle == -1 or ts1_wall_Tint_handle == -1 or ts2_wall_Tint_handle == -1 or \
+            gnw_wall_Tint_handle == -1 or gne_wall_Tint_handle == -1 or gn1_wall_Tint_handle == -1 or gn2_wall_Tint_handle == -1 or \
+            mnw_wall_Tint_handle == -1 or mne_wall_Tint_handle == -1 or mn1_wall_Tint_handle == -1 or mn2_wall_Tint_handle == -1 or \
+            tnw_wall_Tint_handle == -1 or tne_wall_Tint_handle == -1 or tn1_wall_Tint_handle == -1 or tn2_wall_Tint_handle == -1 or \
+            gsw_solar_handle == -1 or gse_office_solar_handle == -1 or gs1_solar_handle == -1 or gs2_solar_handle == -1 or \
+            msw_solar_handle == -1 or mse_solar_handle == -1 or ms1_solar_handle == -1 or ms2_solar_handle == -1 or \
+            tsw_solar_handle == -1 or tse_solar_handle == -1 or ts1_solar_handle == -1 or ts2_solar_handle == -1 or \
+            gnw_solar_handle == -1 or gne_solar_handle == -1 or gn1_solar_handle == -1 or gn2_solar_handle == -1 or
+            mnw_solar_handle == -1 or mne_solar_handle == -1 or mn1_solar_handle == -1 or mn2_solar_handle == -1 or
+            tnw_solar_handle == -1 or tne_solar_handle == -1 or tn1_solar_handle == -1 or tn2_solar_handle == -1):
+            print('get_ep_results(): some handle not available')
+            os.getpid()
+            os.kill(os.getpid(), signal.SIGTERM)
+
 
     # get EP results, upload to coordination
     if called_vcwg_bool:
