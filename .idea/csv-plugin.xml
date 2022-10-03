@@ -10,6 +10,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD5\BLD5_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD6\BLD6_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
