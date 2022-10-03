@@ -423,16 +423,16 @@ def why_bypass_overestimated(debug_processed_save_folder,
     fig, ax = plt.subplots(5, 1, figsize=(10, 10), sharex=True)
     # the first figure
     ax[0].plot(urban_selected_10min_c, linestyle='-.', color = 'black', label='Urban Measurement')
-    ax[0].plot(original_real_selected_10min_c, linestyle='--', label='Only VCWG')
-    ax[0].plot(debug_only_ep.iloc[:, 4] - 273.15, label='Only EP(DOE-REF)')
-    ax[0].plot(bypass_real_selected_10min_c_ver1, label='Ver1 Prediction')
-    ax[0].plot(bypass_real_selected_10min_c_ver1p1, label='Ver1.1 Prediction')
+    ax[0].plot(original_real_selected_10min_c - original_real_selected_10min_c, linestyle='--', label='Only VCWG')
+    ax[0].plot(debug_only_ep.iloc[:, 4] - 273.15 - original_real_selected_10min_c, label='Only EP(DOE-REF)')
+    ax[0].plot(bypass_real_selected_10min_c_ver1 - original_real_selected_10min_c, label='Ver1 Prediction')
+    ax[0].plot(bypass_real_selected_10min_c_ver1p1 - original_real_selected_10min_c, label='Ver1.1 Prediction')
 
     cvrmses = []
-    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, original_real_selected_10min_c, 'Only VCWG'))
-    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, debug_only_ep.iloc[:, 4] - 273.15, 'Only EP(DOE-REF)'))
-    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, bypass_real_selected_10min_c_ver1, 'Ver1 Prediction'))
-    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, bypass_real_selected_10min_c_ver1p1, 'Ver1.1 Prediction'))
+    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, original_real_selected_10min_c - original_real_selected_10min_c, 'Only VCWG'))
+    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, debug_only_ep.iloc[:, 4] - 273.15 - original_real_selected_10min_c, 'Only EP(DOE-REF)'))
+    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, bypass_real_selected_10min_c_ver1 - original_real_selected_10min_c, 'Ver1 Prediction'))
+    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, bypass_real_selected_10min_c_ver1p1 -original_real_selected_10min_c, 'Ver1.1 Prediction'))
     txt = 'CVRMSE(%)\n'
     txt += f'Only VCWG: {cvrmses[0][2]:.2f}%\n'
     txt += f'Only EP(DOE-REF): {cvrmses[1][2]:.2f}%\n'
@@ -445,24 +445,24 @@ def why_bypass_overestimated(debug_processed_save_folder,
     ax[0].set_ylabel('CanyonTemp (C)')
     ax[0].legend(loc = 'best')
     # the second figure
-    ax[1].plot(debug_only_vcwg.iloc[:, 0] - 273.15, linestyle='--', label='Only VCWG (wallSun)')
-    ax[1].plot(debug_only_ep.iloc[:, 0] - 273.15, label='Only EP(DOE-REF) (southFacingWall)')
-    ax[1].plot(debug_bypass_ver1.iloc[:, 0] - 273.15, label='Bypass Ver1 (southFacingWall)')
-    ax[1].plot(debug_bypass_ver1p1.iloc[:, 0] - 273.15, label='Bypass Ver1.1 (wallSun)')
+    ax[1].plot(debug_only_vcwg.iloc[:, 0] - 273.15 - (debug_only_vcwg.iloc[:, 0] - 273.15), linestyle='--', label='Only VCWG (wallSun)')
+    ax[1].plot(debug_only_ep.iloc[:, 0] - 273.15 -(debug_only_vcwg.iloc[:, 0] - 273.15), label='Only EP(DOE-REF) (southFacingWall)')
+    ax[1].plot(debug_bypass_ver1.iloc[:, 0] - 273.15 - (debug_only_vcwg.iloc[:, 0] - 273.15), label='Bypass Ver1 (southFacingWall)')
+    ax[1].plot(debug_bypass_ver1p1.iloc[:, 0] - 273.15 - (debug_only_vcwg.iloc[:, 0] - 273.15), label='Bypass Ver1.1 (wallSun)')
     ax[1].set_ylabel('sun/South Wall (C)')
     ax[1].legend()
     # the third figure
-    ax[2].plot(debug_only_vcwg.iloc[:, 1] - 273.15, linestyle='--', label='Only VCWG (wallShade)')
-    ax[2].plot(debug_only_ep.iloc[:, 1] - 273.15, label='Only EP(DOE-REF) (northFacingWall)')
-    ax[2].plot(debug_bypass_ver1.iloc[:, 1] - 273.15, label='Bypass Ver1 (northFacingWall)')
-    ax[2].plot(debug_bypass_ver1p1.iloc[:, 1] - 273.15, label='Bypass Ver1.1 (wallShade)')
+    ax[2].plot(debug_only_vcwg.iloc[:, 1] - 273.15 - (debug_only_vcwg.iloc[:, 1] - 273.15), linestyle='--', label='Only VCWG (wallShade)')
+    ax[2].plot(debug_only_ep.iloc[:, 1] - 273.15 - (debug_only_vcwg.iloc[:, 1] - 273.15), label='Only EP(DOE-REF) (northFacingWall)')
+    ax[2].plot(debug_bypass_ver1.iloc[:, 1] - 273.15 - (debug_only_vcwg.iloc[:, 1] - 273.15), label='Bypass Ver1 (northFacingWall)')
+    ax[2].plot(debug_bypass_ver1p1.iloc[:, 1] - 273.15 - (debug_only_vcwg.iloc[:, 1] - 273.15), label='Bypass Ver1.1 (wallShade)')
     ax[2].set_ylabel('shade/North Wall (C)')
     ax[2].legend()
     # the fourth figure
-    ax[3].plot(debug_only_vcwg.iloc[:, 2] - 273.15, linestyle='--', label='Only VCWG (roof)')
-    ax[3].plot(debug_only_ep.iloc[:, 2] - 273.15, label='Only EP(DOE-REF) (roof)')
-    ax[3].plot(debug_bypass_ver1.iloc[:, 3] - 273.15, label='Bypass Ver1 (roof)')
-    ax[3].plot(debug_bypass_ver1p1.iloc[:, 3] - 273.15, label='Bypass Ver1.1 (roof)')
+    ax[3].plot(debug_only_vcwg.iloc[:, 2] - 273.15 - (debug_only_vcwg.iloc[:, 2] - 273.15), linestyle='--', label='Only VCWG (roof)')
+    ax[3].plot(debug_only_ep.iloc[:, 2] - 273.15 - (debug_only_vcwg.iloc[:, 2] - 273.15), label='Only EP(DOE-REF) (roof)')
+    ax[3].plot(debug_bypass_ver1.iloc[:, 3] - 273.15 - (debug_only_vcwg.iloc[:, 2] - 273.15), label='Bypass Ver1 (roof)')
+    ax[3].plot(debug_bypass_ver1p1.iloc[:, 3] - 273.15 -(debug_only_vcwg.iloc[:, 2] - 273.15), label='Bypass Ver1.1 (roof)')
     ax[3].set_ylabel('Roof (C)')
     ax[3].legend()
     # the fifth figure
