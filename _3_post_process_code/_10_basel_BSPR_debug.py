@@ -13,7 +13,7 @@ vcwg_output_time_interval_seconds = 3600
 v200_start_time = '2002-06-10 00:00:00'
 v200_end_time = '2002-07-09 23:55:00'
 compare_start_time = '2002-06-10 01:00:00'
-compare_end_time = '2002-06-14 22:00:00'
+compare_end_time = '2002-07-09 22:00:00'
 
 bypass_filename = '_BSPR_bypass_refining_M2'
 bypass_filename_1p1 = '_BSPR_bypass_refining_M2_twoCallings'
