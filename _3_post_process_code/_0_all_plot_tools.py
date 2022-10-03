@@ -424,18 +424,18 @@ def why_bypass_overestimated(debug_processed_save_folder,
     # the first figure
     ax[0].plot(urban_selected_10min_c, linestyle='-.', color = 'black', label='Urban Measurement')
     ax[0].plot(original_real_selected_10min_c, linestyle='--', label='Only VCWG')
-    ax[0].plot(debug_only_ep.iloc[:, 4] - 273.15, label='Only EP')
+    ax[0].plot(debug_only_ep.iloc[:, 4] - 273.15, label='Only EP(DOE-REF)')
     ax[0].plot(bypass_real_selected_10min_c_ver1, label='Ver1 Prediction')
     ax[0].plot(bypass_real_selected_10min_c_ver1p1, label='Ver1.1 Prediction')
 
     cvrmses = []
     cvrmses.append(bias_rmse_r2(urban_selected_10min_c, original_real_selected_10min_c, 'Only VCWG'))
-    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, debug_only_ep.iloc[:, 4] - 273.15, 'Only EP'))
+    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, debug_only_ep.iloc[:, 4] - 273.15, 'Only EP(DOE-REF)'))
     cvrmses.append(bias_rmse_r2(urban_selected_10min_c, bypass_real_selected_10min_c_ver1, 'Ver1 Prediction'))
     cvrmses.append(bias_rmse_r2(urban_selected_10min_c, bypass_real_selected_10min_c_ver1p1, 'Ver1.1 Prediction'))
     txt = 'CVRMSE(%)\n'
     txt += f'Only VCWG: {cvrmses[0][2]:.2f}%\n'
-    txt += f'Only EP: {cvrmses[1][2]:.2f}%\n'
+    txt += f'Only EP(DOE-REF): {cvrmses[1][2]:.2f}%\n'
     txt += f'Ver1 Prediction: {cvrmses[2][2]:.2f}%\n'
     txt += f'Ver1.1 Prediction: {cvrmses[3][2]:.2f}%'
     print(txt)
@@ -446,28 +446,28 @@ def why_bypass_overestimated(debug_processed_save_folder,
     ax[0].legend(loc = 'best')
     # the second figure
     ax[1].plot(debug_only_vcwg.iloc[:, 0] - 273.15, linestyle='--', label='Only VCWG (wallSun)')
-    ax[1].plot(debug_only_ep.iloc[:, 0] - 273.15, label='Only EP (southFacingWall)')
+    ax[1].plot(debug_only_ep.iloc[:, 0] - 273.15, label='Only EP(DOE-REF) (southFacingWall)')
     ax[1].plot(debug_bypass_ver1.iloc[:, 0] - 273.15, label='Bypass Ver1 (southFacingWall)')
     ax[1].plot(debug_bypass_ver1p1.iloc[:, 0] - 273.15, label='Bypass Ver1.1 (wallSun)')
     ax[1].set_ylabel('sun/South Wall (C)')
     ax[1].legend()
     # the third figure
     ax[2].plot(debug_only_vcwg.iloc[:, 1] - 273.15, linestyle='--', label='Only VCWG (wallShade)')
-    ax[2].plot(debug_only_ep.iloc[:, 1] - 273.15, label='Only EP (northFacingWall)')
+    ax[2].plot(debug_only_ep.iloc[:, 1] - 273.15, label='Only EP(DOE-REF) (northFacingWall)')
     ax[2].plot(debug_bypass_ver1.iloc[:, 1] - 273.15, label='Bypass Ver1 (northFacingWall)')
     ax[2].plot(debug_bypass_ver1p1.iloc[:, 1] - 273.15, label='Bypass Ver1.1 (wallShade)')
     ax[2].set_ylabel('shade/North Wall (C)')
     ax[2].legend()
     # the fourth figure
     ax[3].plot(debug_only_vcwg.iloc[:, 2] - 273.15, linestyle='--', label='Only VCWG (roof)')
-    ax[3].plot(debug_only_ep.iloc[:, 2] - 273.15, label='Only EP (roof)')
+    ax[3].plot(debug_only_ep.iloc[:, 2] - 273.15, label='Only EP(DOE-REF) (roof)')
     ax[3].plot(debug_bypass_ver1.iloc[:, 3] - 273.15, label='Bypass Ver1 (roof)')
     ax[3].plot(debug_bypass_ver1p1.iloc[:, 3] - 273.15, label='Bypass Ver1.1 (roof)')
     ax[3].set_ylabel('Roof (C)')
     ax[3].legend()
     # the fifth figure
     ax[4].plot(debug_only_vcwg.iloc[:, 3], linestyle='--', label='Only VCWG (sensWaste)')
-    ax[4].plot(debug_only_ep.iloc[:, 3] , label='Only EP (sensHVAC)')
+    ax[4].plot(debug_only_ep.iloc[:, 3] , label='Only EP(DOE-REF) (sensHVAC)')
     ax[4].plot(debug_bypass_ver1.iloc[:, 4] , label='Bypass Ver1 (sensHVAC)')
     ax[4].plot(debug_bypass_ver1p1.iloc[:, 4] , label='Bypass Ver1.1 (sensHVAC)')
     ax[4].set_ylabel('sensWaste/sensHVAC (W/floorArea)')
@@ -478,35 +478,35 @@ def why_bypass_overestimated(debug_processed_save_folder,
     #save all the used data into one excel file, only one sheet
 
     #create a new excel file
-    writer = pd.ExcelWriter(f'{debug_processed_save_folder}\\bypass_overestimated_debugging.xlsx', engine='xlsxwriter')
+    writer = pd.ExcelWriter(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx', engine='xlsxwriter')
     #write the first sheet
     df = pd.DataFrame({'Urban Measurement': urban_selected_10min_c,
                           'Only VCWG': original_real_selected_10min_c,
-                            'Only EP': debug_only_ep.iloc[:, 4] - 273.15,
+                            'Only EP(DOE-REF)': debug_only_ep.iloc[:, 4] - 273.15,
                             'Ver1 Prediction': bypass_real_selected_10min_c_ver1,
                             'Ver1.1 Prediction': bypass_real_selected_10min_c_ver1p1})
     df.to_excel(writer, sheet_name='CanyonTemp')
     #write the second sheet
     df = pd.DataFrame({'Only VCWG (wallSun)': debug_only_vcwg.iloc[:, 0] - 273.15,
-                            'Only EP (southFacingWall)': debug_only_ep.iloc[:, 0] - 273.15,
+                            'Only EP(DOE-REF) (southFacingWall)': debug_only_ep.iloc[:, 0] - 273.15,
                             'Bypass Ver1 (southFacingWall)': debug_bypass_ver1.iloc[:, 0] - 273.15,
                             'Bypass Ver1.1 (wallSun)': debug_bypass_ver1p1.iloc[:, 0] - 273.15})
     df.to_excel(writer, sheet_name='wallSun_southFacingWall')
     #write the third sheet
     df = pd.DataFrame({'Only VCWG (wallShade)': debug_only_vcwg.iloc[:, 1] - 273.15,
-                            'Only EP (northFacingWall)': debug_only_ep.iloc[:, 1] - 273.15,
+                            'Only EP(DOE-REF) (northFacingWall)': debug_only_ep.iloc[:, 1] - 273.15,
                             'Bypass Ver1 (northFacingWall)': debug_bypass_ver1.iloc[:, 1] - 273.15,
                             'Bypass Ver1.1 (wallShade)': debug_bypass_ver1p1.iloc[:, 1] - 273.15})
     df.to_excel(writer, sheet_name='wallShade_northFacingWall')
     #write the fourth sheet
     df = pd.DataFrame({'Only VCWG (roof)': debug_only_vcwg.iloc[:, 2] - 273.15,
-                            'Only EP (roof)': debug_only_ep.iloc[:, 2] - 273.15,
+                            'Only EP(DOE-REF) (roof)': debug_only_ep.iloc[:, 2] - 273.15,
                             'Bypass Ver1 (roof)': debug_bypass_ver1.iloc[:, 3] - 273.15,
                             'Bypass Ver1.1 (roof)': debug_bypass_ver1p1.iloc[:, 3] - 273.15})
     df.to_excel(writer, sheet_name='roof')
     #write the fifth sheet
     df = pd.DataFrame({'Only VCWG (sensWaste)': debug_only_vcwg.iloc[:, 3],
-                            'Only EP (sensHVAC)': debug_only_ep.iloc[:, 3],
+                            'Only EP(DOE-REF) (sensHVAC)': debug_only_ep.iloc[:, 3],
                             'Bypass Ver1 (sensHVAC)': debug_bypass_ver1.iloc[:, 4],
                             'Bypass Ver1.1 (sensHVAC)': debug_bypass_ver1p1.iloc[:, 4]})
     df.to_excel(writer, sheet_name='sensWaste_sensHVAC')

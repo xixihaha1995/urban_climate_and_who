@@ -2,7 +2,7 @@ import _0_all_plot_tools as plt_tools
 import pandas as pd, numpy as np
 measure_results_folder = r'..\_2_cases_input_outputs\_0_measurements\BUBBLE'
 only_vcwg_results_folder = r'..\_2_cases_input_outputs\_05_Basel_BSPR_ue1\vcwg_saving'
-only_ep_results_folder = r'..\_2_cases_input_outputs\_05_Basel_BSPR_ue1\ep_saving'
+only_ep_results_folder = r'..\_2_cases_input_outputs\_05_Basel_BSPR_ue1\DOE_Reference'
 bypass_predict_results_folder = r'..\_2_cases_input_outputs\_05_Basel_BSPR_ue1\refining_M2\vcwg_ep_saving'
 debug_processed_save_folder = r'..\_2_cases_input_outputs\_05_Basel_BSPR_ue1'
 
@@ -53,7 +53,7 @@ urban_selected_10min_c, original_real_selected_10min_c, bypass_real_selected_10m
     bypass_real_10min_c_compare_ver1.iloc[:,selected_ue1_sensor_idx]\
     , bypass_real_10min_c_compare_ver1p1.iloc[:,selected_ue1_sensor_idx]
 
-debug_only_ep_5min = pd.read_excel(f'{only_ep_results_folder}\\only_ep_debugging_canyon.xlsx', header=0, index_col=0)
+debug_only_ep_5min = pd.read_excel(f'{only_ep_results_folder}\\only_ep_DOE_Ref_debugging_canyon.xlsx', header=0, index_col=0)
 debug_only_vcwg_5min = pd.read_excel(f'{only_vcwg_results_folder}\\only_vcwg_debugging_canyon.xlsx', header=0, index_col=0)
 debug_bypass_ver1_5min = pd.read_excel(f'{bypass_predict_results_folder}\\ver1\\_BSPR_bypass_refining_M2_debugging_canyon.xlsx',
                              header=0, index_col=0)
