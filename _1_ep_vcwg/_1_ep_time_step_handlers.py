@@ -58,7 +58,7 @@ def overwrite_ep_weather(state):
         #if one of the above handles is less than 0, then the actuator is not available
         # the entire program (multithread cooperation) should be terminated here, system exit with print messagePYTHO
         if odb_actuator_handle < 0 or orh_actuator_handle < 0:
-            print('Actuator not available')
+            print('ovewrite_ep_weather(): some handle not available')
             os.getpid()
             os.kill(os.getpid(), signal.SIGTERM)
     warm_up = coordination.ep_api.exchange.warmup_flag(state)
@@ -584,7 +584,7 @@ def get_ep_results(state):
         coordination.ep_roof_Text_K = roof_Text_C + 273.15
         coordination.ep_roof_Tint_K = roof_Tint_C + 273.15
 
-        if 1:
+        if s_wall_solar_w_m2 > n_wall_solar_w_m2:
             coordination.ep_wallSun_Text_K = s_wall_Text_C + 273.15
             coordination.ep_wallSun_Tint_K = s_wall_Tint_C + 273.15
             coordination.ep_wallShade_Text_K = n_wall_Text_C + 273.15
