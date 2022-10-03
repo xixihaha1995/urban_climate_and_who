@@ -18,7 +18,7 @@ def overwrite_weather(state):
         # with open('/tmp/data.csv', 'w') as f:
         #     f.write(val.decode(encoding='utf-8'))
         outdoor_dry_bulb_actuator = api.exchange.get_actuator_handle(
-            state, "Weather Data", "Site Outdoor Air Drybulb Temperature", "Environment"
+            state, "Weather Data", "Outdoor Dry Bulb", "Environment"
         )
         if outdoor_temp_sensor == -1 or outdoor_dry_bulb_actuator == -1:
             sys.exit(1)

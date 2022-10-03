@@ -55,7 +55,8 @@ def overwrite_ep_weather(state):
             get_actuator_handle(state, "Weather Data", "Site Outdoor Air Drybulb Temperature", "Environment")
         orh_actuator_handle = coordination.ep_api.exchange.\
             get_actuator_handle(state, "Weather Data", "Site Outdoor Air Relative Humidity", "Environment")
-
+        if odb_actuator_handle * orh_actuator_handle < 0:
+            raise ValueError("actuator handle is not valid")
     warm_up = coordination.ep_api.exchange.warmup_flag(state)
     if not warm_up:
         if not called_vcwg_bool:
