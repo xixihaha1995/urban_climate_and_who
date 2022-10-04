@@ -308,7 +308,7 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
     elif file_name == 'vcwg_wsp_mps_wdir_deg':
         df.columns = ['wsp_mps', 'wdir_deg']
     elif file_name == 'debugging_canyon':
-        df.columns = ['wallSun_Text_K', 'wallShade_Text_K', 'roof_Text_K','sensWaste_w_floor_m2','canTemp_K']
+        df.columns = ['wallSun_Text_K', 'wallShade_Text_K', 'roof_Text_K','sensWaste_w_footprint_m2','canTemp_K']
     else:
         df.columns = [f'(m) {file_name}_' + str(0.5 + i) for i in range(len(df.columns))]
     df = add_date_index(df, start_time, time_interval_sec)

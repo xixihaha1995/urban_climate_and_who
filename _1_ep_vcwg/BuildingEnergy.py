@@ -522,7 +522,7 @@ class Building(object):
 
         _0_global_save.saving_data['debugging_canyon'].append(
             [BEM.wallSun.Text, BEM.wallShade.Text,  (BEM.roofImp.Text + BEM.roofImp.Text) / 2,
-             self.sensWaste / self.nFloor, canTemp])
+             self.sensWaste, canTemp])
         # Calculate total gas consumption per unit floor area [W m^-2] which is equal to gas consumption per unit floor area +
         # energy consumption for domestic hot water per unit floor area + energy consumption of the heating system per unit floor area
         self.GasTotal = BEM.Gas + (massFlorRateSWH * CpH20 * (
