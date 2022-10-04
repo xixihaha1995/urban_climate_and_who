@@ -3,7 +3,7 @@ import pandas as pd, numpy as np
 measure_results_folder = r'..\_2_cases_input_outputs\_0_measurements\BUBBLE'
 only_vcwg_results_folder = r'..\_2_cases_input_outputs\_05_Basel_BSPR_ue1\vcwg_saving'
 only_ep_results_folder = r'..\_2_cases_input_outputs\_05_Basel_BSPR_ue1\DOE_Reference'
-bypass_predict_results_folder = r'..\_2_cases_input_outputs\_05_Basel_BSPR_ue1\refining_M2\vcwg_ep_saving'
+bypass_predict_results_folder = r'..\_2_cases_input_outputs\_05_Basel_BSPR_ue1\refining_M3ing\vcwg_ep_saving'
 debug_processed_save_folder = r'..\_2_cases_input_outputs\_05_Basel_BSPR_ue1'
 
 IOP_start_time = '2002-06-10 01:00:00'
@@ -16,7 +16,7 @@ compare_start_time = '2002-06-10 01:00:00'
 compare_end_time = '2002-07-09 22:00:00'
 
 bypass_filename = '_BSPR_bypass_refining_M2'
-bypass_filename_1p1 = '_BSPR_bypass_refining_M2_twoCallings'
+bypass_filename_1p1 = '_BSPR_bypass_refining_M3ing'
 original_filename = 'only_vcwg'
 
 # v200_sensor_height = 2.6

@@ -25,11 +25,11 @@ def run_ep_api():
 if __name__ == '__main__':
     time_step_handler_ver = 1.1
     # ep_files_path = '_1_case_analysis\\cases\\_06_Basel_BSPA_ue2\\refining_M2'
-    ep_files_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\refining_M2'
+    ep_files_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\refining_M3ing'
     # case_name = '_BSPA_bypass_refining_M2'
-    case_name = '_BSPR_bypass_refining_M2_twoCallings'
+    case_name = '_BSPR_bypass_refining_M3ing'
     epwFileName = 'Basel.epw'
-    idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M2_V2210.idf'
+    idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M3ing.idf'
 
     # Lichen: init the synchronization lock related settings: locks, shared variables.
     coordination.init_saving_data()

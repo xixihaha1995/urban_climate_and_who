@@ -429,10 +429,10 @@ def why_bypass_overestimated(debug_processed_save_folder,
     ax[0].plot(bypass_real_selected_10min_c_ver1p1 - original_real_selected_10min_c, label='Ver1.1 Prediction')
 
     cvrmses = []
-    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, original_real_selected_10min_c - original_real_selected_10min_c, 'Only VCWG'))
-    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, debug_only_ep.iloc[:, 4] - 273.15 - original_real_selected_10min_c, 'Only EP(DOE-REF)'))
-    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, bypass_real_selected_10min_c_ver1 - original_real_selected_10min_c, 'Ver1 Prediction'))
-    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, bypass_real_selected_10min_c_ver1p1 -original_real_selected_10min_c, 'Ver1.1 Prediction'))
+    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, original_real_selected_10min_c, 'Only VCWG'))
+    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, debug_only_ep.iloc[:, 4] - 273.15, 'Only EP(DOE-REF)'))
+    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, bypass_real_selected_10min_c_ver1 , 'Ver1 Prediction'))
+    cvrmses.append(bias_rmse_r2(urban_selected_10min_c, bypass_real_selected_10min_c_ver1p1, 'Ver1.1 Prediction'))
     txt = 'CVRMSE(%)\n'
     txt += f'Only VCWG: {cvrmses[0][2]:.2f}%\n'
     txt += f'Only EP(DOE-REF): {cvrmses[1][2]:.2f}%\n'
