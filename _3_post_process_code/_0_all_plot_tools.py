@@ -420,7 +420,7 @@ def why_bypass_overestimated(debug_processed_save_folder,
     # create in total 4 figures
     # overwrite cursor with the snapping cursor
 
-    fig, ax = plt.subplots(5, 1, figsize=(10, 10), sharex=True)
+    fig, ax = plt.subplots(5, 1, sharex=True)
     # the first figure
     ax[0].plot(urban_selected_10min_c, linestyle='-.', color = 'black', label='Urban Measurement')
     ax[0].plot(original_real_selected_10min_c - original_real_selected_10min_c, linestyle='--', label='Only VCWG')
@@ -439,43 +439,45 @@ def why_bypass_overestimated(debug_processed_save_folder,
     txt += f'Ver1 Prediction: {cvrmses[2][2]:.2f}%\n'
     txt += f'Ver1.1 Prediction: {cvrmses[3][2]:.2f}%'
     print(txt)
-    # put text at best position
-    ax[0].text(0.5, 0.5, txt, transform=ax[0].transAxes, fontsize=12,
-            verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
     ax[0].set_ylabel('CanyonTemp (C)')
-    ax[0].legend(loc = 'best')
+    # put legend outside the figure
+    # ax[0].legend(bbox_to_anchor=(1.04, 1), loc='upper left', borderaxespad=0.)
     # the second figure
-    ax[1].plot(debug_only_vcwg.iloc[:, 0] - 273.15 - (debug_only_vcwg.iloc[:, 0] - 273.15), linestyle='--', label='Only VCWG (wallSun)')
-    ax[1].plot(debug_only_ep.iloc[:, 0] - 273.15 -(debug_only_vcwg.iloc[:, 0] - 273.15), label='Only EP(DOE-REF) (southFacingWall)')
-    ax[1].plot(debug_bypass_ver1.iloc[:, 0] - 273.15 - (debug_only_vcwg.iloc[:, 0] - 273.15), label='Bypass Ver1 (southFacingWall)')
-    ax[1].plot(debug_bypass_ver1p1.iloc[:, 0] - 273.15 - (debug_only_vcwg.iloc[:, 0] - 273.15), label='Bypass Ver1.1 (wallSun)')
+    ax[1].plot(debug_only_vcwg.iloc[:, 0] - 273.15 - (debug_only_vcwg.iloc[:, 0] - 273.15), linestyle='--')
+    ax[1].plot(debug_only_ep.iloc[:, 0] - 273.15 -(debug_only_vcwg.iloc[:, 0] - 273.15))
+    ax[1].plot(debug_bypass_ver1.iloc[:, 0] - 273.15 - (debug_only_vcwg.iloc[:, 0] - 273.15))
+    ax[1].plot(debug_bypass_ver1p1.iloc[:, 0] - 273.15 - (debug_only_vcwg.iloc[:, 0] - 273.15))
     ax[1].set_ylabel('sun/South Wall (C)')
-    ax[1].legend()
+    # ax[1].legend()
     # the third figure
-    ax[2].plot(debug_only_vcwg.iloc[:, 1] - 273.15 - (debug_only_vcwg.iloc[:, 1] - 273.15), linestyle='--', label='Only VCWG (wallShade)')
-    ax[2].plot(debug_only_ep.iloc[:, 1] - 273.15 - (debug_only_vcwg.iloc[:, 1] - 273.15), label='Only EP(DOE-REF) (northFacingWall)')
-    ax[2].plot(debug_bypass_ver1.iloc[:, 1] - 273.15 - (debug_only_vcwg.iloc[:, 1] - 273.15), label='Bypass Ver1 (northFacingWall)')
-    ax[2].plot(debug_bypass_ver1p1.iloc[:, 1] - 273.15 - (debug_only_vcwg.iloc[:, 1] - 273.15), label='Bypass Ver1.1 (wallShade)')
+    ax[2].plot(debug_only_vcwg.iloc[:, 1] - 273.15 - (debug_only_vcwg.iloc[:, 1] - 273.15), linestyle='--')
+    ax[2].plot(debug_only_ep.iloc[:, 1] - 273.15 - (debug_only_vcwg.iloc[:, 1] - 273.15))
+    ax[2].plot(debug_bypass_ver1.iloc[:, 1] - 273.15 - (debug_only_vcwg.iloc[:, 1] - 273.15))
+    ax[2].plot(debug_bypass_ver1p1.iloc[:, 1] - 273.15 - (debug_only_vcwg.iloc[:, 1] - 273.15))
     ax[2].set_ylabel('shade/North Wall (C)')
-    ax[2].legend()
+    # ax[2].legend()
     # the fourth figure
-    ax[3].plot(debug_only_vcwg.iloc[:, 2] - 273.15 - (debug_only_vcwg.iloc[:, 2] - 273.15), linestyle='--', label='Only VCWG (roof)')
-    ax[3].plot(debug_only_ep.iloc[:, 2] - 273.15 - (debug_only_vcwg.iloc[:, 2] - 273.15), label='Only EP(DOE-REF) (roof)')
-    ax[3].plot(debug_bypass_ver1.iloc[:, 3] - 273.15 - (debug_only_vcwg.iloc[:, 2] - 273.15), label='Bypass Ver1 (roof)')
-    ax[3].plot(debug_bypass_ver1p1.iloc[:, 3] - 273.15 -(debug_only_vcwg.iloc[:, 2] - 273.15), label='Bypass Ver1.1 (roof)')
+    ax[3].plot(debug_only_vcwg.iloc[:, 2] - 273.15 - (debug_only_vcwg.iloc[:, 2] - 273.15), linestyle='--')
+    ax[3].plot(debug_only_ep.iloc[:, 2] - 273.15 - (debug_only_vcwg.iloc[:, 2] - 273.15))
+    ax[3].plot(debug_bypass_ver1.iloc[:, 3] - 273.15 - (debug_only_vcwg.iloc[:, 2] - 273.15))
+    ax[3].plot(debug_bypass_ver1p1.iloc[:, 3] - 273.15 -(debug_only_vcwg.iloc[:, 2] - 273.15))
     ax[3].set_ylabel('Roof (C)')
-    ax[3].legend()
+    # ax[3].legend()
     # the fifth figure
-    ax[4].plot(debug_only_vcwg.iloc[:, 3], linestyle='--', label='Only VCWG (sensWaste)')
-    ax[4].plot(debug_only_ep.iloc[:, 3] , label='Only EP(DOE-REF) (sensHVAC)')
-    ax[4].plot(debug_bypass_ver1.iloc[:, 4] , label='Bypass Ver1 (sensHVAC)')
-    ax[4].plot(debug_bypass_ver1p1.iloc[:, 4] , label='Bypass Ver1.1 (sensHVAC)')
+    ax[4].plot(debug_only_vcwg.iloc[:, 3], linestyle='--')
+    ax[4].plot(debug_only_ep.iloc[:, 3]  )
+    ax[4].plot(debug_bypass_ver1.iloc[:, 4] )
+    ax[4].plot(debug_bypass_ver1p1.iloc[:, 4])
     ax[4].set_ylabel('sensWaste/sensHVAC (W/floorArea)')
-    ax[4].legend()
+    # ax[4].legend()
+    # put legend outside the figure
+    fig.legend(loc='center right', bbox_to_anchor=(1, 0.5), borderaxespad=0.)
+    #put text outside the figure
+    plt.figtext(0.8, 0.7, txt, fontsize=8)
+    fig.subplots_adjust(right=0.76)
 
     # add MouseCross
     plt.show()
-    #save all the used data into one excel file, only one sheet
 
     #create a new excel file
     writer = pd.ExcelWriter(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx', engine='xlsxwriter')
