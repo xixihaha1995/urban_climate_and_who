@@ -35,26 +35,28 @@ urban_all_sites_10min_clean = plt_tools.clean_bubble_iop(urban_all_sites_10min_d
 # select the 0th column as the comparison data
 urban_all_sites_10min_c_compare = urban_all_sites_10min_clean[compare_start_time:compare_end_time]
 
-mixed_all_sites_10min_dirty = plt_tools.read_text_as_csv(f'{measure_results_folder}\\BUBBLE_AT_IOP.txt',
-                                                            header=0, index_col=0, skiprows=25)
-# clean the measurements
-mixed_all_sites_hour = plt_tools.clean_bubble_iop(mixed_all_sites_10min_dirty,
-                                                    start_time = IOP_start_time, end_time = IOP_end_time)
-# Keep original index, only select one column and keep the column name
-rural_1p5_hour_c = mixed_all_sites_hour.iloc[:,re1_col_idx]
+Basel_epw_all_dirty = pd.read_csv( f'{debug_processed_save_folder}\\Basel.epw',
+                                 skiprows= 8, header= None, index_col=None,)
+Basel_epw_all_clean = plt_tools.clean_epw(Basel_epw_all_dirty,
+                                               start_time = compare_start_time)
+# Basel_epw_all_clean shape: (8760, 35)
+# select the 9th column as the comparison data
+Basel_epw_staPre_Pa_all = Basel_epw_all_clean[9]
 
 original_potential_10min_c_compare, original_real_10min_c_compare = \
     plt_tools.excel_to_potential_real_df(original_filename, only_vcwg_results_folder, p0,
                                          heights_profile, ue1_heights,compare_start_time,compare_end_time,
-                                         rural_1p5_hour_c)
+                                         Basel_epw_staPre_Pa_all)
 bypass_ver1_path = f'{bypass_predict_results_folder}\\ver1'
 bypass_potential_10min_c_compare_ver1, bypass_real_10min_c_compare_ver1 = \
     plt_tools.excel_to_potential_real_df(bypass_filename, bypass_ver1_path, p0, heights_profile, ue1_heights,
-                                            compare_start_time,compare_end_time)
+                                            compare_start_time,compare_end_time,
+                                         Basel_epw_staPre_Pa_all)
 bypass_ver1p1_path = f'{bypass_predict_results_folder}\\ver1.1'
 bypass_potential_10min_c_compare_ver1p1, bypass_real_10min_c_compare_ver1p1 = \
     plt_tools.excel_to_potential_real_df(bypass_filename_1p1, bypass_ver1p1_path, p0, heights_profile, ue1_heights,
-                                            compare_start_time,compare_end_time)
+                                            compare_start_time,compare_end_time,
+                                         Basel_epw_staPre_Pa_all)
 urban_selected_10min_c, original_real_selected_10min_c, bypass_real_selected_10min_c_ver1,\
     bypass_real_selected_10min_c_ver1p1 = \
     urban_all_sites_10min_c_compare.iloc[:,selected_ue1_sensor_idx], \

@@ -317,7 +317,7 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
     df.to_excel(os.path.join(vcwg_ep_saving_path, f'{case_name}_{file_name}.xlsx'))
 
 def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue1_heights,compare_start_time,
-                               compare_end_time, rural_1p5_hour_c, Sensor_Height_Bool = True):
+                               compare_end_time, epw_staPre_Pa_all, Sensor_Height_Bool = True):
     th_profie_5min = pd.read_excel(f'{results_folder}\\{filename}_TempProfile_K.xlsx',
                                                    sheet_name='Sheet1', header=0, index_col=0)
     # ue1_heights is sensor heights, heights_profile is the heights of predictions
@@ -347,8 +347,8 @@ def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue
     # real temperature  = th_sensor_10min_c_compare * (pres_sensor_10min_pa_compare/p0)^0.286
     # both pres_sensor_10min_pa_compare and th_sensor_10min_c_compare have 6 columns
     # get real_sensor_10min_c_compare (element wise calculation)
-    real_sensor_10min_K_compare_arr = th_sensor_10min_K_compare.values * \
-                                      (pres_sensor_10min_pa_compare.values / p0) ** 0.286
+    real_sensor_10min_K_compare_arr = potential_to_real(th_sensor_10min_K_compare, pres_sensor_10min_pa_compare,
+                                                        epw_staPre_Pa_all)
     real_sensor_10min_K_compare = pd.DataFrame(real_sensor_10min_K_compare_arr,
                                                   index=th_sensor_10min_K_compare.index,
                                                     columns=th_sensor_10min_K_compare.columns)
@@ -356,7 +356,34 @@ def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue
     real_sensor_10min_c_compare = real_sensor_10min_K_compare - 273.15
     return th_sensor_10min_c_compare, real_sensor_10min_c_compare
 
-def potential_to_real(potential_K, pres_pa, rural_1p5_hour_pa)
+def potential_to_real(potentialProf_K, presProf_pa, epw_staPre_Pa_all):
+    '''
+    Both potentialProf_K and presProf_pa are 10 mins timestep from '2002-06-10 01:00:00' to '2002-07-09 22:00:00'
+    rural_1p5_hour_pa is hourly timestep from '2002-01-01 00:00:00' to '2002-12-31 23:00:00'
+    realProf_K = potentialProf_K * (presProf_pa / p0) ** 0.286
+    Iterate through each row of potentialProf_K and presProf_pa, and find the corresponding pressure in rural_1p5_hour_pa
+    To get the realProf_K
+    '''
+    realProf_K = potentialProf_K.copy()
+    for i in range(len(potentialProf_K)):
+        # find the corresponding pressures
+        # find the corresponding time in rural_1p5_hour_pa
+        time = potentialProf_K.index[i]
+        # find the corresponding pressures
+        pres = presProf_pa.iloc[i, :]
+        # find the corresponding pressure in rural_1p5_hour_pa
+        # time is formatted as 'YYYY-MM-DD HH:MM:SS'
+        # floor the time to the nearest hour
+        time_hour = time.replace(minute=0, second=0)
+        epw_staPre_Pa_all.index = pd.to_datetime(epw_staPre_Pa_all.index)
+        #from epw_staPre_Pa_all find the corresponding pressure according to time_hour (hourly based comparison)
+        corr_p0_time_idx = epw_staPre_Pa_all.index.get_indexer([time_hour])[0]
+        corr_p0 = epw_staPre_Pa_all.iloc[corr_p0_time_idx]
+        #pres.shape(6,),potentialProf_K.iloc[i, :].shape(6,), corr_p0 is one number
+        # based on element wise calculation, calculate realProf_K.iloc[i, :]
+        # real = potential * (pres / p0) ** 0.286
+        realProf_K.iloc[i, :] = potentialProf_K.iloc[i, :].values * (pres.values / corr_p0) ** 0.286
+    return realProf_K
 
 def stacked_comparison_plot(merged_df, sensor_heights):
     # merged_df has 5 *  len(sensor_heights) + 1 columns
