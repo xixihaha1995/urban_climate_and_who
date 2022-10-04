@@ -21,7 +21,7 @@ def init_variables_for_vcwg_ep(_in_ep_files_path, _in_ver):
         ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, \
         ep_wallSun_Text_K, ep_wallSun_Tint_K,ep_wallShade_Text_K, ep_wallShade_Tint_K,\
         blf_floor_area_m2, time_step_version, ep_files_path,\
-        ep_oaTemp_C
+        ep_oaTemp_C, overwriting_time_index, overwriten_time_index
 
     vcwg_wsp_mps = 0
     vcwg_wdir_deg = 0
