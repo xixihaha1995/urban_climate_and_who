@@ -317,7 +317,7 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
     df.to_excel(os.path.join(vcwg_ep_saving_path, f'{case_name}_{file_name}.xlsx'))
 
 def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue1_heights,compare_start_time,
-                               compare_end_time, Sensor_Height_Bool = True):
+                               compare_end_time, rural_1p5_hour_c, Sensor_Height_Bool = True):
     th_profie_5min = pd.read_excel(f'{results_folder}\\{filename}_TempProfile_K.xlsx',
                                                    sheet_name='Sheet1', header=0, index_col=0)
     # ue1_heights is sensor heights, heights_profile is the heights of predictions
@@ -355,6 +355,8 @@ def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue
     th_sensor_10min_c_compare = th_sensor_10min_K_compare - 273.15
     real_sensor_10min_c_compare = real_sensor_10min_K_compare - 273.15
     return th_sensor_10min_c_compare, real_sensor_10min_c_compare
+
+def potential_to_real(potential_K, pres_pa, rural_1p5_hour_pa)
 
 def stacked_comparison_plot(merged_df, sensor_heights):
     # merged_df has 5 *  len(sensor_heights) + 1 columns
