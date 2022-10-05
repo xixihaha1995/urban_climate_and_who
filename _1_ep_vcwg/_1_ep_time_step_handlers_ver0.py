@@ -1,7 +1,7 @@
 from threading import Thread
 from . import _0_vcwg_ep_coordination as coordination
 from .VCWG_Hydrology import VCWG_Hydro
-import os
+import os, signal
 
 one_time = True
 one_time_call_vcwg = True
@@ -129,12 +129,29 @@ def _nested_ep_only(state):
         t_cor_roof_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,
                                                                                   "Surface Outside Face Temperature",
                                                                                   "t Roof C")
+        if oat_sensor_handle == -1 or hvac_heat_rejection_sensor_handle == -1 or \
+                site_wind_speed_mps_sensor_handle == -1 or site_wind_direction_deg_sensor_handle == -1 or \
+                gsw_wall_Text_handle == -1 or gse_office_wall_Text_handle == -1 or gs1_wall_Text_handle == -1 or \
+                gs2_wall_Text_handle == -1 or msw_wall_Text_handle == -1 or mse_wall_Text_handle == -1 or \
+                ms1_wall_Text_handle == -1 or ms2_wall_Text_handle == -1 or tsw_wall_Text_handle == -1 or \
+                tse_wall_Text_handle == -1 or ts1_wall_Text_handle == -1 or ts2_wall_Text_handle == -1 or \
+                gnw_wall_Text_handle == -1 or gne_wall_Text_handle == -1 or gn1_wall_Text_handle == -1 or \
+                gn2_wall_Text_handle == -1 or mnw_wall_Text_handle == -1 or mne_wall_Text_handle == -1 or \
+                mn1_wall_Text_handle == -1 or mn2_wall_Text_handle == -1 or tnw_wall_Text_handle == -1 or \
+                tne_wall_Text_handle == -1 or tn1_wall_Text_handle == -1 or tn2_wall_Text_handle == -1 or \
+                tsw_roof_Text_handle == -1 or tnw_roof_Text_handle == -1 or tse_roof_Text_handle == -1 or \
+                tne_roof_Text_handle == -1 or tn1_roof_Text_handle == -1 or tn2_roof_Text_handle == -1 or \
+                ts1_roof_Text_handle == -1 or ts2_roof_Text_handle == -1 or t_cor_roof_Text_handle == -1:
+            print('_nested_ep_only(): some handle not available')
+            os.getpid()
+            os.kill(os.getpid(), signal.SIGTERM)
+
     warm_up = coordination.ep_api.exchange.warmup_flag(state)
     if not warm_up:
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
         accumulation_time_step_in_seconds = curr_sim_time_in_seconds - ep_last_accumulated_time_index_in_seconds
-        accu_hvac_heat_rejection_J = coordination.ep_api.exchange.get_variable_value(state,
+        accu_hvac_heat_rejection_J += coordination.ep_api.exchange.get_variable_value(state,
                                                                                      hvac_heat_rejection_sensor_handle)
 
         one_zone_time_step_bool = 1 > abs(accumulation_time_step_in_seconds - zone_time_step_seconds)
@@ -142,9 +159,6 @@ def _nested_ep_only(state):
         ep_last_accumulated_time_index_in_seconds = curr_sim_time_in_seconds
 
         oat_temp_c = coordination.ep_api.exchange.get_variable_value(state, oat_sensor_handle)
-
-        hvac_waste_w_m2 = accu_hvac_heat_rejection_J / accumulation_time_step_in_seconds / coordination.bld_floor_area_m2
-        accu_hvac_heat_rejection_J = 0
 
         coordination.ep_wsp_mps = coordination.ep_api.exchange.get_variable_value(state,
                                                                                   site_wind_speed_mps_sensor_handle)
@@ -198,12 +212,14 @@ def _nested_ep_only(state):
         roof_Text_C = (tsw_roof_Text_c + tnw_roof_Text_c + tse_roof_Text_c + tne_roof_Text_c +
                        tn1_roof_Text_c + tn2_roof_Text_c + ts1_roof_Text_c + ts2_roof_Text_c + t_cor_roof_Text_c) / 9
 
+        hvac_waste_w_m2 = accu_hvac_heat_rejection_J / accumulation_time_step_in_seconds / coordination.bld_floor_area_m2
+        accu_hvac_heat_rejection_J = 0
 
         coordination.saving_data['ep_wsp_mps_wdir_deg'].append(
             [coordination.ep_wsp_mps, coordination.ep_wdir_deg])
         coordination.saving_data['debugging_canyon'].append([s_wall_Text_C + 273.15,
                                                 n_wall_Text_C + 273.15,roof_Text_C + 273.15,
-                                                hvac_waste_w_m2, oat_temp_c + 273.15])
+                                                hvac_waste_w_m2 * 4, oat_temp_c + 273.15])
 
 
 

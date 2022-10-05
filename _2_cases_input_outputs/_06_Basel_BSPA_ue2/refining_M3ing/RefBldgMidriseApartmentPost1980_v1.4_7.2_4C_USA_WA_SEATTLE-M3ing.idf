@@ -229,8 +229,8 @@ RunPeriod,
     6,                       !- Begin Month
     10,                      !- Begin Day of Month
     ,                        !- Begin Year
-    6,                       !- End Month
-    10,                       !- End Day of Month
+    7,                       !- End Month
+    9,                       !- End Day of Month
     ,                        !- End Year
     Monday,                  !- Day of Week for Start Day
     No,                      !- Use Weather File Holidays and Special Days
@@ -721,18 +721,18 @@ Schedule:Compact,
     THROUGH: 12/31,          !- Field 1
     FOR:Weekdays SummerDesignDay,  !- Field 2
     UNTIL: 7:00,             !- Field 3
-    29.4,                    !- Field 4
+    100,                    !- Field 4
     UNTIL: 8:00,             !- Field 5
-    26.7,                    !- Field 6
+    100,                    !- Field 6
     UNTIL:17:00,             !- Field 7
-    23.9,                    !- Field 8
+    100,                    !- Field 8
     UNTIL: 18:00,            !- Field 9
-    26.7,                    !- Field 10
+    100,                    !- Field 10
     UNTIL: 24:00,            !- Field 11
-    29.4,                    !- Field 12
+    100,                    !- Field 12
     FOR: AllOtherDays,       !- Field 13
     UNTIL: 24:00,            !- Field 14
-     29.4;                   !- Field 15
+     100;                   !- Field 15
 
 Schedule:Compact,
     Dual Zone Control Type Sched,  !- Name
@@ -1092,7 +1092,7 @@ Material,
     0.06,                    !- Conductivity {W/m-K}
     1920,                    !- Density {kg/m3}
     1260,                    !- Specific Heat {J/kg-K}
-    0.9,                     !- Thermal Absorptance
+    0.95,                     !- Thermal Absorptance
     0.85,                    !- Solar Absorptance
     0.85;                    !- Visible Absorptance
 
@@ -18034,6 +18034,10 @@ OutputControl:ReportingTolerances,
 
 
 !-   ===========  ALL OBJECTS IN CLASS: OUTPUT:VARIABLE ===========
+Output:Variable,
+    *,                       !- Key Value
+    Surface Outside Face Incident Solar Radiation Rate per Area,  !- Variable Name
+    timestep;                !- Reporting Frequency
 
 Output:Variable,
     *,                       !- Key Value

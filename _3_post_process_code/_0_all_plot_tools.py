@@ -304,7 +304,7 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
     if file_name == 'ep_wsp_mps_wdir_deg':
         df.columns = ['ep_wsp_mps', 'ep_wdir_deg']
     elif file_name == 'debugging_canyon':
-        df.columns = ['s_wall_Text_K', 'n_wall_Text_K', 'roof_Text_K','sensHVAC_w_per_floor_m2', 'canTemp_vcwg_K']
+        df.columns = ['s_wall_Text_K', 'n_wall_Text_K', 'roof_Text_K','sensHVAC_w_per_footprint_m2', 'canTemp_vcwg_K']
 
     df = add_date_index(df, start_time, time_interval_sec)
     # save to excel, if non-exist, create one

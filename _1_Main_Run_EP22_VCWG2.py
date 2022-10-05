@@ -13,17 +13,17 @@ def run_ep_api():
     api.exchange.request_variable(state, "Site Wind Direction", "ENVIRONMENT")
     api.exchange.request_variable(state, "Site Outdoor Air Drybulb Temperature", "ENVIRONMENT")
 
-    output_path = os.path.join(ep_files_path, 'ep_outputs')
+    output_path = os.path.join(ep_files_path, 'ep_optional_outputs')
     weather_file_path = os.path.join(ep_files_path,'..', epwFileName)
     idfFilePath = os.path.join(ep_files_path, idfFileName)
     sys_args = '-d', output_path, '-w', weather_file_path, idfFilePath
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    ep_files_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\refining_M2'
-    data_saving_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\ep_saving'
+    ep_files_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\refining_M3ing'
+    data_saving_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\refining_M3ing\\ep_saving'
     epwFileName = 'Basel.epw'
-    idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M2.idf'
+    idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M3ing.idf'
 
     # Lichen: init the synchronization lock related settings: locks, shared variables.
     coordination.init_saving_data()
