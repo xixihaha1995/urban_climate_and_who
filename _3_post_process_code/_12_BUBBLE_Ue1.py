@@ -80,4 +80,5 @@ plt_tools.why_bypass_overestimated(debug_processed_save_folder,
                                    urban_selected_10min_c, original_real_selected_10min_c, bypass_real_selected_10min_c_ver1,
                                    bypass_real_selected_10min_c_ver1p1,
                                    debug_only_ep_10min, debug_only_vcwg_10min,
-                                   debug_bypass_ver1_10min,debug_bypass_ver1p1_10min)
+                                   debug_bypass_ver1_10min,debug_bypass_ver1p1_10min,
+                                   mean_bld_temp= True)
