@@ -317,7 +317,7 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
     df.to_excel(os.path.join(vcwg_ep_saving_path, f'{case_name}_{file_name}.xlsx'))
 
 def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue1_heights,compare_start_time,
-                               compare_end_time, epw_staPre_Pa_all, Sensor_Height_Bool = True):
+                               compare_end_time, epw_staPre_Pa_all = None, Sensor_Height_Bool = True):
     th_profie_5min = pd.read_excel(f'{results_folder}\\{filename}_TempProfile_K.xlsx',
                                                    sheet_name='Sheet1', header=0, index_col=0)
     # ue1_heights is sensor heights, heights_profile is the heights of predictions
@@ -347,7 +347,11 @@ def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue
     # real temperature  = th_sensor_10min_c_compare * (pres_sensor_10min_pa_compare/p0)^0.286
     # both pres_sensor_10min_pa_compare and th_sensor_10min_c_compare have 6 columns
     # get real_sensor_10min_c_compare (element wise calculation)
-    real_sensor_10min_K_compare_arr = potential_to_real(th_sensor_10min_K_compare, pres_sensor_10min_pa_compare,
+    if not epw_staPre_Pa_all:
+        real_sensor_10min_K_compare_arr = th_sensor_10min_K_compare.values *\
+                                      (pres_sensor_10min_pa_compare.values / p0) ** 0.286
+    else:
+        real_sensor_10min_K_compare_arr = potential_to_real(th_sensor_10min_K_compare, pres_sensor_10min_pa_compare,
                                                         epw_staPre_Pa_all)
     real_sensor_10min_K_compare = pd.DataFrame(real_sensor_10min_K_compare_arr,
                                                   index=th_sensor_10min_K_compare.index,
