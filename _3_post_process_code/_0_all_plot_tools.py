@@ -347,7 +347,8 @@ def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue
     # real temperature  = th_sensor_10min_c_compare * (pres_sensor_10min_pa_compare/p0)^0.286
     # both pres_sensor_10min_pa_compare and th_sensor_10min_c_compare have 6 columns
     # get real_sensor_10min_c_compare (element wise calculation)
-    if not epw_staPre_Pa_all:
+    # epw_staPre_Pa_all can be None or a Series, when it is None, we use p0 based real temperature
+    if epw_staPre_Pa_all is None:
         real_sensor_10min_K_compare_arr = th_sensor_10min_K_compare.values *\
                                       (pres_sensor_10min_pa_compare.values / p0) ** 0.286
     else:
