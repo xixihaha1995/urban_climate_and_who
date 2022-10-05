@@ -8,13 +8,13 @@ from _3_post_process_code import _0_all_plot_tools as plot_tools
 def run_vcwg():
     epwFileName = 'Basel.epw'
     TopForcingFileName = None
-    # VCWGParamFileName = 'initialize_Basel_BSPA_MOST.uwg'
-    VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
-    # ViewFactorFileName = '_BSPA_ViewFactor_Basel_MOST.txt'
-    ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
+    VCWGParamFileName = '_case6_initialize_Basel_BSPA_MOST.uwg'
+    # VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
+    ViewFactorFileName = '_case6_BSPA_ViewFactor_Basel_MOST.txt'
+    # ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
     # Case name to append output file names with
-    # case = '_BSPA_Refinement_M2_Basel_MOST'
-    case = '_BSPR_Only_VCWG_Basel_MOST'
+    case = '_BSPA_Refinement_M3ing_Basel_MOST'
+    # case = '_BSPR_Only_VCWG_Basel_MOST'
     # '''
     # epwFileName = 'TopForcing_year.epw'
     # TopForcingFileName = None
@@ -32,7 +32,7 @@ def run_vcwg():
 if __name__ == '__main__':
     # Lichen: init the synchronization lock related settings: locks, shared variables.
     coordination.init_saving_data()
-    saving_data_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\vcwg_saving'
+    saving_data_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\vcwg_saving'
     case_name = 'only_vcwg'
     start_time = '2002-06-10 00:00:00'
     time_interval_sec = 300
