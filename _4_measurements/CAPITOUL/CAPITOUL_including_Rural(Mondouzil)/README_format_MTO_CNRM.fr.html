@@ -1,0 +1,328 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="fr">
+<head>
+
+
+
+  
+  
+  
+  <meta content="text/html; charset=ISO-8859-15" http-equiv="content-type">
+
+
+
+  
+  
+  
+  
+  
+  
+  <title>Description des fichiers du jeu "Reseau_4M'</title>
+  <meta content="Christine Berne" name="author">
+</head>
+
+
+<body>
+
+
+
+<h1 style="text-align: center;">CAPITOUL 2004-2005</h1>
+
+
+
+Descriptif des fichiers du jeu de donn&eacute;es "<span style="font-style: italic;">mesures m&eacute;t&eacute;orologiques
+classiques des stations mises en place par
+l'&eacute;quipe
+GMEI/4M du CNRM</span>", constitu&eacute; pour la Base de
+Donn&eacute;es CAPITOUL.<br>
+
+
+
+<br>
+
+
+
+<h2>1- Description g&eacute;n&eacute;rale des fichiers :</h2>
+
+
+
+Les fichiers sont des fichiers texte, avec une ligne par
+instant et une colonne par param&egrave;tre.<br>
+
+
+
+Il y a un fichier par mois et par
+site de mesure, pour toute la p&eacute;riode de la campagne (de
+janvier 2004 &agrave; f&eacute;vrier 2005). Il y a donc 14
+fichiers par site, sauf pour Saint-Sardos, o&ugrave; les
+mesures ont commenc&eacute; le 6 avril 2004. <br>
+
+
+
+<br>
+
+
+
+Les points de mesures sont les suivants ( +
+abr&eacute;viation du nom du site) :<br>
+<br>
+<ul>
+  <li> Auzeville :&nbsp;Az (lon : 1.5049 &nbsp; lat : 43.5291)</li>
+  <li>Launac :&nbsp;La&nbsp;(lon : 1.?????? &nbsp; lat : 43.???????)</li>
+  <li>Mondouzil : Mo (lon : 1.5699 &nbsp; lat : 43.6286)</li>
+  <li>Toulouse-M&eacute;t&eacute;o
+: Tm&nbsp;(lon : 1.3740 &nbsp; lat : 43.5747)</li>
+  <li>Toulouse-GDF : Tg&nbsp;(lon : 1.?????? &nbsp; lat : 43.??????)</li>
+  <li>Le-Fauga :&nbsp;fa&nbsp;(lon : 1.2922 &nbsp; lat : 43.3853)</li>
+  <li>Saint-Sardos :&nbsp;Cs&nbsp;(lon : 1.?????? &nbsp; lat : 43.??????)</li>
+</ul>
+<br>
+
+
+
+
+
+
+Les fichiers se nomment : <code>SS_BDD_mm-aaaa.asc</code>
+, o&ugrave; <br>
+
+
+
+<ul>
+
+
+
+  <li><code>SS</code>
+est l'abr&eacute;viation du nom de chaque site de mesures (ex: Az
+pour Auzeville)</li>
+
+
+
+  <li><code>mm</code>
+est le num&eacute;ro du mois<br>
+
+
+
+  </li>
+
+
+
+  <li><code>aaaa
+est l'ann&eacute;e (2004 ou 2005).</code></li>
+
+
+
+</ul>
+<h2>2- Contenu des fichiers :</h2>
+
+
+
+Les fichiers commencent par un ent&ecirc;te de 15
+lignes
+descriptives, indiquant, entre-autres : <br>
+
+
+
+<ul>
+
+
+
+  <li>le nom du
+param&egrave;tre,</li>
+
+
+
+  <li>l'unit&eacute; du
+param&egrave;tre,</li>
+
+
+
+  <li>la repr&eacute;sentation
+des valeurs manquantes,</li>
+
+
+
+  <li>la
+r&eacute;f&eacute;rence du capteur :</li>
+  <ul>
+    <li>si le capteur est inexistant :
+"No_sensor"</li>
+    <li>si le param&egrave;tre r&eacute;sulte d'un
+calcul &agrave; partir de 2 param&egrave;tres
+mesur&eacute;s : les r&eacute;f&eacute;rences des 2
+capteurs sont indiqu&eacute;es : sensor1 AND sensor2</li>
+  </ul>
+
+
+
+</ul>
+
+
+
+<samp></samp>Toutes les stations n'avaient pas exactement la m&ecirc;me
+configuration, mais le format des fichiers fournis &agrave; la base de donn&eacute;es est toujours le
+m&ecirc;me. En particulier le nombre de colonnes (14 colonnes) et leur contenu
+ne varient
+pas.<br>
+
+
+
+En cas d'absence de mesure d'un
+param&egrave;tre (&laquo;<var>No_sensor</var>&raquo;)
+: les champs
+contiennent la
+valeur "<samp>+9999</samp>".<br>
+
+
+
+En cas de mesure non valid&eacute;e
+ou absente momentan&eacute;ment (panne d'un capteur par
+ex.) : les champs contiennent g&eacute;n&eacute;ralement la
+valeur
+-32000 (voir pr&eacute;cis&eacute;ment dans l'ent&ecirc;te
+du
+fichier la liste exhaustive par param&egrave;tre)<br>
+
+
+<br>
+14 colonnes s&eacute;par&eacute;es par un espace :<br>
+<br>
+&nbsp;&nbsp;&nbsp; 1. Date au format JJ/MM/AAAA<br>
+&nbsp;&nbsp;&nbsp; 2. Heure au format hhmnss.sss<br>
+&nbsp;&nbsp;&nbsp; 3. Temp&eacute;rature de
+l'air mesur&eacute;e &agrave; 2
+m&egrave;tres : deg C<br>
+&nbsp;&nbsp;&nbsp; 4. Pression de l'air : hPa<br>
+&nbsp;&nbsp;&nbsp; 5. Humidit&eacute; relative
+de l'air mesur&eacute;e &agrave; 2
+m&egrave;tres : %<br>
+&nbsp;&nbsp;&nbsp; 6. Intensit&eacute; de
+pr&eacute;cipitation : mm/h<br>
+&nbsp;&nbsp;&nbsp; 7.  Direction du Vent
+mesur&eacute; &agrave; 10m : degr&eacute;s<br>
+&nbsp;&nbsp;&nbsp; 8. Force du Vent mesur&eacute; &agrave; 10m : m/s<br>
+&nbsp;&nbsp;&nbsp; 9. Rayonnement visible
+descendant : watts/m2<br>
+&nbsp;&nbsp;&nbsp; 10.&nbsp;Rayonnement visible
+montant : watts/m2<br>
+&nbsp;&nbsp;&nbsp; 11. Rayonnement infra-rouge
+descendant : watts/m2<br>
+&nbsp;&nbsp;&nbsp; 12. &nbsp;Rayonnement infra-rouge montant : watts/m2<br>
+&nbsp;&nbsp;&nbsp; 13. Temp&eacute;rature de
+l'air mesur&eacute;e &agrave; 6
+m&egrave;tres : deg C<br>
+&nbsp;&nbsp;&nbsp; 14. Humidit&eacute; relative de
+l'air mesur&eacute;e &agrave; 6
+m&egrave;tres : %
+
+
+<ul>
+
+
+
+</ul>
+
+
+
+
+
+
+<h2>3-
+Fr&eacute;quence des donn&eacute;es fournies :</h2>
+
+
+
+Les donn&eacute;es sont fournies
+&agrave; la fr&eacute;quence minute, sauf dans le cas du Fauga
+car les
+mesures n'y sont acquise qu'&agrave; la
+fr&eacute;quence 30 minutes.<br>
+
+
+
+<br>
+
+
+
+En d&eacute;tail :<br>
+
+
+
+<ul>
+
+
+
+  <li>Auzeville :
+donn&eacute;es 1 minute (mesures 10 sec,
+moyenn&eacute;es par station auto --&gt; minute)</li>
+
+
+
+  <li>Launac : donn&eacute;es
+1 minute (mesures 10 sec,
+moyenn&eacute;es par station auto --&gt; minute)</li>
+
+
+
+  <li>Mondouzil :
+donn&eacute;es 1 minute (mesures 10 sec,
+moyenn&eacute;es par station auto --&gt; minute)</li>
+
+
+
+  <li>Toulouse-M&eacute;t&eacute;o
+: donn&eacute;es 1 minute
+(mesures 10 sec, moyenn&eacute;es par station auto --&gt;
+minute)</li>
+
+
+
+  <li>Toulouse-GDF :
+donn&eacute;es 1 minute (mesures 10 sec,
+moyenn&eacute;es par station auto --&gt; minute)</li>
+
+
+
+  <li>Le-Fauga :
+donn&eacute;es 30 minutes (mesures minute,
+moyenn&eacute;es par station auto --&gt; 30 minutes.</li>
+
+
+
+  <li>Saint-Sardos :
+    
+    
+    
+    <ul>
+
+
+
+      <li> -du 6 avril 2004 au 6
+janvier 2005 : donn&eacute;es
+1 minute moyenn&eacute;es &agrave; partir des mesures
+10 sec. (fournies par la station auto)</li>
+
+
+
+      <li>a/c du 7 janvier 2005
+: donn&eacute;es 1 minute (mesures 10 sec,
+moyenn&eacute;es par station auto --&gt; minute) </li>
+
+
+
+    
+    
+    
+    </ul>
+
+
+
+  </li>
+
+
+
+</ul>
+
+
+</body>
+</html>

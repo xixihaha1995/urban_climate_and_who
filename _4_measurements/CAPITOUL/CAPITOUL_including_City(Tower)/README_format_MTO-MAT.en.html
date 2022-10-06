@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>"Meteo-MAT" dataset file description</title>
+  <meta name="Author" content="Paul bergue">
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1671.6">
+  <style type="text/css">
+    p.p2 {margin: 0.0px 0.0px 12.0px 0.0px; text-align: center; line-height: 14.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000; min-height: 12.0px}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Courier; color: #000000; -webkit-text-stroke: #000000}
+    li.li5 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
+    span.s1 {font-kerning: none}
+    span.s2 {font: 12.0px Times; font-kerning: none}
+    span.s3 {font: 12.0px Courier; font-kerning: none}
+    span.s4 {font: 12.0px Courier; -webkit-text-stroke: 0px #000000}
+    span.s5 {-webkit-text-stroke: 0px #000000}
+    span.s6 {font: 10.0px Times; font-kerning: none}
+    ol.ol1 {list-style-type: decimal}
+    ul.ul1 {list-style-type: disc}
+  </style>
+</head>
+<body>
+<h1 style="margin: 0.0px 0.0px 16.1px 0.0px; text-align: center; line-height: 28.0px; font: 24.0px Times; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>CAPITOUL 2004-2005</b></span></h1>
+<p class="p2"><span class="s1">1 minute averaged meteorological data from central site : Monoprix tower<br>
+</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p3"><span class="s1"></span><br></p>
+<h2 style="margin: 0.0px 0.0px 14.9px 0.0px; line-height: 22.0px; font: 18.0px Times; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>Site :<span class="Apple-converted-space"> </span></b></span></h2>
+<p class="p5"><span class="s1">Toulouse-Alsace - acronym = Ta</span></p>
+<h2 style="margin: 0.0px 0.0px 14.9px 0.0px; line-height: 22.0px; font: 18.0px Times; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>Files :</b></span></h2>
+<p class="p5"><span class="s1">Naming conventions:<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s1">TaAAAAMM_MAT_%60.asc</span><span class="s2"> for the data file</span></p>
+<p class="p5"><span class="s3">TaAAAAMM_MAT_%60.txt</span><span class="s1"> for the description file</span></p>
+<p class="p5"><span class="s1">where :</span></p>
+<ul class="ul1">
+  <li class="li5"><span class="s4"></span><span class="s3">AAAA</span><span class="s1"> = year</span></li>
+  <li class="li5"><span class="s4"></span><span class="s3">MM</span><span class="s1"> = month</span></li>
+  <li class="li5"><span class="s4"></span><span class="s3">%60</span><span class="s1"> for 60 seconds</span></li>
+</ul>
+<p class="p6"><span class="s2">Example : </span><span class="s1">Ta200407_MAT_%60.asc</span><span class="s2"> and </span><span class="s1">Ta200407_MAT_%60.txt</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<h2 style="margin: 0.0px 0.0px 14.9px 0.0px; line-height: 22.0px; font: 18.0px Times; color: #000000; -webkit-text-stroke: #000000"><span class="s1"><b>Data file contents :</b></span></h2>
+<p class="p5"><span class="s1">month period</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p5"><span class="s1">sampling rate : minute</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p5"><span class="s1">17 columns, separator: tabulation</span></p>
+<ol class="ol1">
+  <li class="li5"><span class="s5"></span><span class="s1">date, format JJ/MM/AAAA</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">time, format HHMMSS.SSS</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">air pressure: <i>hPa</i>; sensor: Vaisala PTB200.</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">air temperature: <i>Celsius</i>; sensor MP233 VAISALA.</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">relative humidity: <i>%</i>; sensor HMP233 VAISALA.</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">Incoming short wave radiation: <i>watts/m</i></span><span class="s6"><i><sup>2</sup></i></span><span class="s1">; CM3 sensor of Kipp &amp; Zonen CNR1.<br>
+</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">Outgoing short wave radiation: <i>watts/m</i></span><span class="s6"><i><sup>2</sup></i></span><span class="s1">; CM3 sensor of Kipp &amp; Zonen CNR1.<br>
+</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">Incoming long wave-Red radiation: <i>watts/m</i></span><span class="s6"><i><sup>2</sup></i></span><span class="s1">; CG1 sensor of Kipp &amp; Zonen CNR1.<br>
+</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">Outgoing long wave radiation: <i>watts/m</i></span><span class="s6"><i><sup>2</sup></i></span><span class="s1">; CG1 sensor of Kipp &amp; Zonen CNR1.</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">rain rate: <i>mm/h</i>; sensor: Optical Rain Gauge</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">rate rate: <i>mm/h</i>; sensor: tipping bucket rain gauge</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">wind direction: <i>degree</i>; sensor: GILL sonic anemoter, top of tower</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">wind speed: <i>m/s</i>; sensor: GILL sonic anemoter, top of tower</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">wind direction: <i>degree</i>; sensor: GILL sonic anemoter, intermediate level</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">wind speed: <i>m/s</i>; sensor: GILL sonic anemoter, intermediate level</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">CO</span><span class="s6"><sub>2</sub></span><span class="s1"> concentration: <i>g/m</i></span><span class="s6"><i><sup>3</sup></i></span><span class="s1">; sensor: LICOR 7500</span></li>
+  <li class="li5"><span class="s5"></span><span class="s1">Tower position<span class="Apple-converted-space"> </span></span></li>
+  <ol class="ol1">
+    <li class="li5"><span class="s5"></span><span class="s1">= full extension<span class="Apple-converted-space">                </span>(height above ground: 48.05 m)</span></li>
+    <li class="li5"><span class="s5"></span><span class="s1">= intermediate extension<span class="Apple-converted-space">  </span>(height above ground: 38.98 m)</span></li>
+    <li class="li5"><span class="s5">= </span><span class="s1">intermediate extension<span class="Apple-converted-space">  </span>(height above ground: 38.23 m)</span></li>
+    <li class="li5"><span class="s5"></span><span class="s1">= down <span class="Apple-converted-space">                            </span>(height above ground: 26.93 m)</span></li>
+  </ol>
+</ol>
+<p class="p5"><span class="s1">Code for missing data : +9999</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p5"><span class="s1">Frequency : The original data are sampled at 0.1 Hz for pressure, temperature,</span></p>
+<p class="p5"><span class="s1">              humidity, radiation, rain rate; at 50 Hz for the GILL sonic</span></p>
+<p class="p5"><span class="s1">              anemometers and at 20 Hz for the LICOR 7500. Then data are</span></p>
+<p class="p5"><span class="s1">              averaged over one minute period.<span class="Apple-converted-space"> </span></span></p>
+</body>
+</html>

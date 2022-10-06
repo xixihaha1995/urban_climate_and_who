@@ -1,0 +1,678 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+  
+  
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+
+
+  
+  
+  
+  <title>Description des donn&eacute;es FLUX (CNRM)</title>
+</head>
+
+
+<body>
+
+
+
+<div style="text-align: center;"><big style="font-weight: bold;"><big>CAPITOUL
+2004-2005</big></big><br>
+
+
+
+</div>
+
+
+
+<big><br>
+
+
+
+<br>
+
+
+
+Description des fichiers contenant les calculs de flux verticaux
+turbulents.<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<span style="font-weight: bold;">1-</span> <span style="text-decoration: underline; font-weight: bold;">Plate-formes de
+mesure</span><br style="font-weight: bold;">
+
+
+
+<br>
+
+
+
+</big><big><small></small></big>
+<div style="margin-left: 40px;"><big><small>Ta : site centre urbain
+(croisement rue Alsace et de la pomme).<br>
+
+
+
+Cs : Portique &agrave; 2 m
+(Site de Saint-sardos).<br>
+
+
+
+fa&nbsp; : Portique de mesures sur 2 niveaux (Site du Fauga)<br>
+
+
+
+</small></big></div>
+
+
+
+<big><br>
+
+
+
+<span style="font-weight: bold;">2-</span> <span style="text-decoration: underline; font-weight: bold;">Fichiers</span><br>
+
+
+
+<br>
+
+
+
+</big>
+<div style="margin-left: 40px;"><big><small>Conventions de
+nommage :</small></big><br>
+
+
+
+<br>
+
+
+
+</div>
+
+
+
+<div style="margin-left: 80px;"><big><small><span style="font-weight: bold;">Ab</span>_BDD_FLUX_<span style="font-weight: bold;">MM-AAAA.asc<br>
+
+
+
+<br>
+
+
+
+</span></small></big></div>
+
+
+
+<div style="margin-left: 40px;"><big><small>Les
+noms de fichiers sont &eacute;tablis de la mani&egrave;re
+suivante :<br>
+
+
+
+<br>
+
+
+
+</small></big><big><small><span style="font-weight: bold;">Ab</span> : Abbr&eacute;viation du nom de la plate-forme ().</small></big><br>
+
+
+
+<big><small><span style="font-weight: bold;">MM : </span>Mois<br>
+
+
+<span style="font-weight: bold;">
+AAAA</span> : Ann&eacute;e<br>
+
+
+</small></big><big><small><br>
+
+
+
+</small></big>Il y a 14&nbsp;fichiers, de janvier&nbsp;2004&nbsp;&agrave; f&eacute;vrier 2005 (fin de la campagne).<br>
+
+
+
+<br>
+
+
+
+</div>
+
+
+
+<big><span style="font-weight: bold;">3-</span> <span style="text-decoration: underline; font-weight: bold;">Contenu des
+fichiers
+fournis &agrave; la base de
+donn&eacute;es CAPITOUL</span><br>
+
+
+
+</big><span style="text-decoration: underline;"></span>
+<div style="margin-left: 40px;"><br>
+
+
+
+Les fichiers commencent par un ent&ecirc;te de 15
+lignes
+descriptives, indiquant, entre-autres : <br>
+
+
+
+<ul>
+
+
+  <li>le nom du
+param&egrave;tre,</li>
+
+
+  <li>l'unit&eacute; du
+param&egrave;tre,</li>
+
+
+  <li>la repr&eacute;sentation
+des valeurs manquantes,</li>
+
+
+  <li>la
+r&eacute;f&eacute;rence du capteur :</li>
+
+
+  
+  
+  <ul>
+
+
+    <li>si le capteur est inexistant :
+"No_sensor"</li>
+
+
+    <li>si le param&egrave;tre r&eacute;sulte d'un
+calcul &agrave; partir de 2 param&egrave;tres
+mesur&eacute;s : les r&eacute;f&eacute;rences des 2
+capteurs sont indiqu&eacute;es : sensor1 AND sensor2</li>
+
+
+  
+  
+  </ul>
+
+
+</ul>
+
+
+
+<samp></samp>Toutes les stations n'avaient pas exactement la m&ecirc;me
+configuration, mais le format des fichiers fournis &agrave; la base de
+donn&eacute;es est toujours le
+m&ecirc;me.&nbsp;<br>
+
+
+
+En cas d'absence de mesure d'un
+param&egrave;tre (&laquo;<var>No_sensor</var>&raquo;)
+: les champs
+contiennent la
+valeur "<samp>+9999</samp>".<br>
+
+
+
+En cas de mesure non valid&eacute;e
+ou absente momentan&eacute;ment (panne d'un capteur par
+ex.) : les champs contiennent g&eacute;n&eacute;ralement la
+valeur
+"-32000" ou "+9999" (voir pr&eacute;cis&eacute;ment dans l'ent&ecirc;te
+du
+fichier la liste exhaustive par param&egrave;tre)<br>
+
+
+<br>
+
+
+La fin de l'ent&ecirc;te descriptive de l'acquisition est
+d&eacute;termin&eacute;e par la ligne <span style="font-weight: bold; font-style: italic;">#END
+OF HEADER#</span><br>
+
+
+
+Les 4 lignes de description des donn&eacute;es sont
+s&eacute;par&eacute;es de celles-ci par la ligne <span style="font-weight: bold; font-style: italic;">#END
+OF PARAMETER LIST#</span><br>
+
+
+
+<br>
+
+
+
+Voici un exemple d'ent&ecirc;te de fichier du Fauga&nbsp; : <br>
+
+
+
+<br>
+
+
+
+<small></small>Fichier CNRM-CAMPBELL Fichier FLUX<br>
+
+FILE START TIME = 000003.040<br>
+
+FILE STOP TIME = 233003.320<br>
+
+DATE_ACQUISITION = 28/02/2005;<br>
+
+PLATFORM = le-fauga<br>
+
+LATITUDE = 43.3853<br>
+
+LONGITUDE = 1.2922<br>
+
+ACQ_ID = fa050059<br>
+
+TYPE = ASCII<br>
+
+DATE_creation_fichier = 14-12-2005<br>
+
+#END OF HEADER#<br>
+
+'date' 'rft_time_campbel5_%1800' ' ctl_hbas_c5_cal_%1800' '
+veg_h_c5_cal_%1800' ' flx_rn_c5_csm_%1800' 'flx_phi0_c5_csm_%1800'
+flx_hs_aero_%1800 flx_le_aero_%1800 flx_ustar_aero_%1800 flx_co2_%1800<br>
+
+'JJ/MM/AAAA' 'HHMMSS.SSS UTC' '"unknown"' '"unknown"' 'W/m2' 'W/m2' 'W/m2' '' 'm' ''<br>
+
+'none' 'none' '+9999' '+9999' '+9999' '+9999' '+9999' '' '+9999' ''<br>
+
+'Acqui_system' 'Acqui_system' 'No_sensor' 'No_sensor'
+'pyrano_cm3_schenk_8331' 'plaque_flux_MN_3' 'No_sensor' 'No_sensor'
+'No_sensor' 'No_sensor'<br>
+
+#END OF PARAMETER LIST#<br>
+
+<br>
+
+
+
+<samp></samp><br>
+
+
+
+Les fichiers&nbsp;contiennent les donn&eacute;es
+organis&eacute;es en colonnes avec une colonne par param&egrave;tre.<br>
+
+
+
+<br>
+
+
+
+Voici un extrait de la suite du fichier&nbsp;:<br>
+
+<br>
+
+CAPITOUL Periode 02-2005 <br>
+
+01/02/2005&nbsp;&nbsp;&nbsp; 000054.760&nbsp;&nbsp;&nbsp;
+1.30&nbsp;&nbsp;&nbsp; 0.90&nbsp;&nbsp;&nbsp; -8.40&nbsp;&nbsp;&nbsp;
+-3.00&nbsp;&nbsp;&nbsp; 0.00&nbsp;&nbsp;&nbsp; +9999&nbsp;&nbsp;&nbsp;
+0.00&nbsp;&nbsp;&nbsp; +9999<br>
+
+01/02/2005&nbsp;&nbsp;&nbsp; 003054.760&nbsp;&nbsp;&nbsp;
+1.30&nbsp;&nbsp;&nbsp; 0.90&nbsp;&nbsp;&nbsp; -7.82&nbsp;&nbsp;&nbsp;
+-2.94&nbsp;&nbsp;&nbsp; 0.00&nbsp;&nbsp;&nbsp; +9999&nbsp;&nbsp;&nbsp;
+0.00&nbsp;&nbsp;&nbsp; +9999<br>
+
+01/02/2005&nbsp;&nbsp;&nbsp; 010054.760&nbsp;&nbsp;&nbsp;
+1.30&nbsp;&nbsp;&nbsp; 0.90&nbsp;&nbsp;&nbsp; -7.93&nbsp;&nbsp;&nbsp;
+-2.87&nbsp;&nbsp;&nbsp; 0.00&nbsp;&nbsp;&nbsp; +9999&nbsp;&nbsp;&nbsp;
+0.00&nbsp;&nbsp;&nbsp; +9999<br>
+
+01/02/2005&nbsp;&nbsp;&nbsp; 013054.760&nbsp;&nbsp;&nbsp;
+1.30&nbsp;&nbsp;&nbsp; 0.90&nbsp;&nbsp;&nbsp; -7.36&nbsp;&nbsp;&nbsp;
+-2.74&nbsp;&nbsp;&nbsp; 0.00&nbsp;&nbsp;&nbsp; +9999&nbsp;&nbsp;&nbsp;
+0.01&nbsp;&nbsp;&nbsp; +9999<br>
+
+01/02/2005&nbsp;&nbsp;&nbsp; 020054.720&nbsp;&nbsp;&nbsp;
+1.30&nbsp;&nbsp;&nbsp; 0.90&nbsp;&nbsp;&nbsp; -6.05&nbsp;&nbsp;&nbsp;
+-2.68&nbsp;&nbsp;&nbsp; -2.00&nbsp;&nbsp;&nbsp; +9999&nbsp;&nbsp;&nbsp;
+0.05&nbsp;&nbsp;&nbsp; +9999<br>
+
+01/02/2005&nbsp;&nbsp;&nbsp; 023054.760&nbsp;&nbsp;&nbsp;
+1.30&nbsp;&nbsp;&nbsp; 0.90&nbsp;&nbsp;&nbsp; -5.99&nbsp;&nbsp;&nbsp;
+-2.35&nbsp;&nbsp;&nbsp; 0.00&nbsp;&nbsp;&nbsp; +9999&nbsp;&nbsp;&nbsp;
+0.12&nbsp;&nbsp;&nbsp; +9999<br>
+
+01/02/2005&nbsp;&nbsp;&nbsp; 030056.280&nbsp;&nbsp;&nbsp;
+1.30&nbsp;&nbsp;&nbsp; 0.90&nbsp;&nbsp;&nbsp; -6.46&nbsp;&nbsp;&nbsp;
+-2.09&nbsp;&nbsp;&nbsp; 0.00&nbsp;&nbsp;&nbsp; +9999&nbsp;&nbsp;&nbsp;
+0.09&nbsp;&nbsp;&nbsp; +9999<br>
+
+<br>
+
+
+<br>
+
+
+
+<big><span style="font-weight: bold;">4-</span><span style="font-weight: bold; text-decoration: underline;">Descriptif du
+contenu des colonnes des fichiers</span></big><br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<table style="text-align: left; width: 889px;" border="1" cellpadding="2" cellspacing="2">
+
+
+
+  <tbody>
+
+
+
+    <tr>
+
+
+
+      <td style="width: 156px;">Num&eacute;ro du champ</td>
+
+
+
+      
+      <td style="width: 225px;">Descriptif</td>
+
+
+
+      <td style="width: 160px;">Format/Unit&eacute;s</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>1</td>
+
+
+
+      
+      <td style="width: 225px;">date</td>
+
+
+
+      <td style="width: 160px;">&nbsp;JJ/MM/AAAA</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="width: 156px;">2</td>
+
+
+
+      
+      <td style="width: 225px;">temps (p&eacute;riode=30 minutes)</td>
+
+
+
+      <td style="width: 160px;">&nbsp;HHMMSS.SSS</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="width: 156px;">3</td>
+
+
+
+      
+      <td style="width: 225px;">hauteur du niveau de mesures<br>
+
+
+
+      </td>
+
+
+
+      <td style="width: 160px;">&nbsp;m</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="width: 156px;">4</td>
+
+
+
+      
+      <td style="width: 225px;">hauteur de la v&eacute;g&eacute;tation <br>
+
+
+
+      </td>
+
+
+
+      <td style="width: 160px;">&nbsp;m</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="width: 156px;">5</td>
+
+
+
+      
+      <td style="width: 225px;">rayonnement net<br>
+
+
+
+      </td>
+
+
+
+      <td style="width: 160px;">&nbsp;Watts/m2</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="width: 156px;">6</td>
+
+
+
+      
+      <td style="width: 225px;">flux de chaleur dans le sol &nbsp;(G)<br>
+
+
+
+      </td>
+
+
+
+      <td style="width: 160px;">&nbsp;Watts/m2</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="width: 156px;">7</td>
+
+
+
+      
+      <td style="width: 225px;">flux de chaleur sensible (HS)</td>
+
+
+
+      <td style="width: 160px;">&nbsp;Watts/m2</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="width: 156px;">8</td>
+
+
+
+      
+      <td style="width: 225px;">flux de chaleur latente (LE)<br>
+
+
+
+      </td>
+
+
+
+      <td style="width: 160px;">&nbsp;Watts/m2</td>
+
+
+
+    </tr>
+
+
+
+    
+    <tr>
+
+
+      <td>9</td>
+
+
+      <td>vitesse de friction (ustar&nbsp;u*)</td>
+
+
+      <td>&nbsp;m/s</td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>10</td>
+
+
+      <td>flux de CO2</td>
+
+
+      <td>&nbsp; micromole/m2/s</td>
+
+
+    </tr>
+
+
+
+  
+  
+  
+  </tbody>
+</table>
+
+
+
+<br>
+
+
+
+<br>
+
+
+Lorsque un param&egrave;tre n'est pas mesur&eacute; ou calcul&eacute; :
+la colonne contient des valeurs -9999. C'est le cas du flux de chaleur
+latente sur le site du Fauga, car, par la m&eacute;thode
+a&eacute;rodynamique, le flux de chaleur latente n'est pas
+calcul&eacute;, ainsi que le flux de CO2.<br>
+
+
+
+<small><big></big></small><br>
+
+
+
+<br>
+
+
+
+</div>
+
+
+
+<div style="text-align: left;"><big></big><br>
+
+
+
+</div>
+
+
+
+<span style="text-decoration: underline;"></span>
+</body>
+</html>

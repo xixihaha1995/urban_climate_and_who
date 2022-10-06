@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="fr">
+<head>
+
+  
+  <meta content="text/html; charset=ISO-8859-15" http-equiv="content-type">
+
+  
+  
+  <title>Description des fichiers du jeu "Reseau_4M'</title>
+  <meta content="Christine Berne" name="author">
+</head>
+
+
+<body>
+
+<h1 style="text-align: center;">CAPITOUL 2004-2005</h1>
+
+Description of data files "<span style="font-style: italic;">mesures
+m&eacute;t&eacute;orologiques
+classiques des stations mises en place par
+l'&eacute;quipe
+GMEI/4M du CNRM</span>" for the CAPITOUL Data Base.<br>
+
+<br>
+
+<h2>1- General description :</h2>
+
+Files are text files, containing one line/instant and one
+column/parameter.<br>
+
+Each file contains the data of a site during a month between january
+2004 and february 2005 (so 14 files by site), except&nbsp; for the site of&nbsp;Saint-Sardos,
+on which measurements only began on april 6th, 2004 (only 11 files). <br>
+
+<br>
+
+The site of measurements (and acronyms + geographic position) are :&nbsp;<br>
+
+<ul>
+
+  
+  <li> Auzeville : acronym : Az (lon : 1.5049 &nbsp; lat : 43.5291)</li>
+  <li>Launac : acronym : La&nbsp;(lon : 1.?????? &nbsp; lat : 43.???????)</li>
+
+  <li>Mondouzil : acronym : Mo (lon : 1.5699 &nbsp; lat : 43.6286)</li>
+
+  <li>Toulouse-M&eacute;t&eacute;o
+: acronym : Tm&nbsp;(lon : 1.3740 &nbsp; lat : 43.5747)</li>
+
+  <li>Toulouse-GDF : acronym : Tg&nbsp;(lon : 1.?????? &nbsp; lat : 43.??????)</li>
+
+  <li>Le-Fauga : acronym : fa&nbsp;(lon : 1.2922 &nbsp; lat : 43.3853)</li>
+
+  <li>Saint-Sardos : acronym : Cs&nbsp;(lon : 1.?????? &nbsp; lat : 43.??????)</li>
+
+</ul>
+
+File names have the naming convention : <code>SS_BDD_mm-yyyy.asc</code>
+, where<br>
+
+<ul>
+
+  <li><code>SS</code> is the acronym of each measurement site (Az
+--&gt; Auzeville)</li>
+
+  <li><code>mm</code> is the month<br>
+
+  </li>
+
+  <li><code>yyyy is the year(2004 or 2005).</code><br>
+
+  </li>
+
+</ul>
+
+<h2>2- Data file contents :</h2>
+
+Each file begins with a descriptive header : 15 lines :<br>
+
+<ul>
+
+  <li>parameter names,</li>
+
+  <li>parameter units,</li>
+
+  <li>code for missing values,</li>
+
+  <li>references of sensors :&nbsp;</li>
+
+  
+  <ul>
+
+    <li>If there is no sensor, reference is "No_sensor".<br>
+
+    </li>
+
+    <li>If the parameter is resulting of an operation with 2 (or more)
+measurements, the references of all sensors are precised : "sensor1 AND
+sensor2"</li>
+
+  
+  </ul>
+
+</ul>
+
+All files contain the same number of data column, even if a peculiar
+sensor was not mounted (for file format homogeneity reasons) :<br>
+
+&nbsp;&nbsp;&nbsp; - if a parameter isn't measured, the column also
+contains the code "+9999" <br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; and the sensor name is
+"No_sensor" (asq ais in the header description above).<br>
+
+&nbsp;&nbsp;&nbsp; - if sensor is present, but reporting no (or
+erroneous) measurement, le code is generally "-32000" (exact value in
+the header of ascii file)<br>
+
+<br>
+
+14 columns, separator: space<br>
+
+<ol>
+
+  <li>date, format DD/MM/AAAA</li>
+
+  <li>time, format HHMNSS.SSS</li>
+
+  <li>air temperature (position 2 meters high) : <span style="font-style: italic;">Celsius</span></li>
+
+  <li>air pressure: hPa </li>
+
+  <li>relative humidity (position 2 meters high) : <span style="font-style: italic;">%</span></li>
+
+  <li>rain rate: mm/h</li>
+
+  <li>wind direction (position 10 meters high) : degree</li>
+
+  <li>wind speed (position 10 meters high) : m/s </li>
+
+  <li>incoming short wave
+radiation: <span style="font-style: italic;">watts/m<sup>2</sup></span><br>
+
+  </li>
+
+  <li>outgoing short wave
+radiation: <span style="font-style: italic;">watts/m<sup>2</sup></span><br>
+
+  </li>
+
+  <li>incoming long wave-Red
+radiation: <span style="font-style: italic;">watts/m<sup>2</sup></span><br>
+
+  </li>
+
+  <li>outgoing long wave radiation: <span style="font-style: italic;">watts/m<sup>2</sup></span></li>
+
+  <li>air temperature (position 6 meters high) : Celsius<br>
+
+  </li>
+
+  <li>air relative humidity (position 6 meters high) : Celsius<br>
+
+  </li>
+
+</ol>
+
+<h2>3-
+Data frequency :</h2>
+
+The sampling rate is the minute for each measurement site, only
+Le-Fauga has a lower data frequency (30 minutes).<br>
+
+<ul>
+
+  <li>Auzeville : sampling rate 1 minute (measurements 10 sec, averages
+by automatic station --&gt; minute)</li>
+
+  <li>Launac :&nbsp;
+sampling rate 1 minute (measurements 10 sec, averages by automatic
+station --&gt; minute)</li>
+
+  <li>Mondouzil : sampling rate 1 minute (measurements 10 sec, averages
+by automatic station --&gt; minute)</li>
+
+  <li>Toulouse-M&eacute;t&eacute;o
+: sampling rate 1 minute
+(measurements 10 sec, averages by automatic station --&gt; minute)</li>
+
+  <li>Toulouse-GDF :&nbsp; sampling rate 1 minute (measurements 10 sec,
+averages by automatic station --&gt; minute)</li>
+
+  <li>Le-Fauga :&nbsp; sampling rate 30 minutes (measurements minute,
+averages by automatic station --&gt;&nbsp;30 minutes)</li>
+
+  <li>Saint-Sardos : 2 periods :
+    
+    <ul>
+
+      <li> -06 april 2004 --&gt; 6
+january 2005 : (measurement and aquisition every 10 sec, averaged to 1
+by post-processing).</li>
+
+      <li>-after 6th january 2005
+:&nbsp;sampling rate 1 minute (measurements 10 sec, averages by
+automatic station --&gt; minute) </li>
+
+    
+    </ul>
+
+  </li>
+
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+  
+  <title>Description des donn&eacute;es FLUX</title>
+</head>
+
+
+<body>
+
+<div style="text-align: center;"><big style="font-weight: bold;"><big>CAPITOUL
+2004-2005</big></big><br>
+
+</div>
+
+<big><br>
+
+<span style="font-weight: bold;">1-</span> <span style="text-decoration: underline; font-weight: bold;">Measurement's
+Platform</span></big><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;Ta : Toulouse-Alsace (<big><small>Tower on last flat floor of
+5 levels' building)</small></big>
+<div style="margin-left: 40px;"><big><small>
+
+
+
+Cs : Saint-Sardos (the measurements&nbsp; are positionned 2 m high from soil)<br>
+
+
+
+
+fa&nbsp; : Le Fauga (the measurements are on 2 levels)<br>
+
+
+
+
+</small></big></div>
+
+
+
+
+<big><br>
+
+<span style="font-weight: bold;">2-</span> <span style="text-decoration: underline; font-weight: bold;">Files</span><br>
+
+<br>
+
+</big>
+
+<div style="margin-left: 40px;"><big><small>Names of the files:</small></big><br>
+
+<br>
+
+<big><small><span style="font-weight: bold;">Ab</span>_BDD_FLUX_<span style="font-weight: bold;">MM-YYYY.asc<br>
+<br>
+</span></small></big></div>
+
+<div style="margin-left: 40px;"><big><small>Files'names are builded
+like that below :<br>
+
+<br>
+
+</small></big><big><small><span style="font-weight: bold;">Ab</span> : Platform's Acronym name (example : Cs for Saint-Sardos...)</small></big><br>
+
+<big><small><span style="font-weight: bold;">MM-YYYY</span> : Date with :<br>
+MM : Month in 2&nbsp;digits<br>
+YYYY : Year in 4 digits<br>
+
+</small></big><big><small><span style="font-weight: bold;"></span></small></big><big><small><br>
+
+<span style="font-weight: bold;">.asc</span> : means that it is a
+"text" file (ascii format)<br>
+
+<br>
+
+</small></big>For each platform, there are 14&nbsp; files&nbsp;from january 2004
+until february 2005 (end of campaign).<br>
+
+<br>
+
+</div>
+
+<big><span style="font-weight: bold;">3-</span> <span style="text-decoration: underline; font-weight: bold;">What you can
+find inside the files already present on CAPITOUL database :</span><br>
+
+</big><span style="text-decoration: underline;"></span>
+<div style="margin-left: 40px;"><br>
+
+
+Each file begins with a descriptive header : 15 lines :<br>
+
+First we can read measurement's information : starting and ending hour,
+date, platform, (aso..).<br>
+
+End of header is indicated with <span style="font-weight: bold; font-style: italic;">#END
+OF HEADER#<br>
+</span>Next come 2 lines about parameters : name, unit, and non-present
+indicator (non computed, non realist, not here),<br>
+
+<span style="font-weight: bold; font-style: italic;"></span>ending with
+<span style="font-weight: bold; font-style: italic;">#END
+OF PARAMETER LIST#</span><br>
+
+
+<br>
+All files contain the same number of data column, even if a peculiar
+sensor was not mounted (for file format homogeneity reasons) :<br>
+
+
+&nbsp;&nbsp;&nbsp; - if a parameter isn't measured, the column also
+contains the code "+9999" <br>
+
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; and the sensor name is
+"No_sensor" (asq ais in the header description above).<br>
+
+
+&nbsp;&nbsp;&nbsp; - if sensor is present, but reporting no (or
+erroneous) measurement, le code is generally "-32000" (exact value in
+the header of ascii file)<br>
+<br>
+<br>
+<span style="font-weight: bold; font-style: italic;"></span><span style="font-weight: bold; font-style: italic;"></span>Below is an exemple of header file (here for the platform "Fauga") : <br>
+
+<br>
+
+Fichier CNRM-CAMPBELL Fichier FLUX<br>
+
+
+FILE START TIME = 000003.040<br>
+
+
+FILE STOP TIME = 233003.320<br>
+
+
+DATE_ACQUISITION = 28/02/2005;<br>
+
+
+PLATFORM = le-fauga<br>
+
+
+LATITUDE = 43.3853<br>
+
+
+LONGITUDE = 1.2922<br>
+
+
+ACQ_ID = fa050059<br>
+
+
+TYPE = ASCII<br>
+
+
+DATE_creation_fichier = 14-12-2005<br>
+
+
+#END OF HEADER#<br>
+
+
+'date' 'rft_time_campbel5_%1800' ' ctl_hbas_c5_cal_%1800' '
+veg_h_c5_cal_%1800' ' flx_rn_c5_csm_%1800' 'flx_phi0_c5_csm_%1800'
+flx_hs_aero_%1800 flx_le_aero_%1800 flx_ustar_aero_%1800 flx_co2_%1800<br>
+
+
+'JJ/MM/AAAA' 'HHMMSS.SSS UTC' '"unknown"' '"unknown"' 'W/m2' 'W/m2' 'W/m2' '' 'm' ''<br>
+
+
+'none' 'none' '+9999' '+9999' '+9999' '+9999' '+9999' '' '+9999' ''<br>
+
+
+'Acqui_system' 'Acqui_system' 'No_sensor' 'No_sensor'
+'pyrano_cm3_schenk_8331' 'plaque_flux_MN_3' 'No_sensor' 'No_sensor'
+'No_sensor' 'No_sensor'<br>
+
+
+#END OF PARAMETER LIST#<br>
+
+<br>
+<small>
+<br>
+
+</small><samp></samp><big><span style="font-weight: bold;">4-</span><span style="font-weight: bold; text-decoration: underline;">What is the
+content of data files "dat"</span></big><br>
+
+<br>
+
+Data files are organized with columns, one for each parameter.<br>
+
+<br>
+
+Below some lines of "dat" files :<br>
+<br>
+
+
+
+CAPITOUL Periode 02-2005 <br>
+
+
+01/02/2005&nbsp;&nbsp;&nbsp; 000054.760&nbsp;&nbsp;&nbsp;
+1.30&nbsp;&nbsp;&nbsp; 0.90&nbsp;&nbsp;&nbsp; -8.40&nbsp;&nbsp;&nbsp;
+-3.00&nbsp;&nbsp;&nbsp; 0.00&nbsp;&nbsp;&nbsp; +9999&nbsp;&nbsp;&nbsp;
+0.00&nbsp;&nbsp;&nbsp; +9999<br>
+
+
+01/02/2005&nbsp;&nbsp;&nbsp; 003054.760&nbsp;&nbsp;&nbsp;
+1.30&nbsp;&nbsp;&nbsp; 0.90&nbsp;&nbsp;&nbsp; -7.82&nbsp;&nbsp;&nbsp;
+-2.94&nbsp;&nbsp;&nbsp; 0.00&nbsp;&nbsp;&nbsp; +9999&nbsp;&nbsp;&nbsp;
+0.00&nbsp;&nbsp;&nbsp; +9999<br>
+
+
+01/02/2005&nbsp;&nbsp;&nbsp; 010054.760&nbsp;&nbsp;&nbsp;
+1.30&nbsp;&nbsp;&nbsp; 0.90&nbsp;&nbsp;&nbsp; -7.93&nbsp;&nbsp;&nbsp;
+-2.87&nbsp;&nbsp;&nbsp; 0.00&nbsp;&nbsp;&nbsp; +9999&nbsp;&nbsp;&nbsp;
+0.00&nbsp;&nbsp;&nbsp; +9999<br>
+
+
+01/02/2005&nbsp;&nbsp;&nbsp; 013054.760&nbsp;&nbsp;&nbsp;
+1.30&nbsp;&nbsp;&nbsp; 0.90&nbsp;&nbsp;&nbsp; -7.36&nbsp;&nbsp;&nbsp;
+-2.74&nbsp;&nbsp;&nbsp; 0.00&nbsp;&nbsp;&nbsp; +9999&nbsp;&nbsp;&nbsp;
+0.01&nbsp;&nbsp;&nbsp; +9999<br>
+
+
+01/02/2005&nbsp;&nbsp;&nbsp; 020054.720&nbsp;&nbsp;&nbsp;
+1.30&nbsp;&nbsp;&nbsp; 0.90&nbsp;&nbsp;&nbsp; -6.05&nbsp;&nbsp;&nbsp;
+-2.68&nbsp;&nbsp;&nbsp; -2.00&nbsp;&nbsp;&nbsp; +9999&nbsp;&nbsp;&nbsp;
+0.05&nbsp;&nbsp;&nbsp; +9999<br>
+
+
+01/02/2005&nbsp;&nbsp;&nbsp; 023054.760&nbsp;&nbsp;&nbsp;
+1.30&nbsp;&nbsp;&nbsp; 0.90&nbsp;&nbsp;&nbsp; -5.99&nbsp;&nbsp;&nbsp;
+-2.35&nbsp;&nbsp;&nbsp; 0.00&nbsp;&nbsp;&nbsp; +9999&nbsp;&nbsp;&nbsp;
+0.12&nbsp;&nbsp;&nbsp; +9999<br>
+
+
+01/02/2005&nbsp;&nbsp;&nbsp; 030056.280&nbsp;&nbsp;&nbsp;
+1.30&nbsp;&nbsp;&nbsp; 0.90&nbsp;&nbsp;&nbsp; -6.46&nbsp;&nbsp;&nbsp;
+-2.09&nbsp;&nbsp;&nbsp; 0.00&nbsp;&nbsp;&nbsp; +9999&nbsp;&nbsp;&nbsp;
+0.09&nbsp;&nbsp;&nbsp; +9999<br>
+
+<small></small><br>
+
+<big><span style="font-weight: bold; text-decoration: underline;"></span></big>Meaning
+of columns :<br>
+<br>
+<br>
+
+
+
+
+<table style="text-align: left; width: 889px;" border="1" cellpadding="2" cellspacing="2">
+
+
+
+
+  <tbody>
+
+
+
+
+    <tr>
+
+
+
+
+      <td style="width: 156px;">column's number</td>
+
+
+
+
+      
+      <td style="width: 225px;">Parameter's name</td>
+
+
+
+
+      <td style="width: 160px;">Formats/Units</td>
+
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+
+
+
+      <td>1</td>
+
+
+
+
+      
+      <td style="width: 225px;">date</td>
+
+
+
+
+      <td style="width: 160px;">&nbsp;DD/MM/YYYY</td>
+
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+
+
+
+      <td style="width: 156px;">2</td>
+
+
+
+
+      
+      <td style="width: 225px;">time (p&eacute;riod=30 minuts)</td>
+
+
+
+
+      <td style="width: 160px;">&nbsp;HHMMSS.SSS</td>
+
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+
+
+
+      <td style="width: 156px;">3</td>
+
+
+
+
+      
+      <td style="width: 225px;">high of measurement's<br>
+
+
+
+
+      </td>
+
+
+
+
+      <td style="width: 160px;">&nbsp;m</td>
+
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+
+
+
+      <td style="width: 156px;">4</td>
+
+
+
+
+      
+      <td style="width: 225px;">high of vegetation <br>
+
+
+
+
+      </td>
+
+
+
+
+      <td style="width: 160px;">&nbsp;m</td>
+
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+
+
+
+      <td style="width: 156px;">5</td>
+
+
+
+
+      
+      <td style="width: 225px;">net bilan radiation<br>
+
+
+
+
+      </td>
+
+
+
+
+      <td style="width: 160px;">&nbsp;Watts/m2</td>
+
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+
+
+
+      <td style="width: 156px;">6</td>
+
+
+
+
+      
+      <td style="width: 225px;">soil heat flux &nbsp;(G)<br>
+
+
+
+
+      </td>
+
+
+
+
+      <td style="width: 160px;">&nbsp;Watts/m2</td>
+
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+
+
+
+      <td style="width: 156px;">7</td>
+
+
+
+
+      
+      <td style="width: 225px;">sensible heat flux (HS)</td>
+
+
+
+
+      <td style="width: 160px;">&nbsp;Watts/m2</td>
+
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+
+
+
+      <td style="width: 156px;">8</td>
+
+
+
+
+      
+      <td style="width: 225px;">latent heat flux (LE)<br>
+
+
+
+
+      </td>
+
+
+
+
+      <td style="width: 160px;">&nbsp;Watts/m2</td>
+
+
+
+
+    </tr>
+
+
+
+
+    
+    <tr>
+
+
+
+      <td>9</td>
+
+
+
+      <td>friction velocity (ustar&nbsp;u*)</td>
+
+
+
+      <td>&nbsp;m/s</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>10</td>
+
+
+
+      <td>carbon dioxyd flux (CO2)</td>
+
+
+
+      <td>&nbsp; micromoles/m2/s</td>
+
+
+
+    </tr>
+
+
+
+
+  
+  
+  
+  
+  </tbody>
+</table>
+
+
+
+
+<br>
+
+
+
+<br>
+<br>
+
+</div>
+
+<div style="text-align: left;"><big></big><br>
+
+</div>
+
+<span style="text-decoration: underline;"></span>
+</body>
+</html>

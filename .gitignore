@@ -9,11 +9,10 @@ eplusssz.csv
 *.pyc
 *.png
 *.zip
-!_4_measurements/CAPITOUL/CAPITOUL_including_City(Booms)/*.zip
+*.html
+!_4_measurements/*.zip
 !_4_measurements/CAPITOUL/CAPITOUL_including_City(Booms)/*.html
-!_4_measurements/CAPITOUL/CAPITOUL_including_City(Tower)/*.zip
 !_4_measurements/CAPITOUL/CAPITOUL_including_City(Tower)/*.html
-!_4_measurements/CAPITOUL/CAPITOUL_including_Rural(Mondouzil)/*.zip
 !_4_measurements/CAPITOUL/CAPITOUL_including_Rural(Mondouzil)/*.html
 EPTEMP-00000001/
 *.bnd
@@ -26,7 +25,6 @@ EPTEMP-00000001/
 *.rvaudit
 *.sql
 *.svg
-*.html
 *.htm
 *.mdd
 *.rdd
