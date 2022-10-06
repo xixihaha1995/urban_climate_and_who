@@ -122,6 +122,16 @@ def clean_bubble_iop(df, start_time='2018-01-01 00:00:00', end_time='2018-12-31 
         df = time_interval_convertion(df, original_time_interval_min=10, start_time=start_time)
     return df
 
+def remove_dup_BUBBLE_Ue2(urban_all_sites_10min_clean, ue2_heights_dup, ue2_heights):
+    urban_all_sites_10min_clean[str(ue2_heights_dup[0]) + 'm'] = \
+        (urban_all_sites_10min_clean.iloc[:, 0] + urban_all_sites_10min_clean.iloc[:, 2]) / 2
+    urban_all_sites_10min_clean[str(ue2_heights_dup[1]) + 'm'] = \
+        (urban_all_sites_10min_clean.iloc[:, 1] + urban_all_sites_10min_clean.iloc[:, 3]) / 2
+    # drop the first 4 columns
+    urban_all_sites_10min_clean = urban_all_sites_10min_clean.iloc[:, 4:]
+    # rename the columns
+    urban_all_sites_10min_clean.columns = [str(i) + 'm' for i in ue2_heights]
+    return urban_all_sites_10min_clean
 
 def multiple_days_hour_data_to_one_day_hour_data(df):
     '''
@@ -436,14 +446,11 @@ def which_height_match_urban_sensor(df_urban_sensor_measurement, df_prediction_5
     for i in range(0, 15, 1):
         cvrmse_below_heights.append(bias_rmse_r2(df_urban_sensor_measurement,
                                                  df_prediction_50m.iloc[:, :i+1].mean(axis=1), str(i)+'m CVRMSE')[2])
-def MouseCrosshair(ax, x, y, color, linewidth=1):
-    ax.axvline(x, color=color, linewidth=linewidth)
-    ax.axhline(y, color=color, linewidth=linewidth)
 
 def why_bypass_overestimated(debug_processed_save_folder,
-                             urban_selected_10min_c, original_real_selected_10min_c, bypass_real_selected_10min_c_ver1,
+                             urban_selected_10min_c, original_real_selected_10min_c,
                              bypass_real_selected_10min_c_ver1p1,
-                             debug_only_ep, debug_only_vcwg, debug_bypass_ver1,debug_bypass_ver1p1,
+                             debug_only_ep, debug_only_vcwg,debug_bypass_ver1p1,which_ep = '(DOE-REF)',
                              mean_bld_temp = False):
     #There are 5 figures
     #1. The first figure, canyonTemp comparison (urban_selected_10min_c, debug_only_ep_idx_3, original_real_selected_10min_c, bypass_real_selected_10min_c_ver1)
@@ -463,9 +470,8 @@ def why_bypass_overestimated(debug_processed_save_folder,
         # 2.5m prediction
         ax[0].plot(original_real_selected_10min_c , linestyle='--', label='Only VCWG')
         # pretty much 1.5m rural
-        ax[0].plot(debug_only_ep.iloc[:, 4] - 273.15 , label='Only EP(DOE-REF)')
+        ax[0].plot(debug_only_ep.iloc[:, 4] - 273.15 , label=f'Only EP{which_ep}')
         # 2.5m prediction
-        ax[0].plot(bypass_real_selected_10min_c_ver1 , label='Ver1 Prediction')
         # 2.5m prediction
         ax[0].plot(bypass_real_selected_10min_c_ver1p1 , label='Ver1.1 Prediction')
     else:
@@ -474,28 +480,23 @@ def why_bypass_overestimated(debug_processed_save_folder,
         # 14m mean prediction
         ax[0].plot(debug_only_vcwg.iloc[:, 4] - 273.15, linestyle='--', label='Only VCWG')
         # pretty much 1.5m rural
-        ax[0].plot(debug_only_ep.iloc[:, 4] - 273.15, label='Only EP(DOE-REF)')
-        # 14m mean prediction
-        ax[0].plot(debug_bypass_ver1.iloc[:, 6] - 273.15, label='Ver1 Prediction')
+        ax[0].plot(debug_only_ep.iloc[:, 4] - 273.15, label=f'Only EP{which_ep}')
         # 14m mean prediction
         ax[0].plot(debug_bypass_ver1p1.iloc[:, 6] - 273.15, label='Ver1.1 Prediction')
 
     cvrmses = []
     if not mean_bld_temp:
         cvrmses.append(bias_rmse_r2(urban_selected_10min_c, original_real_selected_10min_c, 'Only VCWG'))
-        cvrmses.append(bias_rmse_r2(urban_selected_10min_c, debug_only_ep.iloc[:, 4] - 273.15, 'Only EP(DOE-REF)'))
-        cvrmses.append(bias_rmse_r2(urban_selected_10min_c, bypass_real_selected_10min_c_ver1 , 'Ver1 Prediction'))
+        cvrmses.append(bias_rmse_r2(urban_selected_10min_c, debug_only_ep.iloc[:, 4] - 273.15, f'Only EP{which_ep}'))
         cvrmses.append(bias_rmse_r2(urban_selected_10min_c, bypass_real_selected_10min_c_ver1p1, 'Ver1.1 Prediction'))
     else:
         cvrmses.append(bias_rmse_r2(urban_selected_10min_c, debug_only_vcwg.iloc[:, 4] - 273.15, 'Only VCWG'))
-        cvrmses.append(bias_rmse_r2(urban_selected_10min_c, debug_only_ep.iloc[:, 4] - 273.15, 'Only EP(DOE-REF)'))
-        cvrmses.append(bias_rmse_r2(urban_selected_10min_c, debug_bypass_ver1.iloc[:, 6] - 273.15, 'Ver1 Prediction'))
+        cvrmses.append(bias_rmse_r2(urban_selected_10min_c, debug_only_ep.iloc[:, 4] - 273.15, f'Only EP{which_ep}'))
         cvrmses.append(bias_rmse_r2(urban_selected_10min_c, debug_bypass_ver1p1.iloc[:, 6] - 273.15, 'Ver1.1 Prediction'))
     txt = 'CVRMSE(%)\n'
     txt += f'Only VCWG: {cvrmses[0][2]:.2f}%\n'
-    txt += f'Only EP(DOE-REF): {cvrmses[1][2]:.2f}%\n'
-    txt += f'Ver1 Prediction: {cvrmses[2][2]:.2f}%\n'
-    txt += f'Ver1.1 Prediction: {cvrmses[3][2]:.2f}%'
+    txt += f'Only EP{which_ep}: {cvrmses[1][2]:.2f}%\n'
+    txt += f'Ver1.1 Prediction: {cvrmses[2][2]:.2f}%\n'
     print(txt)
     ax[0].set_ylabel('CanyonTemp (C)')
     # put legend outside the figure
@@ -503,28 +504,24 @@ def why_bypass_overestimated(debug_processed_save_folder,
     # the second figure
     ax[1].plot(debug_only_vcwg.iloc[:, 0] - 273.15, linestyle='--')
     ax[1].plot(debug_only_ep.iloc[:, 0] - 273.15 )
-    ax[1].plot(debug_bypass_ver1.iloc[:, 0] - 273.15 )
     ax[1].plot(debug_bypass_ver1p1.iloc[:, 0] - 273.15)
     ax[1].set_ylabel('sun/South Wall (C)')
     # ax[1].legend()
     # the third figure
     ax[2].plot(debug_only_vcwg.iloc[:, 1] - 273.15, linestyle='--')
     ax[2].plot(debug_only_ep.iloc[:, 1] - 273.15 )
-    ax[2].plot(debug_bypass_ver1.iloc[:, 1] - 273.15 )
     ax[2].plot(debug_bypass_ver1p1.iloc[:, 1] - 273.15)
     ax[2].set_ylabel('shade/North Wall (C)')
     # ax[2].legend()
     # the fourth figure
     ax[3].plot(debug_only_vcwg.iloc[:, 2] - 273.15, linestyle='--')
     ax[3].plot(debug_only_ep.iloc[:, 2] - 273.15 )
-    ax[3].plot(debug_bypass_ver1.iloc[:, 3] - 273.15)
     ax[3].plot(debug_bypass_ver1p1.iloc[:, 3] - 273.15)
     ax[3].set_ylabel('Roof (C)')
     # ax[3].legend()
     # the fifth figure
     ax[4].plot(debug_only_vcwg.iloc[:, 3], linestyle='--')
     ax[4].plot(debug_only_ep.iloc[:, 3]  )
-    ax[4].plot(debug_bypass_ver1.iloc[:, 4] )
     ax[4].plot(debug_bypass_ver1p1.iloc[:, 4])
     ax[4].set_ylabel('sensWaste/sensHVAC (W/floorArea)')
     # ax[4].legend()
@@ -542,32 +539,27 @@ def why_bypass_overestimated(debug_processed_save_folder,
     #write the first sheet
     df = pd.DataFrame({'Urban Measurement': urban_selected_10min_c,
                           'Only VCWG': original_real_selected_10min_c,
-                            'Only EP(DOE-REF)': debug_only_ep.iloc[:, 4] - 273.15,
-                            'Ver1 Prediction': bypass_real_selected_10min_c_ver1,
+                            f'Only EP{which_ep}': debug_only_ep.iloc[:, 4] - 273.15,
                             'Ver1.1 Prediction': bypass_real_selected_10min_c_ver1p1})
     df.to_excel(writer, sheet_name='CanyonTemp')
     #write the second sheet
     df = pd.DataFrame({'Only VCWG (wallSun)': debug_only_vcwg.iloc[:, 0] - 273.15,
-                            'Only EP(DOE-REF) (southFacingWall)': debug_only_ep.iloc[:, 0] - 273.15,
-                            'Bypass Ver1 (southFacingWall)': debug_bypass_ver1.iloc[:, 0] - 273.15,
+                            f'Only EP{which_ep} (southFacingWall)': debug_only_ep.iloc[:, 0] - 273.15,
                             'Bypass Ver1.1 (wallSun)': debug_bypass_ver1p1.iloc[:, 0] - 273.15})
     df.to_excel(writer, sheet_name='wallSun_southFacingWall')
     #write the third sheet
     df = pd.DataFrame({'Only VCWG (wallShade)': debug_only_vcwg.iloc[:, 1] - 273.15,
-                            'Only EP(DOE-REF) (northFacingWall)': debug_only_ep.iloc[:, 1] - 273.15,
-                            'Bypass Ver1 (northFacingWall)': debug_bypass_ver1.iloc[:, 1] - 273.15,
+                            f'Only EP{which_ep} (northFacingWall)': debug_only_ep.iloc[:, 1] - 273.15,
                             'Bypass Ver1.1 (wallShade)': debug_bypass_ver1p1.iloc[:, 1] - 273.15})
     df.to_excel(writer, sheet_name='wallShade_northFacingWall')
     #write the fourth sheet
     df = pd.DataFrame({'Only VCWG (roof)': debug_only_vcwg.iloc[:, 2] - 273.15,
-                            'Only EP(DOE-REF) (roof)': debug_only_ep.iloc[:, 2] - 273.15,
-                            'Bypass Ver1 (roof)': debug_bypass_ver1.iloc[:, 3] - 273.15,
+                            f'Only EP{which_ep} (roof)': debug_only_ep.iloc[:, 2] - 273.15,
                             'Bypass Ver1.1 (roof)': debug_bypass_ver1p1.iloc[:, 3] - 273.15})
     df.to_excel(writer, sheet_name='roof')
     #write the fifth sheet
     df = pd.DataFrame({'Only VCWG (sensWaste)': debug_only_vcwg.iloc[:, 3],
-                            'Only EP(DOE-REF) (sensHVAC)': debug_only_ep.iloc[:, 3],
-                            'Bypass Ver1 (sensHVAC)': debug_bypass_ver1.iloc[:, 4],
+                            f'Only EP{which_ep} (sensHVAC)': debug_only_ep.iloc[:, 3],
                             'Bypass Ver1.1 (sensHVAC)': debug_bypass_ver1p1.iloc[:, 4]})
     df.to_excel(writer, sheet_name='sensWaste_sensHVAC')
     #save the excel file
