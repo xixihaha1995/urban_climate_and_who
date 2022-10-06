@@ -10,6 +10,7 @@ eplusssz.csv
 *.png
 *.zip
 !_4_measurements/*.zip
+!_4_measurements/*.html
 EPTEMP-00000001/
 *.bnd
 *.edd
