@@ -10,7 +10,7 @@ eplusssz.csv
 *.png
 *.zip
 *.html
-!_4_measurements/*.zip
+!_4_measurements/CAPITOUL/*.zip
 !_4_measurements/CAPITOUL/CAPITOUL_including_City(Booms)/*.html
 !_4_measurements/CAPITOUL/CAPITOUL_including_City(Tower)/*.html
 !_4_measurements/CAPITOUL/CAPITOUL_including_Rural(Mondouzil)/*.html
