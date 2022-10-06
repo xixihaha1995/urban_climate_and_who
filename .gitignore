@@ -9,6 +9,9 @@ eplusssz.csv
 *.pyc
 *.png
 *.zip
+!CAPITOUL_including_Rural(Mondouzil).zip
+!CAPITOUL_including_City(Tower).zip
+!CAPITOUL_including_City(Booms).zip
 EPTEMP-00000001/
 *.bnd
 *.edd

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <presentation>
+    <nom>FLUX_CNRM</nom>
+    <definition>Mesures de bilan d'énergie et flux sur les sites instumentés par le CNRM :&#xD;
+  - sommet et milieu du mât Toulouse-Alsace&#xD;
+  - Le Fauga&#xD;
+  - Saint Sardos</definition>
+    <destination>SGBD</destination>
+    <categorie>SURF_FIXE</categorie>
+    <contacts>
+      <personne>
+        <nom>Traullé</nom>
+        <prenom>Olivier</prenom>
+        <organisme>Météo-France/CNRM</organisme>
+        <mail>olivier.traulle@meteo.fr</mail>
+        <mdp>trau345</mdp>
+        <role>pi</role>
+      </personne>
+      <personne>
+        <nom>Berne</nom>
+        <prenom>Christine</prenom>
+        <organisme>Météo-France/CNRM</organisme>
+        <mail>christine.berne@meteo.fr</mail>
+        <mdp>ber194</mdp>
+        <role>tech</role>
+      </personne>
+      <personne>
+        <nom>Piguet</nom>
+        <prenom>Bruno</prenom>
+        <organisme>Météo-France/CNRM</organisme>
+        <mail>bruno.piguet@meteo.fr</mail>
+        <mdp>pig001</mdp>
+        <role>default</role>
+      </personne>
+    </contacts>
+  </presentation>
+  <description>
+    <organisme>Météo-France/CNRM</organisme>
+    <pi>
+      <nom>Traullé</nom>
+      <prenom>Olivier</prenom>
+      <organisme>Météo-France/CNRM</organisme>
+      <mail>olivier.traulle@meteo.fr</mail>
+      <mdp>trau345</mdp>
+      <role>pi</role>
+    </pi>
+    <technicien>
+      <nom>Berne</nom>
+      <prenom>Christine</prenom>
+      <organisme>Météo-France/CNRM</organisme>
+      <mail>christine.berne@meteo.fr</mail>
+      <mdp>ber194</mdp>
+      <role>tech</role>
+    </technicien>
+    <format>Texte/ASCII&#xD;
+Les fichiers commencent par un entête de 15 lignes descriptives, indiquant, entre-autres :&#xD;
+&#xD;
+    * le nom du paramètre,&#xD;
+    * l'unité du paramètre,&#xD;
+    * la représentation des valeurs manquantes,&#xD;
+    * la référence du capteur :&#xD;
+Numéro du champ  	Descriptif  	Format/Unités&#xD;
+1 	date 	 JJ/MM/AAAA&#xD;
+2 	temps (période=30 minutes) 	 HHMMSS.SSS&#xD;
+3 	hauteur du niveau de mesures&#xD;
+	 m&#xD;
+4 	hauteur de la végétation&#xD;
+	 m&#xD;
+5 	rayonnement net&#xD;
+	 Watts/m2&#xD;
+6 	flux de chaleur dans le sol  (G)&#xD;
+	 Watts/m2&#xD;
+7 	flux de chaleur sensible (HS) 	 Watts/m2&#xD;
+8 	flux de chaleur latente (LE)&#xD;
+	 Watts/m2&#xD;
+9 	vitesse de friction (ustar u*) 	 m/s&#xD;
+10 	flux de CO2 	  micromole/m2/s&#xD;
+&#xD;
+&#xD;
+Lorsque un paramètre n'est pas mesuré ou calculé : la colonne contient des valeurs -9999. C'est le cas du flux de chaleur latente sur le site du Fauga, car, par la méthode aérodynamique, le flux de chaleur latente n'est pas calculé, ainsi que le flux de CO2.</format>
+    <repartition>1 fichier par mois</repartition>
+  </description>
+  <contenu_prevu>
+    <liste_plateformes>
+      <plateforme>
+        <nom>le-fauga</nom>
+        <desc>Voir description dans le jeu "MTO_CNRM"</desc>
+        <liste_images>
+          <image />
+        </liste_images>
+        <lat_min>0.0</lat_min>
+        <lon_min>0.0</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>0.0</lat_max>
+        <lon_max>0.0</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Saint Sardos</nom>
+        <desc>Voir description dans le jeu "MTO_CNRM"</desc>
+        <liste_images>
+          <image />
+        </liste_images>
+        <lat_min>0.0</lat_min>
+        <lon_min>0.0</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>0.0</lat_max>
+        <lon_max>0.0</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+    </liste_plateformes>
+    <liste_params>
+      <param>
+        <nom>rayonnement net</nom>
+        <abrev>Ray_net</abrev>
+        <unite>W/m2</unite>
+      </param>
+      <param>
+        <nom>flux de chaleur dans le sol  (G)</nom>
+        <abrev>flx_sol</abrev>
+        <unite>W/m2</unite>
+      </param>
+      <param>
+        <nom>flux de chaleur sensible (HS)</nom>
+        <abrev>flx_Hs</abrev>
+        <unite>W/m2</unite>
+      </param>
+      <param>
+        <nom>flux de chaleur latente (LE)</nom>
+        <abrev>flx_Le</abrev>
+        <unite>W/m2</unite>
+      </param>
+      <param>
+        <nom>vitesse de friction (ustar u*)</nom>
+        <abrev>Turb_ustar</abrev>
+        <unite>m/s</unite>
+      </param>
+      <param>
+        <nom>flux de CO2</nom>
+        <abrev>flx_CO2</abrev>
+        <unite>micromole/m2/s</unite>
+      </param>
+    </liste_params>
+    <liste_capteurs>
+      <capteur>
+        <type />
+        <fabriquant />
+        <modele />
+        <num_serie />
+        <etalonnage />
+        <plateforme>le-fauga</plateforme>
+      </capteur>
+    </liste_capteurs>
+  </contenu_prevu>
+  <integration>
+    <integrateur>
+      <nom />
+      <prenom />
+      <organisme />
+      <mail />
+      <mdp />
+      <role>default</role>
+    </integrateur>
+    <date_d>
+      <date />
+      <heure />
+    </date_d>
+    <date_f>
+      <date />
+      <heure />
+    </date_f>
+    <nb_fichiers>0</nb_fichiers>
+  </integration>
+</metadata>
+
