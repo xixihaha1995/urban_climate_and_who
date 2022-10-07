@@ -36,7 +36,7 @@ if __name__ == '__main__':
     coordination.init_saving_data()
     saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\vcwg_saving'
     case_name = 'only_vcwg'
-    start_time = '2002-07-01 00:00:00'
+    start_time = '2008-07-01 00:00:00'
     time_interval_sec = 300
 
     vcwg_thread = Thread(target=run_vcwg)
