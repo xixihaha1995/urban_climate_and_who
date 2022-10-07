@@ -31,7 +31,7 @@ Tdeep_ctrl,1,         # 1: Using force restore method, 2: Using climate data (fr
 # Urban Configuration
 # =================================================
 nz,27,                 # number of points (nz*dz = 3*bldHeight)
-nz_u,7,               # number of canopy levels in the vertical (nz_u*dz = bldHeight)
+nz_u,8,               # number of canopy levels in the vertical (nz_u*dz = bldHeight)
 dz,1,                  # vertical resolution [m]
 Width_canyon,23,       # distance between buildings at street level in the x and y direction must be equal [m]
 Width_roof,10,         # building dimension [m]
