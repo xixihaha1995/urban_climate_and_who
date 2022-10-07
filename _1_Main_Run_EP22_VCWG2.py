@@ -6,23 +6,25 @@ from _3_post_process_code import _0_all_plot_tools as plot_tools
 
 
 def run_vcwg():
-    epwFileName = 'Basel.epw'
-    TopForcingFileName = None
-    VCWGParamFileName = '_case6_initialize_Basel_BSPA_MOST.uwg'
-    # VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
-    ViewFactorFileName = '_case6_BSPA_ViewFactor_Basel_MOST.txt'
-    # ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
-    # Case name to append output file names with
-    case = '_BSPA_Refinement_M3ing_Basel_MOST'
-    # case = '_BSPR_Only_VCWG_Basel_MOST'
-    # '''
-    # epwFileName = 'TopForcing_year.epw'
+    # epwFileName = 'Basel.epw'
     # TopForcingFileName = None
-    # # TopForcingFileName = 'Vancouver2008_ERA5.csv'
-    # VCWGParamFileName = 'initialize_Vancouver_LCZ1.uwg'
-    # ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
+    # VCWGParamFileName = '_case6_initialize_Basel_BSPA_MOST.uwg'
+    # # VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
+    # ViewFactorFileName = '_case6_BSPA_ViewFactor_Basel_MOST.txt'
+    # # ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
     # # Case name to append output file names with
-    # case = '_bypass_year_Vancouver_LCZ1'
+    # case = '_BSPA_Refinement_M3ing_Basel_MOST'
+    # # case = '_BSPR_Only_VCWG_Basel_MOST'
+
+    # Vancouver
+    # '''
+    epwFileName = None
+    TopForcingFileName = 'Vancouver2008_ERA5_Jul.csv'
+    VCWGParamFileName = '_case7_initialize_Vancouver_LCZ1.uwg'
+    ViewFactorFileName = '_case7_ViewFactor_Vancouver_LCZ1.txt'
+    # Case name to append output file names with
+    case = '_case7_Vancouver_LCZ1'
+    # '''
 
     # Initialize the UWG object and run the simulation
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
@@ -32,9 +34,9 @@ def run_vcwg():
 if __name__ == '__main__':
     # Lichen: init the synchronization lock related settings: locks, shared variables.
     coordination.init_saving_data()
-    saving_data_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\vcwg_saving'
+    saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\vcwg_saving'
     case_name = 'only_vcwg'
-    start_time = '2002-06-10 00:00:00'
+    start_time = '2002-07-01 00:00:00'
     time_interval_sec = 300
 
     vcwg_thread = Thread(target=run_vcwg)

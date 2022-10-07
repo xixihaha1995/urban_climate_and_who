@@ -1392,7 +1392,7 @@ class RadiationFunctions(object):
 
         VF_values = [F_gs_nT,F_gw_nT,F_ww_nT,F_wg_nT,F_ws_nT,F_sg_nT,F_sw_nT,F_gs_T,F_gt_T,F_gw_T,F_ww_T,F_wt_T,F_wg_T,F_ws_T,
                      F_sg_T,F_sw_T,F_st_T,F_tg_T,F_tw_T,F_ts_T,F_tt_T, F_pg, F_ps, F_pt, F_pw]
-        outputFile_VF = open(ViewFactor_file_text, "w")
+        outputFile_VF = open(os.path.join(os.path.dirname(__file__), ViewFactor_file_text), "w")
         outputFile_VF.write("#### \t Vertical City Weather Generator (VCWG)  \t #### \n")
         outputFile_VF.write("# View Factors \n")
         outputFile_VF.write("# F_gs_nT	F_gw_nT	F_ww_nT	F_wg_nT	F_ws_nT	F_sg_nT	F_sw_nT	F_gs_T	F_gt_T	F_gw_T	F_ww_T	F_wt_T	F_wg_T	F_ws_T	F_sg_T	F_sw_T	F_st_T	F_tg_T	F_tw_T	F_ts_T	F_tt_T F_pg, F_ps, F_pt, F_pw \n")

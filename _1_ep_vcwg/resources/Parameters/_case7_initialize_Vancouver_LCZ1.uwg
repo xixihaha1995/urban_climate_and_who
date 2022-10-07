@@ -11,7 +11,7 @@
 # Simulation parameters,
 Month,7,           # starting month 6
 Day,1,             # starting day (1-31) 16
-nDay,31,           # number of days to run simulation 31
+nDay,1,           # number of days to run simulation 31
 dtSim,300,         # simulation time step [s]
 dtWeather,3600,    # weather time step [s]
 nDay_spinup,1,     # Number of days accounted for spin-up
@@ -30,18 +30,18 @@ Tdeep_ctrl,1,         # 1: Using force restore method, 2: Using climate data (fr
 # =================================================
 # Urban Configuration
 # =================================================
-nz,90,                 # number of points (nz*dz = 3*bldHeight)
-nz_u,30,               # number of canopy levels in the vertical (nz_u*dz = bldHeight)
+nz,27,                 # number of points (nz*dz = 3*bldHeight)
+nz_u,7,               # number of canopy levels in the vertical (nz_u*dz = bldHeight)
 dz,1,                  # vertical resolution [m]
-Width_canyon,10,       # distance between buildings at street level in the x and y direction must be equal [m]
-Width_roof,12,         # building dimension [m]
+Width_canyon,23,       # distance between buildings at street level in the x and y direction must be equal [m]
+Width_roof,10,         # building dimension [m]
 theta_canyon,0.0,      # Canyon direction from geographical north, in the counter trigonometric direction (from -90 to 90 degrees)
-Height_canyon,30,      # Average building height [m]
+Height_canyon,8,      # Average building height [m]
 fveg_R,0,              # Vegetated roof fraction (between 0 and 1)
 fimp_R,1.0,            # Impervious roof fraction (between 0 and 1)
-fveg_G,0.1,            # Vegetated ground fraction
+fveg_G,0.5,            # Vegetated ground fraction
 fbare_G,0.0,           # Bare ground fraction
-fimp_G,0.9,            # Impervious ground fraction
+fimp_G,0.5,            # Impervious ground fraction
 Per_runoff_R,1,        # Percentage of roof excess water that leaves the system as runoff, needs to be between 0-1 [-]
 Per_runoff_G,0.5,      # Percentage of ground excess water that leaves the system as runoff, needs to be between 0-1 [-]
 
@@ -51,16 +51,16 @@ Per_runoff_G,0.5,      # Percentage of ground excess water that leaves the syste
 aveg_R,0.27,         # Roof vegetation surface albedo (-)
 aimp_R,0.13,         # Roof impervious albedo (-)
 eveg_R,0.95,         # Roof vegetation surface emissivity (-)
-eimp_R,0.91,         # Roof impervious emissivity (-)
+eimp_R,0.95,         # Roof impervious emissivity (-)
 aveg_G,0.27,         # Ground vegetation surface albedo (-)
 abare_G,0.2,         # Ground vegetation surface albedo (-)
 aimp_G,0.14,         # Ground impervious albedo (-)
 eveg_G,0.95,         # Ground vegetation surface emissivity (-)
-ebare_G,0.97,        # Ground vegetation surface emissivity (-)
+ebare_G,0.95,        # Ground vegetation surface emissivity (-)
 eimp_G,0.95,         # Ground impervious emissivity (-)
-albedo_W,0.25,       # Wall surface albedo (-)
-emissivity_W,0.9,    # Wall emissivity (-)
-albedo_T,0.27,       # Tree albedo (-)
+albedo_W,0.20,       # Wall surface albedo (-)
+emissivity_W,0.95,    # Wall emissivity (-)
+albedo_T,0.27,      # Tree albedo (-)
 emissivity_T,0.95,   # Tree emissivity (-)
 e_rural,0.95,        # Rural emissivity (-)
 a_rural,0.2,         # Rural albedo (-)
@@ -306,13 +306,13 @@ bld,
 0,0,0,    # LargeHotel
 0,0,0,    # LargeOffice
 0,0,0,    # MediumOffice
-0,1,0,    # MidRiseApartment
+0,0,0,    # MidRiseApartment
 0,0,0,    # OutPatient
 0,0,0,    # PrimarySchool
 0,0,0,    # QuickServiceRestaurant
 0,0,0,    # SecondarySchool
 0,0,0,    # SmallHotel
-0,0,0,    # SmallOffice
+0,1,0,    # SmallOffice
 0,0,0,    # Stand-aloneRetail
 0,0,0,    # StripMall
 0,0,0,    # SuperMarket
