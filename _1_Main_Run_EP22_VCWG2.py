@@ -20,11 +20,12 @@ def run_ep_api():
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    ep_files_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\refining_M3ing'
-    data_saving_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\refining_M3ing\\ep_saving'
-    epwFileName = 'Basel.epw'
-    idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M3ing.idf'
-
+    # ep_files_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\refining_M3ing'
+    ep_files_path = '_2_cases_input_outputs\\_07_vancouver'
+    data_saving_path = '_2_cases_input_outputs\\_07_vancouver\\ep_saving'
+    epwFileName = 'TopForcing.epw'
+    # idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M3ing.idf'
+    idfFileName = 'RefBldgSmallOfficePost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
     # Lichen: init the synchronization lock related settings: locks, shared variables.
     coordination.init_saving_data()
     coordination.init_ep_api()
@@ -38,7 +39,7 @@ if __name__ == '__main__':
     ep_thread.join()
 
     case_name = 'only_ep'
-    start_time = '2002-06-10 00:00:00'
+    start_time = '2008-07-01 00:00:00'
     time_interval_sec = 300
     data_name_lst = ['ep_wsp_mps_wdir_deg', 'debugging_canyon']
 

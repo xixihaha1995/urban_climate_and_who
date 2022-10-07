@@ -220,30 +220,3 @@ def _nested_ep_only(state):
         coordination.saving_data['debugging_canyon'].append([s_wall_Text_C + 273.15,
                                                 n_wall_Text_C + 273.15,roof_Text_C + 273.15,
                                                 hvac_waste_w_m2 * 4, oat_temp_c + 273.15])
-
-
-
-def run_vcwg():
-    epwFileName = 'Basel.epw'
-    TopForcingFileName = None
-    # VCWGParamFileName = 'initialize_Basel_BSPA_MOST.uwg'
-    VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
-    # ViewFactorFileName = '_BSPA_ViewFactor_Basel_MOST.txt'
-    ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
-    # Case name to append output file names with
-    # case = '_BSPA_Refinement_M2_Basel_MOST'
-    case = '_BSPR_Refinement_M2_Basel_MOST'
-
-    # '''
-
-    # epwFileName = 'TopForcing_year.epw'
-    # TopForcingFileName = None
-    # # TopForcingFileName = 'Vancouver2008_ERA5.csv'
-    # VCWGParamFileName = 'initialize_Vancouver_LCZ1.uwg'
-    # ViewFactorFileName = 'ViewFactor_Vancouver_LCZ1.txt'
-    # # Case name to append output file names with
-    # case = '_bypass_year_Vancouver_LCZ1'
-
-    # Initialize the UWG object and run the simulation
-    VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
-    VCWG.run()
