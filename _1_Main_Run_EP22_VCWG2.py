@@ -6,7 +6,7 @@ from _3_post_process_code import _0_all_plot_tools as plot_tools
 
 def run_ep_api():
     state = api.state_manager.new_state()
-    api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers._nested_ep_only)
+    api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers.smallOffice_nested_ep_only)
 
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
     api.exchange.request_variable(state, "Site Wind Speed", "ENVIRONMENT")
@@ -14,7 +14,7 @@ def run_ep_api():
     api.exchange.request_variable(state, "Site Outdoor Air Drybulb Temperature", "ENVIRONMENT")
 
     output_path = os.path.join(ep_files_path, 'ep_optional_outputs')
-    weather_file_path = os.path.join(ep_files_path,'..', epwFileName)
+    weather_file_path = os.path.join(ep_files_path, epwFileName)
     idfFilePath = os.path.join(ep_files_path, idfFileName)
     sys_args = '-d', output_path, '-w', weather_file_path, idfFilePath
     api.runtime.run_energyplus(state, sys_args)
