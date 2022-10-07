@@ -232,6 +232,14 @@ def _5min_to_10min(df):
     # floor index (YYYY-MM-DD HH:MM:SS) to (YYYY-MM-DD HH:MM:00)
     return df_new
 
+def _xmin_to_ymin(df, original_time_interval_min = 30,target_time_interval_min = 60):
+    merge_nums = target_time_interval_min // original_time_interval_min
+    df_new = pd.DataFrame(columns=df.columns)
+    for i in range(0, len(df), merge_nums):
+        df_new.loc[df.index[i]] = df.iloc[i:i+merge_nums,].mean()
+    # floor index (YYYY-MM-DD HH:MM:SS) to (YYYY-MM-DD HH:MM:00)
+    return df_new
+
 # plot the comparisons between Vancouver Sunset dataset versus simulated (VCWGv2.0.0, VCWG-Bypass)
 def plot_comparison_measurement_simulated(df, txt_info):
 
