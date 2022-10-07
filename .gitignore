@@ -9,6 +9,7 @@ eplusssz.csv
 *.pyc
 *.png
 *.zip
+RefBldg*.csv
 EPTEMP-00000001/
 *.bnd
 *.edd

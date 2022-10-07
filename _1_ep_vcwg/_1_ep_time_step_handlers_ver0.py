@@ -220,3 +220,35 @@ def _nested_ep_only(state):
         coordination.saving_data['debugging_canyon'].append([s_wall_Text_C + 273.15,
                                                 n_wall_Text_C + 273.15,roof_Text_C + 273.15,
                                                 hvac_waste_w_m2 * 4, oat_temp_c + 273.15])
+
+
+def smallOffice_nested_ep_only(state):
+    global one_time,accu_hvac_heat_rejection_J,\
+        zone_time_step_seconds, oat_sensor_handle, hvac_heat_rejection_sensor_handle,\
+        site_wind_speed_mps_sensor_handle, site_wind_direction_deg_sensor_handle, \
+        ep_last_accumulated_time_index_in_seconds, \
+        s_wall_Text_handle, n_wall_Text_handle, roof_Text_handle
+
+    if one_time:
+        if not coordination.ep_api.exchange.api_data_fully_ready(state):
+            return
+        one_time = False
+        zone_time_step_seconds = 3600 / coordination.ep_api.exchange.num_time_steps_in_hour(state)
+        site_wind_speed_mps_sensor_handle = \
+            coordination.ep_api.exchange.get_variable_handle(state,
+                                                             "Site Wind Speed",
+                                                             "ENVIRONMENT")
+        site_wind_direction_deg_sensor_handle = \
+            coordination.ep_api.exchange.get_variable_handle(state,
+                                                             "Site Wind Direction",
+                                                             "ENVIRONMENT")
+        hvac_heat_rejection_sensor_handle = \
+            coordination.ep_api.exchange.get_variable_handle(state,
+                                                             "HVAC System Total Heat Rejection Energy",
+                                                             "SIMHVAC")
+        oat_sensor_handle = coordination.ep_api.exchange.get_variable_handle(state,
+                                                                             "Site Outdoor Air Drybulb Temperature",
+                                                                             "Environment")
+        s_wall_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,
+                                                                                "Surface Outside Face Temperature",
+                                                                                "g SWall SWA")
