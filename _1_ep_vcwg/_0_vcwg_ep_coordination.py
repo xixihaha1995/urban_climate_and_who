@@ -20,7 +20,7 @@ def init_variables_for_vcwg_ep(_in_ep_files_path, _in_ver):
         ep_elecTotal_w_m2_per_floor_area, ep_sensWaste_w_m2_per_floor_area, \
         ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, \
         ep_wallSun_Text_K, ep_wallSun_Tint_K,ep_wallShade_Text_K, ep_wallShade_Tint_K,\
-        blf_floor_area_m2, time_step_version, ep_files_path,\
+        midRiseApartmentBld_floor_area_m2, smallOfficeBld_floor_area_m2, time_step_version, ep_files_path,\
         ep_oaTemp_C, overwriting_time_index, overwriten_time_index
 
     vcwg_wsp_mps = 0
@@ -32,8 +32,12 @@ def init_variables_for_vcwg_ep(_in_ep_files_path, _in_ver):
         global ep_wsp_mps, ep_wdir_deg
         ep_wsp_mps = 0
         ep_wdir_deg = 0
-    blf_floor_area_m2 = 3135
+
+    midRiseApartmentBld_floor_area_m2 = 3135
+    smallOfficeBld_floor_area_m2 = 511
     vcwg_needed_time_idx_in_seconds = 0
+    overwriting_time_index = 0
+    overwriten_time_index = 0
     vcwg_canTemp_K = 0
     vcwg_canSpecHum_Ratio = 0
     vcwg_canPress_Pa = 0
@@ -137,6 +141,7 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     vcwg_needed_time_idx_in_seconds = vcwg_time_index_in_seconds
     vcwg_canTemp_K = canTemp
     vcwg_canSpecHum_Ratio = canHum
+    overwriting_time_index = vcwg_time_index_in_seconds
     sem0.release()
 
     sem2.acquire()
@@ -150,7 +155,8 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     # canTemp_ep, canTemp_vcwg
     saving_data['debugging_canyon'].append([BEM.wallSun.Text,
                                             BEM.wallShade.Text, BEM.mass.Text, ep_roof_Text_K,
-                                            BEM_building.sensWaste, ep_oaTemp_C + 273.15, canTemp])
+                                            BEM_building.sensWaste, ep_oaTemp_C + 273.15, canTemp,
+                                            overwriting_time_index, overwriten_time_index])
 
     ep_sensWaste_w_m2_per_floor_area = 0
     BEM_building.ElecTotal = ep_elecTotal_w_m2_per_floor_area * BEM_building.nFloor

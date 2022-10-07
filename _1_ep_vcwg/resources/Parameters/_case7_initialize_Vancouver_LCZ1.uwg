@@ -11,7 +11,7 @@
 # Simulation parameters,
 Month,7,           # starting month 6
 Day,1,             # starting day (1-31) 16
-nDay,1,           # number of days to run simulation 31
+nDay,31,           # number of days to run simulation 31
 dtSim,300,         # simulation time step [s]
 dtWeather,3600,    # weather time step [s]
 nDay_spinup,1,     # Number of days accounted for spin-up
@@ -22,7 +22,7 @@ Elevation,245,     # Elevation above sea level [m]
 # =================================================
 # Control switches
 # =================================================
-OPTION_RAY,0,         # 1: read the view factors from an existing file, 0: calculate view factors by ray tracing
+OPTION_RAY,1,         # 1: read the view factors from an existing file, 0: calculate view factors by ray tracing
 Rural_Model_name,2,   # 1: MOST, 2: Using an external forcing file with variables specified at the top of the domain
 EB_RuralModel_name,2, # 1: Louis, 2: Penman_Monteith
 Tdeep_ctrl,1,         # 1: Using force restore method, 2: Using climate data (from epw file). If reliable estimate of deep soil temperature is not available using force restore method is recommended
@@ -30,13 +30,13 @@ Tdeep_ctrl,1,         # 1: Using force restore method, 2: Using climate data (fr
 # =================================================
 # Urban Configuration
 # =================================================
-nz,26,                 # number of points (nz*dz = 3*bldHeight)
-nz_u,6.5,               # number of canopy levels in the vertical (nz_u*dz = bldHeight)
+nz,27,                 # number of points (nz*dz = 3*bldHeight)
+nz_u,8,               # number of canopy levels in the vertical (nz_u*dz = bldHeight)
 dz,1,                  # vertical resolution [m]
-Width_canyon,8,       # distance between buildings at street level in the x and y direction must be equal [m]
-Width_roof,12,         # building dimension [m]
+Width_canyon,23,       # distance between buildings at street level in the x and y direction must be equal [m]
+Width_roof,10,         # building dimension [m]
 theta_canyon,0.0,      # Canyon direction from geographical north, in the counter trigonometric direction (from -90 to 90 degrees)
-Height_canyon,6.5,      # Average building height [m]
+Height_canyon,8,      # Average building height [m]
 fveg_R,0,              # Vegetated roof fraction (between 0 and 1)
 fimp_R,1.0,            # Impervious roof fraction (between 0 and 1)
 fveg_G,0.5,            # Vegetated ground fraction
@@ -306,13 +306,13 @@ bld,
 0,0,0,    # LargeHotel
 0,0,0,    # LargeOffice
 0,0,0,    # MediumOffice
-0,1,0,    # MidRiseApartment
+0,0,0,    # MidRiseApartment
 0,0,0,    # OutPatient
 0,0,0,    # PrimarySchool
 0,0,0,    # QuickServiceRestaurant
 0,0,0,    # SecondarySchool
 0,0,0,    # SmallHotel
-0,0,0,    # SmallOffice
+0,1,0,    # SmallOffice
 0,0,0,    # Stand-aloneRetail
 0,0,0,    # StripMall
 0,0,0,    # SuperMarket

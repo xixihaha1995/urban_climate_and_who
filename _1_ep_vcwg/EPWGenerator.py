@@ -17,8 +17,8 @@ def write_epw(TopForcingFile,epw_precision,climate_file,timeInitial,climate_file
     """
     EPW_path = os.path.join('resources','epw')
     TopForcing_path = os.path.join('resources','TopForcing')
-    rawEPW = os.path.join(EPW_path,climate_file)
-    TopForcing = os.path.join(TopForcing_path,TopForcingFile)
+    rawEPW = os.path.join(os.path.dirname(__file__),EPW_path,climate_file)
+    TopForcing = os.path.join(os.path.dirname(__file__),TopForcing_path,TopForcingFile)
 
     # Read lat and lon
     with open(TopForcing) as Forcing_file:
@@ -118,7 +118,7 @@ def write_epw(TopForcingFile,epw_precision,climate_file,timeInitial,climate_file
 
     # Writing new EPW file
     TopForcing_EPW = EPW_path+r'\TopForcing.epw'
-    epw_new_id = open(TopForcing_EPW, "w")
+    epw_new_id = open(os.path.join(os.path.dirname(__file__), TopForcing_EPW), "w")
 
     for i in range(8):
         new_epw_line = '{}'.format(functools.reduce(lambda x, y: x + "," + y, _header[i]))
