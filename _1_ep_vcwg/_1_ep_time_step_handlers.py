@@ -71,7 +71,7 @@ def overwrite_ep_weather(state):
             called_vcwg_bool = True
             Thread(target=run_vcwg).start()
         # Wait for the upstream (VCWG upload canyon info to Parent) to finish
-        coordination.sem0.acquire()
+        coordination.sem1.acquire()
         # EP download the canyon info from Parent
         psychrometric = coordination.ep_api.functional.psychrometrics(state)
         rh = psychrometric.relative_humidity_b(state, coordination.vcwg_canTemp_K - 273.15,
@@ -80,7 +80,7 @@ def overwrite_ep_weather(state):
         print(f'EP: set odb to {coordination.vcwg_canTemp_K - 273.15}')
         coordination.ep_api.exchange.set_actuator_value(state, orh_actuator_handle, rh)
         # Notify the downstream (EP upload EP results to Parent) to start
-        coordination.sem1.release()
+        coordination.sem2.release()
 
 
 def get_ep_results(state):
@@ -396,10 +396,9 @@ def get_ep_results(state):
 
     # get EP results, upload to coordination
     if called_vcwg_bool:
-        # called vcwg,sem0, sem1
         global ep_last_call_time_seconds
         #wait for the upstream (EP download canyon from Parent) to finish
-        coordination.sem1.acquire()
+        coordination.sem2.acquire()
         #EP start uploading EP results to Parent
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600        # Should always accumulate, since system time always advances
@@ -412,7 +411,7 @@ def get_ep_results(state):
         time_index_alignment_bool =  1 > abs(curr_sim_time_in_seconds - coordination.vcwg_needed_time_idx_in_seconds)
         if not time_index_alignment_bool:
             # if the accumulated time is less than zone time step, then we return here, and wait for the next call
-            coordination.sem1.release()
+            coordination.sem2.release()
             return
 
         zone_indor_temp_value = coordination.ep_api.exchange.get_variable_value(state, zone_indor_temp_sensor_handle)
@@ -608,7 +607,7 @@ def get_ep_results(state):
         coordination.ep_coolConsump_w_m2 = cool_consumption_w_m2_value
         coordination.ep_heatConsump_w_m2 = heat_consumption_w_m2_value
         #Notify to the downstream (VCWG download EP results) to start
-        coordination.sem2.release()
+        coordination.sem3.release()
 
 def smallOffice_get_ep_results(state):
     global get_ep_results_inited_handle, oat_sensor_handle, \
@@ -766,10 +765,9 @@ def smallOffice_get_ep_results(state):
 
     # get EP results, upload to coordination
     if called_vcwg_bool:
-        # called vcwg,sem0, sem1
         global ep_last_call_time_seconds
 
-        coordination.sem1.acquire()
+        coordination.sem2.acquire()
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600  # Should always accumulate, since system time always advances
         accumulated_time_in_seconds = curr_sim_time_in_seconds - ep_last_call_time_seconds
@@ -781,7 +779,7 @@ def smallOffice_get_ep_results(state):
 
         time_index_alignment_bool = 1 > abs(curr_sim_time_in_seconds - coordination.vcwg_needed_time_idx_in_seconds)
         if not time_index_alignment_bool:
-            coordination.sem1.release()
+            coordination.sem2.release()
             return
 
         zone_indor_temp_value = coordination.ep_api.exchange.get_variable_value(state, zone_indor_temp_sensor_handle)
@@ -869,5 +867,5 @@ def smallOffice_get_ep_results(state):
             coordination.ep_wallShade_Text_K = s_wall_Text_c + 273.15
             coordination.ep_wallShade_Tint_K = s_wall_Tint_c + 273.15
 
-        coordination.sem2.release()
+        coordination.sem3.release()
 

@@ -7,29 +7,10 @@ def init_ep_api():
     ep_api = EnergyPlusAPI()
 def init_semaphore_lock_settings():
     global sem0, sem1,sem2,sem3
-    '''
-    There are 4 critical sections in this program.
-    1.
-        a. Wait for the upstream. sem3.acquire()
-        b. VCWG upload canyon data (canTemp, canSpecHum, canPress, etc.) to Parent
-        c. Notify to the downstream. sem0.release()
-    2. 
-        a. Wait for the upstream. sem0.acquire()
-        b. EP download canyon data (canTemp, canSpecHum, canPress, etc.) from Parent
-        c. Notify to the downstream. sem1.release()
-    3. 
-        a. Wait for the upstream. sem1.acquire()
-        b. EP upload EP results (sensHVAC, etc.) to Parent
-        c. Notify to the downstream. sem2.release()
-    4. 
-        a. Wait for the upstream. sem2.acquire()
-        b. VCWG download EP results (sensHVAC, etc.) from Parent
-        c. Notify to the downstream. sem3.release()
-    '''
-    sem0 = threading.Semaphore(0)
+    sem0 = threading.Semaphore(1)
     sem1 = threading.Semaphore(0)
     sem2 = threading.Semaphore(0)
-    sem3 = threading.Semaphore(1)
+    sem3 = threading.Semaphore(0)
 
 
 def init_variables_for_vcwg_ep(_in_ep_files_path, _in_ver):
@@ -116,7 +97,7 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
         ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, ep_wall_Text_K, ep_wall_Tint_K
 
     # Waiting for the upstream (VCWG download EP results from Parent) to finish
-    sem3.acquire()
+    sem0.acquire()
     # VCWG upload canyon info to Parent
     vcwg_time_index_in_seconds = (it + 1) * simTime.dt
 
@@ -164,10 +145,10 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     vcwg_canSpecHum_Ratio = canHum
     overwriting_time_index = vcwg_time_index_in_seconds
     # Notify to the downstream (EP download canyon info from Parent) to start
-    sem0.release()
+    sem1.release()
 
     # Waiting for the upstream (EP upload results to Parent) to finish
-    sem2.acquire()
+    sem3.acquire()
     # VCWG download EP results from Parent
     BEM_building.sensWaste = ep_sensWaste_w_m2_per_floor_area * BEM_building.nFloor
     # transfer accumulated seconds to Day, Hour, Minute, Second
@@ -243,6 +224,6 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     BEM_building.fluxRoof = 0
     BEM_building.fluxMass = 0
     # Notify to the downstream (VCWG upload canyon info to Parent) to start
-    sem3.release()
+    sem0.release()
 
     return BEM
