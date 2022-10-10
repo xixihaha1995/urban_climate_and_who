@@ -664,10 +664,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    5.0000,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_floor_perimeter_east,  !- Name
@@ -681,10 +681,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    27.6900,18.4600,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,0.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    27.6900,18.4600,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    27.6900,0.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_floor_perimeter_north,  !- Name
@@ -698,10 +698,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,18.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    27.6900,18.4600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,13.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,18.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,18.4600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    5.0000,13.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_floor_perimeter_south,  !- Name
@@ -715,10 +715,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    5.0000,5.0000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,0.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,5.0000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    27.6900,0.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_floor_perimeter_west,  !- Name
@@ -732,10 +732,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    5.0000,5.0000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,5.0000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    0.0000,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_roof_east,         !- Name
@@ -749,9 +749,9 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     3,                       !- Number of Vertices
-    28.2900,-0.6000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    28.2900,19.0600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    18.4600,9.2300,6.3300;  !- X,Y,Z ==> Vertex 3 {m}
+    28.2900,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    28.2900,19.0600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    18.4600,9.2300,12.8300;  !- X,Y,Z ==> Vertex 3 {m}
 
   BuildingSurface:Detailed,
     Attic_roof_north,        !- Name
@@ -765,10 +765,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    28.2900,19.0600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    -0.6000,19.0600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    9.2300,9.2300,6.3300,  !- X,Y,Z ==> Vertex 3 {m}
-    18.4600,9.2300,6.3300;  !- X,Y,Z ==> Vertex 4 {m}
+    28.2900,19.0600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    -0.6000,19.0600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    9.2300,9.2300,12.8300,  !- X,Y,Z ==> Vertex 3 {m}
+    18.4600,9.2300,12.8300;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_roof_south,        !- Name
@@ -782,10 +782,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    -0.6000,-0.6000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    28.2900,-0.6000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    18.4600,9.2300,6.3300,  !- X,Y,Z ==> Vertex 3 {m}
-    9.2300,9.2300,6.3300;  !- X,Y,Z ==> Vertex 4 {m}
+    -0.6000,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    28.2900,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    18.4600,9.2300,12.8300,  !- X,Y,Z ==> Vertex 3 {m}
+    9.2300,9.2300,12.8300;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_roof_west,         !- Name
@@ -799,9 +799,9 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     3,                       !- Number of Vertices
-    -0.6000,19.0600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    -0.6000,-0.6000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    9.2300,9.2300,6.3300;  !- X,Y,Z ==> Vertex 3 {m}
+    -0.6000,19.0600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    -0.6000,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    9.2300,9.2300,12.8300;  !- X,Y,Z ==> Vertex 3 {m}
 
   BuildingSurface:Detailed,
     Attic_soffit_east,       !- Name
@@ -815,10 +815,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    28.2900,19.0600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    28.2900,-0.6000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    27.6900,0.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    28.2900,19.0600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    28.2900,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    27.6900,0.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    27.6900,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_soffit_north,      !- Name
@@ -832,10 +832,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    -0.6000,19.0600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    28.2900,19.0600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    27.6900,18.4600,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    -0.6000,19.0600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    28.2900,19.0600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    27.6900,18.4600,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    0.0000,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_soffit_south,      !- Name
@@ -849,10 +849,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    27.6900,0.0000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    28.2900,-0.6000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    -0.6000,-0.6000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,0.0000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    28.2900,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    -0.6000,-0.6000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_soffit_west,       !- Name
@@ -866,10 +866,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    -0.6000,19.0600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    0.0000,18.4600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    -0.6000,-0.6000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    -0.6000,19.0600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,18.4600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    -0.6000,-0.6000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Core_ZN_ceiling,         !- Name
@@ -883,10 +883,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    5.0000,5.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    22.6900,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    5.0000,5.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    22.6900,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Core_ZN_floor,           !- Name
@@ -917,10 +917,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     22.6900,5.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     22.6900,13.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    22.6900,13.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,13.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Core_ZN_wall_north,      !- Name
@@ -934,10 +934,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     22.6900,13.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     5.0000,13.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,13.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,13.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Core_ZN_wall_south,      !- Name
@@ -951,10 +951,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,5.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,5.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     5.0000,5.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     22.6900,5.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    22.6900,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Core_ZN_wall_west,       !- Name
@@ -968,10 +968,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     5.0000,13.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     5.0000,5.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_1_ceiling,  !- Name
@@ -985,10 +985,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    27.6900,0.0000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,0.0000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    5.0000,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_1_floor,    !- Name
@@ -1019,10 +1019,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    27.6900,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,0.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     22.6900,5.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    22.6900,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_1_wall_north,  !- Name
@@ -1036,10 +1036,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     22.6900,5.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     5.0000,5.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_1_wall_south,  !- Name
@@ -1053,10 +1053,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,0.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,0.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,0.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,0.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_1_wall_west,!- Name
@@ -1070,10 +1070,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,5.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,5.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     5.0000,5.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,0.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,0.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,0.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_2_ceiling,  !- Name
@@ -1087,10 +1087,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    27.6900,18.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,0.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,18.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    27.6900,0.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_2_floor,    !- Name
@@ -1121,10 +1121,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    27.6900,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,0.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,18.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_2_wall_north,  !- Name
@@ -1138,10 +1138,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    27.6900,18.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,18.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,18.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     22.6900,13.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    22.6900,13.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,13.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_2_wall_south,  !- Name
@@ -1155,10 +1155,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     22.6900,5.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,0.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,0.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,0.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_2_wall_west,!- Name
@@ -1172,10 +1172,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     22.6900,13.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     22.6900,5.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    22.6900,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_3_ceiling,  !- Name
@@ -1189,10 +1189,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,18.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,18.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    27.6900,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_3_floor,    !- Name
@@ -1223,10 +1223,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     22.6900,13.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,18.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_3_wall_north,  !- Name
@@ -1240,10 +1240,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    27.6900,18.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,18.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,18.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,18.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_3_wall_south,  !- Name
@@ -1257,10 +1257,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     5.0000,13.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     22.6900,13.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    22.6900,13.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,13.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_3_wall_west,!- Name
@@ -1274,10 +1274,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,18.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,18.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,18.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     5.0000,13.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,13.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,13.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_4_ceiling,  !- Name
@@ -1291,10 +1291,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    5.0000,5.0000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,5.0000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    0.0000,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_4_floor,    !- Name
@@ -1325,10 +1325,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,5.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,5.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     5.0000,5.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     5.0000,13.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,13.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,13.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_4_wall_north,  !- Name
@@ -1342,10 +1342,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     5.0000,13.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,18.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_4_wall_south,  !- Name
@@ -1359,10 +1359,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,0.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     5.0000,5.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_4_wall_west,!- Name
@@ -1376,10 +1376,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,18.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,18.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,18.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,0.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,0.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,0.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
 ! ***WINDOWS***
 
