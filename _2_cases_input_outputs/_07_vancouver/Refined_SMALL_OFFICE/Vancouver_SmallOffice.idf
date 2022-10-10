@@ -751,7 +751,7 @@
     3,                       !- Number of Vertices
     28.2900,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     28.2900,19.0600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
-    18.4600,9.2300,12.8300;  !- X,Y,Z ==> Vertex 3 {m}
+    18.4600,9.2300,9.7800;  !- X,Y,Z ==> Vertex 3 {m}
 
   BuildingSurface:Detailed,
     Attic_roof_north,        !- Name
@@ -767,8 +767,8 @@
     4,                       !- Number of Vertices
     28.2900,19.0600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     -0.6000,19.0600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
-    9.2300,9.2300,12.8300,  !- X,Y,Z ==> Vertex 3 {m}
-    18.4600,9.2300,12.8300;  !- X,Y,Z ==> Vertex 4 {m}
+    9.2300,9.2300,9.7800,  !- X,Y,Z ==> Vertex 3 {m}
+    18.4600,9.2300,9.7800;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_roof_south,        !- Name
@@ -784,8 +784,8 @@
     4,                       !- Number of Vertices
     -0.6000,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     28.2900,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
-    18.4600,9.2300,12.8300,  !- X,Y,Z ==> Vertex 3 {m}
-    9.2300,9.2300,12.8300;  !- X,Y,Z ==> Vertex 4 {m}
+    18.4600,9.2300,9.7800,  !- X,Y,Z ==> Vertex 3 {m}
+    9.2300,9.2300,9.7800;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_roof_west,         !- Name
@@ -801,7 +801,7 @@
     3,                       !- Number of Vertices
     -0.6000,19.0600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     -0.6000,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
-    9.2300,9.2300,12.8300;  !- X,Y,Z ==> Vertex 3 {m}
+    9.2300,9.2300,9.7800;  !- X,Y,Z ==> Vertex 3 {m}
 
   BuildingSurface:Detailed,
     Attic_soffit_east,       !- Name
