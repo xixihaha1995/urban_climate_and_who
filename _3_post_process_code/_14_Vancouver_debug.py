@@ -48,19 +48,33 @@ else:
     df_30min_TA_measure.to_csv(f'{measure_results_folder}\\SSDTA_{compare_start_time[:7]}_30min.csv')
 
 if hourly_p0:
-    BEMCalc_potential_10min_c_compare, BEMCalc_real_10min_c_compare = \
-        plt_tools.excel_to_potential_real_df(original_filename, only_vcwg_results_folder, p0,
-                                             heights_profile, vancouver_sensor_heights, compare_start_time,
-                                             compare_end_time, epw_staPre_Pa_all)
+    if os.path.exists(f'{measure_results_folder}\\BEMCalc_Real.csv'):
+        BEMCalc_real_10min_c_compare = pd.read_csv(f'{measure_results_folder}\\BEMCalc_Real.csv',
+                                                    header=0, index_col=0, parse_dates=True)
+    else:
+        BEMCalc_potential_10min_c_compare, BEMCalc_real_10min_c_compare = \
+            plt_tools.excel_to_potential_real_df(original_filename, only_vcwg_results_folder, p0,
+                                                 heights_profile, vancouver_sensor_heights, compare_start_time,
+                                                 compare_end_time, epw_staPre_Pa_all)
+        BEMCalc_potential_10min_c_compare.to_csv(f'{measure_results_folder}\\BEMCalc_Potential.csv')
+        BEMCalc_real_10min_c_compare.to_csv(f'{measure_results_folder}\\BEMCalc_Real.csv')
+
     bypass_ver1p1_path = f'{bypass_predict_results_folder}\\ver1.1'
     bypass_potential_10min_c_compare_ver1p1, bypass_real_10min_c_compare_ver1p1 = \
         plt_tools.excel_to_potential_real_df(bypass_filename_1p1, bypass_ver1p1_path, p0, heights_profile,
                                              vancouver_sensor_heights, compare_start_time,
                                              compare_end_time, epw_staPre_Pa_all)
 else:
-    BEMCalc_potential_10min_c_compare, BEMCalc_real_10min_c_compare = \
-        plt_tools.excel_to_potential_real_df(original_filename, only_vcwg_results_folder, p0,
-                                             heights_profile, vancouver_sensor_heights,compare_start_time,compare_end_time)
+    if os.path.exists(f'{measure_results_folder}\\BEMCalc_Real_HourlyP0.csv'):
+        BEMCalc_real_10min_c_compare = pd.read_csv(f'{measure_results_folder}\\BEMCalc_Real_HourlyP0.csv',
+                                                    header=0, index_col=0, parse_dates=True)
+    else:
+        BEMCalc_potential_10min_c_compare, BEMCalc_real_10min_c_compare = \
+            plt_tools.excel_to_potential_real_df(original_filename, only_vcwg_results_folder, p0,
+                                                 heights_profile, vancouver_sensor_heights,
+                                                 compare_start_time,compare_end_time)
+        BEMCalc_potential_10min_c_compare.to_csv(f'{measure_results_folder}\\BEMCalc_Potential_HourlyP0.csv')
+        BEMCalc_real_10min_c_compare.to_csv(f'{measure_results_folder}\\BEMCalc_Real_HourlyP0.csv')
     bypass_ver1p1_path = f'{bypass_predict_results_folder}\\ver1.1'
     bypass_potential_10min_c_compare_ver1p1, bypass_real_10min_c_compare_ver1p1 = \
         plt_tools.excel_to_potential_real_df(bypass_filename_1p1, bypass_ver1p1_path, p0, heights_profile,
@@ -81,7 +95,6 @@ debug_only_vcwg_10min = plt_tools._xmin_to_ymin(debug_only_vcwg_5min,
                                                 original_time_interval_min = 5,target_time_interval_min = 30)
 debug_bypass_ver1p1_10min = plt_tools._xmin_to_ymin(debug_bypass_ver1p1_5min,
                                                     original_time_interval_min = 5,target_time_interval_min = 30)
-
 #debugging based plot
 plt_tools.why_bypass_overestimated(debug_processed_save_folder,
                                    urban_selected_10min_c, original_real_selected_10min_c,

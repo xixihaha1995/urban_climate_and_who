@@ -1,10 +1,17 @@
+import os
+
 import _0_all_plot_tools as plt_tools
 import pandas as pd, numpy as np
-measure_results_folder = r'..\_2_cases_input_outputs\_0_measurements\BUBBLE'
+measure_results_folder = r'..\_4_measurements\BUBBLE'
 only_vcwg_results_folder = r'..\_2_cases_input_outputs\_06_Basel_BSPA_ue2\vcwg_saving'
-which_ep = '(M3ing, No Cooling)'
+original_filename = 'only_vcwg'
+
+
 only_ep_results_folder = r'..\_2_cases_input_outputs\_06_Basel_BSPA_ue2\refining_M3ing\ep_saving'
+which_ep = '(M3ing, No Cooling)'
+
 bypass_predict_results_folder = r'..\_2_cases_input_outputs\_06_Basel_BSPA_ue2\refining_M3ing\vcwg_ep_saving'
+bypass_filename_1p1 = '_BSPA_bypass_refining_M3ing'
 debug_processed_save_folder = r'..\_2_cases_input_outputs\_06_Basel_BSPA_ue2'
 
 IOP_start_time = '2002-06-10 01:00:00'
@@ -15,8 +22,6 @@ v200_start_time = '2002-06-10 00:00:00'
 v200_end_time = '2002-07-09 23:55:00'
 compare_start_time = '2002-06-10 01:00:00'
 compare_end_time = '2002-07-09 22:00:00'
-bypass_filename_1p1 = '_BSPA_bypass_refining_M3ing'
-original_filename = 'only_vcwg'
 
 # v200_sensor_height = 2.6
 heights_profile = [0.5 + i for i in range(50)]
@@ -26,20 +31,32 @@ ue2_heights = [3, 15.8, 22.90, 27.80, 32.90]
 selected_ue2_sensor_idx = 0
 re1_col_idx = 7
 # Read air temperature measurements
-urban_all_sites_10min_dirty = plt_tools.read_text_as_csv(f'{measure_results_folder}\\BUBBLE_BSPA_AT_PROFILE_IOP.txt',
-                                                          header=0, index_col=0, skiprows=17)
-# clean the measurements
-urban_all_sites_10min_clean_dup = plt_tools.clean_bubble_iop(urban_all_sites_10min_dirty,
-                                                  start_time = IOP_start_time, end_time = IOP_end_time,
-                                                  to_hourly= False)
-urban_all_sites_10min_clean = plt_tools.remove_dup_BUBBLE_Ue2(urban_all_sites_10min_clean_dup,
-                                                              ue2_heights_dup, ue2_heights)
+if os.path.exists(os.path.join(measure_results_folder, 'BUBBLE_Ue2_Urban.csv')):
+    urban_all_sites_10min_clean = pd.read_csv(os.path.join(measure_results_folder, 'BUBBLE_Ue2_Urban.csv'),
+                                                index_col=0, parse_dates=True)
+else:
+    urban_all_sites_10min_dirty = plt_tools.read_text_as_csv(f'{measure_results_folder}\\BUBBLE_BSPA_AT_PROFILE_IOP.txt',
+                                                              header=0, index_col=0, skiprows=17)
+    # clean the measurements
+    urban_all_sites_10min_clean_dup = plt_tools.clean_bubble_iop(urban_all_sites_10min_dirty,
+                                                      start_time = IOP_start_time, end_time = IOP_end_time,
+                                                      to_hourly= False)
+    urban_all_sites_10min_clean = plt_tools.remove_dup_BUBBLE_Ue2(urban_all_sites_10min_clean_dup,
+                                                                  ue2_heights_dup, ue2_heights)
+    urban_all_sites_10min_clean.to_csv(os.path.join(measure_results_folder, 'BUBBLE_Ue2_Urban.csv'))
 # select the 0th column as the comparison data
 urban_all_sites_10min_c_compare = urban_all_sites_10min_clean[compare_start_time:compare_end_time]
 
-original_potential_10min_c_compare, original_real_10min_c_compare = \
-    plt_tools.excel_to_potential_real_df(original_filename, only_vcwg_results_folder, p0,
-                                         heights_profile, ue2_heights,compare_start_time,compare_end_time)
+if os.path.exists(os.path.join(measure_results_folder, 'BUBBLE_Ue2_Original_Real.csv')):
+    original_real_10min_c_compare = pd.read_csv(os.path.join(measure_results_folder, 'BUBBLE_Ue2_Original_Real.csv'),
+                                                index_col=0, parse_dates=True)
+else:
+    original_potential_10min_c_compare, original_real_10min_c_compare = \
+        plt_tools.excel_to_potential_real_df(original_filename, only_vcwg_results_folder, p0,
+                                             heights_profile, ue2_heights,compare_start_time,compare_end_time)
+    original_potential_10min_c_compare.to_csv(os.path.join(measure_results_folder, 'BUBBLE_Ue2_Original_Potential.csv'))
+    original_real_10min_c_compare.to_csv(os.path.join(measure_results_folder, 'BUBBLE_Ue2_Original_Real.csv'))
+
 bypass_ver1p1_path = f'{bypass_predict_results_folder}\\ver1.1'
 bypass_potential_10min_c_compare_ver1p1, bypass_real_10min_c_compare_ver1p1 = \
     plt_tools.excel_to_potential_real_df(bypass_filename_1p1, bypass_ver1p1_path, p0, heights_profile, ue2_heights,
