@@ -176,7 +176,8 @@ class VCWG_Hydro(object):
         # --------------------------
         # Define BEM for each DOE type (read the fraction)
         # Open pickle file in binary form
-        # refDOE, refBEM, refSchedule = readDOE(False)
+        # False means save new pickle file
+        refDOE, refBEM, refSchedule = readDOE(False)
         readDOE_file = open(os.path.join(os.path.dirname(__file__), 'readDOE.PKL'), 'rb')
         refDOE = cPickle.load(readDOE_file)
         refBEM = cPickle.load(readDOE_file)
