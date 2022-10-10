@@ -1393,10 +1393,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    1.3900,0.0000,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    1.3900,0.0000,5.874,  !- X,Y,Z ==> Vertex 1 {m}
     1.3900,0.0000,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     3.2200,0.0000,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    3.2200,0.0000,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    3.2200,0.0000,5.874;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_1_wall_south_Window_2,  !- Name
@@ -1408,10 +1408,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    6.0100,0.0000,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    6.0100,0.0000,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     6.0100,0.0000,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     7.8400,0.0000,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    7.8400,0.0000,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    7.8400,0.0000,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_1_wall_south_Window_3,  !- Name
@@ -1423,10 +1423,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    10.6200,0.0000,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    10.6200,0.0000,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     10.6200,0.0000,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     12.4500,0.0000,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    12.4500,0.0000,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    12.4500,0.0000,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_1_wall_south_Window_4,  !- Name
@@ -1438,10 +1438,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    15.2400,0.0000,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    15.2400,0.0000,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     15.2400,0.0000,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     17.0700,0.0000,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    17.0700,0.0000,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    17.0700,0.0000,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_1_wall_south_Window_5,  !- Name
@@ -1453,10 +1453,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    19.8500,0.0000,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    19.8500,0.0000,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     19.8500,0.0000,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     21.6800,0.0000,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    21.6800,0.0000,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    21.6800,0.0000,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_1_wall_south_Window_6,  !- Name
@@ -1468,10 +1468,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    24.4700,0.0000,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    24.4700,0.0000,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     24.4700,0.0000,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     26.3000,0.0000,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    26.3000,0.0000,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    26.3000,0.0000,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_1_wall_south_door,  !- Name
@@ -1498,10 +1498,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    27.6900,1.3900,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,1.3900,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,1.3900,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,3.2200,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,3.2200,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,3.2200,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_2_wall_east_Window_2,  !- Name
@@ -1513,10 +1513,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    27.6900,6.0100,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,6.0100,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,6.0100,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,7.8400,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,7.8400,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,7.8400,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_2_wall_east_Window_3,  !- Name
@@ -1528,10 +1528,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    27.6900,10.6200,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,10.6200,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,10.6200,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,12.4500,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,12.4500,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,12.4500,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_2_wall_east_Window_4,  !- Name
@@ -1543,10 +1543,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    27.6900,15.2400,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,15.2400,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,15.2400,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,17.0700,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,17.0700,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,17.0700,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_3_wall_north_Window_1,  !- Name
@@ -1558,10 +1558,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    26.3000,18.4600,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    26.3000,18.4600,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     26.3000,18.4600,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     24.4700,18.4600,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    24.4700,18.4600,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    24.4700,18.4600,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_3_wall_north_Window_2,  !- Name
@@ -1573,10 +1573,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    21.6800,18.4600,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    21.6800,18.4600,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     21.6800,18.4600,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     19.8500,18.4600,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    19.8500,18.4600,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    19.8500,18.4600,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_3_wall_north_Window_3,  !- Name
@@ -1588,10 +1588,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    17.0700,18.4600,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    17.0700,18.4600,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     17.0700,18.4600,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     15.2400,18.4600,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    15.2400,18.4600,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    15.2400,18.4600,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_3_wall_north_Window_4,  !- Name
@@ -1603,10 +1603,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    12.4500,18.4600,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    12.4500,18.4600,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     12.4500,18.4600,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     10.6200,18.4600,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    10.6200,18.4600,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    10.6200,18.4600,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_3_wall_north_Window_5,  !- Name
@@ -1618,10 +1618,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    7.8400,18.4600,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    7.8400,18.4600,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     7.8400,18.4600,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     6.0100,18.4600,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    6.0100,18.4600,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    6.0100,18.4600,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_3_wall_north_Window_6,  !- Name
@@ -1633,10 +1633,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    3.2200,18.4600,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    3.2200,18.4600,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     3.2200,18.4600,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     1.3900,18.4600,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    1.3900,18.4600,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    1.3900,18.4600,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_4_wall_west_Window_1,  !- Name
@@ -1648,10 +1648,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    0.0000,17.0700,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,17.0700,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,17.0700,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,15.2400,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,15.2400,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,15.2400,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_4_wall_west_Window_2,  !- Name
@@ -1663,10 +1663,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    0.0000,12.4500,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,12.4500,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,12.4500,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,10.6200,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,10.6200,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,10.6200,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_4_wall_west_Window_3,  !- Name
@@ -1678,10 +1678,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    0.0000,7.8400,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,7.8400,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,7.8400,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,6.0100,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,6.0100,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,6.0100,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_4_wall_west_Window_4,  !- Name
@@ -1693,10 +1693,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    0.0000,3.2200,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,3.2200,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,3.2200,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,1.3900,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,1.3900,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,1.3900,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
 ! ***GEOMETRY RULES***
 
