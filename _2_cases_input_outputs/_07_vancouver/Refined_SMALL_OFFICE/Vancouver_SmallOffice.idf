@@ -664,10 +664,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    5.0000,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_floor_perimeter_east,  !- Name
@@ -681,10 +681,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    27.6900,18.4600,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,0.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    27.6900,18.4600,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    27.6900,0.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_floor_perimeter_north,  !- Name
@@ -698,10 +698,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,18.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    27.6900,18.4600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,13.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,18.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,18.4600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    5.0000,13.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_floor_perimeter_south,  !- Name
@@ -715,10 +715,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    5.0000,5.0000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,0.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,5.0000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    27.6900,0.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_floor_perimeter_west,  !- Name
@@ -732,10 +732,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    5.0000,5.0000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,5.0000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    0.0000,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_roof_east,         !- Name
@@ -749,9 +749,9 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     3,                       !- Number of Vertices
-    28.2900,-0.6000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    28.2900,19.0600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    18.4600,9.2300,6.3300;  !- X,Y,Z ==> Vertex 3 {m}
+    28.2900,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    28.2900,19.0600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    18.4600,9.2300,9.7800;  !- X,Y,Z ==> Vertex 3 {m}
 
   BuildingSurface:Detailed,
     Attic_roof_north,        !- Name
@@ -765,10 +765,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    28.2900,19.0600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    -0.6000,19.0600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    9.2300,9.2300,6.3300,  !- X,Y,Z ==> Vertex 3 {m}
-    18.4600,9.2300,6.3300;  !- X,Y,Z ==> Vertex 4 {m}
+    28.2900,19.0600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    -0.6000,19.0600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    9.2300,9.2300,9.7800,  !- X,Y,Z ==> Vertex 3 {m}
+    18.4600,9.2300,9.7800;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_roof_south,        !- Name
@@ -782,10 +782,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    -0.6000,-0.6000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    28.2900,-0.6000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    18.4600,9.2300,6.3300,  !- X,Y,Z ==> Vertex 3 {m}
-    9.2300,9.2300,6.3300;  !- X,Y,Z ==> Vertex 4 {m}
+    -0.6000,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    28.2900,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    18.4600,9.2300,9.7800,  !- X,Y,Z ==> Vertex 3 {m}
+    9.2300,9.2300,9.7800;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_roof_west,         !- Name
@@ -799,9 +799,9 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     3,                       !- Number of Vertices
-    -0.6000,19.0600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    -0.6000,-0.6000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    9.2300,9.2300,6.3300;  !- X,Y,Z ==> Vertex 3 {m}
+    -0.6000,19.0600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    -0.6000,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    9.2300,9.2300,9.7800;  !- X,Y,Z ==> Vertex 3 {m}
 
   BuildingSurface:Detailed,
     Attic_soffit_east,       !- Name
@@ -815,10 +815,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    28.2900,19.0600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    28.2900,-0.6000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    27.6900,0.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    28.2900,19.0600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    28.2900,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    27.6900,0.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    27.6900,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_soffit_north,      !- Name
@@ -832,10 +832,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    -0.6000,19.0600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    28.2900,19.0600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    27.6900,18.4600,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    -0.6000,19.0600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    28.2900,19.0600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    27.6900,18.4600,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    0.0000,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_soffit_south,      !- Name
@@ -849,10 +849,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    27.6900,0.0000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    28.2900,-0.6000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    -0.6000,-0.6000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,0.0000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    28.2900,-0.6000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    -0.6000,-0.6000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Attic_soffit_west,       !- Name
@@ -866,10 +866,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    -0.6000,19.0600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    0.0000,18.4600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    -0.6000,-0.6000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    -0.6000,19.0600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,18.4600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    -0.6000,-0.6000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Core_ZN_ceiling,         !- Name
@@ -883,10 +883,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    5.0000,5.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    22.6900,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    5.0000,5.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    22.6900,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Core_ZN_floor,           !- Name
@@ -917,10 +917,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     22.6900,5.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     22.6900,13.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    22.6900,13.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,13.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Core_ZN_wall_north,      !- Name
@@ -934,10 +934,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     22.6900,13.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     5.0000,13.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,13.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,13.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Core_ZN_wall_south,      !- Name
@@ -951,10 +951,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,5.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,5.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     5.0000,5.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     22.6900,5.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    22.6900,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Core_ZN_wall_west,       !- Name
@@ -968,10 +968,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     5.0000,13.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     5.0000,5.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_1_ceiling,  !- Name
@@ -985,10 +985,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    27.6900,0.0000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,0.0000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    5.0000,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_1_floor,    !- Name
@@ -1019,10 +1019,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    27.6900,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,0.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     22.6900,5.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    22.6900,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_1_wall_north,  !- Name
@@ -1036,10 +1036,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     22.6900,5.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     5.0000,5.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_1_wall_south,  !- Name
@@ -1053,10 +1053,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,0.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,0.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,0.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,0.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_1_wall_west,!- Name
@@ -1070,10 +1070,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,5.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,5.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     5.0000,5.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,0.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,0.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,0.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_2_ceiling,  !- Name
@@ -1087,10 +1087,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    27.6900,18.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,0.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,18.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    27.6900,0.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_2_floor,    !- Name
@@ -1121,10 +1121,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    27.6900,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,0.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,18.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_2_wall_north,  !- Name
@@ -1138,10 +1138,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    27.6900,18.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,18.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,18.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     22.6900,13.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    22.6900,13.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,13.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_2_wall_south,  !- Name
@@ -1155,10 +1155,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,5.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,5.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     22.6900,5.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,0.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,0.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,0.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_2_wall_west,!- Name
@@ -1172,10 +1172,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     22.6900,13.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     22.6900,5.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    22.6900,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_3_ceiling,  !- Name
@@ -1189,10 +1189,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,18.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,18.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    27.6900,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_3_floor,    !- Name
@@ -1223,10 +1223,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    22.6900,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    22.6900,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     22.6900,13.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,18.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_3_wall_north,  !- Name
@@ -1240,10 +1240,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    27.6900,18.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,18.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,18.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,18.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_3_wall_south,  !- Name
@@ -1257,10 +1257,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     5.0000,13.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     22.6900,13.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    22.6900,13.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    22.6900,13.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_3_wall_west,!- Name
@@ -1274,10 +1274,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,18.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,18.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,18.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     5.0000,13.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,13.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,13.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_4_ceiling,  !- Name
@@ -1291,10 +1291,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
-    5.0000,5.0000,3.0500,  !- X,Y,Z ==> Vertex 2 {m}
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,5.0000,6.5000,  !- X,Y,Z ==> Vertex 2 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 3 {m}
+    0.0000,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_4_floor,    !- Name
@@ -1325,10 +1325,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,5.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,5.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     5.0000,5.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     5.0000,13.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,13.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,13.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_4_wall_north,  !- Name
@@ -1342,10 +1342,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    5.0000,13.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    5.0000,13.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     5.0000,13.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,18.4600,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,18.4600,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,18.4600,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_4_wall_south,  !- Name
@@ -1359,10 +1359,10 @@
     NoWind,                  !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,0.0000,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,0.0000,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,0.0000,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     5.0000,5.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    5.0000,5.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    5.0000,5.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
   BuildingSurface:Detailed,
     Perimeter_ZN_4_wall_west,!- Name
@@ -1376,10 +1376,10 @@
     WindExposed,             !- Wind Exposure
     AutoCalculate,           !- View Factor to Ground
     4,                       !- Number of Vertices
-    0.0000,18.4600,3.0500,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,18.4600,6.5000,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,18.4600,0.0000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,0.0000,0.0000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,0.0000,3.0500;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,0.0000,6.5000;  !- X,Y,Z ==> Vertex 4 {m}
 
 ! ***WINDOWS***
 
@@ -1393,10 +1393,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    1.3900,0.0000,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    1.3900,0.0000,5.874,  !- X,Y,Z ==> Vertex 1 {m}
     1.3900,0.0000,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     3.2200,0.0000,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    3.2200,0.0000,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    3.2200,0.0000,5.874;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_1_wall_south_Window_2,  !- Name
@@ -1408,10 +1408,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    6.0100,0.0000,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    6.0100,0.0000,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     6.0100,0.0000,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     7.8400,0.0000,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    7.8400,0.0000,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    7.8400,0.0000,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_1_wall_south_Window_3,  !- Name
@@ -1423,10 +1423,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    10.6200,0.0000,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    10.6200,0.0000,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     10.6200,0.0000,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     12.4500,0.0000,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    12.4500,0.0000,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    12.4500,0.0000,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_1_wall_south_Window_4,  !- Name
@@ -1438,10 +1438,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    15.2400,0.0000,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    15.2400,0.0000,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     15.2400,0.0000,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     17.0700,0.0000,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    17.0700,0.0000,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    17.0700,0.0000,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_1_wall_south_Window_5,  !- Name
@@ -1453,10 +1453,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    19.8500,0.0000,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    19.8500,0.0000,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     19.8500,0.0000,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     21.6800,0.0000,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    21.6800,0.0000,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    21.6800,0.0000,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_1_wall_south_Window_6,  !- Name
@@ -1468,10 +1468,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    24.4700,0.0000,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    24.4700,0.0000,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     24.4700,0.0000,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     26.3000,0.0000,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    26.3000,0.0000,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    26.3000,0.0000,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_1_wall_south_door,  !- Name
@@ -1498,10 +1498,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    27.6900,1.3900,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,1.3900,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,1.3900,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,3.2200,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,3.2200,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,3.2200,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_2_wall_east_Window_2,  !- Name
@@ -1513,10 +1513,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    27.6900,6.0100,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,6.0100,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,6.0100,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,7.8400,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,7.8400,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,7.8400,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_2_wall_east_Window_3,  !- Name
@@ -1528,10 +1528,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    27.6900,10.6200,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,10.6200,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,10.6200,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,12.4500,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,12.4500,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,12.4500,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_2_wall_east_Window_4,  !- Name
@@ -1543,10 +1543,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    27.6900,15.2400,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    27.6900,15.2400,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     27.6900,15.2400,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     27.6900,17.0700,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    27.6900,17.0700,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    27.6900,17.0700,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_3_wall_north_Window_1,  !- Name
@@ -1558,10 +1558,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    26.3000,18.4600,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    26.3000,18.4600,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     26.3000,18.4600,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     24.4700,18.4600,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    24.4700,18.4600,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    24.4700,18.4600,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_3_wall_north_Window_2,  !- Name
@@ -1573,10 +1573,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    21.6800,18.4600,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    21.6800,18.4600,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     21.6800,18.4600,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     19.8500,18.4600,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    19.8500,18.4600,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    19.8500,18.4600,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_3_wall_north_Window_3,  !- Name
@@ -1588,10 +1588,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    17.0700,18.4600,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    17.0700,18.4600,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     17.0700,18.4600,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     15.2400,18.4600,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    15.2400,18.4600,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    15.2400,18.4600,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_3_wall_north_Window_4,  !- Name
@@ -1603,10 +1603,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    12.4500,18.4600,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    12.4500,18.4600,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     12.4500,18.4600,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     10.6200,18.4600,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    10.6200,18.4600,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    10.6200,18.4600,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_3_wall_north_Window_5,  !- Name
@@ -1618,10 +1618,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    7.8400,18.4600,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    7.8400,18.4600,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     7.8400,18.4600,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     6.0100,18.4600,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    6.0100,18.4600,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    6.0100,18.4600,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_3_wall_north_Window_6,  !- Name
@@ -1633,10 +1633,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    3.2200,18.4600,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    3.2200,18.4600,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     3.2200,18.4600,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     1.3900,18.4600,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    1.3900,18.4600,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    1.3900,18.4600,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_4_wall_west_Window_1,  !- Name
@@ -1648,10 +1648,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    0.0000,17.0700,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,17.0700,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,17.0700,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,15.2400,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,15.2400,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,15.2400,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_4_wall_west_Window_2,  !- Name
@@ -1663,10 +1663,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    0.0000,12.4500,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,12.4500,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,12.4500,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,10.6200,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,10.6200,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,10.6200,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_4_wall_west_Window_3,  !- Name
@@ -1678,10 +1678,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    0.0000,7.8400,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,7.8400,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,7.8400,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,6.0100,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,6.0100,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,6.0100,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
   FenestrationSurface:Detailed,
     Perimeter_ZN_4_wall_west_Window_4,  !- Name
@@ -1693,10 +1693,10 @@
     ,                        !- Frame and Divider Name
     1.0000,                  !- Multiplier
     4,                       !- Number of Vertices
-    0.0000,3.2200,2.4240,  !- X,Y,Z ==> Vertex 1 {m}
+    0.0000,3.2200,5.8740,  !- X,Y,Z ==> Vertex 1 {m}
     0.0000,3.2200,0.9000,  !- X,Y,Z ==> Vertex 2 {m}
     0.0000,1.3900,0.9000,  !- X,Y,Z ==> Vertex 3 {m}
-    0.0000,1.3900,2.4240;  !- X,Y,Z ==> Vertex 4 {m}
+    0.0000,1.3900,5.8740;  !- X,Y,Z ==> Vertex 4 {m}
 
 ! ***GEOMETRY RULES***
 
@@ -2102,79 +2102,111 @@
     BLDG_OCC_SCH,            !- Name
     Fraction,                !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
-    For: SummerDesignDay,    !- Field 2
-    Until: 06:00,0.0,        !- Field 3
-    Until: 22:00,1.0,        !- Field 5
-    Until: 24:00,0.05,       !- Field 7
-    For: Weekdays,           !- Field 9
-    Until: 06:00,0.0,        !- Field 10
-    Until: 07:00,0.1,        !- Field 12
-    Until: 08:00,0.2,        !- Field 14
-    Until: 12:00,0.95,       !- Field 16
-    Until: 13:00,0.5,        !- Field 18
-    Until: 17:00,0.95,       !- Field 20
-    Until: 18:00,0.3,        !- Field 22
-    Until: 20:00,0.1,        !- Field 24
-    Until: 24:00,0.05,       !- Field 26
-    For: Saturday,           !- Field 28
-    Until: 06:00,0.0,        !- Field 29
-    Until: 08:00,0.1,        !- Field 31
-    Until: 12:00,0.3,        !- Field 33
-    Until: 17:00,0.1,        !- Field 35
-    Until: 24:00,0.0,        !- Field 37
-    For: AllOtherDays,       !- Field 39
-    Until: 24:00,0.0;        !- Field 40
+    For: AllDays,            !- Field 2
+    Until: 7:00,             !- Field 3
+    1.0,                     !- Field 4
+    Until: 8:00,             !- Field 5
+    0.85,                    !- Field 6
+    Until: 9:00,             !- Field 7
+    0.39,                    !- Field 8
+    Until: 16:00,            !- Field 9
+    0.25,                    !- Field 10
+    Until: 17:00,            !- Field 11
+    0.3,                     !- Field 12
+    Until: 18:00,            !- Field 13
+    0.52,                    !- Field 14
+    Until: 21:00,            !- Field 15
+    0.87,                    !- Field 16
+    Until: 24:00,            !- Field 17
+    1.0;                     !- Field 18
 
   Schedule:Compact,
     BLDG_LIGHT_SCH,          !- Name
     Fraction,                !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
-    For: Weekdays,           !- Field 2
-    Until: 05:00,0.05,       !- Field 3
-    Until: 07:00,0.1,        !- Field 5
-    Until: 08:00,0.3,        !- Field 7
-    Until: 17:00,0.9,        !- Field 9
-    Until: 18:00,0.5,        !- Field 11
-    Until: 20:00,0.3,        !- Field 13
-    Until: 22:00,0.2,        !- Field 15
-    Until: 23:00,0.1,        !- Field 17
-    Until: 24:00,0.05,       !- Field 19
-    For: Saturday,           !- Field 21
-    Until: 06:00,0.05,       !- Field 22
-    Until: 08:00,0.1,        !- Field 24
-    Until: 12:00,0.3,        !- Field 26
-    Until: 17:00,0.15,       !- Field 28
-    Until: 24:00,0.05,       !- Field 30
-    For: SummerDesignDay,    !- Field 32
-    Until: 24:00,1.0,        !- Field 33
-    For: WinterDesignDay,    !- Field 35
-    Until: 24:00,0.0,        !- Field 36
-    For: AllOtherDays,       !- Field 38
-    Until: 24:00,0.05;       !- Field 39
+    For: AllDays,            !- Field 2
+    Until: 04:00,            !- Field 3
+    0.067,                   !- Field 4
+    Until: 05:00,            !- Field 5
+    0.187,                   !- Field 6
+    Until: 06:00,            !- Field 7
+    0.394,                   !- Field 8
+    Until: 07:00,            !- Field 9
+    0.440,                   !- Field 10
+    Until: 08:00,            !- Field 11
+    0.393,                   !- Field 12
+    Until: 09:00,            !- Field 13
+    0.172,                   !- Field 14
+    Until: 15:00,            !- Field 15
+    0.119,                   !- Field 16
+    Until: 16:00,            !- Field 17
+    0.206,                   !- Field 18
+    Until: 17:00,            !- Field 19
+    0.439,                   !- Field 20
+    Until: 18:00,            !- Field 21
+    0.616,                   !- Field 22
+    Until: 19:00,            !- Field 23
+    0.829,                   !- Field 24
+    Until: 20:00,            !- Field 25
+    0.986,                   !- Field 26
+    Until: 21:00,            !- Field 27
+    1.0,                     !- Field 28
+    Until: 22:00,            !- Field 29
+    0.692,                   !- Field 30
+    Until: 23:00,            !- Field 31
+    0.384,                   !- Field 32
+    Until: 24:00,            !- Field 33
+    0.160;                   !- Field 34
 
   Schedule:Compact,
     BLDG_EQUIP_SCH,          !- Name
     Fraction,                !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
-    For: Weekdays,           !- Field 2
-    Until: 08:00,0.40,       !- Field 3
-    Until: 12:00,0.90,       !- Field 5
-    Until: 13:00,0.80,       !- Field 7
-    Until: 17:00,0.90,       !- Field 9
-    Until: 18:00,0.50,       !- Field 11
-    Until: 24:00,0.40,       !- Field 13
-    For: Saturday,           !- Field 15
-    Until: 06:00,0.30,       !- Field 16
-    Until: 08:00,0.4,        !- Field 18
-    Until: 12:00,0.5,        !- Field 20
-    Until: 17:00,0.35,       !- Field 22
-    Until: 24:00,0.30,       !- Field 24
-    For: SummerDesignDay,    !- Field 26
-    Until: 24:00,1.0,        !- Field 27
-    For: WinterDesignDay,    !- Field 29
-    Until: 24:00,0.0,        !- Field 30
-    For: AllOtherDays,       !- Field 32
-    Until: 24:00,0.30;       !- Field 33
+    For: AllDays,            !- Field 2
+    Until: 1:00,             !- Field 3
+    0.45,                    !- Field 4
+    Until: 2:00,             !- Field 5
+    0.41,                    !- Field 6
+    Until: 3:00,             !- Field 7
+    0.39,                    !- Field 8
+    Until: 5:00,             !- Field 9
+    0.38,                    !- Field 10
+    Until: 6:00,             !- Field 11
+    0.43,                    !- Field 12
+    Until: 7:00,             !- Field 13
+    0.54,                    !- Field 14
+    Until: 8:00,             !- Field 15
+    0.65,                    !- Field 16
+    Until: 9:00,             !- Field 17
+    0.66,                    !- Field 18
+    Until: 10:00,            !- Field 19
+    0.67,                    !- Field 20
+    Until: 11:00,            !- Field 21
+    0.69,                    !- Field 22
+    Until: 12:00,            !- Field 23
+    0.70,                    !- Field 24
+    Until: 13:00,            !- Field 25
+    0.69,                    !- Field 26
+    Until: 14:00,            !- Field 27
+    0.66,                    !- Field 28
+    Until: 15:00,            !- Field 29
+    0.65,                    !- Field 30
+    Until: 16:00,            !- Field 31
+    0.68,                    !- Field 32
+    Until: 17:00,            !- Field 33
+    0.80,                    !- Field 34
+    Until: 19:00,            !- Field 35
+    1.0,                     !- Field 36
+    Until: 20:00,            !- Field 37
+    0.93,                    !- Field 38
+    Until: 21:00,            !- Field 39
+    0.89,                    !- Field 40
+    Until: 22:00,            !- Field 41
+    0.85,                    !- Field 42
+    Until: 23:00,            !- Field 43
+    0.71,                    !- Field 44
+    Until: 24:00,            !- Field 45
+    0.58;                    !- Field 46
 
   Schedule:Compact,
     ACTIVITY_SCH,            !- Name
@@ -4831,4 +4863,39 @@
     *,                       !- Key Value
     Surface Outside Face Temperature,  !- Variable Name
     timestep;                !- Reporting Frequency
+
+  Output:Variable,
+    *,                       !- Key Value
+    Surface Outside Face Incident Solar Radiation Rate per Area,  !- Variable Name
+    timestep;                !- Reporting Frequency
+
+  Output:Variable,
+    *,                       !- Key Value
+    Zone Air Temperature,    !- Variable Name
+    timestep;                !- Reporting Frequency
+
+  Output:Variable,
+      *,                       !- Key Value
+      Zone Air Humidity Ratio, !- Variable Name
+      timestep;                !- Reporting Frequency
+
+  Output:Variable,
+      *,                       !- Key Value
+      Zone Air System Sensible Cooling Rate,  !- Variable Name
+      timestep;                !- Reporting Frequency
+
+  Output:Variable,
+      *,                       !- Key Value
+      Zone Air System Sensible Heating Rate,  !- Variable Name
+      timestep;                !- Reporting Frequency
+
+  Output:Variable,
+      *,                       !- Key Value
+      Heating Coil Heating Rate,  !- Variable Name
+      timestep;                !- Reporting Frequency
+
+  Output:Variable,
+      *,                       !- Key Value
+      Cooling Coil Electricity Rate,  !- Variable Name
+      timestep;                !- Reporting Frequency
 

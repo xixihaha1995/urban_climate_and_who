@@ -14,18 +14,18 @@ def run_ep_api():
     api.exchange.request_variable(state, "Site Outdoor Air Drybulb Temperature", "ENVIRONMENT")
 
     output_path = os.path.join(ep_files_path, 'ep_optional_outputs')
-    weather_file_path = os.path.join(ep_files_path, epwFileName)
+    weather_file_path = os.path.join(ep_files_path, '..',epwFileName)
     idfFilePath = os.path.join(ep_files_path, idfFileName)
     sys_args = '-d', output_path, '-w', weather_file_path, idfFilePath
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
     # ep_files_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\refining_M3ing'
-    ep_files_path = '_2_cases_input_outputs\\_07_vancouver'
-    data_saving_path = '_2_cases_input_outputs\\_07_vancouver\\ep_saving'
-    epwFileName = 'TopForcing.epw'
+    ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\Refined_SMALL_OFFICE'
+    data_saving_path = '_2_cases_input_outputs\\_07_vancouver\\Refined_SMALL_OFFICE\\ep_saving'
+    epwFileName = 'VancouverTopForcing.epw'
     # idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M3ing.idf'
-    idfFileName = 'RefBldgSmallOfficePost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
+    idfFileName = 'Vancouver_SmallOffice.idf'
     # Lichen: init the synchronization lock related settings: locks, shared variables.
     coordination.init_saving_data()
     coordination.init_ep_api()
