@@ -30,13 +30,13 @@ Tdeep_ctrl,1,         # 1: Using force restore method, 2: Using climate data (fr
 # =================================================
 # Urban Configuration
 # =================================================
-nz,27,                 # number of points (nz*dz = 3*bldHeight)
-nz_u,8,               # number of canopy levels in the vertical (nz_u*dz = bldHeight)
+nz,26,                 # number of points (nz*dz = 3*bldHeight)
+nz_u,6.5,               # number of canopy levels in the vertical (nz_u*dz = bldHeight)
 dz,1,                  # vertical resolution [m]
 Width_canyon,23,       # distance between buildings at street level in the x and y direction must be equal [m]
 Width_roof,10,         # building dimension [m]
 theta_canyon,0.0,      # Canyon direction from geographical north, in the counter trigonometric direction (from -90 to 90 degrees)
-Height_canyon,8,      # Average building height [m]
+Height_canyon,6.5,      # Average building height [m]
 fveg_R,0,              # Vegetated roof fraction (between 0 and 1)
 fimp_R,1.0,            # Impervious roof fraction (between 0 and 1)
 fveg_G,0.5,            # Vegetated ground fraction
@@ -157,8 +157,8 @@ Sl_G,0.035,           # specific leaf area of  biomass [m^2 gC^-1]
 Radius_tree,1.0,       # Radius of tree crown [m]
 distance_tree,2.0,     # Tree-to-wall distance [m]
 LAD,                   # height measured from the ground [m], leaf area density profile per unit volume of the canyon [m^2 m^-3]
-0,1,2,3,4,5,6,7,8,
-0,0.002,0.02,0.03,0.046,0.04,0.036,0.02,0.01,
+0,1,2,3,4,5,
+0,0.03,0.046,0.04,0.036,0.01,
 trees,1,               # 1 for trees and 0 for no trees
 ftree,1,               # 1 for trees and 0 for no trees
 omega,1,               # Clumping factor
