@@ -10,6 +10,7 @@ epluszsz.csv
 *.png
 *.zip
 *.html
+!_4_measurements/Guelph/*.zip
 !_4_measurements/CAPITOUL/*.zip
 !_4_measurements/Vancouver/*.zip
 !_4_measurements/CAPITOUL/CAPITOUL_including_City(Booms)/*.html
