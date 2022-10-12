@@ -98,6 +98,35 @@ def get_all_files_data():
     # change the column name
     df.columns = column_name
     return df
+def overriding_epw(epw_csv, df_measurement):
+    '''
+    1. original epw file has 8760 data records
+    2. measurement has 8784 data records. So drop Feb 29th data
+    3. For air temperature, overwrite the epw file with the measurement data
+        a. For epw, the ;7th column is the dry bulb temperature
+        b. For measurement, the 1st column is the dry bulb temperature
+    '''
+    # The df_measurement index is datetime format, so use the date to drop Feb 29th data
+    df_measurement = df_measurement[df_measurement.index.date != pd.to_datetime('2004-02-29').date()]
+    # read text based epw file line by line
+    with open(epw_csv, 'r') as f:
+        lines = f.readlines()
+        for i in range(len(lines)):
+            # for the 7th column, overwrite with the measurement data
+            if i > 7 and i < 8768:
+                # for the 7th column, overwrite with the measurement data
+                lines[i] = lines[i].split(',')
+                # # round the measurement data to 1 decimal place
+                # lines[i][6] = str(round(df_measurement.iloc[i - 8, 0], 1))
+                lines[i][6] = str(df_measurement.iloc[i - 8, 0])
+                lines[i] = ','.join(lines[i])
+    # write the lines to the epw file
+    overwriten_epw = r'..\_2_cases_input_outputs\_08_CAPITOUL\generate_epw\overwriten_FRA_Bordeaux.075100_IWEC.epw'
+    with open(overwriten_epw, 'w') as f:
+        f.writelines(lines)
+    return overwriten_epw
+
+
 
 def main():
     # get the data from all the files
@@ -106,9 +135,12 @@ def main():
     df.to_csv(r'..\_4_measurements\CAPITOUL\Rural_Mondouzil_Minute.csv')
     # except the first two columns, convert the rest columns into float type
     df.iloc[:, 2:] = df.iloc[:, 2:].astype(float)
-    df_hourly = plot_tools.time_interval_converstion_actual_timestamp(df,60)
+    df_hourly = plot_tools.time_interval_converstion_actual_timestamp(df)
     # save the data to csv file
     df_hourly.to_csv(r'..\_4_measurements\CAPITOUL\Rural_Mondouzil_Hour.csv')
+    # _2_cases_input_outputs/_08_CAPITOUL/generate_epw/overriding_FRA_Bordeaux.075100_IWECEPW.csv
+    epw_csv = r'..\_2_cases_input_outputs\_08_CAPITOUL\generate_epw\overriding_FRA_Bordeaux.075100_IWEC.epw'
+    overriding_epw(epw_csv, df_hourly)
 
 if __name__ == '__main__':
     main()
