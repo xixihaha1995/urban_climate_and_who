@@ -218,6 +218,23 @@ def time_interval_convertion(df, original_time_interval_min = 30, need_date = Fa
     else:
         df_new = add_date_index(df_new, start_time, 3600)
     return df_new
+def time_interval_converstion_actual_timestamp(df, target_time_interval_min = 60):
+    '''
+    The df entries has actual measurement timestamps.
+    Based on the target_time_interval_min, average associated entries.
+    '''
+    # average the entries in the same hour
+    df_new = pd.DataFrame(columns=df.columns)
+    for i in range(0, len(df)):
+        # get the hour
+        hour = df.index[i].hour
+        # get the entries in the same hour
+        df_hour = df[df.index.hour == hour]
+        # average the entries in the same hour
+        df_new.loc[df.index[i]] = df_hour.mean()
+    # floor index (YYYY-MM-DD HH:MM:SS) to (YYYY-MM-DD HH:00:00)
+    df_new.index = df_new.index.floor('H')
+    return df_new
 
 def _5min_to_10min(df):
     '''

@@ -15,8 +15,7 @@ sampling rate: 1 hour
 # 3. overwrite the epw file in the epw folder of the case
 
 import os
-import pandas as pd
-import numpy as np
+import pandas as pd, _0_all_plot_tools as plot_tools
 
 # 1. read the measured data from all the 12 files, sample rate is 1 minute
 # For one file,
@@ -45,38 +44,71 @@ air temperature (position 6 meters high) : Celsius
 air relative humidity (position 6 meters high) : Celsius
 '''
 
-def make_columns_name():
+def make_columns_name(_first_month_name):
     # make the column names
-    # the column names are the same as the epw file
-    column_names = ['Year', 'Month', 'Day', 'Hour', 'Minute', 'Data Source and Uncertainty Flags', 'Dry Bulb Temperature', 'Dew Point Temperature', 'Relative Humidity', 'Atmospheric Station Pressure', 'Extraterrestrial Horizontal Radiation', 'Extraterrestrial Direct Normal Radiation', 'Horizontal Infrared Radiation Intensity', 'Global Horizontal Radiation', 'Direct Normal Radiation', 'Diffuse Horizontal Radiation', 'Global Horizontal Illuminance', 'Direct Normal Illuminance', 'Diffuse Horizontal Illuminance', 'Zenith Luminance', 'Wind Direction', 'Wind Speed', 'Total Sky Cover', 'Opaque Sky Cover', 'Visibility', 'Ceiling Height', 'Present Weather Observation', 'Present Weather Codes', 'Precipitable Water', 'Aerosol Optical Depth', 'Snow Depth', 'Days Since Last Snowfall', 'Albedo', 'Liquid Precipitation Depth', 'Liquid Precipitation Quantity']
-    return column_names
+    # # 1.2. The 10th line is the column names, in total 14 columns
+    # # 1.3. The 11th line is the unit of each column, in total 14 columns
+    # combine the 10th and 11th lines as the column names
+    with open(_first_month_name, 'r') as f:
+        lines = f.readlines()
+        # For each column name, its surrounded by two single quotes, 'column_name'; between two column names, there is a space.
+        # for string between two single quotes, extract them as column names
+        _10th_line = lines[9].strip().split(' ')
+        # remove string only containing single quote
+        _10th_line = [i for i in _10th_line if i != "'"]
+        _11th_line = lines[10].strip().split("' '")
+        column_name = []
+        for i in range(len(_10th_line)):
+            column_name.append(_10th_line[i] + '_' + _11th_line[i])
+    return column_name
 
 def get_one_file_data(file_path):
-    # read one file
-    df = pd.read_csv(file_path, skiprows=15, header=None)
+    # read one file, read the second column as string
+    df = pd.read_csv(file_path, skiprows=15, header=None, sep='\t', dtype={1: str})
+    #
     # convert the date and time to datetime format
-    df['date_time'] = pd.to_datetime(df['date'] + ' ' + df['time'], format='%d/%m/%Y %H%M%S.%f')
+    '''
+    1. first column is data, format DD/MM/AAAA
+    2. second column is time, format HHMNSS.SSS, fill the missing 0
+    '''
+    df[0] = df[0].apply(lambda x: x.replace('/', '-'))
+    df[1] = df[1].apply(lambda x: x.zfill(8))
+
+    # combine the date and time, and convert to datetime format
+    df['date_time'] = df.iloc[:, 0] + ' ' + df.iloc[:, 1]
+    df['date_time'] = pd.to_datetime(df['date_time'], format='%d-%m-%Y %H%M%S.%f')
     # set the date_time as index
     df = df.set_index('date_time')
-    # drop the date and time columns
-    df = df.drop(['date', 'time'], axis=1)
     return df
 
 def get_all_files_data():
     # get the file path
-    file_path = r'_4_measurements\CAPITOUL\CAPITOUL_including_Rural(Mondouzil)\Mo_BDD\Mo_BDD'
-    # get all the file names
-    file_names = os.listdir(file_path)
+    file_path = r'..\\_4_measurements\CAPITOUL\CAPITOUL_including_Rural(Mondouzil)\Mo_BDD\Mo_BDD'
     # get the data from all the files
     df = pd.DataFrame()
     file_name_str = 'Mo_BDD_MM-2004.asc' # where MM stands for the month
-    #get 01 month file name by file_name_str.replace('MM', '01')
-    _first_month_name = file_name_str.replace('MM', '01')
-    column_name = make_columns_name(os.path.join(file_path, _first_month_name))
-    df.columns = column_name
     for month in range(1, 13):
         file_name = file_name_str.replace('MM', str(month).zfill(2))
         file_name = os.path.join(file_path, file_name)
         df_month = get_one_file_data(file_name)
         df = pd.concat([df, df_month])
+    #get 01 month file name by file_name_str.replace('MM', '01')
+    _first_month_name = file_name_str.replace('MM', '01')
+    column_name = make_columns_name(os.path.join(file_path, _first_month_name))
+    # change the column name
+    df.columns = column_name
     return df
+
+def main():
+    # get the data from all the files
+    df = get_all_files_data()
+    # save the data to csv file
+    df.to_csv(r'..\_4_measurements\CAPITOUL\Rural_Mondouzil_Minute.csv')
+    # except the first two columns, convert the rest columns into float type
+    df.iloc[:, 2:] = df.iloc[:, 2:].astype(float)
+    df_hourly = plot_tools.time_interval_converstion_actual_timestamp(df,60)
+    # save the data to csv file
+    df_hourly.to_csv(r'..\_4_measurements\CAPITOUL\Rural_Mondouzil_Hour.csv')
+
+if __name__ == '__main__':
+    main()
