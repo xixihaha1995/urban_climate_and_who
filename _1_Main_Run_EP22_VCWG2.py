@@ -6,8 +6,7 @@ from _3_post_process_code import _0_all_plot_tools as plot_tools
 
 def run_ep_api():
     state = api.state_manager.new_state()
-    api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers.smallOffice_nested_ep_only)
-
+    api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers.mediumOffice_nested_ep_only)
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
     api.exchange.request_variable(state, "Site Wind Speed", "ENVIRONMENT")
     api.exchange.request_variable(state, "Site Wind Direction", "ENVIRONMENT")
@@ -22,9 +21,14 @@ def run_ep_api():
 if __name__ == '__main__':
     # ep_files_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\refining_M3ing'
     # ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\Refined_SMALL_OFFICE'
+    case_name = 'CAPITOUL_only_ep_2004'
+    start_time = '2004-06-01 00:00:00'
+    time_interval_sec = 300
+    data_name_lst = ['ep_wsp_mps_wdir_deg', 'debugging_canyon']
+
     ep_files_path = '_2_cases_input_outputs\\_08_CAPITOUL\\DOE_Ref_MediumOffice_4B'
     data_saving_path = '_2_cases_input_outputs\\_08_CAPITOUL\\DOE_Ref_MediumOffice_4B\\ep_saving'
-    epwFileName = 'overwriten_FRA_Bordeaux.075100_IWEC.epw'
+    epwFileName = 'Mondouzil_tdb_td_rh_P_2004.epw'
     # idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M3ing.idf'
     idfFileName = 'RefBldgMediumOfficePost1980_v1.4_7.2_4B_USA_NM_ALBUQUERQUE.idf'
     # Lichen: init the synchronization lock related settings: locks, shared variables.
@@ -39,10 +43,8 @@ if __name__ == '__main__':
     # Lichen: wait for ep_thread to finish to post process some accumulated records
     ep_thread.join()
 
-    case_name = 'only_ep'
-    start_time = '2004-06-01 00:00:00'
-    time_interval_sec = 300
-    data_name_lst = ['ep_wsp_mps_wdir_deg', 'debugging_canyon']
+
+
 
     for data_name in data_name_lst:
         plot_tools.save_data_to_csv(coordination.saving_data, data_name,case_name,

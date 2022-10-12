@@ -7872,4 +7872,3 @@
     *,                       !- Key Value
     Surface Outside Face Temperature,  !- Variable Name
     timestep;                !- Reporting Frequency
-

@@ -16,7 +16,7 @@ def api_to_csv(state):
     newFile = open(api_path, "wb")
     newFile.write(newFileByteArray)
     newFile.close()
-def _nested_ep_only(state):
+def midRiseApart_nested_ep_only(state):
     global one_time,accu_hvac_heat_rejection_J,\
         zone_time_step_seconds, oat_sensor_handle, hvac_heat_rejection_sensor_handle,\
         site_wind_speed_mps_sensor_handle, site_wind_direction_deg_sensor_handle, \
@@ -315,3 +315,103 @@ def smallOffice_nested_ep_only(state):
 
         coordination.saving_data['debugging_canyon'].append([
             s_wall_Text + 273.15, n_wall_Text + 273.15, roof_Text + 273.15,hvac_waste_w_m2, oat_temp_c + 273.15])
+
+def mediumOffice_nested_ep_only(state):
+    global one_time, accu_hvac_heat_rejection_J, \
+        zone_time_step_seconds, oat_sensor_handle, hvac_heat_rejection_sensor_handle, \
+        site_wind_speed_mps_sensor_handle, site_wind_direction_deg_sensor_handle, \
+        ep_last_accumulated_time_index_in_seconds, \
+        s_wall_bot_1_Text_handle, s_wall_mid_1_Text_handle, s_wall_top_1_Text_handle,\
+        n_wall_bot_1_Text_handle, n_wall_mid_1_Text_handle, n_wall_top_1_Text_handle,\
+        roof_Text_handle
+
+    if one_time:
+        if not coordination.ep_api.exchange.api_data_fully_ready(state):
+            return
+        one_time = False
+        zone_time_step_seconds = 3600 / coordination.ep_api.exchange.num_time_steps_in_hour(state)
+        oat_sensor_handle = coordination.ep_api.exchange.get_variable_handle(state,
+                                                                             "Site Outdoor Air Drybulb Temperature",
+                                                                             "Environment")
+        hvac_heat_rejection_sensor_handle = \
+            coordination.ep_api.exchange.get_variable_handle(state,
+                                                             "HVAC System Total Heat Rejection Energy",
+                                                             "SIMHVAC")
+        site_wind_speed_mps_sensor_handle = \
+            coordination.ep_api.exchange.get_variable_handle(state,
+                                                             "Site Wind Speed",
+                                                             "ENVIRONMENT")
+        site_wind_direction_deg_sensor_handle = \
+            coordination.ep_api.exchange.get_variable_handle(state,
+                                                             "Site Wind Direction",
+                                                             "ENVIRONMENT")
+        s_wall_bot_1_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,
+                                                                              "Surface Outside Face Temperature",
+                                                                              "Perimeter_bot_ZN_1_Wall_South")
+        s_wall_mid_1_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,
+                                                                                    "Surface Outside Face Temperature",
+                                                                                    "Perimeter_mid_ZN_1_Wall_South")
+        s_wall_top_1_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,
+                                                                                    "Surface Outside Face Temperature",
+                                                                                    "Perimeter_top_ZN_1_Wall_South")
+        n_wall_bot_1_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,
+                                                                                    "Surface Outside Face Temperature",
+                                                                                    "Perimeter_bot_ZN_3_Wall_North")
+        n_wall_mid_1_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,
+                                                                                    "Surface Outside Face Temperature",
+                                                                                    "Perimeter_mid_ZN_3_Wall_North")
+        n_wall_top_1_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,
+                                                                                    "Surface Outside Face Temperature",
+                                                                                    "Perimeter_top_ZN_3_Wall_North")
+        roof_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,
+                                                                                  "Surface Outside Face Temperature",
+                                                                                  "Building_Roof")
+        if oat_sensor_handle == -1 or hvac_heat_rejection_sensor_handle == -1 or \
+                site_wind_speed_mps_sensor_handle == -1 or site_wind_direction_deg_sensor_handle == -1 or \
+                s_wall_bot_1_Text_handle == -1 or s_wall_mid_1_Text_handle == -1 or s_wall_top_1_Text_handle == -1 or\
+                n_wall_bot_1_Text_handle == -1 or n_wall_mid_1_Text_handle == -1 or n_wall_top_1_Text_handle == -1 or\
+                roof_Text_handle == -1:
+            print('mediumOffice_nested_ep_only(): some handle not available')
+            os.getpid()
+            os.kill(os.getpid(), signal.SIGTERM)
+
+    warm_up = coordination.ep_api.exchange.warmup_flag(state)
+    if not warm_up:
+        curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
+        curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
+        accumulation_time_step_in_seconds = curr_sim_time_in_seconds - ep_last_accumulated_time_index_in_seconds
+        accu_hvac_heat_rejection_J += coordination.ep_api.exchange.get_variable_value(state,
+                                                                                      hvac_heat_rejection_sensor_handle)
+
+        one_zone_time_step_bool = 1 > abs(accumulation_time_step_in_seconds - zone_time_step_seconds)
+        if not one_zone_time_step_bool: return
+        ep_last_accumulated_time_index_in_seconds = curr_sim_time_in_seconds
+
+        oat_temp_c = coordination.ep_api.exchange.get_variable_value(state, oat_sensor_handle)
+
+        coordination.ep_wsp_mps = coordination.ep_api.exchange.get_variable_value(state,
+                                                                                  site_wind_speed_mps_sensor_handle)
+        coordination.ep_wdir_deg = coordination.ep_api.exchange.get_variable_value(state,
+                                                                                   site_wind_direction_deg_sensor_handle)
+        s_wall_bot_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, s_wall_bot_1_Text_handle)
+        s_wall_mid_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, s_wall_mid_1_Text_handle)
+        s_wall_top_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, s_wall_top_1_Text_handle)
+        n_wall_bot_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, n_wall_bot_1_Text_handle)
+        n_wall_mid_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, n_wall_mid_1_Text_handle)
+        n_wall_top_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, n_wall_top_1_Text_handle)
+
+        s_wall_Text_c = (s_wall_bot_1_Text_c + s_wall_mid_1_Text_c + s_wall_top_1_Text_c) / 3
+        n_wall_Text_c = (n_wall_bot_1_Text_c + n_wall_mid_1_Text_c + n_wall_top_1_Text_c) / 3
+
+        roof_Text_c = coordination.ep_api.exchange.get_variable_value(state, roof_Text_handle)
+
+        hvac_waste_w_m2 = accu_hvac_heat_rejection_J / accumulation_time_step_in_seconds \
+                          / coordination.smallOfficeBld_floor_area_m2
+        accu_hvac_heat_rejection_J = 0
+
+        coordination.saving_data['ep_wsp_mps_wdir_deg'].append(
+            [coordination.ep_wsp_mps, coordination.ep_wdir_deg])
+
+        coordination.saving_data['debugging_canyon'].append([
+            s_wall_Text_c + 273.15, n_wall_Text_c + 273.15, roof_Text_c + 273.15, hvac_waste_w_m2, oat_temp_c + 273.15])
+
