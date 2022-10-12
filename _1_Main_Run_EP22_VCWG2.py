@@ -34,9 +34,10 @@ def run_vcwg():
 if __name__ == '__main__':
     # Lichen: init the synchronization lock related settings: locks, shared variables.
     coordination.init_saving_data()
-    saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\vcwg_saving'
-    case_name = 'only_vcwg'
-    start_time = '2008-07-01 00:00:00'
+    # saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\vcwg_saving'
+    saving_data_path = '_2_cases_input_outputs\\_08_CAPITOUL\\DOE_Ref_MediumOffice_4B\\vcwg_saving'
+    case_name = 'CAPITOUL_2004_only_vcwg'
+    start_time = '2004-06-01 00:00:00'
     time_interval_sec = 300
 
     vcwg_thread = Thread(target=run_vcwg)
