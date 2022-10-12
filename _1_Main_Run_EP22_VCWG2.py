@@ -51,7 +51,6 @@ if __name__ == '__main__':
     ep_thread.join()
 
 
-
     # start_time = '2002-06-10 00:00:00'
     start_time = '2008-07-01 00:00:00'
     time_interval_sec = 300

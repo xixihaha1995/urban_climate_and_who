@@ -14,8 +14,11 @@ sampling rate: 1 hour
 # 2. convert the measured data to epw format, sample rate is 1 hour
 # 3. overwrite the epw file in the epw folder of the case
 
-import os
+import os, sys
 import pandas as pd, _0_all_plot_tools as plot_tools
+
+sys.path.insert(0, 'C:\EnergyPlusV22-1-0')
+from pyenergyplus.api import EnergyPlusAPI
 
 # 1. read the measured data from all the 12 files, sample rate is 1 minute
 # For one file,
@@ -114,21 +117,35 @@ def overriding_epw(epw_csv, df_measurement):
         for i in range(len(lines)):
             # for the 7th column, overwrite with the measurement data
             if i > 7 and i < 8768:
-                # for the 7th column, overwrite with the measurement data
+                # for the 7th column, air temperature, overwrite with the measurement data, 0
+                # for the 9th column, relative humidity, overwrite with the measurement data, 2
+                # calculate humidity_ratio_c(state, db in C (0), rh in fraction (2), p is hPa to Pa)
+                # calculate dew_point(state, humidity_ratio, p in Pa (1))
+                # for the 8th column, dew point temperature, overwrite
                 lines[i] = lines[i].split(',')
-                # # round the measurement data to 1 decimal place
-                # lines[i][6] = str(round(df_measurement.iloc[i - 8, 0], 1))
                 lines[i][6] = str(df_measurement.iloc[i - 8, 0])
+                lines[i][8] = str(df_measurement.iloc[i - 8, 2])
+                press_pa = df_measurement.iloc[i - 8, 1] * 100
+                humidity_ratio = psychrometric.humidity_ratio_c(state,
+                    df_measurement.iloc[i - 8, 0],df_measurement.iloc[i - 8, 2] / 100, press_pa)
+                dew_point = psychrometric.dew_point(state, humidity_ratio, press_pa)
+                lines[i][7] = str(dew_point)
+                lines[i][9] = str(press_pa)
                 lines[i] = ','.join(lines[i])
     # write the lines to the epw file
-    overwriten_epw = r'..\_2_cases_input_outputs\_08_CAPITOUL\generate_epw\overwriten_FRA_Bordeaux.075100_IWEC.epw'
+    overwriten_epw = r'..\_2_cases_input_outputs\_08_CAPITOUL\generate_epw\Mondouzil_tdb_td_rh_P_2004.epw'
     with open(overwriten_epw, 'w') as f:
         f.writelines(lines)
     return overwriten_epw
 
-
+def init_ep_api():
+    global psychrometric, state
+    ep_api = EnergyPlusAPI()
+    state = ep_api.state_manager.new_state()
+    psychrometric = ep_api.functional.psychrometrics(state)
 
 def main():
+    init_ep_api()
     # get the data from all the files
     df = get_all_files_data()
     # save the data to csv file
