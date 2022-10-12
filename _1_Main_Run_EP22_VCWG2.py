@@ -14,18 +14,19 @@ def run_ep_api():
     api.exchange.request_variable(state, "Site Outdoor Air Drybulb Temperature", "ENVIRONMENT")
 
     output_path = os.path.join(ep_files_path, 'ep_optional_outputs')
-    weather_file_path = os.path.join(ep_files_path, '..',epwFileName)
+    weather_file_path = os.path.join(ep_files_path,epwFileName)
     idfFilePath = os.path.join(ep_files_path, idfFileName)
     sys_args = '-d', output_path, '-w', weather_file_path, idfFilePath
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
     # ep_files_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\refining_M3ing'
-    ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\Refined_SMALL_OFFICE'
-    data_saving_path = '_2_cases_input_outputs\\_07_vancouver\\Refined_SMALL_OFFICE\\ep_saving'
-    epwFileName = 'VancouverTopForcing.epw'
+    # ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\Refined_SMALL_OFFICE'
+    ep_files_path = '_2_cases_input_outputs\\_08_CAPITOUL\\DOE_Ref_MediumOffice_4B'
+    data_saving_path = '_2_cases_input_outputs\\_08_CAPITOUL\\DOE_Ref_MediumOffice_4B\\ep_saving'
+    epwFileName = 'overwriten_FRA_Bordeaux.075100_IWEC.epw'
     # idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M3ing.idf'
-    idfFileName = 'Vancouver_SmallOffice.idf'
+    idfFileName = 'RefBldgMediumOfficePost1980_v1.4_7.2_4B_USA_NM_ALBUQUERQUE.idf'
     # Lichen: init the synchronization lock related settings: locks, shared variables.
     coordination.init_saving_data()
     coordination.init_ep_api()
@@ -39,7 +40,7 @@ if __name__ == '__main__':
     ep_thread.join()
 
     case_name = 'only_ep'
-    start_time = '2008-07-01 00:00:00'
+    start_time = '2004-06-01 00:00:00'
     time_interval_sec = 300
     data_name_lst = ['ep_wsp_mps_wdir_deg', 'debugging_canyon']
 
