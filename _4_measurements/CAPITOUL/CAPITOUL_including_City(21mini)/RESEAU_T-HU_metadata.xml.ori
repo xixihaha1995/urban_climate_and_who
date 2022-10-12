@@ -1,0 +1,972 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <presentation>
+    <nom>RESEAU_T-HU</nom>
+    <definition>Mesure du réseau de 21 enregistreurs température-humidité&#xD;
+mis en place par l'équipe GMEI/4M du CNRM.</definition>
+    <destination>SGBD</destination>
+    <categorie>SURF_FIXE</categorie>
+    <contacts>
+      <personne>
+        <nom>Pigeon</nom>
+        <prenom>Grégoire</prenom>
+        <organisme>Meteo-France/CNRM</organisme>
+        <mail>gregoire.pigeon@meteo.fr</mail>
+        <mdp>gp2005</mdp>
+        <role>pi</role>
+      </personne>
+      <personne>
+        <nom>Petitpa</nom>
+        <prenom>Alain</prenom>
+        <organisme>Meteo-France/CNRM</organisme>
+        <mail>alain.petitpa@meteo.fr</mail>
+        <mdp>ap2005</mdp>
+        <role>default</role>
+      </personne>
+      <personne>
+        <nom>Suquia</nom>
+        <prenom>David</prenom>
+        <organisme>Meteo-France/CNRM</organisme>
+        <mail>david.suquia@meteo.fr</mail>
+        <mdp>DS2005</mdp>
+        <role>tech</role>
+      </personne>
+    </contacts>
+  </presentation>
+  <description>
+    <organisme>Meteo-France/CNRM</organisme>
+    <pi>
+      <nom>Pigeon</nom>
+      <prenom>Grégoire</prenom>
+      <organisme>Meteo-France/CNRM</organisme>
+      <mail>gregoire.pigeon@meteo.fr</mail>
+      <mdp>gp2005</mdp>
+      <role>pi</role>
+    </pi>
+    <technicien>
+      <nom>Suquia</nom>
+      <prenom>David</prenom>
+      <organisme>Meteo-France/CNRM</organisme>
+      <mail>david.suquia@meteo.fr</mail>
+      <mdp>DS2005</mdp>
+      <role>tech</role>
+    </technicien>
+    <format>ASCII</format>
+    <repartition>1/station/mois</repartition>
+  </description>
+  <contenu_prevu>
+    <liste_plateformes>
+      <plateforme>
+        <nom>L'Union</nom>
+        <desc>zone 1 (CAR000 - THU100)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.6522</lat_min>
+        <lon_min>1.4827</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.6522</lat_max>
+        <lon_max>1.4827</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Naubalette</nom>
+        <desc>zone 2 (CAR001 - THU102)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.6364</lat_min>
+        <lon_min>1.4122</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.6364</lat_max>
+        <lon_max>1.4122</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Blagnac-ville</nom>
+        <desc>zone 3 (CAR002 - THU103)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.6291</lat_min>
+        <lon_min>1.3964</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.6291</lat_max>
+        <lon_max>1.3964</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Bonnefoy</nom>
+        <desc>zone 4 (CAR003 - THU104)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.6224</lat_min>
+        <lon_min>1.4605</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.6224</lat_max>
+        <lon_max>1.4605</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Minimes</nom>
+        <desc>zone 5 (CAR004 - THU105)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.6192</lat_min>
+        <lon_min>1.4389</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.6192</lat_max>
+        <lon_max>1.4389</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Aérospatiale</nom>
+        <desc>zone 6 (CAR005 - THU106)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.6203</lat_min>
+        <lon_min>1.3498</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.6203</lat_max>
+        <lon_max>1.3498</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Cité_Administrative</nom>
+        <desc>zone 7 (CAR006 - THU107)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.6083</lat_min>
+        <lon_min>1.4363</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.6083</lat_max>
+        <lon_max>1.4363</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Colomiers</nom>
+        <desc>zone 8 (CAR007 - THU108 PUIS CAR011 - THU126)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.605</lat_min>
+        <lon_min>1.34</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.605</lat_max>
+        <lon_max>1.34</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>La_Coquille</nom>
+        <desc>zone 9 (CAR008 - THU109)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.6085</lat_min>
+        <lon_min>1.4757</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.6085</lat_max>
+        <lon_max>1.4757</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Ramier</nom>
+        <desc>zone 10 (CAR009 - THU110)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.5888</lat_min>
+        <lon_min>1.4367</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.5888</lat_max>
+        <lon_max>1.4367</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Pradettes</nom>
+        <desc>zone 11 (CAR010 - THU111)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.5788</lat_min>
+        <lon_min>1.3886</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.5788</lat_max>
+        <lon_max>1.3886</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Saint_Michel</nom>
+        <desc>zone 12 (CAR023 - THU123)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.5902</lat_min>
+        <lon_min>1.4443</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.5902</lat_max>
+        <lon_max>1.4443</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Rangueil</nom>
+        <desc>zone 13 (CAR012 - THU113)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.5791</lat_min>
+        <lon_min>1.4541</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.5791</lat_max>
+        <lon_max>1.4541</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Saint_Orens</nom>
+        <desc>zone 14 (CAR013 - THU114)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.5577</lat_min>
+        <lon_min>1.4482</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.5577</lat_max>
+        <lon_max>1.4482</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Pech_David</nom>
+        <desc>zone 15 (CAR014 - THU115)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.5589</lat_min>
+        <lon_min>1.5165</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.5589</lat_max>
+        <lon_max>1.5165</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>ZI_Thibaud</nom>
+        <desc>zone 16 (CAR015 - THU116)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.5493</lat_min>
+        <lon_min>1.4009</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.5493</lat_max>
+        <lon_max>1.4009</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Ramonville</nom>
+        <desc>zone 17 (CAR016 - THU117)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.5521</lat_min>
+        <lon_min>1.4762</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.5521</lat_max>
+        <lon_max>1.4762</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Labege</nom>
+        <desc>zone 18 (CAR017 - THU118)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.551</lat_min>
+        <lon_min>1.5077</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.551</lat_max>
+        <lon_max>1.5077</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Villeneuve_Tolosane</nom>
+        <desc>zone 19 &amp; 20 (CAR018 - THU119 &amp; CAR020 - THU124)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.5326</lat_min>
+        <lon_min>1.3396</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.5326</lat_max>
+        <lon_max>1.3396</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+      <plateforme>
+        <nom>Saint_Cyprien</nom>
+        <desc>zone 21 (CAR019 - THU120 PUIS CAR019 - THU112)</desc>
+        <liste_images>
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+          <image />
+        </liste_images>
+        <lat_min>43.5962</lat_min>
+        <lon_min>1.4279</lon_min>
+        <alt_min>0.0</alt_min>
+        <lat_max>43.5962</lat_max>
+        <lon_max>1.4279</lon_max>
+        <alt_max>0.0</alt_max>
+      </plateforme>
+    </liste_plateformes>
+    <liste_params>
+      <param>
+        <nom>Température de l'air</nom>
+        <abrev>Tpr_air</abrev>
+        <unite>° C</unite>
+      </param>
+      <param>
+        <nom>Humidité relative de l'air</nom>
+        <abrev>Hum_rel_air</abrev>
+        <unite>%</unite>
+      </param>
+    </liste_params>
+    <liste_capteurs>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>100 &amp; 16.413.024</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU100-CAR000</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>102 &amp; 14.354.013</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU102-CAR001</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>103 &amp; 16.413.021</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU103-CAR002</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>20.268.079 &amp; 16.413.007</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU104-CAR003</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>105 &amp; 16.413.005</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU105-CAR004</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>20.268.081 &amp; 16.413.009</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU106-CAR005</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>107 &amp; 16.413.006</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU107-CAR006</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>108 &amp; 14.354.050</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU108-CAR007</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>20.268.073 &amp; 14.354.023</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU109-CAR008</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>21.089.082 &amp; 16.413.019</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU110-CAR009</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>20.268.070 &amp; 16.413.008</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU111-CAR010</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog D</modele>
+        <num_serie>123 &amp; 17.106.030</num_serie>
+        <etalonnage>pas d'étalonnage&#xD;
+THU123-CAR023</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>20.268.164 &amp; 16.413.023</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU113-CAR012</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>21.089.078 &amp; 16.413.004</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU114-CAR013</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>20.268.074 &amp; 16.413.010</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU115-CAR014</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>20.268.075 &amp; 16.413.022</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU116-CAR015</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>117 &amp; 16.413.002</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU117-CAR016</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>20.268.082 &amp; 16.413.013</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU118-CAR017</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>119 &amp; 16.413.016</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU119-CAR018</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog D</modele>
+        <num_serie>124 &amp; 17.106.038</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU124-CAR020</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>120 &amp; 16.413.020</num_serie>
+        <etalonnage>05/12/03&#xD;
+THU120-CAR019</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>20.268.071 &amp; 16.413.020</num_serie>
+        <etalonnage>étalonnage:&#xD;
+05/12/03&#xD;
+THU112-CAR011&#xD;
+installation:&#xD;
+THU112-CAR019</etalonnage>
+      </capteur>
+      <capteur>
+        <type>thermo-hygromètre</type>
+        <fabriquant>Rotronic</fabriquant>
+        <modele>Hygroclip - S &amp; HygroLog</modele>
+        <num_serie>29896 200 &amp; 16.413.014</num_serie>
+        <etalonnage>05/12/03&#xD;
+capteur neuf&#xD;
+THU126-CAR011</etalonnage>
+      </capteur>
+    </liste_capteurs>
+  </contenu_prevu>
+  <integration>
+    <integrateur>
+      <nom>Pignot</nom>
+      <prenom>Vincent</prenom>
+      <organisme>Médias-France</organisme>
+      <mail>pignot@medias.cnes.fr</mail>
+      <mdp />
+      <role>default</role>
+    </integrateur>
+    <date_d>
+      <date>15/04/2005</date>
+      <heure>18:00:00</heure>
+    </date_d>
+    <date_f>
+      <date>17/04/2005</date>
+      <heure>18:00:00</heure>
+    </date_f>
+    <nb_fichiers>137</nb_fichiers>
+    <taille_fichiers />
+  </integration>
+  <contenu_actuel>
+    <liste_plateformes />
+    <liste_params />
+    <liste_capteurs />
+  </contenu_actuel>
+</metadata>
+
