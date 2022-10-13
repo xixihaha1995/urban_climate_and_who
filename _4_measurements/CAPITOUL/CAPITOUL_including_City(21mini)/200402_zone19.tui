@@ -1,0 +1,42 @@
+* Rotronic AG
+* Grindelstrasse 6 
+* CH-8306 Bassersdorf/Switzerland   
+* 
+* Phone +41-1-838 11 11
+* http://www.rotronic.ch
+______________________________________________________________________ [DATA]
+Software Version   2.0.0 A
+File=20040308_zone19.log
+Gerät=HygroLog - 1.0
+Type=Logger
+SerieNummer= 16413016   
+LoggModus=Loop
+Interval=0.12.00
+Start=lundi 8 mars 2004   10:36:09
+Stopp=lundi 19 avril 2004   02:36:09
+Holdverzögerung=0.00.00
+Startverzögerung = 0.00.00.00
+Messwerte=Raw Data
+unit_0=%RH
+unit_1=°C
+Alarm=Off
+AlarmFeuchteLow=
+AlarmFeuchteHigh=
+AlarmTemperaturLow=
+AlarmTemperaturHigh=
+Batterie-Kapazität=100 %
+Batterie wurde gewechset am jeudi 4 mars 2004   12:49:04
+Zeitabweichung=no difference
+Produktions/Service Datum =jeudi 1 mars 2001
+Note_1=
+Note_2=
+Note_3=
+Note_4=
+Note_5=
+Name_1=
+EndHeader=
+______________________________________________________________________
+
+
+*Zaehler;Datum;Zeit;Temperatur;Feuchte
+

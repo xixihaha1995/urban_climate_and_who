@@ -7,24 +7,24 @@
 ______________________________________________________________________ [DATA]
 Software Version   2.0.0 A
 File=20040203_zone01.log
-Gerät=HygroLog - 1.0
+Gerï¿½t=HygroLog - 1.0
 Type=Logger
 SerieNummer= 16413023   
 LoggModus=Loop
-Interval=0.12.00
-Start=mardi 9 décembre 2003   11:47:59
+Interval=0.12.00w
+Start=mardi 9 dï¿½cembre 2003   11:47:59
 Stopp=mardi 20 janvier 2004   03:47:59
-Holdverzögerung=0.00.00
-Startverzögerung = 0.00.00.00
+Holdverzï¿½gerung=0.00.00
+Startverzï¿½gerung = 0.00.00.00
 Messwerte=Raw Data
 unit_0=%RH
-unit_1=°C
+unit_1=ï¿½C
 Alarm=Off
 AlarmFeuchteLow=
 AlarmFeuchteHigh=
 AlarmTemperaturLow=
 AlarmTemperaturHigh=
-Batterie-Kapazität=99 %
+Batterie-Kapazitï¿½t=99 %
 Batterie wurde gewechset am jeudi 9 janvier 2003   10:01:04
 Zeitabweichung=2,1
 Produktions/Service Datum =jeudi 1 mars 2001
