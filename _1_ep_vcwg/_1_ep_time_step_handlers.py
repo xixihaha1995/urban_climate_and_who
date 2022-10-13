@@ -45,7 +45,7 @@ def run_vcwg():
     VCWG.run()
 
 def overwrite_ep_weather(state):
-    global overwrite_ep_weather_inited_handle, odb_actuator_handle, orh_actuator_handle,oat_sensor_handle, \
+    global overwrite_ep_weather_inited_handle, odb_actuator_handle, orh_actuator_handle, \
         wsped_mps_actuator_handle, wdir_deg_actuator_handle,\
         called_vcwg_bool
 
@@ -76,13 +76,10 @@ def overwrite_ep_weather(state):
         # Wait for the upstream (VCWG upload canyon info to Parent) to finish
         coordination.sem1.acquire()
         # EP download the canyon info from Parent
-        psychrometric = coordination.ep_api.functional.psychrometrics(state)
-        rh_decimal = psychrometric.relative_humidity_b(state, coordination.vcwg_canTemp_K - 273.15,
+        rh_percentage = 100*coordination.psychrometric.relative_humidity_b(state, coordination.vcwg_canTemp_K - 273.15,
                                                coordination.vcwg_canSpecHum_Ratio, coordination.vcwg_canPress_Pa)
-        oat_temp_c = coordination.ep_api.exchange.get_variable_value(state, oat_sensor_handle)
-        # coordination.ep_api.exchange.set_actuator_value(state, odb_actuator_handle, coordination.vcwg_canTemp_K - 273.15)
-        # print(f'EP: oat was{oat_temp_c}, set odb to {coordination.vcwg_canTemp_K - 273.15}')
-        # coordination.ep_api.exchange.set_actuator_value(state, orh_actuator_handle, rh_decimal * 100)
+        coordination.ep_api.exchange.set_actuator_value(state, odb_actuator_handle, coordination.vcwg_canTemp_K - 273.15)
+        coordination.ep_api.exchange.set_actuator_value(state, orh_actuator_handle, rh_percentage)
         # Notify the downstream (EP upload EP results to Parent) to start
         coordination.sem2.release()
 
@@ -1036,18 +1033,18 @@ def mediumOffice_get_ep_results(state):
     if called_vcwg_bool:
         global ep_last_call_time_seconds, zone_floor_area_m2
 
-        coordination.sem2.acquire()
+        # coordination.sem2.acquire()
         zone_floor_area_m2 = coordination.ep_api.exchange.get_internal_variable_value(state, zone_flr_area_handle)
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600  # Should always accumulate, since system time always advances
         accumulated_time_in_seconds = curr_sim_time_in_seconds - ep_last_call_time_seconds
         ep_last_call_time_seconds = curr_sim_time_in_seconds
         hvac_heat_rejection_J = coordination.ep_api.exchange.get_variable_value(state,hvac_heat_rejection_sensor_handle)
-        print('mediumOffice_get_ep_results(): hvac_heat_rejection_J = ', hvac_heat_rejection_J)
         hvac_waste_w_m2 = hvac_heat_rejection_J / accumulated_time_in_seconds / coordination.mediumOfficeBld_floor_area_m2
         coordination.ep_sensWaste_w_m2_per_floor_area += hvac_waste_w_m2
 
         time_index_alignment_bool = 1 > abs(curr_sim_time_in_seconds - coordination.vcwg_needed_time_idx_in_seconds)
+
         if not time_index_alignment_bool:
             coordination.sem2.release()
             return
@@ -1151,4 +1148,3 @@ def mediumOffice_get_ep_results(state):
             coordination.ep_wallShade_Tint_K = s_wall_Tint_c + 273.15
 
         coordination.sem3.release()
-

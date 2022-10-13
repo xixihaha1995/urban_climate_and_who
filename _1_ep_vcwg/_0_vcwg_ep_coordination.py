@@ -3,8 +3,9 @@ import numpy as np, time
 sys.path.insert(0, 'C:\EnergyPlusV22-1-0')
 from pyenergyplus.api import EnergyPlusAPI
 def init_ep_api():
-    global ep_api
+    global ep_api, psychrometric
     ep_api = EnergyPlusAPI()
+    psychrometric = None
 def init_semaphore_lock_settings():
     global sem0, sem1,sem2,sem3
     sem0 = threading.Semaphore(1)

@@ -4,25 +4,24 @@ import _1_ep_vcwg._0_vcwg_ep_coordination as coordination
 from _1_ep_vcwg import _1_ep_time_step_handlers as time_step_handlers_1
 from _3_pre_post_process import _0_all_plot_tools as plot_tools
 
-
-
 def run_ep_api():
-    state = api.state_manager.new_state()
-    api.runtime.callback_begin_zone_timestep_before_set_current_weather(state, time_step_handlers_1.overwrite_ep_weather)
-    api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers_1.mediumOffice_get_ep_results)
-    # api.runtime.callback_end_zone_timestep_after_zone_reporting(state,
-    #                                                               time_step_handlers_1.mediumOffice_get_ep_results)
+    state = coordination.ep_api.state_manager.new_state()
+    coordination.psychrometric = coordination.ep_api.functional.psychrometrics(state)
+    coordination.ep_api.runtime.callback_begin_zone_timestep_before_set_current_weather(state,
+                                                                                        time_step_handlers_1.overwrite_ep_weather)
+    coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
+                                                                  time_step_handlers_1.mediumOffice_get_ep_results)
 
-    api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
-    api.exchange.request_variable(state, "Site Wind Speed", "ENVIRONMENT")
-    api.exchange.request_variable(state, "Site Wind Direction", "ENVIRONMENT")
-    api.exchange.request_variable(state, "Site Outdoor Air Drybulb Temperature", "ENVIRONMENT")
+    coordination.ep_api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
+    coordination.ep_api.exchange.request_variable(state, "Site Wind Speed", "ENVIRONMENT")
+    coordination.ep_api.exchange.request_variable(state, "Site Wind Direction", "ENVIRONMENT")
+    coordination.ep_api.exchange.request_variable(state, "Site Outdoor Air Drybulb Temperature", "ENVIRONMENT")
 
     output_path = os.path.join(ep_files_path, 'ep_optional_outputs')
     weather_file_path = os.path.join(ep_files_path, epwFileName)
     idfFilePath = os.path.join(ep_files_path, idfFileName)
     sys_args = '-d', output_path, '-w', weather_file_path, idfFilePath
-    api.runtime.run_energyplus(state, sys_args)
+    coordination.ep_api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
     time_step_handler_ver = 1.1
@@ -47,7 +46,7 @@ if __name__ == '__main__':
     # Lichen: init the synchronization lock related settings: locks, shared variables.
     coordination.init_saving_data()
     coordination.init_ep_api()
-    api = coordination.ep_api
+    # api =
     coordination.init_semaphore_lock_settings()
     coordination.init_variables_for_vcwg_ep(ep_files_path, time_step_handler_ver)
 
