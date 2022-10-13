@@ -92,7 +92,7 @@
     1,                       !- Begin Day of Month
     ,                        !- Begin Year
     6,                      !- End Month
-    10,                      !- End Day of Month
+    2,                      !- End Day of Month
     ,                        !- End Year
     Tuesday,                  !- Day of Week for Start Day
     No,                      !- Use Weather File Holidays and Special Days
