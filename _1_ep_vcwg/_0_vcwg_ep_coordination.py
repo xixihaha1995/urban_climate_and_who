@@ -20,8 +20,8 @@ def init_variables_for_vcwg_ep(_in_ep_files_path, _in_ver):
         ep_elecTotal_w_m2_per_floor_area, ep_sensWaste_w_m2_per_floor_area, \
         ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, \
         ep_wallSun_Text_K, ep_wallSun_Tint_K,ep_wallShade_Text_K, ep_wallShade_Tint_K,\
-        midRiseApartmentBld_floor_area_m2, smallOfficeBld_floor_area_m2, time_step_version, ep_files_path,\
-        ep_oaTemp_C, overwriting_time_index, overwriten_time_index
+        midRiseApartmentBld_floor_area_m2, smallOfficeBld_floor_area_m2, mediumOfficeBld_floor_area_m2,\
+        time_step_version, ep_files_path, ep_oaTemp_C, overwriting_time_index, overwriten_time_index
 
     vcwg_wsp_mps = 0
     vcwg_wdir_deg = 0
@@ -35,6 +35,7 @@ def init_variables_for_vcwg_ep(_in_ep_files_path, _in_ver):
 
     midRiseApartmentBld_floor_area_m2 = 3135
     smallOfficeBld_floor_area_m2 = 511
+    mediumOfficeBld_floor_area_m2 = 4982
     vcwg_needed_time_idx_in_seconds = 0
     overwriting_time_index = 0
     overwriten_time_index = 0

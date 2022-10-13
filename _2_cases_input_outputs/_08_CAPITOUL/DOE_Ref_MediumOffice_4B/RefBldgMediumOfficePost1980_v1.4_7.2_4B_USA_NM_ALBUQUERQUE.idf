@@ -92,7 +92,7 @@
     1,                       !- Begin Day of Month
     ,                        !- Begin Year
     6,                      !- End Month
-    30,                      !- End Day of Month
+    1,                      !- End Day of Month
     ,                        !- End Year
     Tuesday,                  !- Day of Week for Start Day
     No,                      !- Use Weather File Holidays and Special Days
@@ -7868,3 +7868,47 @@
 
   Output:Meter,WaterSystems:NaturalGas,hourly;
 
+Output:Variable,
+    *,                       !- Key Value
+    Surface Inside Face Temperature,  !- Variable Name
+    timestep;                !- Reporting Frequency
+
+  Output:Variable,
+    *,                       !- Key Value
+    Surface Outside Face Temperature,  !- Variable Name
+    timestep;                !- Reporting Frequency
+
+  Output:Variable,
+    *,                       !- Key Value
+    Surface Outside Face Incident Solar Radiation Rate per Area,  !- Variable Name
+    timestep;                !- Reporting Frequency
+
+  Output:Variable,
+    *,                       !- Key Value
+    Zone Air Temperature,    !- Variable Name
+    timestep;                !- Reporting Frequency
+
+  Output:Variable,
+      *,                       !- Key Value
+      Zone Air Humidity Ratio, !- Variable Name
+      timestep;                !- Reporting Frequency
+
+  Output:Variable,
+      *,                       !- Key Value
+      Zone Air System Sensible Cooling Rate,  !- Variable Name
+      timestep;                !- Reporting Frequency
+
+  Output:Variable,
+      *,                       !- Key Value
+      Zone Air System Sensible Heating Rate,  !- Variable Name
+      timestep;                !- Reporting Frequency
+
+  Output:Variable,
+      *,                       !- Key Value
+      Heating Coil Heating Rate,  !- Variable Name
+      timestep;                !- Reporting Frequency
+
+  Output:Variable,
+      *,                       !- Key Value
+      Cooling Coil Electricity Rate,  !- Variable Name
+      timestep;                !- Reporting Frequency
