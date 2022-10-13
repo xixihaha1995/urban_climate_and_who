@@ -45,7 +45,7 @@ def run_vcwg():
     VCWG.run()
 
 def overwrite_ep_weather(state):
-    global overwrite_ep_weather_inited_handle, odb_actuator_handle, orh_actuator_handle, \
+    global overwrite_ep_weather_inited_handle, odb_actuator_handle, orh_actuator_handle,oat_sensor_handle, \
         wsped_mps_actuator_handle, wdir_deg_actuator_handle,\
         called_vcwg_bool
 
@@ -76,6 +76,8 @@ def overwrite_ep_weather(state):
         # Wait for the upstream (VCWG upload canyon info to Parent) to finish
         coordination.sem1.acquire()
         # EP download the canyon info from Parent
+        oat_temp_c = coordination.ep_api.exchange.get_variable_value(state, oat_sensor_handle)
+        print(f'original oat C :{oat_temp_c}, set to {coordination.vcwg_canTemp_K - 273.15}')
         rh_percentage = 100*coordination.psychrometric.relative_humidity_b(state, coordination.vcwg_canTemp_K - 273.15,
                                                coordination.vcwg_canSpecHum_Ratio, coordination.vcwg_canPress_Pa)
         coordination.ep_api.exchange.set_actuator_value(state, odb_actuator_handle, coordination.vcwg_canTemp_K - 273.15)

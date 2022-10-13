@@ -92,7 +92,7 @@
     1,                       !- Begin Day of Month
     ,                        !- Begin Year
     6,                      !- End Month
-    30,                      !- End Day of Month
+    2,                      !- End Day of Month
     ,                        !- End Year
     Tuesday,                  !- Day of Week for Start Day
     No,                      !- Use Weather File Holidays and Special Days
@@ -241,7 +241,7 @@
     7,                       !- Shading Calculation Update Frequency
     15000;                   !- Maximum Figures in Shadow Overlap Calculations
 
-  Timestep,12;
+  Timestep,60;
 
 ! WeatherFileName=USA_NM_Albuquerque_TMY2.epw
 

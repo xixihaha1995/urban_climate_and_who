@@ -27,7 +27,7 @@ if __name__ == '__main__':
     time_step_handler_ver = 1.1
     # case_name = '_BSPA_bypass_refining_M3ing'
     # case_name = '_BSPR_bypass_refining_M3ing'
-    case_name = 'CAPITOUL_Bypass_2004'
+    case_name = 'CAPITOUL_Bypass_2004_minutely'
     start_time = '2004-06-01 00:00:00'
     time_interval_sec = 300
     # ep_files_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\refining_M3ing'
