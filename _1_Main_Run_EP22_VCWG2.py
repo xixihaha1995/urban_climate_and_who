@@ -16,7 +16,8 @@ def run_vcwg():
     ViewFactorFileName = '_case8_CAPITOUL_ViewFactor_MOST.txt'
     # ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
     # Case name to append output file names with
-    case = '_BSPA_Refinement_M3ing_Basel_MOST'
+    # case = '_BSPA_Refinement_M3ing_Basel_MOST'
+    case = '_CAPITOUL_MOST'
     # case = '_BSPR_Only_VCWG_Basel_MOST'
 
     # Vancouver
