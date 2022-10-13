@@ -201,9 +201,10 @@ def data_cleaning(df):
     df = df.fillna(0)
     return df
 
-def time_interval_convertion(df, original_time_interval_min = 30, need_date = False,
+def _deleted_time_interval_convertion(df, original_time_interval_min = 30, need_date = False,
                              start_time = '2018-01-01 00:00:00'):
     '''
+    TODO: time conversion should be based on the actual timestamps
     Original data is 30 mins interval,
     Convert it to hourly data
     Original data has [index, sensible]
@@ -233,8 +234,9 @@ def time_interval_converstion_actual_timestamp(df):
     df_new = df_new.groupby(df_new.index).mean()
     return df_new
 
-def _5min_to_10min(df):
+def _deleted_5min_to_10min(df):
     '''
+    TODO: time conversion should be based on the actual timestamps
     Original data is 5 mins interval,
     Convert it to 10 mins interval
     Original data has [index, sensible]
@@ -246,7 +248,8 @@ def _5min_to_10min(df):
     # floor index (YYYY-MM-DD HH:MM:SS) to (YYYY-MM-DD HH:MM:00)
     return df_new
 
-def _xmin_to_ymin(df, original_time_interval_min = 30,target_time_interval_min = 60):
+def _deleted_xmin_to_ymin(df, original_time_interval_min = 30,target_time_interval_min = 60):
+    #TODO: time conversion should be based on the actual timestamps
     merge_nums = target_time_interval_min // original_time_interval_min
     df_new = pd.DataFrame(columns=df.columns)
     for i in range(0, len(df), merge_nums):
