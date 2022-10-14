@@ -71,11 +71,166 @@ def sequence_time_to_pandas_time(dataframe, delta_t,start_time):
     # update dataframe index
     dataframe.index = date
     return dataframe
+
+def save_CAPITOUL_debug(measure_tdb_c_2m_6m_hourly,measure_tdb_c_20m_5min,
+                        only_ep_degC_2_6_hourly,only_ep_degC_20_5min,
+                        only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
+                        bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C,
+                        debug_processed_save_folder,
+                        debug_only_ep, debug_only_vcwg,debug_bypass_ver1p1):
+    writer = pd.ExcelWriter(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
+                            engine='xlsxwriter')
+    #save 2m-direct
+    #measure_tdb_c_2m_6m_hourly Series (719,1) to (719,)
+    measure_tdb_c_2m_6m_hourly_1d = measure_tdb_c_2m_6m_hourly.squeeze()
+    df = pd.DataFrame({'Measurement': measure_tdb_c_2m_6m_hourly.squeeze(),
+                       f'Only EP': only_ep_degC_2_6_hourly.squeeze(),
+                       'Only VCWG': only_vcwg_direct_lst_C[0],
+                       'Bypass Ver1.1': bypass_direct_lst_C[0]})
+    df.to_excel(writer, sheet_name='2m Direct')
+    #save 2m-real_p0
+    df = pd.DataFrame({'Measurement': measure_tdb_c_2m_6m_hourly.squeeze(),
+                       'Only VCWG': only_vcwg_real_p0_lst_C[0],
+                       'Bypass Ver1.1': bypass_real_p0_lst_C[0]})
+    df.to_excel(writer, sheet_name='2m Real P0')
+    #save 2m-real_epw
+    df = pd.DataFrame({'Measurement': measure_tdb_c_2m_6m_hourly.squeeze(),
+                       'Only VCWG': only_vcwg_real_epw_lst_C[0],
+                       'Bypass Ver1.1': bypass_real_epw_lst_C[0]})
+    df.to_excel(writer, sheet_name='2m Real EPW')
+    #save 6m-direct
+    df = pd.DataFrame({'Measurement': measure_tdb_c_2m_6m_hourly.squeeze(),
+                       'Only EP': only_ep_degC_2_6_hourly.squeeze(),
+                       'Only VCWG': only_vcwg_direct_lst_C[1],
+                       'Bypass Ver1.1': bypass_direct_lst_C[1]})
+    df.to_excel(writer, sheet_name='6m Direct')
+    #save 6m-real_p0
+    df = pd.DataFrame({'Measurement': measure_tdb_c_2m_6m_hourly.squeeze(),
+                       'Only VCWG': only_vcwg_real_p0_lst_C[1],
+                       'Bypass Ver1.1': bypass_real_p0_lst_C[1]})
+    df.to_excel(writer, sheet_name='6m Real P0')
+    #save 6m-real_epw
+    df = pd.DataFrame({'Measurement': measure_tdb_c_2m_6m_hourly.squeeze(),
+                       'Only VCWG': only_vcwg_real_epw_lst_C[1],
+                       'Bypass Ver1.1': bypass_real_epw_lst_C[1]})
+    df.to_excel(writer, sheet_name='6m Real EPW')
+    #save 20m-direct
+    df = pd.DataFrame({'Measurement': measure_tdb_c_20m_5min.squeeze(),
+                       'Only EP': only_ep_degC_20_5min.squeeze(),
+                       'Only VCWG': only_vcwg_direct_lst_C[2],
+                       'Bypass Ver1.1': bypass_direct_lst_C[2]})
+    df.to_excel(writer, sheet_name='20m Direct')
+    #save 20m-real_p0
+    df = pd.DataFrame({'Measurement': measure_tdb_c_20m_5min.squeeze(),
+                       'Only VCWG': only_vcwg_real_p0_lst_C[2],
+                       'Bypass Ver1.1': bypass_real_p0_lst_C[2]})
+    df.to_excel(writer, sheet_name='20m Real P0')
+    #save 20m-real_epw
+    df = pd.DataFrame({'Measurement': measure_tdb_c_20m_5min.squeeze(),
+                       'Only VCWG': only_vcwg_real_epw_lst_C[2],
+                       'Bypass Ver1.1': bypass_real_epw_lst_C[2]})
+    df.to_excel(writer, sheet_name='20m Real EPW')
+    # save wall Sun
+    df = pd.DataFrame({'Only EP(southFacingWall)': debug_only_ep.iloc[:, 0] - 273.15,
+                       'Only VCWG (wallSun)': debug_only_vcwg.iloc[:, 0] - 273.15,
+                       'Bypass Ver1.1 (wallSun)': debug_bypass_ver1p1.iloc[:, 0] - 273.15})
+    df.to_excel(writer, sheet_name='wallSun_southFacingWall')
+    # save wall shade
+    df = pd.DataFrame({'Only EP (northFacingWall)': debug_only_ep.iloc[:, 1] - 273.15,
+                       'Only VCWG (wallShade)': debug_only_vcwg.iloc[:, 1] - 273.15,
+                       'Bypass Ver1.1 (wallShade)': debug_bypass_ver1p1.iloc[:, 1] - 273.15})
+    df.to_excel(writer, sheet_name='wallShade_northFacingWall')
+    # write the fourth sheet
+    df = pd.DataFrame({'Only EP(roof)': debug_only_ep.iloc[:, 2] - 273.15,
+                       'Only VCWG (roof)': debug_only_vcwg.iloc[:, 2] - 273.15,
+                       'Bypass Ver1.1 (roof)': debug_bypass_ver1p1.iloc[:, 3] - 273.15})
+    df.to_excel(writer, sheet_name='roof')
+    # write the fifth sheet
+    df = pd.DataFrame({'Only EP{which_ep} (sensHVAC)': debug_only_ep.iloc[:, 3],
+                       'Only VCWG (sensWaste)': debug_only_vcwg.iloc[:, 3],
+                       'Bypass Ver1.1 (sensHVAC)': debug_bypass_ver1p1.iloc[:, 4]})
+    df.to_excel(writer, sheet_name='sensWaste_sensHVAC')
+
+    writer.save()
+
+
+def organize_CAPITOUL_cvrmse(measure_tdb_c_2m_6m_hourly,measure_tdb_c_20m_5min,
+                             only_ep_degC_2_6_hourly,only_ep_degC_20_5min,
+                             only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
+                             bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C):
+    cvrmse_3d = np.zeros((3, 3, 3))
+    # since there is no real_p0, real_epw for ep, so set them to nan
+    cvrmse_3d[:, 0, 1:] = np.nan
+
+    cvrmse_2m_ep_direct = bias_rmse_r2(measure_tdb_c_2m_6m_hourly, only_ep_degC_2_6_hourly, 'only_ep_2m_6m')[
+        2]
+    cvrmse_6m_ep_direct = bias_rmse_r2(measure_tdb_c_2m_6m_hourly, only_ep_degC_2_6_hourly, 'only_ep_2m_6m')[
+        2]
+    cvrmse_20m_ep_direct = bias_rmse_r2(measure_tdb_c_20m_5min, only_ep_degC_20_5min, 'only_ep_20m')[2]
+    cvrmse_2m_vcwg_direct = \
+    bias_rmse_r2(measure_tdb_c_2m_6m_hourly, only_vcwg_direct_lst_C[0], 'only_vcwg_2m')[2]
+    cvrmse_6m_vcwg_direct = \
+    bias_rmse_r2(measure_tdb_c_2m_6m_hourly, only_vcwg_direct_lst_C[1], 'only_vcwg_6m')[2]
+    cvrmse_20m_vcwg_direct = bias_rmse_r2(measure_tdb_c_20m_5min, only_vcwg_direct_lst_C[2], 'only_vcwg_20m')[
+        2]
+    cvrmse_2m_vcwg_real_p0 = \
+    bias_rmse_r2(measure_tdb_c_2m_6m_hourly, only_vcwg_real_p0_lst_C[0], 'only_vcwg_2m')[2]
+    cvrmse_6m_vcwg_real_p0 = \
+    bias_rmse_r2(measure_tdb_c_2m_6m_hourly, only_vcwg_real_p0_lst_C[1], 'only_vcwg_6m')[2]
+    cvrmse_20m_vcwg_real_p0 = \
+    bias_rmse_r2(measure_tdb_c_20m_5min, only_vcwg_real_p0_lst_C[2], 'only_vcwg_20m')[2]
+    cvrmse_2m_vcwg_real_epw = \
+    bias_rmse_r2(measure_tdb_c_2m_6m_hourly, only_vcwg_real_epw_lst_C[0], 'only_vcwg_2m')[2]
+    cvrmse_6m_vcwg_real_epw = \
+    bias_rmse_r2(measure_tdb_c_2m_6m_hourly, only_vcwg_real_epw_lst_C[1], 'only_vcwg_6m')[2]
+    cvrmse_20m_vcwg_real_epw = \
+    bias_rmse_r2(measure_tdb_c_20m_5min, only_vcwg_real_epw_lst_C[2], 'only_vcwg_20m')[2]
+    cvrmse_2m_bypass_direct = bias_rmse_r2(measure_tdb_c_2m_6m_hourly, bypass_direct_lst_C[0], 'bypass_2m')[2]
+    cvrmse_6m_bypass_direct = bias_rmse_r2(measure_tdb_c_2m_6m_hourly, bypass_direct_lst_C[1], 'bypass_6m')[2]
+    cvrmse_20m_bypass_direct = bias_rmse_r2(measure_tdb_c_20m_5min, bypass_direct_lst_C[2], 'bypass_20m')[2]
+    cvrmse_2m_bypass_real_p0 = bias_rmse_r2(measure_tdb_c_2m_6m_hourly, bypass_real_p0_lst_C[0], 'bypass_2m')[
+        2]
+    cvrmse_6m_bypass_real_p0 = bias_rmse_r2(measure_tdb_c_2m_6m_hourly, bypass_real_p0_lst_C[1], 'bypass_6m')[
+        2]
+    cvrmse_20m_bypass_real_p0 = bias_rmse_r2(measure_tdb_c_20m_5min, bypass_real_p0_lst_C[2], 'bypass_20m')[2]
+    cvrmse_2m_bypass_real_epw = \
+    bias_rmse_r2(measure_tdb_c_2m_6m_hourly, bypass_real_epw_lst_C[0], 'bypass_2m')[2]
+    cvrmse_6m_bypass_real_epw = \
+    bias_rmse_r2(measure_tdb_c_2m_6m_hourly, bypass_real_epw_lst_C[1], 'bypass_6m')[2]
+    cvrmse_20m_bypass_real_epw = bias_rmse_r2(measure_tdb_c_20m_5min, bypass_real_epw_lst_C[2], 'bypass_20m')[
+        2]
+
+    cvrmse_3d[0, 0, 0] = cvrmse_2m_ep_direct
+    cvrmse_3d[1, 0, 0] = cvrmse_6m_ep_direct
+    cvrmse_3d[2, 0, 0] = cvrmse_20m_ep_direct
+    cvrmse_3d[0, 1, 0] = cvrmse_2m_vcwg_direct
+    cvrmse_3d[1, 1, 0] = cvrmse_6m_vcwg_direct
+    cvrmse_3d[2, 1, 0] = cvrmse_20m_vcwg_direct
+    cvrmse_3d[0, 1, 1] = cvrmse_2m_vcwg_real_p0
+    cvrmse_3d[1, 1, 1] = cvrmse_6m_vcwg_real_p0
+    cvrmse_3d[2, 1, 1] = cvrmse_20m_vcwg_real_p0
+    cvrmse_3d[0, 1, 2] = cvrmse_2m_vcwg_real_epw
+    cvrmse_3d[1, 1, 2] = cvrmse_6m_vcwg_real_epw
+    cvrmse_3d[2, 1, 2] = cvrmse_20m_vcwg_real_epw
+    cvrmse_3d[0, 2, 0] = cvrmse_2m_bypass_direct
+    cvrmse_3d[1, 2, 0] = cvrmse_6m_bypass_direct
+    cvrmse_3d[2, 2, 0] = cvrmse_20m_bypass_direct
+    cvrmse_3d[0, 2, 1] = cvrmse_2m_bypass_real_p0
+    cvrmse_3d[1, 2, 1] = cvrmse_6m_bypass_real_p0
+    cvrmse_3d[2, 2, 1] = cvrmse_20m_bypass_real_p0
+    cvrmse_3d[0, 2, 2] = cvrmse_2m_bypass_real_epw
+    cvrmse_3d[1, 2, 2] = cvrmse_6m_bypass_real_epw
+    cvrmse_3d[2, 2, 2] = cvrmse_20m_bypass_real_epw
+    return cvrmse_3d
 def bias_rmse_r2(df1, df2, df2_name):
     '''
     df1 is measurement data, [date, sensible/latent]
     df2 is simulated data, [date, sensible/latent]
     '''
+    # based on df1 time index, find the corresponding df2
+    df2 = df2.loc[df1.index]
+    df1 = df1.values
+    df2 = df2.values
     bias = df1 - df2
     rmse = np.sqrt(np.mean(np.square(bias)))
     cvrmse = rmse / np.mean(df1) * 100
@@ -351,6 +506,38 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
         os.makedirs(vcwg_ep_saving_path)
     df.to_excel(os.path.join(vcwg_ep_saving_path, f'{case_name}_{file_name}.xlsx'))
 
+def excel_to_direct_real_p0_real_epw(filename, results_folder, heights_profile,
+                                     sensor_heights, target_interval,p0, compare_start_time,
+                                     compare_end_time, epw_staPre_Pa_all):
+    th_profie_5min = pd.read_excel(f'{results_folder}\\{filename}_TempProfile_K.xlsx',
+                                                   sheet_name='Sheet1', header=0, index_col=0)
+    pres_profile_5min = pd.read_excel(f'{results_folder}\\{filename}_PressProfile_Pa.xlsx',
+                                                      sheet_name='Sheet1', header=0, index_col=0)
+    th_profie_5min = th_profie_5min[compare_start_time:compare_end_time]
+    pres_profile_5min = pres_profile_5min[compare_start_time:compare_end_time]
+    # ue1_heights is sensor heights, heights_profile is the heights of predictions
+    # find the mapped indices in heights_profile
+    heights_profile = np.array(heights_profile)
+    sensor_heights = np.array(sensor_heights)
+    mapped_indices = [np.argmin(np.abs(heights_profile - i)) for i in sensor_heights]
+    th_target_intverval_K_lst = [None for _ in range(len(mapped_indices))]
+    pres_target_intverval_Pa_lst = [None for _ in range(len(mapped_indices))]
+    real_p0_target_interval_K_lst = [None for _ in range(len(mapped_indices))]
+    real_epw_target_interval_K_lst = [None for _ in range(len(mapped_indices))]
+    for i in range(len(mapped_indices)):
+        th_target_intverval_K_lst[i] = th_profie_5min.iloc[:, mapped_indices[i]].resample(f'{target_interval[i]}T').mean()
+        pres_target_intverval_Pa_lst[i] = pres_profile_5min.iloc[:, mapped_indices[i]].resample(f'{target_interval[i]}T').mean()
+        tmp_real_p0 = th_target_intverval_K_lst[i].values * \
+                                           (pres_target_intverval_Pa_lst[i].values / p0) ** 0.286
+        real_p0_target_interval_K_lst[i] = pd.Series(tmp_real_p0, index=th_target_intverval_K_lst[i].index)
+        tmp_real_epw = potential_to_real(th_target_intverval_K_lst[i], pres_target_intverval_Pa_lst[i],
+                                            epw_staPre_Pa_all)
+        real_epw_target_interval_K_lst[i] = pd.Series(tmp_real_epw, index=th_target_intverval_K_lst[i].index)
+    th_target_intverval_C_lst = [i - 273.15 for i in th_target_intverval_K_lst]
+    real_p0_target_interval_C_lst = [i - 273.15 for i in real_p0_target_interval_K_lst]
+    real_epw_target_interval_C_lst = [i - 273.15 for i in real_epw_target_interval_K_lst]
+    return th_target_intverval_C_lst, real_p0_target_interval_C_lst, real_epw_target_interval_C_lst
+
 def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue1_heights,compare_start_time,
                                compare_end_time, epw_staPre_Pa_all = None, Sensor_Height_Bool = True):
     th_profie_5min = pd.read_excel(f'{results_folder}\\{filename}_TempProfile_K.xlsx',
@@ -410,7 +597,7 @@ def potential_to_real(potentialProf_K, presProf_pa, epw_staPre_Pa_all):
         # find the corresponding time in rural_1p5_hour_pa
         time = potentialProf_K.index[i]
         # find the corresponding pressures
-        pres = presProf_pa.iloc[i, :]
+        pres = presProf_pa.iloc[i]
         # find the corresponding pressure in rural_1p5_hour_pa
         # time is formatted as 'YYYY-MM-DD HH:MM:SS'
         # floor the time to the nearest hour
@@ -422,7 +609,7 @@ def potential_to_real(potentialProf_K, presProf_pa, epw_staPre_Pa_all):
         #pres.shape(6,),potentialProf_K.iloc[i, :].shape(6,), corr_p0 is one number
         # based on element wise calculation, calculate realProf_K.iloc[i, :]
         # real = potential * (pres / p0) ** 0.286
-        realProf_K.iloc[i, :] = potentialProf_K.iloc[i, :].values * (pres.values / corr_p0) ** 0.286
+        realProf_K.iloc[i] = potentialProf_K.iloc[i] * (pres / corr_p0) ** 0.286
     return realProf_K
 
 def stacked_comparison_plot(merged_df, sensor_heights):
@@ -589,3 +776,55 @@ def why_bypass_overestimated(debug_processed_save_folder,
     df.to_excel(writer, sheet_name='sensWaste_sensHVAC')
     #save the excel file
     writer.save()
+
+def shared_x_plot(debug_processed_save_folder, canyon_name = '2m Direct'):
+    wallSunSheet = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
+                                    header=0, index_col=0, sheet_name='wallSun_southFacingWall')
+    wallShadeSheet = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
+                                    header=0, index_col=0, sheet_name='wallShade_northFacingWall')
+    roofSheet = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
+                                    header=0, index_col=0, sheet_name='roof')
+    sensWaste = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
+                                    header=0, index_col=0, sheet_name='sensWaste_sensHVAC')
+    canyonSheet = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
+                                    header=0, index_col=0, sheet_name=canyon_name)
+    fig, ax = plt.subplots(5, 1, sharex=True)
+    fig.suptitle(f'canyon temperature:{canyon_name}')
+    if canyon_name == '2m Direct':
+        ax[0].plot(canyonSheet.iloc[:,0], linestyle='-.', color='black', label='Urban Measurement')
+        ax[0].plot(canyonSheet.iloc[:,1], color = 'blue', label='OnlyEP')
+        ax[0].plot(canyonSheet.iloc[:,2], linestyle='--', color = 'red', label='OnlyVCWG')
+        ax[0].plot(canyonSheet.iloc[:,3], color = 'green', label='Bypass')
+        ax[1].plot(wallSunSheet.iloc[:, 0], color='blue')
+    else:
+        ax[0].plot(canyonSheet.iloc[:,0], linestyle='-.', color='black', label='Urban Measurement')
+        ax[1].plot(wallSunSheet.iloc[:, 0], color='blue', label='onlyEP')
+        ax[0].plot(canyonSheet.iloc[:,1], linestyle='--', color = 'red',label='OnlyVCWG')
+        ax[0].plot(canyonSheet.iloc[:,2],  color = 'green', label='Bypass')
+    ax[0].set_ylabel(f'canyon {canyon_name} Tdb (C)')
+
+
+    ax[1].plot(wallSunSheet.iloc[:, 1] ,linestyle='--', color = 'red')
+    ax[1].plot(wallSunSheet.iloc[:, 2],  color = 'green')
+    ax[1].set_ylabel('sun/South Wall (C)')
+
+    ax[2].plot(wallShadeSheet.iloc[:, 0],color = 'blue')
+    ax[2].plot(wallShadeSheet.iloc[:, 1] ,linestyle='--', color = 'red')
+    ax[2].plot(wallShadeSheet.iloc[:, 2],  color = 'green')
+    ax[2].set_ylabel('shade/South Wall (C)')
+
+    ax[3].plot(roofSheet.iloc[:, 0],color = 'blue')
+    ax[3].plot(roofSheet.iloc[:, 1] ,linestyle='--', color = 'red')
+    ax[3].plot(roofSheet.iloc[:, 2],  color = 'green')
+    ax[3].set_ylabel('roof (C)')
+
+    ax[4].plot(sensWaste.iloc[:, 0],color = 'blue')
+    ax[4].plot(sensWaste.iloc[:, 1] ,linestyle='--' , color = 'red')
+    ax[4].plot(sensWaste.iloc[:, 2],  color = 'green')
+    ax[4].set_ylabel('sensWaste (w/m2)')
+
+    fig.legend(loc='center right', bbox_to_anchor=(1, 0.5), borderaxespad=0.)
+    # put text outside the figure
+
+    # add MouseCross
+    plt.show()
