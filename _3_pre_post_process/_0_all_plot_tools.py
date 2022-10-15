@@ -233,7 +233,7 @@ def bias_rmse_r2(df1, df2, df2_name):
     df2 = df2.values
     bias = df1 - df2
     rmse = np.sqrt(np.mean(np.square(bias)))
-    cvrmse = rmse / np.mean(df1) * 100
+    cvrmse = rmse / np.mean(abs(df1)) * 100
     r2 = 1 - np.sum(np.square(bias)) / np.sum(np.square(df1 - np.mean(df1)))
     mean_bias_percent = np.mean(abs(bias)) / np.mean(df1) * 100
 

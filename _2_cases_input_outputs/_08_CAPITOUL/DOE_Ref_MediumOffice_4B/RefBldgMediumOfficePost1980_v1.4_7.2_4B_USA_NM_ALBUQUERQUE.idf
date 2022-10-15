@@ -241,7 +241,7 @@
     7,                       !- Shading Calculation Update Frequency
     15000;                   !- Maximum Figures in Shadow Overlap Calculations
 
-  Timestep,60;
+  Timestep,12;
 
 ! WeatherFileName=USA_NM_Albuquerque_TMY2.epw
 
