@@ -45,7 +45,8 @@ def run_vcwg():
     VCWG.run()
 
 def overwrite_ep_weather(state):
-    global overwrite_ep_weather_inited_handle, odb_actuator_handle, orh_actuator_handle,oat_sensor_handle, \
+    global overwrite_ep_weather_inited_handle, odb_actuator_handle, orh_actuator_handle,\
+        oat_sensor_handle, orh_sensor_handle, \
         wsped_mps_actuator_handle, wdir_deg_actuator_handle,\
         called_vcwg_bool
 
@@ -61,9 +62,13 @@ def overwrite_ep_weather(state):
         oat_sensor_handle = coordination.ep_api.exchange.get_variable_handle(state,
                                                                              "Site Outdoor Air Drybulb Temperature",
                                                                              "Environment")
+        orh_sensor_handle = coordination.ep_api.exchange.get_variable_handle(state,
+                                                                             "Site Outdoor Air Humidity Ratio",
+                                                                             "Environment")
+
         #if one of the above handles is less than 0, then the actuator is not available
         # the entire program (multithread cooperation) should be terminated here, system exit with print messagePYTHO
-        if odb_actuator_handle < 0 or orh_actuator_handle < 0 :
+        if odb_actuator_handle < 0 or orh_actuator_handle < 0 or orh_sensor_handle < 0:
             print('ovewrite_ep_weather(): some handle not available')
             os.getpid()
             os.kill(os.getpid(), signal.SIGTERM)
@@ -77,7 +82,9 @@ def overwrite_ep_weather(state):
         coordination.sem1.acquire()
         # EP download the canyon info from Parent
         oat_temp_c = coordination.ep_api.exchange.get_variable_value(state, oat_sensor_handle)
+        orh_ratio = coordination.ep_api.exchange.get_variable_value(state, orh_sensor_handle)
         print(f'original oat C :{oat_temp_c}, set to {coordination.vcwg_canTemp_K - 273.15}')
+        print(f'original orh ratio :{orh_ratio}, set to {coordination.vcwg_canSpecHum_Ratio}')
         rh_percentage = 100*coordination.psychrometric.relative_humidity_b(state, coordination.vcwg_canTemp_K - 273.15,
                                                coordination.vcwg_canSpecHum_Ratio, coordination.vcwg_canPress_Pa)
         coordination.ep_api.exchange.set_actuator_value(state, odb_actuator_handle, coordination.vcwg_canTemp_K - 273.15)

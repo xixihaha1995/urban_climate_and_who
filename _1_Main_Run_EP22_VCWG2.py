@@ -16,6 +16,7 @@ def run_ep_api():
     coordination.ep_api.exchange.request_variable(state, "Site Wind Speed", "ENVIRONMENT")
     coordination.ep_api.exchange.request_variable(state, "Site Wind Direction", "ENVIRONMENT")
     coordination.ep_api.exchange.request_variable(state, "Site Outdoor Air Drybulb Temperature", "ENVIRONMENT")
+    coordination.ep_api.exchange.request_variable(state,  "Site Outdoor Air Humidity Ratio", "ENVIRONMENT")
 
     output_path = os.path.join(ep_files_path, 'ep_optional_outputs')
     weather_file_path = os.path.join(ep_files_path, epwFileName)
@@ -40,7 +41,7 @@ if __name__ == '__main__':
     # idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M3ing.idf'
     # idfFileName = 'RefBldgSmallOfficePost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
     # idfFileName = 'Vancouver_SmallOffice.idf'
-    idfFileName = 'RefBldgMediumOfficePost1980_v1.4_7.2_4B_USA_NM_ALBUQUERQUE.idf'
+    idfFileName = 'CAPITOUL_4B.idf'
     vcwg_ep_saving_path = ep_files_path + f'\\vcwg_ep_saving\\ver{time_step_handler_ver}'
 
     # Lichen: init the synchronization lock related settings: locks, shared variables.

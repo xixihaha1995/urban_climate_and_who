@@ -158,10 +158,7 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
 
     print(f"Handler ver{time_step_version}, {day_hour_min_sec}, "
           f"sensWaste (Currently only HVAC Rejection):{BEM_building.sensWaste} watts/ unit footprint area")
-    saving_data['debugging_canyon'].append([BEM.wallSun.Text,
-                                            BEM.wallShade.Text, BEM.mass.Text, ep_roof_Text_K,
-                                            BEM_building.sensWaste, ep_oaTemp_C + 273.15, canTemp,
-                                            overwriting_time_index, overwriten_time_index])
+
 
     ep_sensWaste_w_m2_per_floor_area = 0
     BEM_building.ElecTotal = ep_elecTotal_w_m2_per_floor_area * BEM_building.nFloor
@@ -171,6 +168,11 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     BEM.wallSun.Tint = ep_wallSun_Tint_K
     BEM.wallShade.Text = ep_wallShade_Text_K
     BEM.wallShade.Tint = ep_wallShade_Tint_K
+
+    saving_data['debugging_canyon'].append([BEM.wallSun.Text,
+                                            BEM.wallShade.Text, BEM.mass.Text, ep_roof_Text_K,
+                                            BEM_building.sensWaste, ep_oaTemp_C + 273.15, canTemp,
+                                            overwriting_time_index, overwriten_time_index])
 
     saving_data['s_wall_Text_K_n_wall_Text_K'].append([BEM.wallSun.Text, BEM.wallShade.Text])
 

@@ -10,6 +10,83 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD10\BLD10_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD11\BLD11_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD12\BLD12_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD13\BLD13_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD14\BLD14_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD15\BLD15_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD16\BLD16_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD1\BLD1_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD2\BLD2_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD3\BLD3_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD4\BLD4_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD5\BLD5_LocationSummary.csv">
           <value>
             <Attribute>
@@ -18,6 +95,27 @@
           </value>
         </entry>
         <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD6\BLD6_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD7\BLD7_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD8\BLD8_LocationSummary.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD9\BLD9_LocationSummary.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -52,6 +150,7 @@
             </Attribute>
           </value>
         </entry>
+        <entry />
       </map>
     </option>
   </component>

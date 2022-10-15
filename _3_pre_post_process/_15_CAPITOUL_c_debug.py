@@ -19,21 +19,21 @@ domain_height = 60
 vcwg_heights_profile = [0.5 + i for i in range(domain_height)]
 p0 = 100000
 sensor_heights = [2, 6, 20]
-target_interval = [60,60,5]
+target_interval = [10,10,5]
 # Read measured(Zone7, Pomme), then convert to target interval (hourly, 5min)
-if os.path.exists(os.path.join(measure_results_folder, 'Mini_Zone7_Processed_hourly.csv')):
-    zone7_hourly = pd.read_csv(os.path.join(measure_results_folder, 'Mini_Zone7_Processed_hourly.csv'),
+if os.path.exists(os.path.join(measure_results_folder, 'Mini_Zone7_Processed_10min.csv')):
+    zone7_hourly = pd.read_csv(os.path.join(measure_results_folder, 'Mini_Zone7_Processed_10min.csv'),
                                                 index_col=0, parse_dates=True)
     pomme_5min = pd.read_csv(os.path.join(measure_results_folder, 'Pomme_Processed_5min.csv'),
                                                 index_col=0, parse_dates=True)
     epw_all_clean = pd.read_csv(os.path.join(measure_results_folder, f'{epw_atm_filename}.csv'),
                                                 index_col=0, parse_dates=True)
     epw_staPre_Pa_all = epw_all_clean.iloc[:, 9]
-    measure_tdb_c_2m_6m_hourly = pd.read_csv(os.path.join(measure_results_folder, 'measure_tdb_c_2m_6m_hourly.csv'),
+    measure_tdb_c_2m_6m_10min = pd.read_csv(os.path.join(measure_results_folder, 'measure_tdb_c_2m_6m_10min.csv'),
                                                 index_col=0, parse_dates=True)
     measure_tdb_c_20m_5min = pd.read_csv(os.path.join(measure_results_folder, 'measure_tdb_c_20m_5min.csv'),
                                                 index_col=0, parse_dates=True)
-    only_ep_degC_2_6_hourly = pd.read_csv(os.path.join(measure_results_folder, 'only_ep_degC_2_6_hourly.csv'),
+    only_ep_degC_2_6_10min = pd.read_csv(os.path.join(measure_results_folder, 'only_ep_degC_2_6_10min.csv'),
                                                 index_col=0, parse_dates=True)
     only_ep_degC_20_5min = pd.read_csv(os.path.join(measure_results_folder, 'only_ep_degC_20_5min.csv'),
                                                 index_col=0, parse_dates=True)
@@ -47,13 +47,17 @@ else:
     zone7_ori_12min = pd.read_csv(os.path.join(measure_results_folder, zone7_ori_filename),
                                                 index_col=0, parse_dates=True)
     zone7_ori_12min = zone7_ori_12min[compare_start_time:compare_end_time]
-    zone7_hourly = zone7_ori_12min.resample('H').mean()
-    zone7_hourly.to_csv(os.path.join(measure_results_folder, 'Mini_Zone7_Processed_hourly.csv'))
-    pomme_ori_1min = pd.read_csv(os.path.join(measure_results_folder, Pomme_ori_filename),
+    # resample 12min to 10min, fill the missing value with interpolation
+    zone7_1min = zone7_ori_12min.resample('1T').interpolate()
+    zone7_10min = zone7_1min.resample('10T').mean()
+    zone7_10min.to_csv(os.path.join(measure_results_folder, 'Mini_Zone7_Processed_10min.csv'))
+    # pomme_ori_1min = pd.read_csv(os.path.join(measure_results_folder, Pomme_ori_filename),
+    #                                             index_col=0, parse_dates=True)
+    # pomme_ori_1min = pomme_ori_1min[compare_start_time:compare_end_time]
+    # pomme_5min = pomme_ori_1min.resample('5T').mean()
+    # pomme_5min.to_csv(os.path.join(measure_results_folder, 'Pomme_Processed_5min.csv'))
+    pomme_5min = pd.read_csv(os.path.join(measure_results_folder, 'Pomme_Processed_5min.csv'),
                                                 index_col=0, parse_dates=True)
-    pomme_ori_1min = pomme_ori_1min[compare_start_time:compare_end_time]
-    pomme_5min = pomme_ori_1min.resample('5T').mean()
-    pomme_5min.to_csv(os.path.join(measure_results_folder, 'Pomme_Processed_5min.csv'))
 
     epw_all_dirty = pd.read_csv( f'{debug_processed_save_folder}\\{epw_atm_filename}.epw',
                                      skiprows= 8, header= None, index_col=None,)
@@ -63,17 +67,17 @@ else:
     epw_staPre_Pa_all = epw_all_clean.iloc[:, 9]
 
 # Measurements: 2,6,20m measured data, convert to target interval (hourly, 5min)
-    measure_tdb_c_2m_6m_hourly = zone7_hourly.iloc[:, 1]
+    measure_tdb_c_2m_6m_10min = zone7_10min.iloc[:, 1]
     measure_tdb_c_20m_5min = pomme_5min.iloc[:, 2]
     # save
-    measure_tdb_c_2m_6m_hourly.to_csv(os.path.join(measure_results_folder, 'measure_tdb_c_2m_6m_hourly.csv'))
+    measure_tdb_c_2m_6m_10min.to_csv(os.path.join(measure_results_folder, 'measure_tdb_c_2m_6m_10min.csv'))
     measure_tdb_c_20m_5min.to_csv(os.path.join(measure_results_folder, 'measure_tdb_c_20m_5min.csv'))
 # Predictions: Read only EP, get 2, 6, 20(target interval), to direct_predict
     debug_only_ep_5min = pd.read_excel(f'{only_ep_folder}\\{only_ep_filename_prefix}_debugging_canyon.xlsx', header=0, index_col=0)
-    only_ep_degC_2_6_hourly = debug_only_ep_5min.iloc[:, 4].resample('H').mean() - 273.15
+    only_ep_degC_2_6_10min = debug_only_ep_5min.iloc[:, 4].resample('10T').mean() - 273.15
     only_ep_degC_20_5min = debug_only_ep_5min.iloc[:, 4] - 273.15
     only_ep_degC_20_5min.to_csv(os.path.join(measure_results_folder, 'only_ep_degC_20_5min.csv'))
-    only_ep_degC_2_6_hourly.to_csv(os.path.join(measure_results_folder, 'only_ep_degC_2_6_hourly.csv'))
+    only_ep_degC_2_6_10min.to_csv(os.path.join(measure_results_folder, 'only_ep_degC_2_6_10min.csv'))
     # Read only VCWG (2, 6, 20m), to direct_predict, real_p0, real_epw
     only_vcwg_direct_lst_C, only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C = \
         plt_tools.excel_to_direct_real_p0_real_epw(only_vcwg_filename_prefix, only_vcwg_folder,
@@ -102,8 +106,8 @@ else:
 #       calculate the CVRMSE for direct_predict, real_p0, real_epw
 #Create one 3d array, 0th axis dims: 3 (2, 6, 20 m heights) ,
 # 1st axis dims: 3 (ep, vcwg, bypass), 2nd axis dims: 3 (direct_predict, real_p0, real_epw)
-cvrmse_3d = plt_tools.organize_CAPITOUL_cvrmse(measure_tdb_c_2m_6m_hourly,measure_tdb_c_20m_5min,
-                             only_ep_degC_2_6_hourly,only_ep_degC_20_5min,
+cvrmse_3d = plt_tools.organize_CAPITOUL_cvrmse(measure_tdb_c_2m_6m_10min,measure_tdb_c_20m_5min,
+                             only_ep_degC_2_6_10min,only_ep_degC_20_5min,
                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C)
 print("CVRMSE (%), (OnlyEP, OnlyVCWG, Bypass)")
@@ -121,8 +125,8 @@ debug_only_vcwg_5min = pd.read_excel(f'{only_vcwg_folder}\\{only_vcwg_filename_p
                                      header=0, index_col=0)
 debug_bypass = pd.read_excel(f'{bypass_folder}\\{bypass_filename_prefix}_debugging_canyon.xlsx',
                                 header=0, index_col=0)
-plt_tools.save_CAPITOUL_debug(measure_tdb_c_2m_6m_hourly,measure_tdb_c_20m_5min,
-                             only_ep_degC_2_6_hourly,only_ep_degC_20_5min,
+plt_tools.save_CAPITOUL_debug(measure_tdb_c_2m_6m_10min,measure_tdb_c_20m_5min,
+                             only_ep_degC_2_6_10min,only_ep_degC_20_5min,
                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C,
                               debug_processed_save_folder,

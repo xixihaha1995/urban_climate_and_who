@@ -3053,6 +3053,7 @@ OutputMeter,Carbon Equivalent:Facility
 OutputMeter,CarbonEquivalentEmissions:Carbon Equivalent
 **VARIABLES**
 OutputVariable,Site Outdoor Air Drybulb Temperature,ENVIRONMENT
+OutputVariable,Site Outdoor Air Humidity Ratio,ENVIRONMENT
 OutputVariable,Site Wind Speed,ENVIRONMENT
 OutputVariable,Site Wind Direction,ENVIRONMENT
 OutputVariable,Lights Electricity Energy,CORE_BOTTOM_LIGHTS
