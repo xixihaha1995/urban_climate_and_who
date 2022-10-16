@@ -49,7 +49,7 @@ Per_runoff_G,0.5,      # Percentage of ground excess water that leaves the syste
 # Radiative Properties
 # =================================================
 aveg_R,0.27,         # Roof vegetation surface albedo (-)
-aimp_R,0.15,         # Roof impervious albedo (-)
+aimp_R,0.5,         # Roof impervious albedo (-)
 eveg_R,0.97,         # Roof vegetation surface emissivity (-)
 eimp_R,0.94,         # Roof impervious emissivity (-)
 aveg_G,0.27,         # Ground vegetation surface albedo (-)
@@ -58,7 +58,7 @@ aimp_G,0.1,          # Ground impervious albedo (-)
 eveg_G,0.93,         # Ground vegetation surface emissivity (-)
 ebare_G,0.973,       # Ground vegetation surface emissivity
 eimp_G,0.95,         # Ground impervious emissivity (-)
-albedo_W,0.25,       # Wall surface albedo (-)
+albedo_W,0.5,       # Wall surface albedo (-)
 emissivity_W,0.9,    # Wall emissivity (-)
 albedo_T,0.27,       # Tree albedo (-)
 emissivity_T,0.97,   # Tree emissivity (-)
