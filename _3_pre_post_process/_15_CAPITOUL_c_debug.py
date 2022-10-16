@@ -3,7 +3,7 @@ import _0_all_plot_tools as plt_tools
 import pandas as pd, numpy as np
 # Hardcoded parameters
 compare_start_time = '2004-06-01 00:00:00'
-compare_end_time = '2004-06-10 23:00:00'
+compare_end_time = '2004-06-30 23:00:00'
 measure_results_folder = r'..\_4_measurements\CAPITOUL'
 zone7_ori_filename = r'Mini_Zone7_Ori_12_min.csv'
 Pomme_ori_filename= r'Pomme_Ori_1_min.csv'
