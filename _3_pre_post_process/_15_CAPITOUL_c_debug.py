@@ -3,7 +3,7 @@ import _0_all_plot_tools as plt_tools
 import pandas as pd, numpy as np
 # Hardcoded parameters
 compare_start_time = '2004-06-01 00:00:00'
-compare_end_time = '2004-06-30 23:00:00'
+compare_end_time = '2004-06-10 23:00:00'
 measure_results_folder = r'..\_4_measurements\CAPITOUL'
 zone7_ori_filename = r'Mini_Zone7_Ori_12_min.csv'
 Pomme_ori_filename= r'Pomme_Ori_1_min.csv'
@@ -13,7 +13,7 @@ bypass_folder = r'..\_2_cases_input_outputs\_08_CAPITOUL\DOE_Ref_MediumOffice_4B
 epw_atm_filename = r'Mondouzil_tdb_td_rh_P_2004'
 only_ep_filename_prefix = 'CAPITOUL_only_ep_2004'
 only_vcwg_filename_prefix = 'CAPITOUL_2004_only_vcwg'
-bypass_filename_prefix = 'ver1.1\CAPITOUL_Bypass_2004'
+bypass_filename_prefix = 'ver1.1\CAPITOUL_Bypass_2004_minutely'
 debug_processed_save_folder = r'..\_2_cases_input_outputs\_08_CAPITOUL\DOE_Ref_MediumOffice_4B'
 domain_height = 60
 vcwg_heights_profile = [0.5 + i for i in range(domain_height)]
@@ -51,13 +51,11 @@ else:
     zone7_1min = zone7_ori_12min.resample('1T').interpolate()
     zone7_10min = zone7_1min.resample('10T').mean()
     zone7_10min.to_csv(os.path.join(measure_results_folder, 'Mini_Zone7_Processed_10min.csv'))
-    # pomme_ori_1min = pd.read_csv(os.path.join(measure_results_folder, Pomme_ori_filename),
-    #                                             index_col=0, parse_dates=True)
-    # pomme_ori_1min = pomme_ori_1min[compare_start_time:compare_end_time]
-    # pomme_5min = pomme_ori_1min.resample('5T').mean()
-    # pomme_5min.to_csv(os.path.join(measure_results_folder, 'Pomme_Processed_5min.csv'))
-    pomme_5min = pd.read_csv(os.path.join(measure_results_folder, 'Pomme_Processed_5min.csv'),
+    pomme_ori_1min = pd.read_csv(os.path.join(measure_results_folder, Pomme_ori_filename),
                                                 index_col=0, parse_dates=True)
+    pomme_ori_1min = pomme_ori_1min[compare_start_time:compare_end_time]
+    pomme_5min = pomme_ori_1min.resample('5T').mean()
+    pomme_5min.to_csv(os.path.join(measure_results_folder, 'Pomme_Processed_5min.csv'))
 
     epw_all_dirty = pd.read_csv( f'{debug_processed_save_folder}\\{epw_atm_filename}.epw',
                                      skiprows= 8, header= None, index_col=None,)
