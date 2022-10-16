@@ -250,7 +250,7 @@
     35.03,                   !- Latitude {deg}
     -106.62,                 !- Longitude {deg}
     -7.00,                   !- Time Zone {hr}
-    1619;                    !- Elevation {m}
+    245;                    !- Elevation {m}
 
 ! ALBUQUERQUE_NM_USA Annual Heating 99.6%, MaxDB=-9�C
 
@@ -345,9 +345,7 @@
 
   Construction,
     IEAD Non-res Roof,       !- Name
-    Roof Membrane,           !- Outside Layer
-    IEAD NonRes Roof Insulation,  !- Layer 2
-    Metal Decking;           !- Layer 3
+    IEAD NonRes Roof Insulation;  !- Layer 2
 
   Material,
     IEAD NonRes Roof Insulation,  !- Name
@@ -356,9 +354,9 @@
     0.049,                   !- Conductivity {W/m-K}
     265.0000,                !- Density {kg/m3}
     836.8000,                !- Specific Heat {J/kg-K}
-    0.9000,                  !- Thermal Absorptance
-    0.7000,                  !- Solar Absorptance
-    0.7000;                  !- Visible Absorptance
+    0.94,                  !- Thermal Absorptance
+    0.50,                  !- Solar Absorptance
+    0.50;                  !- Visible Absorptance
 
 ! Slab on grade, unheated
 
@@ -452,9 +450,9 @@
     0.6918,                  !- Conductivity {W/m-K}
     1858.0000,               !- Density {kg/m3}
     837.0000,                !- Specific Heat {J/kg-K}
-    0.9000,                  !- Thermal Absorptance
-    0.9200,                  !- Solar Absorptance
-    0.9200;                  !- Visible Absorptance
+    0.9,                  !- Thermal Absorptance
+    0.50,                  !- Solar Absorptance
+    0.50;                  !- Visible Absorptance
 
   Material,
     8IN CONCRETE HW,         !- Name
