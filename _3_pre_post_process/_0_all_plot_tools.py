@@ -592,6 +592,12 @@ def potential_to_real(potentialProf_K, presProf_pa, epw_staPre_Pa_all):
     To get the realProf_K
     '''
     realProf_K = potentialProf_K.copy()
+    # epw_staPre_Pa_all is for the years before 2000, presProf_pa is for the year 2004
+    # so we only need to find the corresponding MM-DD HH:MM:SS, and ignore the year
+    # epw_staPre_Pa_all.index is formatted as 'YYYY-MM-DD HH:MM:SS', so we need to extract the MM-DD HH:MM:SS
+    # from epw_staPre_Pa_all.index
+    epw_staPre_Pa_all.index = pd.to_datetime(epw_staPre_Pa_all.index)
+    epw_staPre_Pa_all.index = epw_staPre_Pa_all.index.strftime('%m-%d %H:%M:%S')
     for i in range(len(potentialProf_K)):
         # find the corresponding pressures
         # find the corresponding time in rural_1p5_hour_pa
@@ -602,10 +608,9 @@ def potential_to_real(potentialProf_K, presProf_pa, epw_staPre_Pa_all):
         # time is formatted as 'YYYY-MM-DD HH:MM:SS'
         # floor the time to the nearest hour
         time_hour = time.replace(minute=0, second=0)
-        epw_staPre_Pa_all.index = pd.to_datetime(epw_staPre_Pa_all.index)
         #from epw_staPre_Pa_all find the corresponding pressure according to time_hour (hourly based comparison)
-        corr_p0_time_idx = epw_staPre_Pa_all.index.get_indexer([time_hour])[0]
-        corr_p0 = epw_staPre_Pa_all.iloc[corr_p0_time_idx]
+        # find the corresponding pressure
+        corr_p0 = epw_staPre_Pa_all.loc[time_hour.strftime('%m-%d %H:%M:%S')]
         #pres.shape(6,),potentialProf_K.iloc[i, :].shape(6,), corr_p0 is one number
         # based on element wise calculation, calculate realProf_K.iloc[i, :]
         # real = potential * (pres / p0) ** 0.286
