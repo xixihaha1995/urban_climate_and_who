@@ -7,11 +7,18 @@ def init_ep_api():
     ep_api = EnergyPlusAPI()
 
 def init_variables_for_vcwg_ep():
-    global ep_wsp_mps, ep_wdir_deg, midRiseApartmentBld_floor_area_m2, smallOfficeBld_floor_area_m2
+    global ep_wsp_mps, ep_wdir_deg, midRiseApartmentBld_floor_area_m2, smallOfficeBld_floor_area_m2, \
+    mediumOfficeBld_floor_area_m2, midRiseApart_num_of_floors, smallOffice_num_of_floors, \
+        mediumOffice_num_of_floors
+
     ep_wsp_mps = 0
     ep_wdir_deg = 0
     midRiseApartmentBld_floor_area_m2 = 3135
     smallOfficeBld_floor_area_m2 = 511
+    mediumOfficeBld_floor_area_m2 = 4982
+    midRiseApart_num_of_floors = 4
+    smallOffice_num_of_floors = 1
+    mediumOffice_num_of_floors = 3
 
 def init_saving_data():
     global saving_data, vcwg_ep_saving_path

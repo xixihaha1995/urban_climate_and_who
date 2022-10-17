@@ -212,14 +212,16 @@ def midRiseApart_nested_ep_only(state):
         roof_Text_C = (tsw_roof_Text_c + tnw_roof_Text_c + tse_roof_Text_c + tne_roof_Text_c +
                        tn1_roof_Text_c + tn2_roof_Text_c + ts1_roof_Text_c + ts2_roof_Text_c + t_cor_roof_Text_c) / 9
 
-        hvac_waste_w_m2 = accu_hvac_heat_rejection_J / accumulation_time_step_in_seconds / coordination.bld_floor_area_m2
+        hvac_waste_w_m2_footprint = accu_hvac_heat_rejection_J / accumulation_time_step_in_seconds / \
+                                    coordination.midRiseApartmentBld_floor_area_m2 * \
+                                    coordination.midRiseApart_num_of_floors
         accu_hvac_heat_rejection_J = 0
 
         coordination.saving_data['ep_wsp_mps_wdir_deg'].append(
             [coordination.ep_wsp_mps, coordination.ep_wdir_deg])
         coordination.saving_data['debugging_canyon'].append([s_wall_Text_C + 273.15,
                                                 n_wall_Text_C + 273.15,roof_Text_C + 273.15,
-                                                hvac_waste_w_m2 * 4, oat_temp_c + 273.15])
+                                                hvac_waste_w_m2_footprint, oat_temp_c + 273.15])
 
 
 def smallOffice_nested_ep_only(state):
@@ -287,7 +289,7 @@ def smallOffice_nested_ep_only(state):
                                                                                      hvac_heat_rejection_sensor_handle)
 
         one_zone_time_step_bool = 1 > abs(accumulation_time_step_in_seconds - zone_time_step_seconds)
-        if  not one_zone_time_step_bool: return
+        if not one_zone_time_step_bool: return
         ep_last_accumulated_time_index_in_seconds = curr_sim_time_in_seconds
 
         oat_temp_c = coordination.ep_api.exchange.get_variable_value(state, oat_sensor_handle)
@@ -305,16 +307,16 @@ def smallOffice_nested_ep_only(state):
 
         roof_Text = (roof_west_Text + roof_east_Text + roof_north_Text + roof_south_Text) / 4
 
-
-        hvac_waste_w_m2 = accu_hvac_heat_rejection_J / accumulation_time_step_in_seconds \
-                          / coordination.smallOfficeBld_floor_area_m2
+        hvac_waste_w_m2_footprint = accu_hvac_heat_rejection_J / accumulation_time_step_in_seconds \
+                          / coordination.smallOfficeBld_floor_area_m2 * coordination.smallOffice_num_of_floors
         accu_hvac_heat_rejection_J = 0
 
         coordination.saving_data['ep_wsp_mps_wdir_deg'].append(
             [coordination.ep_wsp_mps, coordination.ep_wdir_deg])
 
         coordination.saving_data['debugging_canyon'].append([
-            s_wall_Text + 273.15, n_wall_Text + 273.15, roof_Text + 273.15,hvac_waste_w_m2, oat_temp_c + 273.15])
+            s_wall_Text + 273.15, n_wall_Text + 273.15, roof_Text + 273.15,hvac_waste_w_m2_footprint,
+            oat_temp_c + 273.15])
 
 def mediumOffice_nested_ep_only(state):
     global one_time, accu_hvac_heat_rejection_J, \
@@ -405,13 +407,14 @@ def mediumOffice_nested_ep_only(state):
 
         roof_Text_c = coordination.ep_api.exchange.get_variable_value(state, roof_Text_handle)
 
-        hvac_waste_w_m2 = accu_hvac_heat_rejection_J / accumulation_time_step_in_seconds \
-                          / coordination.smallOfficeBld_floor_area_m2
+        hvac_waste_w_m2_footprint = accu_hvac_heat_rejection_J / accumulation_time_step_in_seconds \
+                          / coordination.mediumOfficeBld_floor_area_m2 * coordination.mediumOffice_num_of_floors
         accu_hvac_heat_rejection_J = 0
 
         coordination.saving_data['ep_wsp_mps_wdir_deg'].append(
             [coordination.ep_wsp_mps, coordination.ep_wdir_deg])
 
         coordination.saving_data['debugging_canyon'].append([
-            s_wall_Text_c + 273.15, n_wall_Text_c + 273.15, roof_Text_c + 273.15, hvac_waste_w_m2, oat_temp_c + 273.15])
+            s_wall_Text_c + 273.15, n_wall_Text_c + 273.15, roof_Text_c + 273.15, hvac_waste_w_m2_footprint ,
+            oat_temp_c + 273.15])
 
