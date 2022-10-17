@@ -93,7 +93,7 @@ SimulationControl,
 
 Building,
     Ref Bldg Midrise Apartment Post1980_v1.3_5.0,  !- Name
-    70,                     !- North Axis {deg}
+    -25,                     !- North Axis {deg}
     City,                    !- Terrain
     0.0400,                  !- Loads Convergence Tolerance Value {W}
     0.2000,                  !- Temperature Convergence Tolerance Value {deltaC}
@@ -1071,8 +1071,8 @@ Material,
     1842,                    !- Density {kg/m3}
     912,                     !- Specific Heat {J/kg-K}
     0.9,                     !- Thermal Absorptance
-    0.85,                    !- Solar Absorptance
-    0.85;                    !- Visible Absorptance
+    0.5,                    !- Solar Absorptance
+    0.5;                    !- Visible Absorptance
 
 Material,
     I01 30mm insulation board,  !- Name
@@ -1093,8 +1093,8 @@ Material,
     1920,                    !- Density {kg/m3}
     1260,                    !- Specific Heat {J/kg-K}
     0.95,                     !- Thermal Absorptance
-    0.85,                    !- Solar Absorptance
-    0.85;                    !- Visible Absorptance
+    0.5,                    !- Solar Absorptance
+    0.5;                    !- Visible Absorptance
 
 
 !-   ===========  ALL OBJECTS IN CLASS: MATERIAL:NOMASS ===========
