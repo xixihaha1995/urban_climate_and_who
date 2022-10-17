@@ -9,8 +9,10 @@ def run_ep_api():
     coordination.psychrometric = coordination.ep_api.functional.psychrometrics(state)
     coordination.ep_api.runtime.callback_begin_zone_timestep_before_set_current_weather(state,
                                                                                         time_step_handlers_1.overwrite_ep_weather)
+    # coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
+    #                                                               time_step_handlers_1.mediumOffice_get_ep_results)
     coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
-                                                                  time_step_handlers_1.mediumOffice_get_ep_results)
+                                                                                  time_step_handlers_1.smallOffice_get_ep_results)
 
     coordination.ep_api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
     coordination.ep_api.exchange.request_variable(state, "Site Wind Speed", "ENVIRONMENT")
@@ -28,20 +30,24 @@ if __name__ == '__main__':
     time_step_handler_ver = 1.1
     # case_name = '_BSPA_bypass_refining_M3ing'
     # case_name = '_BSPR_bypass_refining_M3ing'
-    case_name = 'CAPITOUL_Bypass_2004_All_Albedo'
-    start_time = '2004-06-01 00:00:00'
+    # case_name = 'CAPITOUL_Bypass_2004_All_Albedo'
+    case_name = 'Vancouver_TopForcing_ByPass_2008Jul'
+    # start_time = '2004-06-01 00:00:00'
+    start_time = '2008-07-01 00:00:00'
     time_interval_sec = 300
     # ep_files_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\refining_M3ing'
     # ep_files_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\refining_M3ing'
     # ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\Refined_SMALL_OFFICE'
-    ep_files_path = '_2_cases_input_outputs\\_08_CAPITOUL\\DOE_Ref_MediumOffice_4B'
+    # ep_files_path = '_2_cases_input_outputs\\_08_CAPITOUL\\DOE_Ref_MediumOffice_4B'
+    ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\TopForcing_Refined_SMALL_OFFICE'
     # epwFileName = 'Basel.epw'
-    # epwFileName = 'VancouverTopForcing.epw'
-    epwFileName = 'Mondouzil_tdb_td_rh_P_2004.epw'
+    # epwFileName = 'Mondouzil_tdb_td_rh_P_2004.epw'
+    epwFileName = 'VancouverTopForcing.epw'
     # idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M3ing.idf'
     # idfFileName = 'RefBldgSmallOfficePost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
-    # idfFileName = 'Vancouver_SmallOffice.idf'
     idfFileName = 'CAPITOUL_4B.idf'
+    idfFileName = 'Vancouver_SmallOffice.idf'
+
     vcwg_ep_saving_path = ep_files_path + f'\\vcwg_ep_saving\\ver{time_step_handler_ver}'
 
     # Lichen: init the synchronization lock related settings: locks, shared variables.

@@ -19,27 +19,27 @@ def api_to_csv(state):
     newFile.write(newFileByteArray)
     newFile.close()
 def run_vcwg():
-    # BUBBLE, CAPITOUL, Vancouver
-    epwFileName = 'Mondouzil_tdb_td_rh_P_2004.epw'
-    TopForcingFileName = None
-    # VCWGParamFileName = '_case6_initialize_Basel_BSPA_MOST.uwg'
-    VCWGParamFileName = '_case8_initialize_CAPITOUL_MOST.uwg'
-    # VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
-    # ViewFactorFileName = '_case6_BSPA_ViewFactor_Basel_MOST.txt'
-    ViewFactorFileName = '_case8_CAPITOUL_ViewFactor_MOST.txt'
-    # ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
-    # Case name to append output file names with
-    # case = '_BSPA_Refinement_M3ing_Basel_MOST'
-    case = '_CAPITOUL_MOST_DOE_Reference'
-
-    # # '''
-    # epwFileName = None
-    # TopForcingFileName = 'Vancouver2008_ERA5_Jul.csv'
-    # VCWGParamFileName = '_case7_initialize_Vancouver_LCZ1.uwg'
-    # ViewFactorFileName = '_case7_ViewFactor_Vancouver_LCZ1.txt'
+    # # BUBBLE, CAPITOUL, Vancouver
+    # epwFileName = 'Mondouzil_tdb_td_rh_P_2004.epw'
+    # TopForcingFileName = None
+    # # VCWGParamFileName = '_case6_initialize_Basel_BSPA_MOST.uwg'
+    # VCWGParamFileName = '_case8_initialize_CAPITOUL_MOST.uwg'
+    # # VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
+    # # ViewFactorFileName = '_case6_BSPA_ViewFactor_Basel_MOST.txt'
+    # ViewFactorFileName = '_case8_CAPITOUL_ViewFactor_MOST.txt'
+    # # ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
     # # Case name to append output file names with
-    # case = '_case7_Vancouver_LCZ1'
-    # # Initialize the UWG object and run the simulation
+    # # case = '_BSPA_Refinement_M3ing_Basel_MOST'
+    # case = '_CAPITOUL_MOST_DOE_Reference'
+
+    # '''
+    epwFileName = None
+    TopForcingFileName = 'Vancouver2008_ERA5_Jul.csv'
+    VCWGParamFileName = '_case7_initialize_Vancouver_LCZ1.uwg'
+    ViewFactorFileName = '_case7_ViewFactor_Vancouver_LCZ1.txt'
+    # Case name to append output file names with
+    case = '_case7_Vancouver_LCZ1'
+    # Initialize the UWG object and run the simulation
 
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
     VCWG.run()
