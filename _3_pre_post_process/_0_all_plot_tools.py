@@ -72,6 +72,69 @@ def sequence_time_to_pandas_time(dataframe, delta_t,start_time):
     dataframe.index = date
     return dataframe
 
+def save_Vancouver_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
+                             only_ep_degC_1p2_26m_30min,
+                             only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
+                             bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C,
+                              prediction_folder_prefix,
+                              debug_only_ep_5min, debug_only_vcwg_5min, debug_bypass):
+    writer = pd.ExcelWriter(f'{prediction_folder_prefix}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
+                            engine='xlsxwriter')
+    #save 1p2m-direct
+    df = pd.DataFrame({'Measurement': measure_tdb_c_1p2m_30min.squeeze(),
+                       f'Only EP': only_ep_degC_1p2_26m_30min.squeeze(),
+                       'Only VCWG': only_vcwg_direct_lst_C[0],
+                       'Bypass Ver1.1': bypass_direct_lst_C[0]})
+    df.to_excel(writer, sheet_name='1p2m Direct')
+    #save 1p2m-real_p0
+    df = pd.DataFrame({'Measurement': measure_tdb_c_1p2m_30min.squeeze(),
+                       'Only VCWG': only_vcwg_real_p0_lst_C[0],
+                       'Bypass Ver1.1': bypass_real_p0_lst_C[0]})
+    df.to_excel(writer, sheet_name='1p2m Real P0')
+    #save 1p2m-real_epw
+    df = pd.DataFrame({'Measurement': measure_tdb_c_1p2m_30min.squeeze(),
+                       'Only VCWG': only_vcwg_real_epw_lst_C[0],
+                       'Bypass Ver1.1': bypass_real_epw_lst_C[0]})
+    df.to_excel(writer, sheet_name='1p2m Real EPW')
+    #save 26m-direct
+    df = pd.DataFrame({'Measurement': measure_tdb_c_26m_30min.squeeze(),
+                       'Only EP': only_ep_degC_1p2_26m_30min.squeeze(),
+                       'Only VCWG': only_vcwg_direct_lst_C[1],
+                       'Bypass Ver1.1': bypass_direct_lst_C[1]})
+    df.to_excel(writer, sheet_name='26m Direct')
+    #save 26m-real_p0
+    df = pd.DataFrame({'Measurement': measure_tdb_c_26m_30min.squeeze(),
+                       'Only VCWG': only_vcwg_real_p0_lst_C[1],
+                       'Bypass Ver1.1': bypass_real_p0_lst_C[1]})
+    df.to_excel(writer, sheet_name='26m Real P0')
+    #save 26m-real_epw
+    df = pd.DataFrame({'Measurement': measure_tdb_c_26m_30min.squeeze(),
+                       'Only VCWG': only_vcwg_real_epw_lst_C[1],
+                       'Bypass Ver1.1': bypass_real_epw_lst_C[1]})
+    df.to_excel(writer, sheet_name='26m Real EPW')
+    # save wall Sun
+    df = pd.DataFrame({'Only EP(southFacingWall)': debug_only_ep_5min.iloc[:, 0] - 273.15,
+                       'Only VCWG (wallSun)': debug_only_vcwg_5min.iloc[:, 0] - 273.15,
+                       'Bypass Ver1.1 (wallSun)': debug_bypass.iloc[:, 0] - 273.15})
+    df.to_excel(writer, sheet_name='wallSun_southFacingWall')
+    # save wall shade
+    df = pd.DataFrame({'Only EP (northFacingWall)': debug_only_ep_5min.iloc[:, 1] - 273.15,
+                       'Only VCWG (wallShade)': debug_only_vcwg_5min.iloc[:, 1] - 273.15,
+                       'Bypass Ver1.1 (wallShade)': debug_bypass.iloc[:, 1] - 273.15})
+    df.to_excel(writer, sheet_name='wallShade_northFacingWall')
+    # write the fourth sheet
+    df = pd.DataFrame({'Only EP(roof)': debug_only_ep_5min.iloc[:, 2] - 273.15,
+                       'Only VCWG (roof)': debug_only_vcwg_5min.iloc[:, 2] - 273.15,
+                       'Bypass Ver1.1 (roof)': debug_bypass.iloc[:, 3] - 273.15})
+    df.to_excel(writer, sheet_name='roof')
+    # write the fifth sheet
+    df = pd.DataFrame({'Only EP{which_ep} (sensHVAC)': debug_only_ep_5min.iloc[:, 3],
+                       'Only VCWG (sensWaste)': debug_only_vcwg_5min.iloc[:, 3],
+                       'Bypass Ver1.1 (sensHVAC)': debug_bypass.iloc[:, 4]})
+    df.to_excel(writer, sheet_name='sensWaste_sensHVAC')
+
+    writer.save()
+
 def save_CAPITOUL_debug(measure_tdb_c_2m_6m_hourly,measure_tdb_c_20m_5min,
                         only_ep_degC_2_6_hourly,only_ep_degC_20_5min,
                         only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
@@ -80,9 +143,6 @@ def save_CAPITOUL_debug(measure_tdb_c_2m_6m_hourly,measure_tdb_c_20m_5min,
                         debug_only_ep, debug_only_vcwg,debug_bypass_ver1p1):
     writer = pd.ExcelWriter(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
                             engine='xlsxwriter')
-    #save 2m-direct
-    #measure_tdb_c_2m_6m_hourly Series (719,1) to (719,)
-    measure_tdb_c_2m_6m_hourly_1d = measure_tdb_c_2m_6m_hourly.squeeze()
     df = pd.DataFrame({'Measurement': measure_tdb_c_2m_6m_hourly.squeeze(),
                        f'Only EP': only_ep_degC_2_6_hourly.squeeze(),
                        'Only VCWG': only_vcwg_direct_lst_C[0],
@@ -153,6 +213,64 @@ def save_CAPITOUL_debug(measure_tdb_c_2m_6m_hourly,measure_tdb_c_20m_5min,
 
     writer.save()
 
+def organize_Vancouver_cvrmse(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
+                             only_ep_degC_1p2_26m_30min,
+                             only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
+                             bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C):
+    cvrmse_3d = np.zeros((2, 3, 3))
+    # since there is no real_p0, real_epw for ep, so set them to nan
+    cvrmse_3d[:, 0, 1:] = np.nan
+
+    cvrmse_1p2m_ep_direct = bias_rmse_r2(measure_tdb_c_1p2m_30min, only_ep_degC_1p2_26m_30min, 'only_ep_2m_6m')[
+        2]
+    cvrmse_26m_ep_direct = cvrmse_1p2m_ep_direct
+    cvrmse_1p2m_vcwg_direct = \
+    bias_rmse_r2(measure_tdb_c_1p2m_30min, only_vcwg_direct_lst_C[0], 'only_vcwg_2m')[2]
+    cvrmse_26m_vcwg_direct = \
+    bias_rmse_r2(measure_tdb_c_26m_30min, only_vcwg_direct_lst_C[1], 'only_vcwg_6m')[2]
+    cvrmse_1p2m_vcwg_real_p0 = \
+    bias_rmse_r2(measure_tdb_c_1p2m_30min, only_vcwg_real_p0_lst_C[0], 'only_vcwg_2m')[2]
+    cvrmse_26m_vcwg_real_p0 = \
+    bias_rmse_r2(measure_tdb_c_26m_30min, only_vcwg_real_p0_lst_C[1], 'only_vcwg_6m')[2]
+
+    cvrmse_1p2m_vcwg_real_epw = \
+    bias_rmse_r2(measure_tdb_c_1p2m_30min, only_vcwg_real_epw_lst_C[0], 'only_vcwg_2m')[2]
+    cvrmse_26m_vcwg_real_epw = \
+    bias_rmse_r2(measure_tdb_c_26m_30min, only_vcwg_real_epw_lst_C[1], 'only_vcwg_6m')[2]
+
+    cvrmse_1p2m_bypass_direct = bias_rmse_r2(measure_tdb_c_1p2m_30min, bypass_direct_lst_C[0], 'bypass_2m')[2]
+    cvrmse_26m_bypass_direct = bias_rmse_r2(measure_tdb_c_26m_30min, bypass_direct_lst_C[1], 'bypass_6m')[2]
+    cvrmse_1p2m_bypass_real_p0 = bias_rmse_r2(measure_tdb_c_1p2m_30min, bypass_real_p0_lst_C[0], 'bypass_2m')[
+        2]
+    cvrmse_26m_bypass_real_p0 = bias_rmse_r2(measure_tdb_c_26m_30min, bypass_real_p0_lst_C[1], 'bypass_6m')[
+        2]
+    cvrmse_1p2m_bypass_real_epw = \
+    bias_rmse_r2(measure_tdb_c_1p2m_30min, bypass_real_epw_lst_C[0], 'bypass_2m')[2]
+    cvrmse_26m_bypass_real_epw = \
+    bias_rmse_r2(measure_tdb_c_26m_30min, bypass_real_epw_lst_C[1], 'bypass_6m')[2]
+
+    cvrmse_3d[0, 0, 0] = cvrmse_1p2m_ep_direct
+    cvrmse_3d[1, 0, 0] = cvrmse_26m_ep_direct
+
+    cvrmse_3d[0, 1, 0] = cvrmse_1p2m_vcwg_direct
+    cvrmse_3d[1, 1, 0] = cvrmse_26m_vcwg_direct
+
+    cvrmse_3d[0, 1, 1] = cvrmse_1p2m_vcwg_real_p0
+    cvrmse_3d[1, 1, 1] = cvrmse_26m_vcwg_real_p0
+
+    cvrmse_3d[0, 1, 2] = cvrmse_1p2m_vcwg_real_epw
+    cvrmse_3d[1, 1, 2] = cvrmse_26m_vcwg_real_epw
+
+    cvrmse_3d[0, 2, 0] = cvrmse_1p2m_bypass_direct
+    cvrmse_3d[1, 2, 0] = cvrmse_26m_bypass_direct
+
+    cvrmse_3d[0, 2, 1] = cvrmse_1p2m_bypass_real_p0
+    cvrmse_3d[1, 2, 1] = cvrmse_26m_bypass_real_p0
+
+    cvrmse_3d[0, 2, 2] = cvrmse_1p2m_bypass_real_epw
+    cvrmse_3d[1, 2, 2] = cvrmse_26m_bypass_real_epw
+
+    return cvrmse_3d
 
 def organize_CAPITOUL_cvrmse(measure_tdb_c_2m_6m_hourly,measure_tdb_c_20m_5min,
                              only_ep_degC_2_6_hourly,only_ep_degC_20_5min,
@@ -508,7 +626,7 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
 
 def excel_to_direct_real_p0_real_epw(filename, results_folder, heights_profile,
                                      sensor_heights, target_interval,p0, compare_start_time,
-                                     compare_end_time, epw_staPre_Pa_all):
+                                     compare_end_time, epw_staPre_Pa_all, mapped_indices = None):
     th_profie_5min = pd.read_excel(f'{results_folder}\\{filename}_TempProfile_K.xlsx',
                                                    sheet_name='Sheet1', header=0, index_col=0)
     pres_profile_5min = pd.read_excel(f'{results_folder}\\{filename}_PressProfile_Pa.xlsx',
@@ -517,9 +635,10 @@ def excel_to_direct_real_p0_real_epw(filename, results_folder, heights_profile,
     pres_profile_5min = pres_profile_5min[compare_start_time:compare_end_time]
     # ue1_heights is sensor heights, heights_profile is the heights of predictions
     # find the mapped indices in heights_profile
-    heights_profile = np.array(heights_profile)
-    sensor_heights = np.array(sensor_heights)
-    mapped_indices = [np.argmin(np.abs(heights_profile - i)) for i in sensor_heights]
+    if mapped_indices is None:
+        heights_profile = np.array(heights_profile)
+        sensor_heights = np.array(sensor_heights)
+        mapped_indices = [np.argmin(np.abs(heights_profile - i)) for i in sensor_heights]
     th_target_intverval_K_lst = [None for _ in range(len(mapped_indices))]
     pres_target_intverval_Pa_lst = [None for _ in range(len(mapped_indices))]
     real_p0_target_interval_K_lst = [None for _ in range(len(mapped_indices))]
