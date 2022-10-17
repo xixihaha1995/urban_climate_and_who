@@ -17,7 +17,7 @@ dtWeather,3600,    # weather time step [s]
 nDay_spinup,1,     # Number of days accounted for spin-up
 nightStart,18,     # Sunset time in local standard time
 nightEnd,8,        # Sunrise time in local standard time
-Elevation,245,     # Elevation above sea level [m]
+Elevation,90,     # Elevation above sea level [m]
 
 # =================================================
 # Control switches
