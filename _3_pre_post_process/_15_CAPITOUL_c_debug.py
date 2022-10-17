@@ -64,6 +64,9 @@ else:
     epw_all_clean.to_csv(os.path.join(measure_results_folder, f'{epw_atm_filename}.csv'))
     epw_staPre_Pa_all = epw_all_clean.iloc[:, 9]
 
+    epw_staPre_Pa_all.index = pd.to_datetime(epw_staPre_Pa_all.index)
+    epw_staPre_Pa_all.index = epw_staPre_Pa_all.index.strftime('%m-%d %H:%M:%S')
+
 # Measurements: 2,6,20m measured data, convert to target interval (hourly, 5min)
     measure_tdb_c_2m_6m_10min = zone7_10min.iloc[:, 1]
     measure_tdb_c_20m_5min = pomme_5min.iloc[:, 2]

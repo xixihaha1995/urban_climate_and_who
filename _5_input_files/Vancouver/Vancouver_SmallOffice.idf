@@ -583,7 +583,7 @@
     0.0000,                  !- Z Origin {m}
     1,                       !- Type
     1,                       !- Multiplier
-    6.5,                        !- Ceiling Height {m}
+    ,                        !- Ceiling Height {m}
     ,                        !- Volume {m3}
     autocalculate,           !- Floor Area {m2}
     ,                        !- Zone Inside Convection Algorithm
@@ -598,7 +598,7 @@
     0.0000,                  !- Z Origin {m}
     1,                       !- Type
     1,                       !- Multiplier
-    6.5,                        !- Ceiling Height {m}
+    ,                        !- Ceiling Height {m}
     ,                        !- Volume {m3}
     autocalculate,           !- Floor Area {m2}
     ,                        !- Zone Inside Convection Algorithm
@@ -613,7 +613,7 @@
     0.0000,                  !- Z Origin {m}
     1,                       !- Type
     1,                       !- Multiplier
-    6.5,                        !- Ceiling Height {m}
+    ,                        !- Ceiling Height {m}
     ,                        !- Volume {m3}
     autocalculate,           !- Floor Area {m2}
     ,                        !- Zone Inside Convection Algorithm
@@ -628,7 +628,7 @@
     0.0000,                  !- Z Origin {m}
     1,                       !- Type
     1,                       !- Multiplier
-    6.5,                        !- Ceiling Height {m}
+    0,                        !- Ceiling Height {m}
     ,                        !- Volume {m3}
     autocalculate,           !- Floor Area {m2}
     ,                        !- Zone Inside Convection Algorithm
@@ -643,7 +643,7 @@
     0.0000,                  !- Z Origin {m}
     1,                       !- Type
     1,                       !- Multiplier
-    6.5,                        !- Ceiling Height {m}
+    0,                        !- Ceiling Height {m}
     ,                        !- Volume {m3}
     autocalculate,           !- Floor Area {m2}
     ,                        !- Zone Inside Convection Algorithm

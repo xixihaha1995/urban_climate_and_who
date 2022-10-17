@@ -596,8 +596,6 @@ def potential_to_real(potentialProf_K, presProf_pa, epw_staPre_Pa_all):
     # so we only need to find the corresponding MM-DD HH:MM:SS, and ignore the year
     # epw_staPre_Pa_all.index is formatted as 'YYYY-MM-DD HH:MM:SS', so we need to extract the MM-DD HH:MM:SS
     # from epw_staPre_Pa_all.index
-    epw_staPre_Pa_all.index = pd.to_datetime(epw_staPre_Pa_all.index)
-    epw_staPre_Pa_all.index = epw_staPre_Pa_all.index.strftime('%m-%d %H:%M:%S')
     for i in range(len(potentialProf_K)):
         # find the corresponding pressures
         # find the corresponding time in rural_1p5_hour_pa
