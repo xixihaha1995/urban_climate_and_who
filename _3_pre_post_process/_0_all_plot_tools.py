@@ -72,12 +72,13 @@ def sequence_time_to_pandas_time(dataframe, delta_t,start_time):
     dataframe.index = date
     return dataframe
 
-def save_Vancouver_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
+def save_TwoHeights_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
                              only_ep_degC_1p2_26m_30min,
                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C,
                               prediction_folder_prefix,
-                              debug_only_ep_5min, debug_only_vcwg_5min, debug_bypass):
+                              debug_only_ep_5min, debug_only_vcwg_5min, debug_bypass,
+                         sheet_names = None):
     writer = pd.ExcelWriter(f'{prediction_folder_prefix}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
                             engine='xlsxwriter')
     #save 1p2m-direct
@@ -85,33 +86,51 @@ def save_Vancouver_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
                        f'Only EP': only_ep_degC_1p2_26m_30min.squeeze(),
                        'Only VCWG': only_vcwg_direct_lst_C[0],
                        'Bypass Ver1.1': bypass_direct_lst_C[0]})
-    df.to_excel(writer, sheet_name='1p2m Direct')
+    if sheet_names is None:
+        df.to_excel(writer, sheet_name='1p2m direct')
+    else:
+        df.to_excel(writer, sheet_name=f'{str(sheet_names[0])}m Direct')
     #save 1p2m-real_p0
     df = pd.DataFrame({'Measurement': measure_tdb_c_1p2m_30min.squeeze(),
                        'Only VCWG': only_vcwg_real_p0_lst_C[0],
                        'Bypass Ver1.1': bypass_real_p0_lst_C[0]})
-    df.to_excel(writer, sheet_name='1p2m Real P0')
+    if sheet_names is None:
+        df.to_excel(writer, sheet_name='1p2m Real P0')
+    else:
+        df.to_excel(writer, sheet_name=f'{str(sheet_names[0])}m Real P0')
     #save 1p2m-real_epw
     df = pd.DataFrame({'Measurement': measure_tdb_c_1p2m_30min.squeeze(),
                        'Only VCWG': only_vcwg_real_epw_lst_C[0],
                        'Bypass Ver1.1': bypass_real_epw_lst_C[0]})
-    df.to_excel(writer, sheet_name='1p2m Real EPW')
+    if sheet_names is None:
+        df.to_excel(writer, sheet_name='1p2m Real EPW')
+    else:
+        df.to_excel(writer, sheet_name=f'{str(sheet_names[0])}m Real EPW')
     #save 26m-direct
     df = pd.DataFrame({'Measurement': measure_tdb_c_26m_30min.squeeze(),
                        'Only EP': only_ep_degC_1p2_26m_30min.squeeze(),
                        'Only VCWG': only_vcwg_direct_lst_C[1],
                        'Bypass Ver1.1': bypass_direct_lst_C[1]})
-    df.to_excel(writer, sheet_name='26m Direct')
+    if sheet_names is None:
+        df.to_excel(writer, sheet_name='26m Direct')
+    else:
+        df.to_excel(writer, sheet_name=f'{str(sheet_names[1])}m Direct')
     #save 26m-real_p0
     df = pd.DataFrame({'Measurement': measure_tdb_c_26m_30min.squeeze(),
                        'Only VCWG': only_vcwg_real_p0_lst_C[1],
                        'Bypass Ver1.1': bypass_real_p0_lst_C[1]})
-    df.to_excel(writer, sheet_name='26m Real P0')
+    if sheet_names is None:
+        df.to_excel(writer, sheet_name='26m Real P0')
+    else:
+        df.to_excel(writer, sheet_name=f'{str(sheet_names[1])}m Real P0')
     #save 26m-real_epw
     df = pd.DataFrame({'Measurement': measure_tdb_c_26m_30min.squeeze(),
                        'Only VCWG': only_vcwg_real_epw_lst_C[1],
                        'Bypass Ver1.1': bypass_real_epw_lst_C[1]})
-    df.to_excel(writer, sheet_name='26m Real EPW')
+    if sheet_names is None:
+        df.to_excel(writer, sheet_name='26m Real EPW')
+    else:
+        df.to_excel(writer, sheet_name=f'{str(sheet_names[1])}m Real EPW')
     # save wall Sun
     df = pd.DataFrame({'Only EP(southFacingWall)': debug_only_ep_5min.iloc[:, 0] - 273.15,
                        'Only VCWG (wallSun)': debug_only_vcwg_5min.iloc[:, 0] - 273.15,
@@ -346,6 +365,8 @@ def bias_rmse_r2(df1, df2, df2_name):
     df2 is simulated data, [date, sensible/latent]
     '''
     # based on df1 time index, find the corresponding df2
+    #drop df1 nan
+    df1 = df1.dropna()
     df2 = df2.loc[df1.index]
     df1 = df1.values
     df2 = df2.values
