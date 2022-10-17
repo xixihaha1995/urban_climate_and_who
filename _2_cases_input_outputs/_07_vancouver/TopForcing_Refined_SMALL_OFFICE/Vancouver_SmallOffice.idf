@@ -247,7 +247,7 @@
     47.45,                   !- Latitude {deg}
     -122.30,                 !- Longitude {deg}
     -8.00,                   !- Time Zone {hr}
-    122;                     !- Elevation {m}
+    90;                     !- Elevation {m}
 
 ! SEATTLE_WA_USA Annual Heating 99.6%, MaxDB=-4.5�C
 
