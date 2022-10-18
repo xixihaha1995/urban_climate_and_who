@@ -26,8 +26,8 @@ if __name__ == '__main__':
     # case_name = 'Vancouver_TopForcing_only_ep_2008_July'
     # case_name = 'Vancouver_Rural_only_ep_2008_July'
     case_name = 'BUBBLE_Ue2_only_ep_2002_June'
-    start_time = '2004-06-01 00:00:00'
-    # start_time = '2002-06-10 00:00:00'
+    # start_time = '2004-06-01 00:00:00'
+    start_time = '2002-06-10 00:00:00'
     # start_time = '2008-07-01 00:00:00'
     time_interval_sec = 300
     data_name_lst = ['ep_wsp_mps_wdir_deg', 'debugging_canyon']
