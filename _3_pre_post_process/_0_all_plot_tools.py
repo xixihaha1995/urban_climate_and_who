@@ -87,7 +87,7 @@ def save_TwoHeights_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
                        'Only VCWG': only_vcwg_direct_lst_C[0],
                        'Bypass Ver1.1': bypass_direct_lst_C[0]})
     if sheet_names is None:
-        df.to_excel(writer, sheet_name='1p2m direct')
+        df.to_excel(writer, sheet_name='1p2m Direct')
     else:
         df.to_excel(writer, sheet_name=f'{str(sheet_names[0])}m Direct')
     #save 1p2m-real_p0
