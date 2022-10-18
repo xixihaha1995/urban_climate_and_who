@@ -21,18 +21,22 @@ def api_to_csv(state):
 def run_vcwg():
     # BUBBLE, CAPITOUL, Vancouver
     # epwFileName = 'Mondouzil_tdb_td_rh_P_2004.epw'
-    epwFileName = 'Basel.epw'
+    # epwFileName = 'Basel.epw'
+    epwFileName = 'VancouverRural718920.epw'
     TopForcingFileName = None
     # VCWGParamFileName = '_case6_initialize_Basel_BSPA_MOST.uwg'
     # VCWGParamFileName = '_case8_initialize_CAPITOUL_MOST.uwg'
-    VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
+    # VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
+    VCWGParamFileName = '_case7_initialize_Vancouver_withRural.uwg'
     # ViewFactorFileName = '_case6_BSPA_ViewFactor_Basel_MOST.txt'
     # ViewFactorFileName = '_case8_CAPITOUL_ViewFactor_MOST.txt'
-    ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
+    # ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
+    ViewFactorFileName = '_case7_ViewFactor_Vancouver_LCZ1.txt'
     # Case name to append output file names with
     # case = '_BSPA_Refinement_M3ing_Basel_MOST'
-    case = 'BUBBLE_Ue1_Refinement_IDFLowALbedo_MOST'
+    # case = 'BUBBLE_Ue1_Refinement_IDFLowALbedo_MOST'
     # case = '_CAPITOUL_MOST_DOE_Reference'
+    case = '_case7_Vancouver_Rural'
 
     # # '''
     # epwFileName = None
