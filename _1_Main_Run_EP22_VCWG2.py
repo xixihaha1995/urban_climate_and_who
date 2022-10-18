@@ -8,22 +8,22 @@ from _3_post_process_code import _0_all_plot_tools as plot_tools
 def run_vcwg():
     # # BUBBLE, CAPITOUL, Vancouver
     # epwFileName = 'Mondouzil_tdb_td_rh_P_2004.epw'
-    # epwFileName = 'Basel.epw'
-    epwFileName = 'VancouverRural718920.epw'
+    epwFileName = 'Basel.epw'
+    # epwFileName = 'VancouverRural718920.epw'
     TopForcingFileName = None
-    # VCWGParamFileName = '_case6_initialize_Basel_BSPA_MOST.uwg'
+    VCWGParamFileName = '_case6_initialize_Basel_BSPA_MOST.uwg'
     # VCWGParamFileName = '_case8_initialize_CAPITOUL_MOST.uwg'
     # VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
-    VCWGParamFileName = '_case7_initialize_Vancouver_withRural.uwg'
-    # ViewFactorFileName = '_case6_BSPA_ViewFactor_Basel_MOST.txt'
+    # VCWGParamFileName = '_case7_initialize_Vancouver_withRural.uwg'
+    ViewFactorFileName = '_case6_BSPA_ViewFactor_Basel_MOST.txt'
     # ViewFactorFileName = '_case8_CAPITOUL_ViewFactor_MOST.txt'
     # ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
-    ViewFactorFileName = '_case7_ViewFactor_Vancouver_LCZ1.txt'
+    # ViewFactorFileName = '_case7_ViewFactor_Vancouver_LCZ1.txt'
     # Case name to append output file names with
-    # case = '_BSPA_Refinement_M3ing_Basel_MOST'
+    case = '_Ue2_BSPA_Only_VCWG_Basel_MOST'
     # case = '_CAPITOUL_MOST'
     # case = '_BSPR_Only_VCWG_Basel_MOST'
-    case = '_case7_VancouverRuralOnlyVCWG_2008Jul'
+    # case = '_case7_VancouverRuralOnlyVCWG_2008Jul'
 
     # # Vancouver
     # # '''
@@ -51,11 +51,12 @@ if __name__ == '__main__':
     # saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\vcwg_saving'
     # saving_data_path = '_2_cases_input_outputs\\_08_CAPITOUL\\DOE_Ref_MediumOffice_4B\\vcwg_saving'
     # saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\TopForcing_Refined_SMALL_OFFICE\\vcwg_saving'
-    saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\Rural_Refined_Small_Office\\vcwg_saving'
+    # saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\Rural_Refined_Small_Office\\vcwg_saving'
     # saving_data_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\MidRiseApartment_4C_Rural\\vcwg_saving'
+    saving_data_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\Orientation_MidRiseApart_4C\\vcwg_saving'
     # start_time = '2004-06-01 00:00:00'
-    start_time = '2008-07-01 00:00:00'
-    # start_time = '2002-06-10 00:00:00'
+    # start_time = '2008-07-01 00:00:00'
+    start_time = '2002-06-10 00:00:00'
     time_interval_sec = 300
 
     vcwg_thread = Thread(target=run_vcwg)
