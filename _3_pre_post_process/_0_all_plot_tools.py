@@ -654,7 +654,8 @@ def excel_to_direct_real_p0_real_epw(filename, results_folder, heights_profile,
                                                    sheet_name='Sheet1', header=0, index_col=0)
     pres_profile_5min = pd.read_excel(f'{results_folder}\\{filename}_PressProfile_Pa.xlsx',
                                                       sheet_name='Sheet1', header=0, index_col=0)
-    if postpone_time is not None or postpone_time != 0:
+    # determine if the postpone_time is not None
+    if postpone_time is not None:
         #add prepone time to the index
         th_profie_5min.index = th_profie_5min.index - pd.Timedelta(hours=postpone_time)
         pres_profile_5min.index = pres_profile_5min.index - pd.Timedelta(hours=postpone_time)
