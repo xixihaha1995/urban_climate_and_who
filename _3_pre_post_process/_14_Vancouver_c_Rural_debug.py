@@ -3,7 +3,7 @@ import _0_all_plot_tools as plt_tools
 import pandas as pd, numpy as np
 # Hardcoded parameters
 compare_start_time = '2008-07-01 00:00:00'
-compare_end_time = '2008-07-31 15:00:00'
+compare_end_time = '2008-07-31 13:00:00'
 measure_results_folder = r'..\_4_measurements\Vancouver'
 save_intermediate_path = r'..\_4_measurements\Vancouver\RuralModelSaving'
 ss4_tower_ori_filename = r'SSDTA_2008-07_30min.csv'
@@ -24,7 +24,7 @@ sensor_heights = [1.2, 26]
 target_interval = [30,30]
 selected_prediction_idx = [1,-1]
 # The rural data looks is like 5 hours later than actual time
-postpone_time = 8
+postpone_time = 7
 # Read measured then convert to target interval
 ss4_tower_ori_30min = pd.read_csv(os.path.join(measure_results_folder, ss4_tower_ori_filename),
                                             index_col=0, parse_dates=True)
