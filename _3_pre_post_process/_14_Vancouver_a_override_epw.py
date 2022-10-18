@@ -15,7 +15,7 @@ sampling rate: 1 hour
 # 3. overwrite the epw file in the epw folder of the case
 
 import os, sys
-import pandas as pd, _0_all_plot_tools as plot_tools
+import pandas as pd, _0_all_plot_tools as plot_tools, matplotlib.pyplot as plt
 
 sys.path.insert(0, 'C:\EnergyPlusV22-1-0')
 from pyenergyplus.api import EnergyPlusAPI
@@ -52,6 +52,7 @@ def get_clean_airport_measurment(file_path):
     df = pd.read_csv(file_path, header=0, index_col= 1, sep=',')
     # only keep these columns: TMP,DEW,SLP
     df = df[['TMP', 'DEW', 'SLP']]
+    # convert types to string
     df = df.astype(str)
     #For each column, remove the rows, where the last char is not '1'
     for col in df.columns:
@@ -128,6 +129,9 @@ def main():
     _71890_file = r'..\_4_measurements\Vancouver\IntegratedSurfaceDataset_Vancouver_INT_Airport_2008.csv'
     # _71890_file = r'..\_4_measurements\Vancouver\IntegratedSurfaceDataset_Vancouver_Harbour_Airport_2008.csv'
     df = get_clean_airport_measurment(_71890_file)
+    #plot the first column
+    df.iloc[:, 0].plot()
+    plt.show()
     # save the data to csv file
     df.to_csv(r'..\_4_measurements\Vancouver\clean_IntegratedSurfaceDataset_Vancouver_Harbour_Airport_2008.csv')
     # _2_cases_input_outputs/_08_CAPITOUL/generate_epw/overriding_FRA_Bordeaux.075100_IWECEPW.csv
