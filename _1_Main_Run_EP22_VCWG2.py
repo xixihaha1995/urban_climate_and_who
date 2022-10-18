@@ -41,14 +41,16 @@ if __name__ == '__main__':
     coordination.init_saving_data()
     # case_name = 'CAPITOUL_2004_only_vcwg'
     # case_name = 'Vancouver_TopForcing_only_vcwg_2008_Jul'
-    case_name = 'BUBBLE_Ue1_Rural_only_vcwg_2002_June'
+    case_name = 'Vancouver_Rural_only_vcwg_2008_Jul'
+    # case_name = 'BUBBLE_Ue1_Rural_only_vcwg_2002_June'
     # saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\vcwg_saving'
     # saving_data_path = '_2_cases_input_outputs\\_08_CAPITOUL\\DOE_Ref_MediumOffice_4B\\vcwg_saving'
     # saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\TopForcing_Refined_SMALL_OFFICE\\vcwg_saving'
-    saving_data_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\MidRiseApartment_4C_Rural\\vcwg_saving'
+    saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\Rural_Refined_Small_Office\\vcwg_saving'
+    # saving_data_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\MidRiseApartment_4C_Rural\\vcwg_saving'
     # start_time = '2004-06-01 00:00:00'
-    # start_time = '2008-07-01 00:00:00'
-    start_time = '2002-06-10 00:00:00'
+    start_time = '2008-07-01 00:00:00'
+    # start_time = '2002-06-10 00:00:00'
     time_interval_sec = 300
 
     vcwg_thread = Thread(target=run_vcwg)
