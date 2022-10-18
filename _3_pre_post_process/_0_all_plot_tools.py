@@ -649,11 +649,15 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
 
 def excel_to_direct_real_p0_real_epw(filename, results_folder, heights_profile,
                                      sensor_heights, target_interval,p0, compare_start_time,
-                                     compare_end_time, epw_staPre_Pa_all, mapped_indices = None):
+                                     compare_end_time, epw_staPre_Pa_all, mapped_indices = None, postpone_time=None):
     th_profie_5min = pd.read_excel(f'{results_folder}\\{filename}_TempProfile_K.xlsx',
                                                    sheet_name='Sheet1', header=0, index_col=0)
     pres_profile_5min = pd.read_excel(f'{results_folder}\\{filename}_PressProfile_Pa.xlsx',
                                                       sheet_name='Sheet1', header=0, index_col=0)
+    if postpone_time is not None or postpone_time != 0:
+        #add prepone time to the index
+        th_profie_5min.index = th_profie_5min.index - pd.Timedelta(hours=postpone_time)
+        pres_profile_5min.index = pres_profile_5min.index - pd.Timedelta(hours=postpone_time)
     th_profie_5min = th_profie_5min[compare_start_time:compare_end_time]
     pres_profile_5min = pres_profile_5min[compare_start_time:compare_end_time]
     # ue1_heights is sensor heights, heights_profile is the heights of predictions
