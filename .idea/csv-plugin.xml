@@ -157,6 +157,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\_4_measurements\Vancouver\IntegratedSurfaceDataset_Vancouver_INT_Airport_2008.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

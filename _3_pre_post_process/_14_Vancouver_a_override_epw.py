@@ -47,61 +47,37 @@ air temperature (position 6 meters high) : Celsius
 air relative humidity (position 6 meters high) : Celsius
 '''
 
-def make_columns_name(_first_month_name):
-    # make the column names
-    # # 1.2. The 10th line is the column names, in total 14 columns
-    # # 1.3. The 11th line is the unit of each column, in total 14 columns
-    # combine the 10th and 11th lines as the column names
-    with open(_first_month_name, 'r') as f:
-        lines = f.readlines()
-        # For each column name, its surrounded by two single quotes, 'column_name'; between two column names, there is a space.
-        # for string between two single quotes, extract them as column names
-        _10th_line = lines[9].strip().split(' ')
-        # remove string only containing single quote
-        _10th_line = [i for i in _10th_line if i != "'"]
-        _11th_line = lines[10].strip().split("' '")
-        column_name = []
-        for i in range(len(_10th_line)):
-            column_name.append(_10th_line[i] + '_' + _11th_line[i])
-    return column_name
-
-def get_one_file_data(file_path):
+def get_clean_airport_measurment(file_path):
     # read one file, read the second column as string
-    df = pd.read_csv(file_path, skiprows=15, header=None, sep='\t', dtype={1: str})
-    #
-    # convert the date and time to datetime format
-    '''
-    1. first column is data, format DD/MM/AAAA
-    2. second column is time, format HHMNSS.SSS, fill the missing 0
-    '''
-    df[0] = df[0].apply(lambda x: x.replace('/', '-'))
-    df[1] = df[1].apply(lambda x: x.zfill(8))
-
+    df = pd.read_csv(file_path, header=0, index_col= 1, sep=',')
+    # only keep these columns: TMP,DEW,SLP
+    df = df[['TMP', 'DEW', 'SLP']]
+    #drop missing rows:
+    # for TMP column, drop rows str containing '9999'
+    # for DEW column, drop rows str containing '9999'
+    # for SLP column, drop rows str containing '99999'
+    df = df[~df['TMP'].str.contains('9999')]
+    df = df[~df['DEW'].str.contains('9999')]
+    df = df[~df['SLP'].str.contains('99999')]
+    # drop the last two char for each column
+    df = df.apply(lambda x: x.str[:-2])
+    # convert the data type to float
+    df = df.astype(float)
+    # for first two columns, divide by 10
+    df.iloc[:, 0:2] = df.iloc[:, 0:2] / 10
+    # for the last column, mutiply by 10
+    df.iloc[:, 2] = df.iloc[:, 2] * 10
+    # rename the columns 'TMP' to 'Dry Bulb Temperature {C}', 'DEW' to 'Dew Point Temperature {C}', 'SLP' to 'Atmospheric Station Pressure {Pa}'
+    df = df.rename(columns={'TMP': 'Dry Bulb Temperature {C}', 'DEW': 'Dew Point Temperature {C}', 'SLP': 'Atmospheric Station Pressure {Pa}'})
     # combine the date and time, and convert to datetime format
-    df['date_time'] = df.iloc[:, 0] + ' ' + df.iloc[:, 1]
-    df['date_time'] = pd.to_datetime(df['date_time'], format='%d-%m-%Y %H%M%S.%f')
-    # set the date_time as index
-    df = df.set_index('date_time')
+    df.index = pd.to_datetime(df.index)
+    # convert the index to hourly
+    df = df.resample('H').mean()
+    # since the data has 366 days, but the epw file only has 365 days
+    # so we drop the Feb 29th
+    df = df[df.index.date != pd.to_datetime('2008-02-29').date()]
     return df
-
-def get_all_files_data():
-    # get the file path
-    file_path = r'..\\_4_measurements\CAPITOUL\CAPITOUL_including_Rural(Mondouzil)\Mo_BDD\Mo_BDD'
-    # get the data from all the files
-    df = pd.DataFrame()
-    file_name_str = 'Mo_BDD_MM-2004.asc' # where MM stands for the month
-    for month in range(1, 13):
-        file_name = file_name_str.replace('MM', str(month).zfill(2))
-        file_name = os.path.join(file_path, file_name)
-        df_month = get_one_file_data(file_name)
-        df = pd.concat([df, df_month])
-    #get 01 month file name by file_name_str.replace('MM', '01')
-    _first_month_name = file_name_str.replace('MM', '01')
-    column_name = make_columns_name(os.path.join(file_path, _first_month_name))
-    # change the column name
-    df.columns = column_name
-    return df
-def overriding_epw(epw_csv, df_measurement):
+def overriding_epw(epw_file, df_measurement):
     '''
     1. original epw file has 8760 data records
     2. measurement has 8784 data records. So drop Feb 29th data
@@ -112,28 +88,24 @@ def overriding_epw(epw_csv, df_measurement):
     # The df_measurement index is datetime format, so use the date to drop Feb 29th data
     df_measurement = df_measurement[df_measurement.index.date != pd.to_datetime('2004-02-29').date()]
     # read text based epw file line by line
-    with open(epw_csv, 'r') as f:
+    with open(epw_file, 'r') as f:
         lines = f.readlines()
         for i in range(len(lines)):
             # for the 7th column, overwrite with the measurement data
             if i > 7 and i < 8768:
-                # for the 7th column, air temperature, overwrite with the measurement data, 0
-                # for the 9th column, relative humidity, overwrite with the measurement data, 2
-                # calculate humidity_ratio_c(state, db in C (0), rh in fraction (2), p is hPa to Pa)
-                # calculate dew_point(state, humidity_ratio, p in Pa (1))
-                # for the 8th column, dew point temperature, overwrite
                 lines[i] = lines[i].split(',')
+                press_pa = df_measurement.iloc[i - 8, 2]
+                # lines[i][0] is the year, get the actual year df_measurement.index[i - 8].year
+                lines[i][0] = str(df_measurement.index[i - 8].year)
                 lines[i][6] = str(df_measurement.iloc[i - 8, 0])
-                lines[i][8] = str(df_measurement.iloc[i - 8, 2])
-                press_pa = df_measurement.iloc[i - 8, 1] * 100
-                humidity_ratio = psychrometric.humidity_ratio_c(state,
-                    df_measurement.iloc[i - 8, 0],df_measurement.iloc[i - 8, 2] / 100, press_pa)
-                dew_point = psychrometric.dew_point(state, humidity_ratio, press_pa)
-                lines[i][7] = str(dew_point)
+                lines[i][7] = str(df_measurement.iloc[i - 8, 1])
+                humidity_ratio = psychrometric.humidity_ratio_b(state,df_measurement.iloc[i - 8, 1], press_pa)
+                rh = psychrometric.relative_humidity_b(state,df_measurement.iloc[i - 8, 0], humidity_ratio, press_pa)
+                lines[i][8] = str(rh*100)
                 lines[i][9] = str(press_pa)
                 lines[i] = ','.join(lines[i])
     # write the lines to the epw file
-    overwriten_epw = r'..\_2_cases_input_outputs\_08_CAPITOUL\generate_epw\Mondouzil_tdb_td_rh_P_2004.epw'
+    overwriten_epw = r'..\_4_measurements\Vancouver\overwrittenCAN_BC_Vancouver.718920_CWEC.epw'
     with open(overwriten_epw, 'w') as f:
         f.writelines(lines)
     return overwriten_epw
@@ -147,17 +119,13 @@ def init_ep_api():
 def main():
     init_ep_api()
     # get the data from all the files
-    df = get_all_files_data()
+    _71890_file = r'..\_4_measurements\Vancouver\IntegratedSurfaceDataset_Vancouver_INT_Airport_2008.csv'
+    df = get_clean_airport_measurment(_71890_file)
     # save the data to csv file
-    df.to_csv(r'..\_4_measurements\CAPITOUL\Rural_Mondouzil_Minute.csv')
-    # except the first two columns, convert the rest columns into float type
-    df.iloc[:, 2:] = df.iloc[:, 2:].astype(float)
-    df_hourly = plot_tools.time_interval_converstion_actual_timestamp(df)
-    # save the data to csv file
-    df_hourly.to_csv(r'..\_4_measurements\CAPITOUL\Rural_Mondouzil_Hour.csv')
+    df.to_csv(r'..\_4_measurements\Vancouver\clean_IntegratedSurfaceDataset_Vancouver_INT_Airport_2008.csv')
     # _2_cases_input_outputs/_08_CAPITOUL/generate_epw/overriding_FRA_Bordeaux.075100_IWECEPW.csv
-    epw_csv = r'..\_2_cases_input_outputs\_08_CAPITOUL\generate_epw\overriding_FRA_Bordeaux.075100_IWEC.epw'
-    overriding_epw(epw_csv, df_hourly)
+    epw_file = r'..\_4_measurements\Vancouver\overridingCAN_BC_Vancouver.718920_CWEC.epw'
+    overriding_epw(epw_file, df)
 
 if __name__ == '__main__':
     main()
