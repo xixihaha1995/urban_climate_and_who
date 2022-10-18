@@ -52,10 +52,16 @@ def get_clean_airport_measurment(file_path):
     df = pd.read_csv(file_path, header=0, index_col= 1, sep=',')
     # only keep these columns: TMP,DEW,SLP
     df = df[['TMP', 'DEW', 'SLP']]
+    df = df.astype(str)
+    #For each column, remove the rows, where the last char is not '1'
+    for col in df.columns:
+        df = df[df[col].str[-1] == '1']
+
     #drop missing rows:
     # for TMP column, drop rows str containing '9999'
     # for DEW column, drop rows str containing '9999'
     # for SLP column, drop rows str containing '99999'
+
     df = df[~df['TMP'].str.contains('9999')]
     df = df[~df['DEW'].str.contains('9999')]
     df = df[~df['SLP'].str.contains('99999')]
@@ -105,7 +111,7 @@ def overriding_epw(epw_file, df_measurement):
                 lines[i][9] = str(press_pa)
                 lines[i] = ','.join(lines[i])
     # write the lines to the epw file
-    overwriten_epw = r'..\_4_measurements\Vancouver\overwrittenCAN_BC_Vancouver.718920_CWEC.epw'
+    overwriten_epw = r'..\_4_measurements\Vancouver\overwrittenCAN_BC_Vancouver.712010_CWEC.epw'
     with open(overwriten_epw, 'w') as f:
         f.writelines(lines)
     return overwriten_epw
@@ -120,9 +126,10 @@ def main():
     init_ep_api()
     # get the data from all the files
     _71890_file = r'..\_4_measurements\Vancouver\IntegratedSurfaceDataset_Vancouver_INT_Airport_2008.csv'
+    # _71890_file = r'..\_4_measurements\Vancouver\IntegratedSurfaceDataset_Vancouver_Harbour_Airport_2008.csv'
     df = get_clean_airport_measurment(_71890_file)
     # save the data to csv file
-    df.to_csv(r'..\_4_measurements\Vancouver\clean_IntegratedSurfaceDataset_Vancouver_INT_Airport_2008.csv')
+    df.to_csv(r'..\_4_measurements\Vancouver\clean_IntegratedSurfaceDataset_Vancouver_Harbour_Airport_2008.csv')
     # _2_cases_input_outputs/_08_CAPITOUL/generate_epw/overriding_FRA_Bordeaux.075100_IWECEPW.csv
     epw_file = r'..\_4_measurements\Vancouver\overridingCAN_BC_Vancouver.718920_CWEC.epw'
     overriding_epw(epw_file, df)

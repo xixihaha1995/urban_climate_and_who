@@ -2,6 +2,8 @@
 import copy
 
 import numpy as np, pandas as pd, matplotlib.pyplot as plt, os
+import matplotlib
+matplotlib.use('WebAgg')
 def RMSE(y_true, y_pred):
     return np.sqrt(np.mean(np.square(y_pred - y_true)))
 
@@ -933,7 +935,7 @@ def shared_x_plot(debug_processed_save_folder, canyon_name = '2m Direct'):
                                     header=0, index_col=0, sheet_name=canyon_name)
     fig, ax = plt.subplots(5, 1, sharex=True)
     fig.suptitle(f'canyon temperature:{canyon_name}')
-    if canyon_name == '2m Direct':
+    if canyon_name == '2m Direct' or canyon_name == '1p2m Direct' or canyon_name == '2.6m Direct':
         ax[0].plot(canyonSheet.iloc[:,0], linestyle='-.', color='black', label='Urban Measurement')
         ax[0].plot(canyonSheet.iloc[:,1], color = 'blue', label='OnlyEP')
         ax[0].plot(canyonSheet.iloc[:,2], linestyle='--', color = 'red', label='OnlyVCWG')
