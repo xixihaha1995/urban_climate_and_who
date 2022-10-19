@@ -99,20 +99,20 @@ def overriding_epw(epw_file, df_measurement):
         lines = f.readlines()
         for i in range(len(lines)):
             # for the 7th column, overwrite with the measurement data
-            if i > 7 and i < 8768:
+            if i > 14 and i < 8768:
                 lines[i] = lines[i].split(',')
-                press_pa = df_measurement.iloc[i - 8, 2]
+                press_pa = df_measurement.iloc[i - 15, 2]
                 # lines[i][0] is the year, get the actual year df_measurement.index[i - 8].year
-                lines[i][0] = str(df_measurement.index[i - 8].year)
-                lines[i][6] = str(df_measurement.iloc[i - 8, 0])
-                lines[i][7] = str(df_measurement.iloc[i - 8, 1])
-                humidity_ratio = psychrometric.humidity_ratio_b(state,df_measurement.iloc[i - 8, 1], press_pa)
-                rh = psychrometric.relative_humidity_b(state,df_measurement.iloc[i - 8, 0], humidity_ratio, press_pa)
+                lines[i][0] = str(df_measurement.index[i - 15].year)
+                lines[i][6] = str(df_measurement.iloc[i - 15, 0])
+                lines[i][7] = str(df_measurement.iloc[i - 15, 1])
+                humidity_ratio = psychrometric.humidity_ratio_b(state,df_measurement.iloc[i - 15, 1], press_pa)
+                rh = psychrometric.relative_humidity_b(state,df_measurement.iloc[i - 15, 0], humidity_ratio, press_pa)
                 lines[i][8] = str(rh*100)
                 lines[i][9] = str(press_pa)
                 lines[i] = ','.join(lines[i])
     # write the lines to the epw file
-    overwriten_epw = r'..\_4_measurements\Vancouver\overwrittenCAN_BC_Vancouver.712010_CWEC.epw'
+    overwriten_epw = r'..\_4_measurements\Vancouver\To_GenerateEPW\Vancouver718920CorrectTime.epw'
     with open(overwriten_epw, 'w') as f:
         f.writelines(lines)
     return overwriten_epw
@@ -126,16 +126,16 @@ def init_ep_api():
 def main():
     init_ep_api()
     # get the data from all the files
-    _71890_file = r'..\_4_measurements\Vancouver\IntegratedSurfaceDataset_Vancouver_INT_Airport_2008.csv'
+    _71890_file = r'..\_4_measurements\Vancouver\To_GenerateEPW\IntegratedSurfaceDataset_Vancouver_INT_Airport_2008.csv'
     # _71890_file = r'..\_4_measurements\Vancouver\IntegratedSurfaceDataset_Vancouver_Harbour_Airport_2008.csv'
     df = get_clean_airport_measurment(_71890_file)
     #plot the first column
-    df.iloc[:, 0].plot()
-    plt.show()
+    # df.iloc[:, 0].plot()
+    # plt.show()
     # save the data to csv file
-    df.to_csv(r'..\_4_measurements\Vancouver\clean_IntegratedSurfaceDataset_Vancouver_Harbour_Airport_2008.csv')
+    df.to_csv(r'..\_4_measurements\Vancouver\To_GenerateEPW\clean_IntegratedSurfaceDataset_Vancouver_Harbour_Airport_2008.csv')
     # _2_cases_input_outputs/_08_CAPITOUL/generate_epw/overriding_FRA_Bordeaux.075100_IWECEPW.csv
-    epw_file = r'..\_4_measurements\Vancouver\overridingCAN_BC_Vancouver.718920_CWEC.epw'
+    epw_file = r'..\_4_measurements\Vancouver\To_GenerateEPW\overridingCAN_BC_Vancouver.718920_CWEC.epw'
     overriding_epw(epw_file, df)
 
 if __name__ == '__main__':
