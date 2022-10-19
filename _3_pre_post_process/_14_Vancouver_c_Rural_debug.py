@@ -32,7 +32,6 @@ epw_all_dirty = pd.read_csv( f'{prediction_folder_prefix}\\{epw_atm_filename}.ep
                                  skiprows= 8, header= None, index_col=None,)
 epw_all_clean = plt_tools.clean_epw(epw_all_dirty,
                                                start_time = compare_start_time)
-epw_all_clean.to_csv(os.path.join(measure_results_folder, f'{epw_atm_filename}.csv'))
 epw_staPre_Pa_all = epw_all_clean.iloc[:, 9]
 epw_staPre_Pa_all.index = pd.to_datetime(epw_staPre_Pa_all.index)
 epw_staPre_Pa_all.index = epw_staPre_Pa_all.index.strftime('%m-%d %H:%M:%S')
