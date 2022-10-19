@@ -80,9 +80,13 @@ def save_TwoHeights_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C,
                               prediction_folder_prefix,
                               debug_only_ep_5min, debug_only_vcwg_5min, debug_bypass,
-                         sheet_names = None):
-    writer = pd.ExcelWriter(f'{prediction_folder_prefix}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
+                         sheet_names = None, debug_file_name = None):
+    if debug_file_name is None:
+        writer = pd.ExcelWriter(f'{prediction_folder_prefix}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
                             engine='xlsxwriter')
+    else:
+        writer = pd.ExcelWriter(f'{prediction_folder_prefix}\\{debug_file_name}_debugging.xlsx',
+                                engine='xlsxwriter')
     #save 1p2m-direct
     df = pd.DataFrame({'Measurement': measure_tdb_c_1p2m_30min.squeeze(),
                        f'Only EP': only_ep_degC_1p2_26m_30min.squeeze(),
@@ -927,17 +931,30 @@ def why_bypass_overestimated(debug_processed_save_folder,
     #save the excel file
     writer.save()
 
-def shared_x_plot(debug_processed_save_folder, canyon_name = '2m Direct'):
-    wallSunSheet = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
-                                    header=0, index_col=0, sheet_name='wallSun_southFacingWall')
-    wallShadeSheet = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
-                                    header=0, index_col=0, sheet_name='wallShade_northFacingWall')
-    roofSheet = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
-                                    header=0, index_col=0, sheet_name='roof')
-    sensWaste = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
-                                    header=0, index_col=0, sheet_name='sensWaste_sensHVAC')
-    canyonSheet = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
-                                    header=0, index_col=0, sheet_name=canyon_name)
+def shared_x_plot(debug_processed_save_folder, canyon_name = '2m Direct',
+                  debug_file_name = None):
+    if debug_file_name is None:
+        wallSunSheet = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
+                                        header=0, index_col=0, sheet_name='wallSun_southFacingWall')
+        wallShadeSheet = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
+                                        header=0, index_col=0, sheet_name='wallShade_northFacingWall')
+        roofSheet = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
+                                        header=0, index_col=0, sheet_name='roof')
+        sensWaste = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
+                                        header=0, index_col=0, sheet_name='sensWaste_sensHVAC')
+        canyonSheet = pd.read_excel(f'{debug_processed_save_folder}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
+                                        header=0, index_col=0, sheet_name=canyon_name)
+    else:
+        wallSunSheet = pd.read_excel(f'{debug_processed_save_folder}\\{debug_file_name}_debugging.xlsx',
+                                        header=0, index_col=0, sheet_name='wallSun_southFacingWall')
+        wallShadeSheet = pd.read_excel(f'{debug_processed_save_folder}\\{debug_file_name}_debugging.xlsx',
+                                        header=0, index_col=0, sheet_name='wallShade_northFacingWall')
+        roofSheet = pd.read_excel(f'{debug_processed_save_folder}\\{debug_file_name}_debugging.xlsx',
+                                        header=0, index_col=0, sheet_name='roof')
+        sensWaste = pd.read_excel(f'{debug_processed_save_folder}\\{debug_file_name}_debugging.xlsx',
+                                        header=0, index_col=0, sheet_name='sensWaste_sensHVAC')
+        canyonSheet = pd.read_excel(f'{debug_processed_save_folder}\\{debug_file_name}_debugging.xlsx',
+                                        header=0, index_col=0, sheet_name=canyon_name)
     fig, ax = plt.subplots(5, 1, sharex=True)
     fig.suptitle(f'canyon temperature:{canyon_name}')
     if canyon_name == '2m Direct' or canyon_name == '1p2m Direct' or canyon_name == '2.6m Direct':
