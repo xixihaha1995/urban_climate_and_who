@@ -49,7 +49,7 @@ if __name__ == '__main__':
     # epwFileName = 'Mondouzil_tdb_td_rh_P_2004.epw'
     # epwFileName = 'VancouverTopForcing.epw'
     # epwFileName = 'VancouverRural718920.epw'
-    # idfFileName = 'BUBBLE_Ue1.idf'
+    # idfFileName = 'BUBBLE_Ue1_LiteratureAlbedo.idf'
     idfFileName = 'BUBBLE_Ue2.idf'
     # idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M3ing.idf'
     # idfFileName = 'RefBldgSmallOfficePost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
