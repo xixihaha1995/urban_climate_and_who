@@ -6,9 +6,10 @@ from _3_post_process_code import _0_all_plot_tools as plot_tools
 
 def run_ep_api():
     state = api.state_manager.new_state()
+    api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers.midRiseApart_nested_ep_only)
     # api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers.mediumOffice_nested_ep_only)
-    api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers.smallOffice_nested_ep_only)
-    # api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers.midRiseApart_nested_ep_only)
+    # api.runtime.callback_end_system_timestep_after_hvac_reporting(state, time_step_handlers.smallOffice_nested_ep_only)
+
     api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
     api.exchange.request_variable(state, "Site Wind Speed", "ENVIRONMENT")
     api.exchange.request_variable(state, "Site Wind Direction", "ENVIRONMENT")
@@ -21,39 +22,38 @@ def run_ep_api():
     api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    # ep_files_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\refining_M3ing'
     # case_name = 'CAPITOUL_only_ep_2004'
     # case_name = 'Vancouver_TopForcing_only_ep_2008_July'
     # case_name = 'Vancouver_Rural_only_ep_2008_July'
-    case_name = 'Vancouver_RuralCorrectTime_only_ep_2008_July'
+    # case_name = 'Vancouver_RuralCorrectTime_only_ep_2008_July'
     # case_name = 'BUBBLE_Ue2_only_ep_2002_June'
-    # case_name = 'BUBBLE_Ue1_LiteratureAlbedo_only_ep_2002_June'
+    case_name = 'BUBBLE_Ue1_LiteratureAlbedo_only_ep_2002_June'
     # case_name = 'BUBBLE_Ue2_LiteratureAlbedo_only_ep_2002_June'
+    start_time = '2002-06-10 00:00:00'
     # start_time = '2004-06-01 00:00:00'
-    # start_time = '2002-06-10 00:00:00'
-    start_time = '2008-07-01 00:00:00'
+    # start_time = '2008-07-01 00:00:00'
     time_interval_sec = 300
     data_name_lst = ['ep_wsp_mps_wdir_deg', 'debugging_canyon']
 
     # ep_files_path = '_2_cases_input_outputs\\_08_CAPITOUL\\DOE_Ref_MediumOffice_4B'
     # ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\TopForcing_Refined_SMALL_OFFICE'
     # ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\Rural_Refined_Small_Office'
-    ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\Rural_Refined_Small_Office_CorrectTime'
-    # ep_files_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\MidRiseApart_4C_Rural_LiteratureAlbedo'
+    # ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\Rural_Refined_Small_Office_CorrectTime'
+    ep_files_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\MidRiseApart_4C_Rural_LiteratureAlbedo'
     # ep_files_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\Orientation_MidRiseApart_4C_LiteratureAlbedo'
 
     data_saving_path = f'{ep_files_path}\\a_ep_saving'
     # epwFileName = 'Mondouzil_tdb_td_rh_P_2004.epw'
     # epwFileName = 'VancouverTopForcing.epw'
     # epwFileName = 'VancouverRural718920.epw'
-    epwFileName = 'Vancouver718920CorrectTime.epw'
-    # epwFileName = 'Basel.epw'
+    # epwFileName = 'Vancouver718920CorrectTime.epw'
+    epwFileName = 'Basel.epw'
     # idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M3ing.idf'
     # idfFileName = 'RefBldgMediumOfficePost1980_v1.4_7.2_4B_USA_NM_ALBUQUERQUE.idf'
     # idfFileName = 'Vancouver_SmallOffice.idf'
-    idfFileName = 'Vancouver_SmallOffice_Refined.idf'
-    # idfFileName = 'BUBBLE_Ue1_LiteratureAlbedo.idf'
+    idfFileName = 'BUBBLE_Ue1_LiteratureAlbedo.idf'
     # idfFileName = 'BUBBLE_Ue2_LiteratureAlbedo.idf'
+    # idfFileName = 'Vancouver_SmallOffice_Refined.idf'
     # idfFileName = 'BUBBLE_Ue2.idf'
     coordination.init_saving_data()
     coordination.init_ep_api()
