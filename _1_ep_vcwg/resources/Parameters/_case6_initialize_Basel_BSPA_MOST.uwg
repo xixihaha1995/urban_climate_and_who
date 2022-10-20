@@ -33,7 +33,7 @@ Tdeep_ctrl,1,         # 1: Using force restore method, 2: Using climate data (fr
 nz,40,                 # number of points (nz*dz = 3*bldHeight)
 nz_u,12.5,               # number of canopy levels in the vertical (nz_u*dz = bldHeight)
 dz,1,                  # vertical resolution [m]
-Width_canyon,30.42,     # distance between buildings at street level in the x and y direction must be equal [m]
+Width_canyon,15,     # distance between buildings at street level in the x and y direction must be equal [m]
 Width_roof,20.02,         # building dimension [m]
 theta_canyon,-20,       # Canyon direction from geographical north, in the counter trigonometric direction (from -90 to 90 degrees)
 Height_canyon,12.5,      # Average building height [m]
@@ -41,7 +41,7 @@ fveg_R,0,              # Vegetated roof fraction (between 0 and 1)
 fimp_R,1.0,            # Impervious roof fraction (between 0 and 1)
 fveg_G,0.31,            # Vegetated ground fraction
 fbare_G,0.0,           # Bare ground fraction
-fimp_G,1.0,            # Impervious ground fraction
+fimp_G,0.69,            # Impervious ground fraction
 Per_runoff_R,1,        # Percentage of roof excess water that leaves the system as runoff, needs to be between 0-1 [-]
 Per_runoff_G,0.5,      # Percentage of ground excess water that leaves the system as runoff, needs to be between 0-1 [-]
 
