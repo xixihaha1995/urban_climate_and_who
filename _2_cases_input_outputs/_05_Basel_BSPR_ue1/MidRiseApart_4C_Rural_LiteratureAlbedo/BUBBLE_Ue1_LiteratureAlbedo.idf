@@ -986,6 +986,17 @@ Material,
     0.7000;                  !- Visible Absorptance
 
 Material,
+    CONCRETE 20mm,         !- Name
+    Rough,                   !- Roughness
+    0.2032,                  !- Thickness {m}
+    0.93,                  !- Conductivity {W/m-K}
+    2240.0000,               !- Density {kg/m3}
+    670,                !- Specific Heat {J/kg-K}
+    0.9000,                  !- Thermal Absorptance
+    0.7000,                  !- Solar Absorptance
+    0.7000;                  !- Visible Absorptance
+
+Material,
     Metal Siding,            !- Name
     Smooth,                  !- Roughness
     0.0015,                  !- Thickness {m}
@@ -1086,6 +1097,17 @@ Material,
     0.7;                     !- Visible Absorptance
 
 Material,
+    Tile 60mm,       !- Name
+    VeryRough,               !- Roughness
+    0.06,                  !- Thickness {m}
+    1.15,                    !- Conductivity {W/m-K}
+    1920,                    !- Density {kg/m3}
+    833,                    !- Specific Heat {J/kg-K}
+    0.95,                     !- Thermal Absorptance
+    0.85,                    !- Solar Absorptance
+    0.85;                    !- Visible Absorptance
+
+Material,
     F14 Slate or tile,       !- Name
     VeryRough,               !- Roughness
     0.0127,                  !- Thickness {m}
@@ -1132,10 +1154,16 @@ Construction,
     M10 200mm concrete block  ,  !- Outside Layer
     I01 30mm insulation board;  !- Layer 2
 ! Roof
+!Construction,
+!    IEAD Res Roof,           !- Name
+!    F14 Slate or tile,       !- Outside Layer
+!    Std AC02,                !- Layer 2
+!    I01 30mm insulation board;  !- Layer 3
+
 Construction,
-    IEAD Res Roof,           !- Name
-    F14 Slate or tile,       !- Outside Layer
-    Std AC02,                !- Layer 2
+    UWG_Basel_Roof,           !- Name
+    Tile 60mm,       !- Outside Layer
+    CONCRETE 20mm,                !- Layer 2
     I01 30mm insulation board;  !- Layer 3
 
 ! Slab on grade, unheated
@@ -4100,7 +4128,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t Roof SWA,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    UWG_Basel_Roof,           !- Construction Name
     T SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4276,7 +4304,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t Roof NWA,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    UWG_Basel_Roof,           !- Construction Name
     T NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4402,7 +4430,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t Roof SEA,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    UWG_Basel_Roof,           !- Construction Name
     T SE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4578,7 +4606,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t Roof NEA,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    UWG_Basel_Roof,           !- Construction Name
     T NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4704,7 +4732,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t Roof N1A,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    UWG_Basel_Roof,           !- Construction Name
     T N1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4855,7 +4883,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t Roof N2A,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    UWG_Basel_Roof,           !- Construction Name
     T N2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4981,7 +5009,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t Roof S1A,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    UWG_Basel_Roof,           !- Construction Name
     T S1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -5132,7 +5160,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t Roof S2A,              !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    UWG_Basel_Roof,           !- Construction Name
     T S2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -5308,7 +5336,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t Roof C,                !- Name
     Roof,                    !- Surface Type
-    IEAD Res Roof,           !- Construction Name
+    UWG_Basel_Roof,           !- Construction Name
     T Corridor,              !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
