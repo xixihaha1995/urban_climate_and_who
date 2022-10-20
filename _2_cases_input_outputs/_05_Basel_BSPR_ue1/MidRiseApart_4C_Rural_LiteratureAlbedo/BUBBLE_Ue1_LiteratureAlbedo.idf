@@ -992,9 +992,9 @@ Material,
     0.93,                  !- Conductivity {W/m-K}
     2240.0000,               !- Density {kg/m3}
     670,                !- Specific Heat {J/kg-K}
-    0.9000,                  !- Thermal Absorptance
-    0.7000,                  !- Solar Absorptance
-    0.7000;                  !- Visible Absorptance
+    0.9500,                  !- Thermal Absorptance
+    0.8500,                  !- Solar Absorptance
+    0.8500;                  !- Visible Absorptance
 
 Material,
     Metal Siding,            !- Name
@@ -1173,9 +1173,7 @@ Construction,
 
 Construction,
     UWG_Basel_Floor,           !- Name
-    Tile 60mm,       !- Outside Layer
-    CONCRETE 20mm,                !- Layer 2
-    I01 30mm insulation board;  !- Layer 3
+    CONCRETE 20mm;
 
 ! Slab on grade, unheated
 Construction,
