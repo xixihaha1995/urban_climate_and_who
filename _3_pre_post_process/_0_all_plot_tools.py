@@ -75,7 +75,7 @@ def sequence_time_to_pandas_time(dataframe, delta_t,start_time):
     return dataframe
 
 def save_TwoHeights_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
-                             only_ep_degC_1p2_26m_30min,
+                             rural_1p5_hour_c,
                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C,
                               prediction_folder_prefix,
@@ -89,7 +89,7 @@ def save_TwoHeights_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
                                 engine='xlsxwriter')
     #save 1p2m-direct
     df = pd.DataFrame({'Measurement': measure_tdb_c_1p2m_30min.squeeze(),
-                       f'Only EP': only_ep_degC_1p2_26m_30min.squeeze(),
+                       f'Rural': rural_1p5_hour_c.squeeze(),
                        'Only VCWG': only_vcwg_direct_lst_C[0],
                        'Bypass Ver1.1': bypass_direct_lst_C[0]})
     if sheet_names is None:
@@ -98,6 +98,7 @@ def save_TwoHeights_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
         df.to_excel(writer, sheet_name=f'{str(sheet_names[0])}m Direct')
     #save 1p2m-real_p0
     df = pd.DataFrame({'Measurement': measure_tdb_c_1p2m_30min.squeeze(),
+                       'Rural': rural_1p5_hour_c.squeeze(),
                        'Only VCWG': only_vcwg_real_p0_lst_C[0],
                        'Bypass Ver1.1': bypass_real_p0_lst_C[0]})
     if sheet_names is None:
@@ -106,6 +107,7 @@ def save_TwoHeights_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
         df.to_excel(writer, sheet_name=f'{str(sheet_names[0])}m Real P0')
     #save 1p2m-real_epw
     df = pd.DataFrame({'Measurement': measure_tdb_c_1p2m_30min.squeeze(),
+                       'Rural': rural_1p5_hour_c.squeeze(),
                        'Only VCWG': only_vcwg_real_epw_lst_C[0],
                        'Bypass Ver1.1': bypass_real_epw_lst_C[0]})
     if sheet_names is None:
@@ -114,7 +116,7 @@ def save_TwoHeights_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
         df.to_excel(writer, sheet_name=f'{str(sheet_names[0])}m Real EPW')
     #save 26m-direct
     df = pd.DataFrame({'Measurement': measure_tdb_c_26m_30min.squeeze(),
-                       'Only EP': only_ep_degC_1p2_26m_30min.squeeze(),
+                       'Rural': rural_1p5_hour_c.squeeze(),
                        'Only VCWG': only_vcwg_direct_lst_C[1],
                        'Bypass Ver1.1': bypass_direct_lst_C[1]})
     if sheet_names is None:
@@ -123,6 +125,7 @@ def save_TwoHeights_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
         df.to_excel(writer, sheet_name=f'{str(sheet_names[1])}m Direct')
     #save 26m-real_p0
     df = pd.DataFrame({'Measurement': measure_tdb_c_26m_30min.squeeze(),
+                       'Rural': rural_1p5_hour_c.squeeze(),
                        'Only VCWG': only_vcwg_real_p0_lst_C[1],
                        'Bypass Ver1.1': bypass_real_p0_lst_C[1]})
     if sheet_names is None:
@@ -131,6 +134,7 @@ def save_TwoHeights_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
         df.to_excel(writer, sheet_name=f'{str(sheet_names[1])}m Real P0')
     #save 26m-real_epw
     df = pd.DataFrame({'Measurement': measure_tdb_c_26m_30min.squeeze(),
+                       'Rural': rural_1p5_hour_c.squeeze(),
                        'Only VCWG': only_vcwg_real_epw_lst_C[1],
                        'Bypass Ver1.1': bypass_real_epw_lst_C[1]})
     if sheet_names is None:
@@ -239,14 +243,13 @@ def save_CAPITOUL_debug(measure_tdb_c_2m_6m_hourly,measure_tdb_c_20m_5min,
     writer.save()
 
 def organize_Vancouver_cvrmse(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
-                             only_ep_degC_1p2_26m_30min,
+                             rural_1p5_hour_c,
                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C):
     cvrmse_3d = np.zeros((2, 3, 3))
-    # since there is no real_p0, real_epw for ep, so set them to nan
     cvrmse_3d[:, 0, 1:] = np.nan
 
-    cvrmse_1p2m_ep_direct = bias_rmse_r2(measure_tdb_c_1p2m_30min, only_ep_degC_1p2_26m_30min, 'only_ep_2m_6m')[
+    cvrmse_1p2m_ep_direct = bias_rmse_r2(measure_tdb_c_1p2m_30min, rural_1p5_hour_c, 'rural')[
         2]
     cvrmse_26m_ep_direct = cvrmse_1p2m_ep_direct
     cvrmse_1p2m_vcwg_direct = \
@@ -365,14 +368,14 @@ def organize_CAPITOUL_cvrmse(measure_tdb_c_2m_6m_hourly,measure_tdb_c_20m_5min,
     cvrmse_3d[1, 2, 2] = cvrmse_6m_bypass_real_epw
     cvrmse_3d[2, 2, 2] = cvrmse_20m_bypass_real_epw
     return cvrmse_3d
-def bias_rmse_r2(df1, df2, df2_name):
+def bias_rmse_r2(df1_in, df2_in, df2_name):
     '''
     df1 is measurement data, [date, sensible/latent]
     df2 is simulated data, [date, sensible/latent]
     '''
     # based on df1 time index, find the corresponding df2
-    #drop df1 nan
-    df1 = df1.dropna()
+    df1 = df1_in.dropna()
+    df2 = df2_in.fillna(0)
     df2 = df2.loc[df1.index]
     df1 = df1.values
     df2 = df2.values
@@ -419,9 +422,10 @@ def clean_bubble_iop(df, start_time='2018-01-01 00:00:00', end_time='2018-12-31 
     # except the last column, all columns are number with comma, convert them to number
     df.iloc[:, :-1] = df.iloc[:, :-1].apply(lambda x: x.str.replace(',', '')).astype(float)
     df = df[start_time:end_time]
+
     # convert 10 min interval to 1 hour interval
     if to_hourly:
-        df = time_interval_convertion(df, original_time_interval_min=10, start_time=start_time)
+        df = df.resample('1H').mean()
     return df
 
 def remove_dup_BUBBLE_Ue2(urban_all_sites_10min_clean, ue2_heights_dup, ue2_heights):
@@ -957,20 +961,13 @@ def shared_x_plot(debug_processed_save_folder, canyon_name = '2m Direct',
                                         header=0, index_col=0, sheet_name=canyon_name)
     fig, ax = plt.subplots(5, 1, sharex=True)
     fig.suptitle(f'canyon temperature:{canyon_name}')
-    if canyon_name == '2m Direct' or canyon_name == '1p2m Direct' or canyon_name == '2.6m Direct':
-        ax[0].plot(canyonSheet.iloc[:,0], linestyle='-.', color='black', label='Urban Measurement')
-        ax[0].plot(canyonSheet.iloc[:,1], color = 'blue', label='OnlyEP')
-        ax[0].plot(canyonSheet.iloc[:,2], linestyle='--', color = 'red', label='OnlyVCWG')
-        ax[0].plot(canyonSheet.iloc[:,3], color = 'green', label='Bypass')
-        ax[1].plot(wallSunSheet.iloc[:, 0], color='blue')
-    else:
-        ax[0].plot(canyonSheet.iloc[:,0], linestyle='-.', color='black', label='Urban Measurement')
-        ax[1].plot(wallSunSheet.iloc[:, 0], color='blue', label='onlyEP')
-        ax[0].plot(canyonSheet.iloc[:,1], linestyle='--', color = 'red',label='OnlyVCWG')
-        ax[0].plot(canyonSheet.iloc[:,2],  color = 'green', label='Bypass')
+    ax[0].plot(canyonSheet.iloc[:, 0], color='black', linestyle='-.', label='Urban Measurement')
+    ax[0].plot(canyonSheet.iloc[:, 1], color='black', linestyle=':', label='Rural')
+    ax[0].plot(canyonSheet.iloc[:, 2], linestyle='--', color='red', label='OnlyVCWG')
+    ax[0].plot(canyonSheet.iloc[:, 3], color='green', label='Bypass')
     ax[0].set_ylabel(f'canyon {canyon_name} Tdb (C)')
 
-
+    ax[1].plot(wallSunSheet.iloc[:, 0], color='blue', label='onlyEP')
     ax[1].plot(wallSunSheet.iloc[:, 1] ,linestyle='--', color = 'red')
     ax[1].plot(wallSunSheet.iloc[:, 2],  color = 'green')
     ax[1].set_ylabel('sun/South Wall (C)')

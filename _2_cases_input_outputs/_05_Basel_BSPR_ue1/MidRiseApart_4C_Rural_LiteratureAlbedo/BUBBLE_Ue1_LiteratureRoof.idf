@@ -1161,11 +1161,6 @@ Construction,
 !    I01 30mm insulation board;  !- Layer 3
 
 Construction,
-    UWG_Basel_Wall,!- Name
-    CONCRETE 20mm  ,  !- Outside Layer
-    I01 30mm insulation board;  !- Layer 2
-
-Construction,
     UWG_Basel_Roof,           !- Name
     Tile 60mm,       !- Outside Layer
     CONCRETE 20mm,                !- Layer 2

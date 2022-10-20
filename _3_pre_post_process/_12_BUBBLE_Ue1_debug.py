@@ -4,6 +4,7 @@ import pandas as pd, numpy as np
 # Hardcoded parameters
 compare_start_time = '2002-06-10 01:00:00'
 compare_end_time = '2002-07-09 22:00:00'
+IOP_end_time = '2002-07-09 22:50:00'
 measure_results_folder = r'..\_4_measurements\BUBBLE'
 save_intermediate_path = r'..\_4_measurements\BUBBLE\Intermediate_Ue1_LiteratureAlbedo'
 if not os.path.exists(save_intermediate_path):
@@ -16,6 +17,7 @@ only_ep_folder= f'{prediction_folder_prefix}\\a_ep_saving'
 only_vcwg_folder = f'{prediction_folder_prefix}\\b_vcwg_saving'
 bypass_folder = f'{prediction_folder_prefix}\\c_vcwg_ep_saving'
 epw_atm_filename = r'Basel'
+re1_col_idx = 7
 only_ep_filename_prefix = 'BUBBLE_Ue1_LiteratureAlbedo_only_ep_2002_June'
 only_vcwg_filename_prefix = 'BUBBLE_Ue1_Rural_only_vcwg_2002_June'
 bypass_filename_prefix = 'ver1.1\\Ue1_bypass'
@@ -51,9 +53,14 @@ measure_tdb_c_13p9_10min.to_csv(os.path.join(save_intermediate_path, 'measure_td
 
 
 # Predictions: Read only EP, get 1.2, 26(target interval), to direct_predict
-debug_only_ep_5min = pd.read_excel(f'{only_ep_folder}\\{only_ep_filename_prefix}_debugging_canyon.xlsx', header=0, index_col=0)
-only_ep_degC_2p6_13p9_10min = debug_only_ep_5min.iloc[:, 4].resample('10T').mean() - 273.15
-only_ep_degC_2p6_13p9_10min.to_csv(os.path.join(save_intermediate_path, 'only_ep_degC_2p6_13p9_10min.csv'))
+mixed_all_sites_10min_dirty = plt_tools.read_text_as_csv(f'{measure_results_folder}\\BUBBLE_AT_IOP.txt',
+                                                            header=0, index_col=0, skiprows=25)
+# clean the measurements
+mixed_all_sites_hour = plt_tools.clean_bubble_iop(mixed_all_sites_10min_dirty,
+                                                    start_time = compare_start_time, end_time = IOP_end_time,
+                                                  to_hourly=False)
+# Keep original index, only select one column and keep the column name
+rural_1p5_hour_c = mixed_all_sites_hour.iloc[:,re1_col_idx]
 # Read only VCWG (2, 6, 20m), to direct_predict, real_p0, real_epw
 only_vcwg_direct_lst_C, only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C = \
     plt_tools.excel_to_direct_real_p0_real_epw(only_vcwg_filename_prefix, only_vcwg_folder,
@@ -83,10 +90,10 @@ with open(os.path.join(save_intermediate_path, 'bypass_real_epw_lst_C.pickle'), 
 #Create one 3d array, 0th axis dims: 2 (1.2 m, 26m heights) ,
 # 1st axis dims: 3 (ep, vcwg, bypass), 2nd axis dims: 3 (direct_predict, real_p0, real_epw)
 cvrmse_3d = plt_tools.organize_Vancouver_cvrmse(measure_tdb_c_2p6_10min,measure_tdb_c_13p9_10min,
-                             only_ep_degC_2p6_13p9_10min,
+                             rural_1p5_hour_c,
                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C)
-print("CVRMSE (%), (OnlyEP, OnlyVCWG, Bypass)")
+print("CVRMSE (%), (Rural, OnlyVCWG, Bypass)")
 print(f'2.6m, direct: {cvrmse_3d[0, :, 0]}')
 print(f'2.6m, real_p0: {cvrmse_3d[0, :, 1]}')
 print(f'2.6m, real_epw: {cvrmse_3d[0, :, 2]}')
@@ -100,7 +107,7 @@ debug_only_vcwg_5min = pd.read_excel(f'{only_vcwg_folder}\\{only_vcwg_filename_p
 debug_bypass = pd.read_excel(f'{bypass_folder}\\{bypass_filename_prefix}_debugging_canyon.xlsx',
                                 header=0, index_col=0)
 plt_tools.save_TwoHeights_debug(measure_tdb_c_2p6_10min,measure_tdb_c_13p9_10min,
-                             only_ep_degC_2p6_13p9_10min,
+                             rural_1p5_hour_c,
                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C,
                               prediction_folder_prefix,
