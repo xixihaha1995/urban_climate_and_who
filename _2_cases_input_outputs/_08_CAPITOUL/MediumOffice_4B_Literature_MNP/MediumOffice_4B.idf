@@ -7094,17 +7094,17 @@
     Temperature,             !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
     For: Weekdays SummerDesignDay, !- Field 2
-    Until: 06:00,26.7,       !- Field 3
-    Until: 22:00,24.0,       !- Field 5
-    Until: 24:00,26.7,       !- Field 7
+    Until: 06:00,100,       !- Field 3
+    Until: 22:00,100,       !- Field 5
+    Until: 24:00,100,       !- Field 7
     For: Saturday,           !- Field 9
-    Until: 06:00,26.7,       !- Field 10
-    Until: 18:00,24.0,       !- Field 12
-    Until: 24:00,26.7,       !- Field 14
+    Until: 06:00,100,       !- Field 10
+    Until: 18:00,100,       !- Field 12
+    Until: 24:00,100,       !- Field 14
     For WinterDesignDay,     !- Field 16
-    Until: 24:00,26.7,       !- Field 17
+    Until: 24:00,100,       !- Field 17
     For: AllOtherDays,       !- Field 19
-    Until: 24:00,26.7;       !- Field 20
+    Until: 24:00,100;       !- Field 20
 
   Schedule:Compact,
     HTGSETP_SCH,             !- Name
