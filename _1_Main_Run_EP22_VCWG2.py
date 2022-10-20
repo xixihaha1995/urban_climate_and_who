@@ -31,7 +31,8 @@ def run_ep_api():
 if __name__ == '__main__':
     time_step_handler_ver = 1.1
     # case_name = '_BSPA_Ue2_bypass_'
-    case_name = 'Ue1_bypass'
+    # case_name = 'Ue1_bypass'
+    case_name = 'Ue2_bypass'
     # case_name = 'CAPITOUL_Bypass_2004_All_Albedo'
     # case_name = 'Vancouver_TopForcing_ByPass_2008Jul'
     # case_name = 'Vancouver_Rural_ByPass_2008Jul'
@@ -41,9 +42,10 @@ if __name__ == '__main__':
     # start_time = '2008-07-01 00:00:00'
     time_interval_sec = 300
     # ep_files_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\MidRiseApartment_4C_Rural'
-    ep_files_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\MidRiseApart_4C_Rural_LiteratureAlbedo'
+    # ep_files_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\MidRiseApart_4C_Rural_LiteratureAlbedo'
     # ep_files_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\refining_M3ing'
     # ep_files_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\Orientation_MidRiseApart_4C'
+    ep_files_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\Orientation_MidRiseApart_4C_LiteratureAlbedo'
     # ep_files_path = '_2_cases_input_outputs\\_08_CAPITOUL\\DOE_Ref_MediumOffice_4B'
     # ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\TopForcing_Refined_SMALL_OFFICE'
     # ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\Rural_Refined_Small_Office'
@@ -53,7 +55,8 @@ if __name__ == '__main__':
     # epwFileName = 'VancouverTopForcing.epw'
     # epwFileName = 'VancouverRural718920.epw'
     # epwFileName = 'Vancouver718920CorrectTime.epw'
-    idfFileName = 'BUBBLE_Ue1_LiteratureAlbedo.idf'
+    # idfFileName = 'BUBBLE_Ue1_LiteratureAlbedo.idf'
+    idfFileName = 'BUBBLE_Ue2_LiteratureAlbedo.idf'
     # idfFileName = 'BUBBLE_Ue2.idf'
     # idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M3ing.idf'
     # idfFileName = 'RefBldgSmallOfficePost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
