@@ -1,4 +1,4 @@
-import os, numpy as np, pandas as pd
+import os
 from threading import Thread
 import _1_ep_vcwg._0_vcwg_ep_coordination as coordination,\
     _1_ep_vcwg._1_ep_time_step_handlers_ver0 as time_step_handlers
@@ -23,7 +23,7 @@ def run_ep_api():
 
 if __name__ == '__main__':
     # case_name = 'BUBBLE_Ue1_LiteratureAlbedo_only_ep_2002_June'
-    case_name = 'BUBBLE_Ue2_LiteratureAlbedo_only_ep_2002_June'
+    # case_name = 'BUBBLE_Ue2_LiteratureAlbedo_only_ep_2002_June'
     case_name = 'CAPITOUL_only_ep_2004'
     # case_name = 'Vancouver_TopForcing_only_ep_2008_July'
     # case_name = 'Vancouver_Rural_only_ep_2008_July'
