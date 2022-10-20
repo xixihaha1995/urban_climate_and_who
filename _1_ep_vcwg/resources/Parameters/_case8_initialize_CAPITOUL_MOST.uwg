@@ -39,20 +39,20 @@ theta_canyon,-56,       # Canyon direction from geographical north, in the count
 Height_canyon,20,      # Average building height [m]
 fveg_R,0,              # Vegetated roof fraction (between 0 and 1)
 fimp_R,1.0,            # Impervious roof fraction (between 0 and 1)
-fveg_G,0.5,            # Vegetated ground fraction
+fveg_G,0,            # Vegetated ground fraction
 fbare_G,0.0,           # Bare ground fraction
-fimp_G,0.5,            # Impervious ground fraction
+fimp_G,1,            # Impervious ground fraction
 Per_runoff_R,1,        # Percentage of roof excess water that leaves the system as runoff, needs to be between 0-1 [-]
 Per_runoff_G,0.5,      # Percentage of ground excess water that leaves the system as runoff, needs to be between 0-1 [-]
 
 # =================================================
 # Radiative Properties
 # =================================================
-aveg_R,0.27,         # Roof vegetation surface albedo (-)
+aveg_R,0.25,         # Roof vegetation surface albedo (-)
 aimp_R,0.5,         # Roof impervious albedo (-)
 eveg_R,0.97,         # Roof vegetation surface emissivity (-)
 eimp_R,0.94,         # Roof impervious emissivity (-)
-aveg_G,0.27,         # Ground vegetation surface albedo (-)
+aveg_G,0.25,         # Ground vegetation surface albedo (-)
 abare_G,0.2,         # Ground vegetation surface albedo
 aimp_G,0.1,          # Ground impervious albedo (-)
 eveg_G,0.93,         # Ground vegetation surface emissivity (-)
@@ -60,7 +60,7 @@ ebare_G,0.973,       # Ground vegetation surface emissivity
 eimp_G,0.95,         # Ground impervious emissivity (-)
 albedo_W,0.5,       # Wall surface albedo (-)
 emissivity_W,0.9,    # Wall emissivity (-)
-albedo_T,0.27,       # Tree albedo (-)
+albedo_T,0.25,       # Tree albedo (-)
 emissivity_T,0.97,   # Tree emissivity (-)
 e_rural,0.95,        # Rural emissivity
 a_rural,0.2,         # Rural albedo
