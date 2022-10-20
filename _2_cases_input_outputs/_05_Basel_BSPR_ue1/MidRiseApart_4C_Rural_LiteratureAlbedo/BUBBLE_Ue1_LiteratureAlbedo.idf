@@ -1171,6 +1171,12 @@ Construction,
     CONCRETE 20mm,                !- Layer 2
     I01 30mm insulation board;  !- Layer 3
 
+Construction,
+    UWG_Basel_Floor,           !- Name
+    Tile 60mm,       !- Outside Layer
+    CONCRETE 20mm,                !- Layer 2
+    I01 30mm insulation board;  !- Layer 3
+
 ! Slab on grade, unheated
 Construction,
     ext-slab,                !- Name
@@ -1667,7 +1673,7 @@ Zone,
 BuildingSurface:Detailed,
     g SWall SWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     G SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1692,7 +1698,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g WWall SWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     G SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1717,7 +1723,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g GFloor SWA,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    UWG_Basel_Floor,                !- Construction Name
     G SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -1818,7 +1824,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g NWall NWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     G NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1843,7 +1849,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g WWall NWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     G NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1868,7 +1874,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g GFloor NWA,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    UWG_Basel_Floor,                !- Construction Name
     G NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -1969,7 +1975,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g SWall SEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     Office,                  !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -1994,7 +2000,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g EWall SEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     Office,                  !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2019,7 +2025,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g GFloor SEA,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    UWG_Basel_Floor,                !- Construction Name
     Office,                  !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -2120,7 +2126,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g NWall NEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     G NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2145,7 +2151,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g EWall NEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     G NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2170,7 +2176,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g GFloor NEA,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    UWG_Basel_Floor,                !- Construction Name
     G NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -2271,7 +2277,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g NWall N1A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     G N1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2296,7 +2302,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g GFloor N1A,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    UWG_Basel_Floor,                !- Construction Name
     G N1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -2422,7 +2428,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g NWall N2A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     G N2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2447,7 +2453,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g GFloor N2A,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    UWG_Basel_Floor,                !- Construction Name
     G N2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -2573,7 +2579,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g SWall S1A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     G S1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2598,7 +2604,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g GFloor S1A,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    UWG_Basel_Floor,                !- Construction Name
     G S1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -2724,7 +2730,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g SWall S2A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     G S2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2749,7 +2755,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g GFloor S2A,            !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    UWG_Basel_Floor,                !- Construction Name
     G S2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -2875,7 +2881,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     m WWall SWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     M SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -2950,7 +2956,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     m SWall SWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     M SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3026,7 +3032,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     m NWall NWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     M NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3051,7 +3057,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     m WWall NWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     M NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3177,7 +3183,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     m EWall SEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     M SE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3252,7 +3258,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     m SWall SEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     M SE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3328,7 +3334,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     m NWall NEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     M NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3353,7 +3359,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     m EWall NEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     M NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3479,7 +3485,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     m NWall N1A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     M N1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3630,7 +3636,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     m NWall N2A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     M N2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3831,7 +3837,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     m SWall S1A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     M S1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -3982,7 +3988,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     m SWall S2A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     M S2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4083,7 +4089,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t WWall SWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     T SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4158,7 +4164,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t SWall SWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     T SW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4234,7 +4240,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t NWall NWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     T NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4259,7 +4265,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t WWall NWA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     T NW Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4385,7 +4391,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t EWall SEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     T SE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4460,7 +4466,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t SWall SEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     T SE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4536,7 +4542,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t NWall NEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     T NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4561,7 +4567,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t EWall NEA,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     T NE Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4687,7 +4693,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t NWall N1A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     T N1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -4838,7 +4844,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t NWall N2A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     T N2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -5039,7 +5045,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t SWall S1A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     T S1 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -5190,7 +5196,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t SWall S2A,             !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     T S2 Apartment,          !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -5291,7 +5297,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t WWall C,               !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     T Corridor,              !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -5316,7 +5322,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     t EWall C,               !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     T Corridor,              !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -5592,7 +5598,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g WWall C,               !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     G Corridor,              !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -5642,7 +5648,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g Floor C,               !- Name
     Floor,                   !- Surface Type
-    ext-slab,                !- Construction Name
+    UWG_Basel_Floor,                !- Construction Name
     G Corridor,              !- Zone Name
     ,                        !- Space Name
     Ground,                  !- Outside Boundary Condition
@@ -5717,7 +5723,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     g EWall C,               !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     G Corridor,              !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -5893,7 +5899,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     m WWall C,               !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     M Corridor,              !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
@@ -5918,7 +5924,7 @@ BuildingSurface:Detailed,
 BuildingSurface:Detailed,
     m EWall C,               !- Name
     Wall,                    !- Surface Type
-    Steel Frame Res Ext Wall,!- Construction Name
+    UWG_Basel_Wall,!- Construction Name
     M Corridor,              !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
