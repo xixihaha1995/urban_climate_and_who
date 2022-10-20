@@ -74,6 +74,71 @@ def sequence_time_to_pandas_time(dataframe, delta_t,start_time):
     dataframe.index = date
     return dataframe
 
+def save_OneOrTwoHeights_debug(urbanLst,rural,
+                             only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
+                             bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C,
+                              prediction_folder_prefix,
+                              debug_only_ep_5min, debug_only_vcwg_5min, debug_bypass,
+                         sheet_names = None, debug_file_name = None):
+
+    if debug_file_name is None:
+        writer = pd.ExcelWriter(f'{prediction_folder_prefix}\\bypass_overestimated_debugging_DOE_Ref.xlsx',
+                            engine='xlsxwriter')
+    else:
+        writer = pd.ExcelWriter(f'{prediction_folder_prefix}\\{debug_file_name}_debugging.xlsx',
+                                engine='xlsxwriter')
+    #save 1p2m-direct
+    for heightIdx in range(len(urbanLst)):
+        df = pd.DataFrame({'Measurement': urbanLst[heightIdx].squeeze(),
+                           f'Rural': rural.squeeze(),
+                           'Only VCWG': only_vcwg_direct_lst_C[heightIdx],
+                           'Bypass Ver1.1': bypass_direct_lst_C[heightIdx]})
+        if sheet_names is None:
+            df.to_excel(writer, sheet_name='1p2m Direct')
+        else:
+            df.to_excel(writer, sheet_name=f'{str(sheet_names[heightIdx])}m Direct')
+        #save 1p2m-real_p0
+        df = pd.DataFrame({'Measurement': urbanLst[heightIdx].squeeze(),
+                           'Rural': rural.squeeze(),
+                           'Only VCWG': only_vcwg_real_p0_lst_C[heightIdx],
+                           'Bypass Ver1.1': bypass_real_p0_lst_C[heightIdx]})
+        if sheet_names is None:
+            df.to_excel(writer, sheet_name='1p2m Real P0')
+        else:
+            df.to_excel(writer, sheet_name=f'{str(sheet_names[heightIdx])}m Real P0')
+        #save 1p2m-real_epw
+        df = pd.DataFrame({'Measurement': urbanLst[heightIdx].squeeze(),
+                           'Rural': rural.squeeze(),
+                           'Only VCWG': only_vcwg_real_epw_lst_C[heightIdx],
+                           'Bypass Ver1.1': bypass_real_epw_lst_C[heightIdx]})
+        if sheet_names is None:
+            df.to_excel(writer, sheet_name='1p2m Real EPW')
+        else:
+            df.to_excel(writer, sheet_name=f'{str(sheet_names[heightIdx])}m Real EPW')
+
+    # save wall Sun
+    df = pd.DataFrame({'Only EP(southFacingWall)': debug_only_ep_5min.iloc[:, 0] - 273.15,
+                       'Only VCWG (wallSun)': debug_only_vcwg_5min.iloc[:, 0] - 273.15,
+                       'Bypass Ver1.1 (wallSun)': debug_bypass.iloc[:, 0] - 273.15})
+    df.to_excel(writer, sheet_name='wallSun_southFacingWall')
+    # save wall shade
+    df = pd.DataFrame({'Only EP (northFacingWall)': debug_only_ep_5min.iloc[:, 1] - 273.15,
+                       'Only VCWG (wallShade)': debug_only_vcwg_5min.iloc[:, 1] - 273.15,
+                       'Bypass Ver1.1 (wallShade)': debug_bypass.iloc[:, 1] - 273.15})
+    df.to_excel(writer, sheet_name='wallShade_northFacingWall')
+    # write the fourth sheet
+    df = pd.DataFrame({'Only EP(roof)': debug_only_ep_5min.iloc[:, 2] - 273.15,
+                       'Only VCWG (roof)': debug_only_vcwg_5min.iloc[:, 2] - 273.15,
+                       'Bypass Ver1.1 (roof)': debug_bypass.iloc[:, 3] - 273.15})
+    df.to_excel(writer, sheet_name='roof')
+    # write the fifth sheet
+    df = pd.DataFrame({'Only EP{which_ep} (sensHVAC)': debug_only_ep_5min.iloc[:, 3],
+                       'Only VCWG (sensWaste)': debug_only_vcwg_5min.iloc[:, 3],
+                       'Bypass Ver1.1 (sensHVAC)': debug_bypass.iloc[:, 4]})
+    df.to_excel(writer, sheet_name='sensWaste_sensHVAC')
+
+    writer.save()
+
 def save_TwoHeights_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
                              rural_1p5_hour_c,
                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
@@ -241,6 +306,36 @@ def save_CAPITOUL_debug(measure_tdb_c_2m_6m_hourly,measure_tdb_c_20m_5min,
     df.to_excel(writer, sheet_name='sensWaste_sensHVAC')
 
     writer.save()
+
+def organize_CAPITOUL_MNP_cvrmse(urbanLst, rural,
+                             only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
+                             bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C):
+    cvrmse_3d = np.zeros((len(urbanLst), 3, 3))
+    for i, urban in enumerate(urbanLst): #height
+        for j in range(3): #rural, vcwg, bypass
+            for k in range(3): #direct, real_p0, real_epw
+                if j == 0:
+                    if k == 0:
+                        cvrmse_3d[i, j, k] = bias_rmse_r2(urban,rural, "rural")[2]
+                    else: continue
+                elif j == 1:
+                    if k == 0:
+                        cvrmse_3d[i, j, k] = bias_rmse_r2(urban,only_vcwg_direct_lst_C[i], "only_vcwg_direct")[2]
+                    elif k == 1:
+                        cvrmse_3d[i, j, k] = bias_rmse_r2(urban,only_vcwg_real_p0_lst_C[i], "only_vcwg_real_p0")[2]
+                    elif k == 2:
+                        cvrmse_3d[i, j, k] = bias_rmse_r2(urban,only_vcwg_real_epw_lst_C[i], "only_vcwg_real_epw")[2]
+                    else: continue
+                elif j == 2:
+                    if k == 0:
+                        cvrmse_3d[i, j, k] = bias_rmse_r2(urban,bypass_direct_lst_C[i], "bypass_direct")[2]
+                    elif k == 1:
+                        cvrmse_3d[i, j, k] = bias_rmse_r2(urban,bypass_real_p0_lst_C[i], "bypass_real_p0")[2]
+                    elif k == 2:
+                        cvrmse_3d[i, j, k] = bias_rmse_r2(urban,bypass_real_epw_lst_C[i], "bypass_real_epw")[2]
+                    else: continue
+
+    return cvrmse_3d
 
 def organize_Vancouver_cvrmse(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
                              rural_1p5_hour_c,
