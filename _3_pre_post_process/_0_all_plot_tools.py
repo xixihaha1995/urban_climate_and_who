@@ -469,9 +469,14 @@ def bias_rmse_r2(df1_in, df2_in, df2_name):
     df2 is simulated data, [date, sensible/latent]
     '''
     # based on df1 time index, find the corresponding df2
-    df1 = df1_in.dropna()
-    df2 = df2_in.fillna(0)
-    df2 = df2.loc[df1.index]
+    # fill nan with interpolated value
+    df1 = df1_in.interpolate()
+    df2 = df2_in.reindex(df1_in.index)
+    df2 = df2.interpolate()
+    #
+    # df1 = df1_in.dropna()
+    # df2 = df2_in.fillna(0)
+    # df2 = df2.loc[df1.index]
     df1 = df1.values
     df2 = df2.values
     bias = df1 - df2

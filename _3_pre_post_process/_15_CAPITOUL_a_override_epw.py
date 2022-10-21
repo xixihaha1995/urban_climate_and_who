@@ -74,6 +74,11 @@ def get_one_file_data(file_path):
     1. first column is data, format DD/MM/AAAA
     2. second column is time, format HHMNSS.SSS, fill the missing 0
     '''
+    #get one subset df by dropping the last two columns
+    # override 9999 with nan
+    df = df.replace(9999, pd.np.nan)
+    # interpolate the nan
+    df = df.interpolate()
     df[0] = df[0].apply(lambda x: x.replace('/', '-'))
     df[1] = df[1].apply(lambda x: x.zfill(8))
 

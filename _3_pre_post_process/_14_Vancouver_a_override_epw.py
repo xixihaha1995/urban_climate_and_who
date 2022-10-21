@@ -54,22 +54,27 @@ def get_clean_airport_measurment(file_path):
     df = df[['TMP', 'DEW', 'SLP']]
     # convert types to string
     df = df.astype(str)
-    #For each column, remove the rows, where the last char is not '1'
-    for col in df.columns:
-        df = df[df[col].str[-1] == '1']
-
-    #drop missing rows:
-    # for TMP column, drop rows str containing '9999'
-    # for DEW column, drop rows str containing '9999'
-    # for SLP column, drop rows str containing '99999'
-
-    df = df[~df['TMP'].str.contains('9999')]
-    df = df[~df['DEW'].str.contains('9999')]
-    df = df[~df['SLP'].str.contains('99999')]
-    # drop the last two char for each column
+    # For column 'TMP', return the rows index, where its last character is not '1'
+    error_tmp_indices = df[df['TMP'].str[-1] != '1'].index
+    # '2008-10-01T07:35:00', '2008-10-01T14:25:00', '2008-10-05T04:32:00',
+    # '2008-10-06T20:44:00', '2008-10-06T21:39:00', '2008-10-07T00:24:00',
+    # '2008-10-07T01:42:00', '2008-10-07T05:13:00', '2008-10-07T06:27:00',
+    # '2008-10-07T07:29:00'
+    error_dew_indices = df[df['DEW'].str[-1] != '1'].index
+    # '2008-12-30T00:11:00', '2008-12-30T01:24:00', '2008-12-30T19:29:00',
+    # '2008-12-31T03:54:00', '2008-12-31T05:45:00', '2008-12-31T06:17:00',
+    # '2008-12-31T06:45:00', '2008-12-31T07:13:00', '2008-12-31T09:50:00',
+    # '2008-12-31T10:25:00'
+    error_slp_indices = df[df['SLP'].str[-1] != '1'].index
+    # for 'TMP', 'DEW', 'SLP', find any elements, where its last character is not '1', define this element as nan
+    df.loc[error_tmp_indices, 'TMP'] = float('nan')
+    df.loc[error_dew_indices, 'DEW'] = float('nan')
+    df.loc[error_slp_indices, 'SLP'] = float('nan')
     df = df.apply(lambda x: x.str[:-2])
-    # convert the data type to float
+# convert types to float
     df = df.astype(float)
+    # interpolate the nan values
+    df = df.interpolate()
     # for first two columns, divide by 10
     df.iloc[:, 0:2] = df.iloc[:, 0:2] / 10
     # for the last column, mutiply by 10
@@ -80,9 +85,6 @@ def get_clean_airport_measurment(file_path):
     df.index = pd.to_datetime(df.index)
     # convert the index to hourly
     df = df.resample('H').mean()
-    # since the data has 366 days, but the epw file only has 365 days
-    # so we drop the Feb 29th
-    df = df[df.index.date != pd.to_datetime('2008-02-29').date()]
     return df
 def overriding_epw(epw_file, df_measurement):
     '''
@@ -101,18 +103,30 @@ def overriding_epw(epw_file, df_measurement):
             # for the 7th column, overwrite with the measurement data
             if i > 7 and i < 8761:
                 lines[i] = lines[i].split(',')
-                press_pa = df_measurement.iloc[i - 1, 2]
-                # lines[i][0] is the year, get the actual year df_measurement.index[i - 8].year
-                lines[i][0] = str(df_measurement.index[i - 1].year)
-                lines[i][6] = str(df_measurement.iloc[i - 1, 0])
-                lines[i][7] = str(df_measurement.iloc[i - 1, 1])
-                humidity_ratio = psychrometric.humidity_ratio_b(state,df_measurement.iloc[i - 1, 1], press_pa)
-                rh = psychrometric.relative_humidity_b(state,df_measurement.iloc[i - 1, 0], humidity_ratio, press_pa)
+                # lines[i][0:4] is Year, Month, Day, Hour (1-24)
+                year = '2008'
+                month = lines[i][1]
+                day = lines[i][2]
+                # epw is UTC-7, so add 7 hours
+                hour = str(int(lines[i][3]) -1 )
+                target_date_UTC_M7 = pd.to_datetime(year + '-' + month + '-' + day + ' ' + hour + ':00:00')
+                target_date_UTC_0 = target_date_UTC_M7 + pd.Timedelta(hours=7)
+                measurements = df_measurement.loc[target_date_UTC_0]
+                dry_bulb_c = measurements['Dry Bulb Temperature {C}']
+                dew_point_c = measurements['Dew Point Temperature {C}']
+                sea_level_press_pa = measurements['Atmospheric Station Pressure {Pa}']
+
+                lines[i][0] = year
+                lines[i][6] = str(measurements[0])
+                lines[i][7] = str(measurements[1])
+
+                humidity_ratio = psychrometric.humidity_ratio_b(state,dew_point_c, sea_level_press_pa)
+                rh = psychrometric.relative_humidity_b(state,dry_bulb_c, humidity_ratio, sea_level_press_pa)
                 lines[i][8] = str(rh*100)
-                lines[i][9] = str(press_pa)
+                lines[i][9] = str(sea_level_press_pa)
                 lines[i] = ','.join(lines[i])
     # write the lines to the epw file
-    overwriten_epw = r'..\_4_measurements\Vancouver\To_GenerateEPW\Vancouver718920CorrectTime.epw'
+    overwriten_epw = r'..\_4_measurements\Vancouver\To_GenerateEPW\newVancouver718920CorrectTime.epw'
     with open(overwriten_epw, 'w') as f:
         f.writelines(lines)
     return overwriten_epw
@@ -130,10 +144,10 @@ def main():
     # _71890_file = r'..\_4_measurements\Vancouver\IntegratedSurfaceDataset_Vancouver_Harbour_Airport_2008.csv'
     df = get_clean_airport_measurment(_71890_file)
     #plot the first column
-    df.iloc[:, 0].plot()
-    plt.show()
+    # df.iloc[:, 0].plot()
+    # plt.show()
     # save the data to csv file
-    df.to_csv(r'..\_4_measurements\Vancouver\To_GenerateEPW\clean_IntegratedSurfaceDataset_Vancouver_Harbour_Airport_2008.csv')
+    df.to_csv(r'..\_4_measurements\Vancouver\To_GenerateEPW\clean_IntegratedSurfaceDataset_Vancouver_INT_Airport_2008.csv')
     # _2_cases_input_outputs/_08_CAPITOUL/generate_epw/overriding_FRA_Bordeaux.075100_IWECEPW.csv
     epw_file = r'..\_4_measurements\Vancouver\To_GenerateEPW\overridingCAN_BC_Vancouver.718920_CWEC.epw'
     overriding_epw(epw_file, df)
