@@ -20,8 +20,8 @@ def api_to_csv(state):
     newFile.close()
 def run_vcwg():
     # BUBBLE, CAPITOUL, Vancouver
-    # epwFileName = 'Mondouzil_tdb_td_rh_P_2004.epw'
-    epwFileName = 'Basel.epw'
+    epwFileName = 'Mondouzil_tdb_td_rh_P_2004.epw'
+    # epwFileName = 'Basel.epw'
     # epwFileName = 'Vancouver718920CorrectTime.epw'
     TopForcingFileName = None
     # VCWGParamFileName = '_case6_initialize_Basel_BSPA_MOST.uwg'
