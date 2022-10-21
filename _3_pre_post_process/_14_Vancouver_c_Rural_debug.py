@@ -12,10 +12,11 @@ prediction_folder_prefix = r'..\\_2_cases_input_outputs\\_07_vancouver\\Rural_Re
 only_ep_folder= f'{prediction_folder_prefix}\\a_ep_saving'
 only_vcwg_folder = f'{prediction_folder_prefix}\\b_vcwg_saving'
 bypass_folder = f'{prediction_folder_prefix}\\c_vcwg_ep_saving'
-epw_atm_filename = r'Vancouver718920CorrectTime'
+epw_atm_filename = r'Interpolated_Vancouver718920CorrectTime'
+
 only_ep_filename_prefix = 'Vancouver_RuralCorrectTime_only_ep_2008_July'
 only_vcwg_filename_prefix = 'Vancouver_Rural_CorrectTime_only_vcwg_2008_Jul'
-bypass_filename_prefix = 'ver1.1\\Vancouver_RuralCorrectTime_ByPass_2008Jul'
+bypass_filename_prefix = 'ver1.1\\Vancouver_Rural_Interpolated_ByPass_2008Jul'
 
 domain_height = 20
 vcwg_heights_profile = [0.5 + i for i in range(domain_height)]
@@ -36,6 +37,11 @@ epw_staPre_Pa_all = epw_all_clean.iloc[:, 9]
 epw_staPre_Pa_all.index = pd.to_datetime(epw_staPre_Pa_all.index)
 epw_staPre_Pa_all.index = epw_staPre_Pa_all.index.strftime('%m-%d %H:%M:%S')
 
+epw_dryBulAirTemp_C_all = epw_all_clean.iloc[:, 6]
+epw_dryBulAirTemp_C_all.index = pd.to_datetime(epw_dryBulAirTemp_C_all.index)
+epw_dryBulAirTemp_C_hourly = epw_dryBulAirTemp_C_all.loc[compare_start_time:compare_end_time]
+# interpolate hourly data to 30 min
+epw_dryBulAirTemp_C_30min = epw_dryBulAirTemp_C_hourly.resample('30min').interpolate()
 # Measurements: 2,6,20m measured data, convert to target interval (hourly, 5min)
 measure_tdb_c_1p2m_30min = ss4_tower_ori_30min.iloc[:, 0]
 measure_tdb_c_26m_30min = ss4_tower_ori_30min.iloc[:, 1]
@@ -82,10 +88,10 @@ with open(os.path.join(save_intermediate_path, 'bypass_real_epw_lst_C.pickle'), 
 #Create one 3d array, 0th axis dims: 2 (1.2 m, 26m heights) ,
 # 1st axis dims: 3 (ep, vcwg, bypass), 2nd axis dims: 3 (direct_predict, real_p0, real_epw)
 cvrmse_3d = plt_tools.organize_Vancouver_cvrmse(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
-                             only_ep_degC_1p2_26m_30min,
+                             epw_dryBulAirTemp_C_30min,
                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C)
-print("CVRMSE (%), (OnlyEP, OnlyVCWG, Bypass)")
+print("CVRMSE (%), (Rural, OnlyVCWG, Bypass)")
 print(f'1.2m, direct: {cvrmse_3d[0, :, 0]}')
 print(f'1.2m, real_p0: {cvrmse_3d[0, :, 1]}')
 print(f'1.2m, real_epw: {cvrmse_3d[0, :, 2]}')
@@ -99,7 +105,7 @@ debug_only_vcwg_5min = pd.read_excel(f'{only_vcwg_folder}\\{only_vcwg_filename_p
 debug_bypass = pd.read_excel(f'{bypass_folder}\\{bypass_filename_prefix}_debugging_canyon.xlsx',
                                 header=0, index_col=0)
 plt_tools.save_TwoHeights_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
-                             only_ep_degC_1p2_26m_30min,
+                             epw_dryBulAirTemp_C_30min,
                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C,
                               prediction_folder_prefix,

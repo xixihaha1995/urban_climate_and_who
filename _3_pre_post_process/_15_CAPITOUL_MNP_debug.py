@@ -91,9 +91,9 @@ cvrmse_3d = plt_tools.organize_CAPITOUL_MNP_cvrmse(urbanLst, rural_MNP_19m_5min_
                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C)
 print("CVRMSE (%), (Rural, OnlyVCWG, Bypass)")
-print(f'20m, direct: {cvrmse_3d[0, :, 0]}')
-print(f'20m, real_p0: {cvrmse_3d[0, :, 1]}')
-print(f'20m, real_epw: {cvrmse_3d[0, :, 2]}')
+print(f'19m, direct: {cvrmse_3d[0, :, 0]}')
+print(f'19m, real_p0: {cvrmse_3d[0, :, 1]}')
+print(f'19m, real_epw: {cvrmse_3d[0, :, 2]}')
 
 debug_only_ep_5min = pd.read_excel(f'{only_ep_folder}\\{only_ep_filename_prefix}_debugging_canyon.xlsx', header=0, index_col=0)
 debug_only_vcwg_5min = pd.read_excel(f'{only_vcwg_folder}\\{only_vcwg_filename_prefix}_debugging_canyon.xlsx',
