@@ -494,9 +494,9 @@
     0.1600,                  !- Conductivity {W/m-K}
     1121.2900,               !- Density {kg/m3}
     1460.0000,               !- Specific Heat {J/kg-K}
-    0.9000,                  !- Thermal Absorptance
-    0.7000,                  !- Solar Absorptance
-    0.7000;                  !- Visible Absorptance
+    0.9500,                  !- Thermal Absorptance
+    0.8700,                  !- Solar Absorptance
+    0.8700;                  !- Visible Absorptance
 
   Material,
     Metal Decking,           !- Name
