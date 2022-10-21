@@ -94,8 +94,6 @@ def overriding_epw(epw_file, df_measurement):
         a. For epw, the ;7th column is the dry bulb temperature
         b. For measurement, the 1st column is the dry bulb temperature
     '''
-    # The df_measurement index is datetime format, so use the date to drop Feb 29th data
-    df_measurement = df_measurement[df_measurement.index.date != pd.to_datetime('2004-02-29').date()]
     # read text based epw file line by line
     with open(epw_file, 'r') as f:
         lines = f.readlines()

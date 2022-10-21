@@ -14,7 +14,7 @@ sampling rate: 1 hour
 # 2. convert the measured data to epw format, sample rate is 1 hour
 # 3. overwrite the epw file in the epw folder of the case
 
-import os, sys
+import os, sys, numpy as np
 import pandas as pd, _0_all_plot_tools as plot_tools
 
 sys.path.insert(0, 'C:\EnergyPlusV22-1-0')
@@ -75,7 +75,14 @@ def get_one_file_data(file_path):
     2. second column is time, format HHMNSS.SSS, fill the missing 0
     '''
     #get one subset df by dropping the last two columns
-    # override 9999 with nan
+    df = df.iloc[:, :-2]
+    # find the index (row, col) of element is 9999
+    # index = df[df == 9999].stack().index.tolist()
+    # [(6523, 10), (7873, 10), (7874, 10), (7878, 10), (13664, 10), (23771, 10), (23772, 10), (26583, 10), (26646, 10),
+    #  (26687, 10), (26688, 10), (26703, 10), (26709, 10)]
+    # iterate the index, fill it with nan
+    # for i in index:
+    #     df.iloc[i[0], i[1]] = np.nan
     df = df.replace(9999, pd.np.nan)
     # interpolate the nan
     df = df.interpolate()
@@ -104,7 +111,7 @@ def get_all_files_data():
     _first_month_name = file_name_str.replace('MM', '01')
     column_name = make_columns_name(os.path.join(file_path, _first_month_name))
     # change the column name
-    df.columns = column_name
+    df.columns = column_name[:-2]
     return df
 def overriding_epw(epw_csv, df_measurement):
     '''
@@ -114,8 +121,6 @@ def overriding_epw(epw_csv, df_measurement):
         a. For epw, the ;7th column is the dry bulb temperature
         b. For measurement, the 1st column is the dry bulb temperature
     '''
-    # The df_measurement index is datetime format, so use the date to drop Feb 29th data
-    df_measurement = df_measurement[df_measurement.index.date != pd.to_datetime('2004-02-29').date()]
     # read text based epw file line by line
     with open(epw_csv, 'r') as f:
         lines = f.readlines()
@@ -128,17 +133,28 @@ def overriding_epw(epw_csv, df_measurement):
                 # calculate dew_point(state, humidity_ratio, p in Pa (1))
                 # for the 8th column, dew point temperature, overwrite
                 lines[i] = lines[i].split(',')
-                lines[i][6] = str(df_measurement.iloc[i - 8, 0])
-                lines[i][8] = str(df_measurement.iloc[i - 8, 2])
-                press_pa = df_measurement.iloc[i - 8, 1] * 100
+                year = '2004'
+                month = lines[i][1]
+                day = lines[i][2]
+                # epw is UTC-7, so add 7 hours
+                hour = str(int(lines[i][3]) - 1)
+                target_date = pd.to_datetime(year + '-' + month + '-' + day + ' ' + hour + ':00:00')
+                measurements = df_measurement.loc[target_date]
+                dry_bulb_c = measurements[0]
+                press_pa = measurements[1] * 100
+                relative_humidity_percentage = measurements[2]
+
                 humidity_ratio = psychrometric.humidity_ratio_c(state,
-                    df_measurement.iloc[i - 8, 0],df_measurement.iloc[i - 8, 2] / 100, press_pa)
+                    dry_bulb_c,relative_humidity_percentage / 100, press_pa)
                 dew_point = psychrometric.dew_point(state, humidity_ratio, press_pa)
+                lines[i][0] = year
+                lines[i][6] = str(dry_bulb_c)
                 lines[i][7] = str(dew_point)
+                lines[i][8] = str(relative_humidity_percentage)
                 lines[i][9] = str(press_pa)
                 lines[i] = ','.join(lines[i])
     # write the lines to the epw file
-    overwriten_epw = r'..\_2_cases_input_outputs\_08_CAPITOUL\generate_epw\Mondouzil_tdb_td_rh_P_2004.epw'
+    overwriten_epw = r'..\_2_cases_input_outputs\_08_CAPITOUL\generate_epw\newMondouzil_tdb_td_rh_P_2004.epw'
     with open(overwriten_epw, 'w') as f:
         f.writelines(lines)
     return overwriten_epw
@@ -157,8 +173,7 @@ def main():
     df.to_csv(r'..\_4_measurements\CAPITOUL\Rural_Mondouzil_Minute.csv')
     # except the first two columns, convert the rest columns into float type
     df.iloc[:, 2:] = df.iloc[:, 2:].astype(float)
-    df_hourly = plot_tools.time_interval_converstion_actual_timestamp(df)
-    # save the data to csv file
+    df_hourly = df.resample('H').mean()
     df_hourly.to_csv(r'..\_4_measurements\CAPITOUL\Rural_Mondouzil_Hour.csv')
     # _2_cases_input_outputs/_08_CAPITOUL/generate_epw/overriding_FRA_Bordeaux.075100_IWECEPW.csv
     epw_csv = r'..\_2_cases_input_outputs\_08_CAPITOUL\generate_epw\overriding_FRA_Bordeaux.075100_IWEC.epw'
