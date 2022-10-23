@@ -8,6 +8,7 @@ from _3_post_process_code import _0_all_plot_tools as plot_tools
 def run_vcwg():
     # # BUBBLE, CAPITOUL, Vancouver
     # epwFileName = 'Mondouzil_tdb_td_rh_P_2004.epw'
+    epwFileName = 'newMondouzil_tdb_td_rh_P_2004.epw'
     # epwFileName = 'Basel.epw'
     # epwFileName = 'VancouverRural718920.epw'
     # epwFileName = 'Vancouver718920CorrectTime.epw'
@@ -15,19 +16,22 @@ def run_vcwg():
     TopForcingFileName = None
     # VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
     # VCWGParamFileName = '_case6_initialize_Basel_BSPA_MOST.uwg'
-    VCWGParamFileName = '_case7_initialize_Vancouver_withRural.uwg'
+    # VCWGParamFileName = '_case7_initialize_Vancouver_withRural.uwg'
     # VCWGParamFileName = '_case8_initialize_CAPITOUL_MOST.uwg'
+    VCWGParamFileName = '_case9_initialize_CAPITOUL_MOST.uwg'
 
     # ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
     # ViewFactorFileName = '_case6_BSPA_ViewFactor_Basel_MOST.txt'
-    ViewFactorFileName = '_case7_ViewFactor_Vancouver_LCZ1.txt'
+    # ViewFactorFileName = '_case7_ViewFactor_Vancouver_LCZ1.txt'
     # ViewFactorFileName = '_case8_CAPITOUL_ViewFactor_MOST.txt'
+    ViewFactorFileName = '_case9_CAPITOUL_ViewFactor_MOST.txt'
 
     # Case name to append output file names with
     # case = 'Ue1_LiteratureAlbedo'
     # case = 'Ue2_LiteratureAlbedo'
-    case = '_case7_VancouverRuralCorrectTimeOnlyVCWG_2008Jul'
+    # case = '_case7_VancouverRuralCorrectTimeOnlyVCWG_2008Jul'
     # case = 'CAPITOUL_MNP'
+    case = 'CAPITOUL_MNP_Updated_Width'
 
 
     # # Vancouver
@@ -51,21 +55,22 @@ if __name__ == '__main__':
     # case_name = 'BUBBLE_Ue1_only_vcwg_2002_June'
     # case_name = 'BUBBLE_Ue2_only_vcwg_2002_June'
     # case_name = 'CAPITOUL_2004_only_vcwg'
+    case_name = 'CAPITOUL_2004_only_vcwg_Updated_Width'
     # case_name = 'Vancouver_TopForcing_only_vcwg_2008_Jul'
     # case_name = 'Vancouver_Rural_only_vcwg_2008_Jul'
-    case_name = 'Vancouver_Rural_CorrectTime_only_vcwg_2008_Jul'
+    # case_name = 'Vancouver_Rural_CorrectTime_only_vcwg_2008_Jul'
 
     # saving_data_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\MidRiseApart_4C_Rural_LiteratureAlbedo\\b_vcwg_saving'
     # saving_data_path = '_2_cases_input_outputs\\_06_Basel_BSPA_ue2\\Orientation_MidRiseApart_4C_LiteratureAlbedo\\b_vcwg_saving'
     # saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\vcwg_saving'
     # saving_data_path = '_2_cases_input_outputs\\_08_CAPITOUL\\DOE_Ref_MediumOffice_4B\\vcwg_saving'
-    # saving_data_path = '_2_cases_input_outputs\\_08_CAPITOUL\\MediumOffice_4B_Literature_MNP\\b_vcwg_saving'
+    saving_data_path = '_2_cases_input_outputs\\_08_CAPITOUL\\MediumOffice_4B_Literature_MNP\\b_vcwg_saving'
     # saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\TopForcing_Refined_SMALL_OFFICE\\vcwg_saving'
-    saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\Rural_Refined_SmallOffice_4C_CorrectTime\\b_vcwg_saving'
+    # saving_data_path = '_2_cases_input_outputs\\_07_Vancouver\\Rural_Refined_SmallOffice_4C_CorrectTime\\b_vcwg_saving'
 
     # start_time = '2002-06-10 00:00:00'
-    # start_time = '2004-06-01 00:00:00'
-    start_time = '2008-07-01 00:00:00'
+    start_time = '2004-06-01 00:00:00'
+    # start_time = '2008-07-01 00:00:00'
     time_interval_sec = 300
 
     vcwg_thread = Thread(target=run_vcwg)
