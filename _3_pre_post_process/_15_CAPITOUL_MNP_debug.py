@@ -19,13 +19,14 @@ epw_atm_filename = r'newMondouzil_tdb_td_rh_P_2004'
 ruralFilename = 'Rural_Mondouzil_Processed'
 
 only_ep_filename_prefix = 'CAPITOUL_only_ep_2004'
-only_vcwg_filename_prefix = 'CAPITOUL_2004_only_vcwg'
+# only_vcwg_filename_prefix = 'CAPITOUL_2004_only_vcwg'
+only_vcwg_filename_prefix = 'CAPITOUL_2004_only_vcwg_Updated_Width'
 bypass_filename_prefix = 'ver1.1\\CAPITOUL_Bypass_2004'
 
 domain_height = 60
 vcwg_heights_profile = [0.5 + i for i in range(domain_height)]
 p0 = 100000
-selected_sensor_heights = [7]
+selected_sensor_heights = [19]
 target_interval_mins = [5]
 # Read measured then convert to target interval
 if os.path.exists(f'{save_intermediate_path}\\{urban_ori_filename}.csv'):
