@@ -33,8 +33,8 @@ Tdeep_ctrl,1,         # 1: Using force restore method, 2: Using climate data (fr
 nz,60,                 # number of points (nz*dz = 3*bldHeight)
 nz_u,20,               # number of canopy levels in the vertical (nz_u*dz = bldHeight)
 dz,1,                  # vertical resolution [m]
-Width_canyon,9,     # distance between buildings at street level in the x and y direction must be equal [m]
-Width_roof,20,         # building dimension [m]
+Width_canyon,11.68,     # distance between buildings at street level in the x and y direction must be equal [m]
+Width_roof,51.7,         # building dimension [m]
 theta_canyon,-56,       # Canyon direction from geographical north, in the counter trigonometric direction (from -90 to 90 degrees)
 Height_canyon,20,      # Average building height [m]
 fveg_R,0,              # Vegetated roof fraction (between 0 and 1)
