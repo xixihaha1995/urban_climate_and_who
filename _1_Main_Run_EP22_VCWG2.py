@@ -11,7 +11,7 @@ def run_vcwg():
     # epwFileName = 'Basel.epw'
     # epwFileName = 'VancouverRural718920.epw'
     # epwFileName = 'Vancouver718920CorrectTime.epw'
-    epwFileName = 'Interpolated_Vancouver718920CorrectTime.epw'
+    # epwFileName = 'Interpolated_Vancouver718920CorrectTime.epw'
     TopForcingFileName = None
     # VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
     # VCWGParamFileName = '_case6_initialize_Basel_BSPA_MOST.uwg'
