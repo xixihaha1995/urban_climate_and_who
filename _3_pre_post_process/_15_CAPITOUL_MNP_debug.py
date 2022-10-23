@@ -9,14 +9,14 @@ save_intermediate_path = r'..\_4_measurements\CAPITOUL\Intermediate_MNP_Literatu
 if not os.path.exists(save_intermediate_path):
     os.makedirs(save_intermediate_path)
 
-urban_ori_filename = r'Urban_Pomme_Ori_Processed.csv'
+urban_ori_filename = r'Urban_Pomme_Ori_Processed'
 
 prediction_folder_prefix = r'..\_2_cases_input_outputs\_08_CAPITOUL\MediumOffice_4B_Literature_MNP'
 only_ep_folder= f'{prediction_folder_prefix}\\a_ep_saving'
 only_vcwg_folder = f'{prediction_folder_prefix}\\b_vcwg_saving'
 bypass_folder = f'{prediction_folder_prefix}\\c_vcwg_ep_saving'
-epw_atm_filename = r'Mondouzil_tdb_td_rh_P_2004'
-ruralFilename = 'Rural_Mondouzil_Processed.csv'
+epw_atm_filename = r'newMondouzil_tdb_td_rh_P_2004'
+ruralFilename = 'Rural_Mondouzil_Processed'
 
 only_ep_filename_prefix = 'CAPITOUL_only_ep_2004'
 only_vcwg_filename_prefix = 'CAPITOUL_2004_only_vcwg'
@@ -25,20 +25,20 @@ bypass_filename_prefix = 'ver1.1\\CAPITOUL_Bypass_2004'
 domain_height = 60
 vcwg_heights_profile = [0.5 + i for i in range(domain_height)]
 p0 = 100000
-selected_sensor_heights = [19]
+selected_sensor_heights = [7]
 target_interval_mins = [5]
 # Read measured then convert to target interval
-if os.path.exists(f'{save_intermediate_path}\\{urban_ori_filename}'):
-    pomme_5min = pd.read_csv(os.path.join(save_intermediate_path, f'{urban_ori_filename}'),
+if os.path.exists(f'{save_intermediate_path}\\{urban_ori_filename}.csv'):
+    pomme_5min = pd.read_csv(os.path.join(save_intermediate_path, f'{urban_ori_filename}.csv'),
                              index_col=0, parse_dates=True)
-    rural_MON_5min = pd.read_csv(os.path.join(save_intermediate_path, f'{ruralFilename}'),
+    rural_MON_5min = pd.read_csv(os.path.join(save_intermediate_path, f'{ruralFilename}.csv'),
                                     index_col=0, parse_dates=True)
 else:
-    pomme_ori_1min = pd.read_csv(os.path.join(measure_results_folder, 'Urban_Pomme_Ori_1_min.csv'),
+    pomme_ori_1min = pd.read_csv(os.path.join(measure_results_folder, 'newUrban_Pomme_Ori_1_min.csv'),
                                                 index_col=0, parse_dates=True)
     pomme_ori_1min = pomme_ori_1min[compare_start_time:compare_end_time]
     pomme_5min = pomme_ori_1min.resample('5T').mean()
-    pomme_5min.to_csv(os.path.join(save_intermediate_path, f'{urban_ori_filename}'))
+    pomme_5min.to_csv(os.path.join(save_intermediate_path, f'{urban_ori_filename}.csv'))
 
     rural_MON_ori_1min = pd.read_csv(os.path.join(measure_results_folder, 'Rural_Mondouzil_Minute.csv'),
                                                 index_col=0, parse_dates=True)
