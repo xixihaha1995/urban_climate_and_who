@@ -114,10 +114,10 @@ def pomme_read_all_files():
     df.columns = pomme_columns_name()
     return df
 def main():
-    df_zone7 = zone7_read_all_files()
-    df_zone7.to_csv('..\\_4_measurements\\CAPITOUL\\Mini_Zone7_Ori_12_min.csv')
+    # df_zone7 = zone7_read_all_files()
+    # df_zone7.to_csv('..\\_4_measurements\\CAPITOUL\\Mini_Zone7_Ori_12_min.csv')
     df_pomme = pomme_read_all_files()
-    df_pomme.to_csv('..\\_4_measurements\\CAPITOUL\\Pomme_Ori_1_min.csv')
+    df_pomme.to_csv('..\\_4_measurements\\CAPITOUL\\newPomme_Ori_1_min.csv')
     # plot df_pomme column 'Air_Temperature_C' with index
     df_pomme['Air_Temperature_C'].plot()
     plt.show()
