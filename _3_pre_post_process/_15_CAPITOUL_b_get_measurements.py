@@ -85,14 +85,18 @@ def pomme_read_one_file(file_path):
     # 3. read the rest lines, which are the data
     # separators is tab, read the first two columns as string, the rest columns as float
     data = pd.read_csv(file_path, sep='\s+', header=None, index_col= False, dtype ={0:str, 1:str})
+    # drop the 3rd column, since it is always 9999
+    # data.drop([2], axis=1, inplace=True)
     # DD/MM/YYYY; HHMMSS.SSS
     # 4. convert the date and time to datetime format
     data['Date'] = pd.to_datetime(data.iloc[:, 0] + data.iloc[:, 1], format='%d/%m/%Y%H%M%S.%f')
     # print all columns data types
     # print(data.dtypes)
     data.index = data['Date']
-    #drop rows with 4th column == 9999
-    data = data[data.iloc[:, 3] != 9999]
+    data = data.replace(9999, pd.np.nan)
+    data.iloc[:, 3] = data.iloc[:, 3].interpolate()
+    # find index for 3rd column, where element is 9999
+    index_9999 = data[data.iloc[:, 2] == 9999].index
     #drop Date column
     data.drop(['Date'], axis=1, inplace=True)
     return data
@@ -111,7 +115,10 @@ def pomme_read_all_files():
         file_name = os.path.join(measure_pomme_folder, file_name)
         df_month = pomme_read_one_file(file_name)
         df = pd.concat([df, df_month])
-    df.columns = pomme_columns_name()
+    column_names = pomme_columns_name()
+    # drop the 3rd column name
+    # column_names.pop(2)
+    df.columns =column_names
     return df
 def main():
     # df_zone7 = zone7_read_all_files()
