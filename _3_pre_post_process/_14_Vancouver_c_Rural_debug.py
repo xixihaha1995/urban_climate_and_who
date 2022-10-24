@@ -28,6 +28,8 @@ selected_prediction_idx = [1,-1]
 # Read measured then convert to target interval
 ss4_tower_ori_30min = pd.read_csv(os.path.join(measure_results_folder, ss4_tower_ori_filename),
                                             index_col=0, parse_dates=True)
+#interpolate the missing data
+ss4_tower_ori_30min = ss4_tower_ori_30min.interpolate(method='linear')
 ss4_tower_ori_30min = ss4_tower_ori_30min.loc[compare_start_time:compare_end_time]
 epw_all_dirty = pd.read_csv( f'{prediction_folder_prefix}\\{epw_atm_filename}.epw',
                                  skiprows= 8, header= None, index_col=None,)

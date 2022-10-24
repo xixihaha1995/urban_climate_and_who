@@ -19,8 +19,8 @@ epw_atm_filename = r'newMondouzil_tdb_td_rh_P_2004'
 ruralFilename = 'Rural_Mondouzil_Processed'
 
 only_ep_filename_prefix = 'CAPITOUL_only_ep_2004'
-# only_vcwg_filename_prefix = 'CAPITOUL_2004_only_vcwg'
-only_vcwg_filename_prefix = 'CAPITOUL_2004_only_vcwg_Updated_Width'
+only_vcwg_filename_prefix = 'CAPITOUL_2004_only_vcwg'
+# only_vcwg_filename_prefix = 'CAPITOUL_2004_only_vcwg_Updated_Width'
 bypass_filename_prefix = 'ver1.1\\CAPITOUL_Bypass_2004'
 
 domain_height = 60
@@ -37,12 +37,16 @@ if os.path.exists(f'{save_intermediate_path}\\{urban_ori_filename}.csv'):
 else:
     pomme_ori_1min = pd.read_csv(os.path.join(measure_results_folder, 'newUrban_Pomme_Ori_1_min.csv'),
                                                 index_col=0, parse_dates=True)
+    #interpolate missing data
+    pomme_ori_1min = pomme_ori_1min.interpolate(method='linear')
     pomme_ori_1min = pomme_ori_1min[compare_start_time:compare_end_time]
     pomme_5min = pomme_ori_1min.resample('5T').mean()
     pomme_5min.to_csv(os.path.join(save_intermediate_path, f'{urban_ori_filename}.csv'))
 
     rural_MON_ori_1min = pd.read_csv(os.path.join(measure_results_folder, 'Rural_Mondouzil_Minute.csv'),
                                                 index_col=0, parse_dates=True)
+    #interpolate missing data
+    rural_MON_ori_1min = rural_MON_ori_1min.interpolate(method='linear')
     rural_MON_ori_1min = rural_MON_ori_1min[compare_start_time:compare_end_time]
     rural_MON_5min = rural_MON_ori_1min.resample('5T').mean()
     rural_MON_5min.to_csv(os.path.join(save_intermediate_path, f'{ruralFilename}.csv'))

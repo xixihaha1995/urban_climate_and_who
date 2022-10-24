@@ -31,6 +31,8 @@ target_interval_mins = [10,10]
 # Read measured then convert to target interval
 tower_ori_10min = pd.read_csv(os.path.join(measure_results_folder, tower_ori_filename),
                                             index_col=0, parse_dates=True)
+# interpolate the missing data
+tower_ori_10min = tower_ori_10min.interpolate(method='linear')
 tower_ori_10min = tower_ori_10min.loc[compare_start_time:compare_end_time]
 #save
 tower_ori_10min.to_csv(os.path.join(save_intermediate_path, tower_ori_filename))
@@ -59,6 +61,8 @@ mixed_all_sites_10min_dirty = plt_tools.read_text_as_csv(f'{measure_results_fold
 mixed_all_sites_hour = plt_tools.clean_bubble_iop(mixed_all_sites_10min_dirty,
                                                     start_time = compare_start_time, end_time = IOP_end_time,
                                                   to_hourly=False)
+#interpolate the missing data
+mixed_all_sites_hour = mixed_all_sites_hour.interpolate(method='linear')
 # Keep original index, only select one column and keep the column name
 rural_1p5_hour_c = mixed_all_sites_hour.iloc[:,re1_col_idx]
 # Read only VCWG (2, 6, 20m), to direct_predict, real_p0, real_epw
