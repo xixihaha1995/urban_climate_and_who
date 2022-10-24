@@ -26,7 +26,7 @@ rural_1p5_hour_c = mixed_all_sites_hour.iloc[:,re1_col_idx]
 #read general txt based file as dataframe
 v200_Basel_epw_all_dirty = pd.read_csv( f'{results_folder}\\v200_Basel.epw',
                                  skiprows= 8, header= None, index_col=None,)
-v200_Basel_epw_all_clean = plt_tools.clean_epw(v200_Basel_epw_all_dirty,
+v200_Basel_epw_all_clean = plt_tools.cleaaln_epw(v200_Basel_epw_all_dirty,
                                                start_time = start_time)
 v200_Basel_epw_air_temp_all = v200_Basel_epw_all_clean.iloc[:,6]
 v200_Basel_epw_air_temp = v200_Basel_epw_air_temp_all[start_time:end_time]

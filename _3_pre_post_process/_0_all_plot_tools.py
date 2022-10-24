@@ -43,7 +43,7 @@ def ep_time_to_pandas_time(df, start_time):
     df.index = df.index + pd.Timedelta(days=365) * (df.index < start_time)
     return df
 
-def clean_epw(df, start_time):
+def clean_epw(df, start_time = None):
     '''
     df 0th column is year,
     df 1st column is month,
@@ -64,8 +64,9 @@ def clean_epw(df, start_time):
     df.index = df['date']
     df.drop(['date', 'string_combined'], axis=1, inplace=True)
     #  overwrite the index year as start_time year
-    start_time_year = start_time[:4]
-    df.index = df.index.strftime('%Y-%m-%d %H:%M:%S').str.replace('2012', start_time_year)
+    if start_time is not None:
+        start_time_year = start_time[:4]
+        df.index = df.index.strftime('%Y-%m-%d %H:%M:%S').str.replace('2012', start_time_year)
     return df
 def sequence_time_to_pandas_time(dataframe, delta_t,start_time):
     date = pd.date_range(start_time, periods=len(dataframe), freq='{}S'.format(delta_t))

@@ -115,8 +115,8 @@ def overriding_epw(epw_file, df_measurement):
                 sea_level_press_pa = measurements['Atmospheric Station Pressure {Pa}']
 
                 lines[i][0] = year
-                lines[i][6] = str(measurements[0])
-                lines[i][7] = str(measurements[1])
+                lines[i][6] = str(dry_bulb_c)
+                lines[i][7] = str(dew_point_c)
 
                 humidity_ratio = psychrometric.humidity_ratio_b(state,dew_point_c, sea_level_press_pa)
                 rh = psychrometric.relative_humidity_b(state,dry_bulb_c, humidity_ratio, sea_level_press_pa)
@@ -135,6 +135,26 @@ def init_ep_api():
     state = ep_api.state_manager.new_state()
     psychrometric = ep_api.functional.psychrometrics(state)
 
+def urban_island_effect(overwriten_epw,compare_start_date,compare_end_date):
+    rural_epw = pd.read_csv(overwriten_epw, skiprows=8, header=None, index_col= None)
+    rural_epw_all = plot_tools.clean_epw(rural_epw)
+    rural_epw_air_temp_c = rural_epw_all.iloc[:, 6]
+    rural_epw_air_temp_c = rural_epw_air_temp_c[compare_start_date:compare_end_date]
+    rural_epw_air_temp_c = rural_epw_air_temp_c.resample('30min').interpolate()
+
+    urban_path = r'..\_4_measurements\Vancouver\SSDTA_2008-07_30min.csv'
+    ss4_tower_ori_30min = pd.read_csv(urban_path, index_col=0, parse_dates=True)
+    #interpolate the missing data
+    ss4_tower_ori_30min = ss4_tower_ori_30min.interpolate(method='linear')
+    # create a new dataframe, nased as uhi_df, including ss4_tower_ori_30min, rural_epw_air_temp_c
+    uhi_df = pd.concat([ss4_tower_ori_30min, rural_epw_air_temp_c], axis=1)
+    # rename the columns, keep ss4_tower_ori_30min name, add one more column name for rural_epw_air_temp_c
+
+    new_columns = ss4_tower_ori_30min.columns.tolist() + ['rural_epw_air_temp_c']
+    uhi_df.columns = new_columns
+    # save the uhi_df to csv file
+    uhi_df.to_csv(r'..\_4_measurements\Vancouver\Vancouver_Urban_Rural_July_2008.csv')
+
 def main():
     init_ep_api()
     # get the data from all the files
@@ -148,7 +168,11 @@ def main():
     df.to_csv(r'..\_4_measurements\Vancouver\To_GenerateEPW\clean_IntegratedSurfaceDataset_Vancouver_INT_Airport_2008.csv')
     # _2_cases_input_outputs/_08_CAPITOUL/generate_epw/overriding_FRA_Bordeaux.075100_IWECEPW.csv
     epw_file = r'..\_4_measurements\Vancouver\To_GenerateEPW\overridingCAN_BC_Vancouver.718920_CWEC.epw'
-    overriding_epw(epw_file, df)
+    overwriten_epw = overriding_epw(epw_file, df)
+    compare_start_date = '2008-07-01 00:00:00'
+    compare_end_date = '2008-07-31 23:00:00'
+
+    urban_island_effect(overwriten_epw,compare_start_date,compare_end_date)
 
 if __name__ == '__main__':
     main()
