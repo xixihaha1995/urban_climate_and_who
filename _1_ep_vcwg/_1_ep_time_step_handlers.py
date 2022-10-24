@@ -20,26 +20,26 @@ def api_to_csv(state):
     newFile.close()
 def run_vcwg():
     # BUBBLE, CAPITOUL, Vancouver
-    # epwFileName = 'Mondouzil_tdb_td_rh_P_2004.epw'
+    epwFileName = 'newMondouzil_tdb_td_rh_P_2004.epw'
     # epwFileName = 'Basel.epw'
     # epwFileName = 'Vancouver718920CorrectTime.epw'
-    epwFileName = 'Interpolated_Vancouver718920CorrectTime.epw'
+    # epwFileName = 'Interpolated_Vancouver718920CorrectTime.epw'
     TopForcingFileName = None
     # VCWGParamFileName = '_case6_initialize_Basel_BSPA_MOST.uwg'
-    # VCWGParamFileName = '_case8_initialize_CAPITOUL_MOST.uwg'
+    VCWGParamFileName = '_case8_initialize_CAPITOUL_MOST.uwg'
     # VCWGParamFileName = '_case5_initialize_Basel_BSPR_MOST.uwg'
-    VCWGParamFileName = '_case7_initialize_Vancouver_withRural.uwg'
+    # VCWGParamFileName = '_case7_initialize_Vancouver_withRural.uwg'
     # ViewFactorFileName = '_case6_BSPA_ViewFactor_Basel_MOST.txt'
-    # ViewFactorFileName = '_case8_CAPITOUL_ViewFactor_MOST.txt'
+    ViewFactorFileName = '_case8_CAPITOUL_ViewFactor_MOST.txt'
     # ViewFactorFileName = '_case5_BSPR_ViewFactor_Basel_MOST.txt'
-    ViewFactorFileName = '_case7_ViewFactor_Vancouver_LCZ1.txt'
+    # ViewFactorFileName = '_case7_ViewFactor_Vancouver_LCZ1.txt'
     # Case name to append output file names with
     # case = '_BSPA_Ue2'
     # case = 'BUBBLE_Ue1'
     # case = 'BUBBLE_Ue2'
-    # case = 'CAPITOUL_MNP_Bypass'
+    case = 'CAPITOUL_MNP_Bypass'
     # case = '_case7_Vancouver_Rural'
-    case = '_case7_Vancouver_Rural_Interpolated'
+    # case = '_case7_Vancouver_Rural_Interpolated'
     # # '''
     # epwFileName = None
     # TopForcingFileName = 'Vancouver2008_ERA5_Jul.csv'
