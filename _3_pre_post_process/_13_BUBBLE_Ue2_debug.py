@@ -17,6 +17,7 @@ only_ep_folder= f'{prediction_folder_prefix}\\a_ep_saving'
 only_vcwg_folder = f'{prediction_folder_prefix}\\b_vcwg_saving'
 bypass_folder = f'{prediction_folder_prefix}\\c_vcwg_ep_saving'
 epw_atm_filename = r'Basel'
+debug_file_name = epw_atm_filename+ '_without_interpolation'
 re1_col_idx = 7
 only_ep_filename_prefix = 'BUBBLE_Ue2_LiteratureAlbedo_only_ep_2002_June'
 only_vcwg_filename_prefix = 'BUBBLE_Ue2_only_vcwg_2002_June'
@@ -32,7 +33,7 @@ target_interval_mins = [10,10]
 tower_ori_10min = pd.read_csv(os.path.join(measure_results_folder, tower_ori_filename),
                                             index_col=0, parse_dates=True)
 #interpolate the missing data
-tower_ori_10min = tower_ori_10min.interpolate(method='linear')
+# tower_ori_10min = tower_ori_10min.interpolate(method='linear')
 tower_ori_10min = tower_ori_10min.loc[compare_start_time:compare_end_time]
 #save
 tower_ori_10min.to_csv(os.path.join(save_intermediate_path, tower_ori_filename))
@@ -60,7 +61,7 @@ mixed_all_sites_hour = plt_tools.clean_bubble_iop(mixed_all_sites_10min_dirty,
                                                     start_time = compare_start_time, end_time = IOP_end_time,
                                                   to_hourly=False)
 #interpolate the missing data
-mixed_all_sites_hour = mixed_all_sites_hour.interpolate(method='linear')
+# mixed_all_sites_hour = mixed_all_sites_hour.interpolate(method='linear')
 # Keep original index, only select one column and keep the column name
 rural_1p5_hour_c = mixed_all_sites_hour.iloc[:,re1_col_idx]
 # Read only VCWG (2, 6, 20m), to direct_predict, real_p0, real_epw
@@ -115,7 +116,7 @@ plt_tools.save_TwoHeights_debug(measure_tdb_c_3_10min,measure_tdb_c_15p8_10min,
                               prediction_folder_prefix,
                               debug_only_ep_5min, debug_only_vcwg_5min, debug_bypass,
                                 sheet_names=ue2_selected_sensor_heights,
-                                debug_file_name = epw_atm_filename)
+                                debug_file_name = debug_file_name)
 
 plt_tools.shared_x_plot(prediction_folder_prefix, canyon_name=f'{str(ue2_selected_sensor_heights[0])}m Real EPW',
-                        debug_file_name = epw_atm_filename)
+                        debug_file_name = debug_file_name)

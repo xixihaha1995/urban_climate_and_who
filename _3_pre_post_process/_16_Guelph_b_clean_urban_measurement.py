@@ -33,7 +33,7 @@ def get_all_urban_files():
     urban_site_file_name = r'..\_4_measurements\Guelph\Processed Data\RY1-A-30minStatisticsFiltered.txt'
     # we need to access A, B, C, D and E anemometer data
     # create one excel with 5 sheets
-    writer = pd.ExcelWriter(r'..\_4_measurements\Guelph\To_Generate_Urban\clean_urban_sites_all.xlsx')
+    writer = pd.ExcelWriter(r'..\_4_measurements\Guelph\To_Generate_Urban\Guelph_clean_urban_sites_all.xlsx')
     for i in range(5):
         file_path = urban_site_file_name.replace('A', chr(ord('A') + i))
         file_path = file_path.replace('1', str(i + 1))
@@ -46,7 +46,7 @@ def urban_site_air_temperature():
     plot the air temperature of urban site
     '''
     # read the excel
-    df = pd.read_excel(r'..\_4_measurements\Guelph\To_Generate_Urban\clean_urban_sites_all.xlsx', sheet_name=None)
+    df = pd.read_excel(r'..\_4_measurements\Guelph\To_Generate_Urban\Guelph_clean_urban_sites_all.xlsx', sheet_name=None)
     # create new dataframe to only save air temperature (K) for each anemometer
     df_air_temp = pd.DataFrame()
     for i in range(5):
@@ -58,7 +58,7 @@ def urban_site_air_temperature():
                            'C Air temp[K](2.4m)', 'D Air temp[K](2.4m)', 'E Air temp[K](17m)']
 
     # save the dataframe to excel
-    df_air_temp.to_excel(r'..\_4_measurements\Guelph\To_Generate_Urban\clean_urban_sites_air_temp_K.xlsx', sheet_name='Air Temp')
+    df_air_temp.to_excel(r'..\_4_measurements\Guelph\To_Generate_Urban\Guelph_clean_urban_sites_air_temp_K.xlsx', sheet_name='Air Temp')
 
 def main():
     # get the data from all the files
