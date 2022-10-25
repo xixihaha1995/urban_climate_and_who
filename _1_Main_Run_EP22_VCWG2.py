@@ -1,18 +1,18 @@
 import os, numpy as np, pandas as pd
 from threading import Thread
 import _1_ep_vcwg._0_vcwg_ep_coordination as coordination
-from _1_ep_vcwg import _1_ep_time_step_handlers as time_step_handlers_1
+from _1_ep_vcwg import _1_ep_time_step_handlers as time_step_handlers
 from _3_pre_post_process import _0_all_plot_tools as plot_tools
 
 def run_ep_api():
     state = coordination.ep_api.state_manager.new_state()
     coordination.psychrometric = coordination.ep_api.functional.psychrometrics(state)
     coordination.ep_api.runtime.callback_begin_zone_timestep_before_set_current_weather(state,
-                                                                                        time_step_handlers_1.overwrite_ep_weather)
+                                                                                        time_step_handlers.overwrite_ep_weather)
     # coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
-    #                                                                                 time_step_handlers_1.midRiseAprt_get_ep_results)
+    #                                                                                 time_step_handlers.midRiseAprt_get_ep_results)
     coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
-                                                                                  time_step_handlers_1.smallOffice_get_ep_results)
+                                                                                  time_step_handlers.smallOffice_get_ep_results)
     # coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
     #                                                               time_step_handlers_1.mediumOffice_get_ep_results)
 
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     # idfFileName = 'BUBBLE_Ue1_LiteratureAlbedo.idf'
     # idfFileName = 'BUBBLE_Ue2_LiteratureAlbedo.idf'
     # idfFileName = 'BUBBLE_Ue2.idf'
-    # idfFileName = 'MediumOffice_4B.idf'
+    # idfFileName = 'CAPITOUL_4B_MediumOffice.idf'
     # idfFileName = 'RefBldgMidriseApartmentPost1980_v1.4_7.2_4C_USA_WA_SEATTLE-M3ing.idf'
     # idfFileName = 'RefBldgSmallOfficePost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
     # idfFileName = 'CAPITOUL_4B.idf'
