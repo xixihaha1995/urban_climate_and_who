@@ -1,7 +1,15 @@
-import threading, sys, pandas as pd
-import numpy as np, time
+import threading, sys, pandas as pd, configparser
+import numpy as np, time, os
 sys.path.insert(0, 'C:\EnergyPlusV22-1-0')
 from pyenergyplus.api import EnergyPlusAPI
+
+def read_ini(config_file_name):
+    global config
+    config = configparser.ConfigParser()
+    # find the project path
+    project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    config_path = os.path.join(project_path, '_7_configs',config_file_name)
+    config.read(config_path)
 def init_ep_api():
     global ep_api, psychrometric
     ep_api = EnergyPlusAPI()

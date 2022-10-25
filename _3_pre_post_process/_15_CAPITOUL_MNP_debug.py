@@ -15,7 +15,7 @@ prediction_folder_prefix = r'..\_2_cases_input_outputs\_08_CAPITOUL\MediumOffice
 only_ep_folder= f'{prediction_folder_prefix}\\a_ep_saving'
 only_vcwg_folder = f'{prediction_folder_prefix}\\b_vcwg_saving'
 bypass_folder = f'{prediction_folder_prefix}\\c_vcwg_ep_saving'
-epw_atm_filename = r'newMondouzil_tdb_td_rh_P_2004'
+epw_atm_filename = r'Mondouzil_tdb_td_rh_P_2004'
 ruralFilename = 'Rural_Mondouzil_Processed'
 
 only_ep_filename_prefix = 'CAPITOUL_only_ep_2004'
