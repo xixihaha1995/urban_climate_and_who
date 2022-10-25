@@ -284,7 +284,10 @@ def add_date_index(df, start_date, time_interval_sec):
     date_series = pd.date_range(start_date, periods=len(df), freq=f'{time_interval_sec}S')
     date = pd.date_range(start_date, periods=len(df), freq='{}S'.format(time_interval_sec))
     date = pd.Series(date)
-    # 
+    # for obvious reason, VCWG module cannot simulate leap year. So we manually remove Feb 29 if it is a leap year
+    if date[0].year % 4 == 0:
+        # for date later than Feb 29, we add 1 day to the date
+        date = date.apply(lambda x: x + pd.Timedelta(days=1) if x > pd.Timestamp(date[0].year, 2, 29) else x)
     # update dataframe index
     df.index = date
     return df
