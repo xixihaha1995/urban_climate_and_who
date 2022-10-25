@@ -74,6 +74,8 @@ def get_one_file_data(file_path):
     1. first column is data, format DD/MM/AAAA
     2. second column is time, format HHMNSS.SSS, fill the missing 0
     '''
+    # for the 3rd column, set the outliner to nan
+    df[2] = df[2].apply(lambda x: np.nan if x > 200 or x < -100 else x)
     #get one subset df by dropping the last two columns
     df = df.iloc[:, :-2]
     # find the index (row, col) of element is 9999
@@ -84,8 +86,8 @@ def get_one_file_data(file_path):
     # for i in index:
     #     df.iloc[i[0], i[1]] = np.nan
     df = df.replace(9999, pd.np.nan)
-    # interpolate the nan
-    df = df.interpolate()
+    # interpolate the nan with linear method
+    df = df.interpolate(method='linear')
     df[0] = df[0].apply(lambda x: x.replace('/', '-'))
     df[1] = df[1].apply(lambda x: x.zfill(8))
 
