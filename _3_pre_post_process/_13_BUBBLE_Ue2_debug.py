@@ -17,7 +17,7 @@ only_ep_folder= f'{prediction_folder_prefix}\\a_ep_saving'
 only_vcwg_folder = f'{prediction_folder_prefix}\\b_vcwg_saving'
 bypass_folder = f'{prediction_folder_prefix}\\c_vcwg_ep_saving'
 epw_atm_filename = r'Basel'
-debug_file_name = epw_atm_filename+ '_without_interpolation'
+debug_file_name = epw_atm_filename+ '_interpolation'
 re1_col_idx = 7
 only_ep_filename_prefix = 'BUBBLE_Ue2_LiteratureAlbedo_only_ep_2002_June'
 only_vcwg_filename_prefix = 'BUBBLE_Ue2_only_vcwg_2002_June'
@@ -27,13 +27,13 @@ domain_height = 50
 vcwg_heights_profile = [0.5 + i for i in range(domain_height)]
 p0 = 100000
 # ue2_sensor_heights = [3, 15.8, 22.9, 27.8, 32.9]
-ue2_selected_sensor_heights = [3, 15.8]
-target_interval_mins = [10,10]
+ue2_selected_sensor_heights = [3, 15.8, 22.9, 27.8, 32.9]
+target_interval_mins = [10,10,10,10,10]
 # Read measured then convert to target interval
 tower_ori_10min = pd.read_csv(os.path.join(measure_results_folder, tower_ori_filename),
                                             index_col=0, parse_dates=True)
 #interpolate the missing data
-# tower_ori_10min = tower_ori_10min.interpolate(method='linear')
+tower_ori_10min = tower_ori_10min.interpolate(method='linear')
 tower_ori_10min = tower_ori_10min.loc[compare_start_time:compare_end_time]
 #save
 tower_ori_10min.to_csv(os.path.join(save_intermediate_path, tower_ori_filename))
@@ -48,6 +48,10 @@ epw_staPre_Pa_all.index = epw_staPre_Pa_all.index.strftime('%m-%d %H:%M:%S')
 
 measure_tdb_c_3_10min = tower_ori_10min.iloc[:, 0]
 measure_tdb_c_15p8_10min = tower_ori_10min.iloc[:, 1]
+measure_tdb_c_22p9_10min = tower_ori_10min.iloc[:, 2]
+measure_tdb_c_27p8_10min = tower_ori_10min.iloc[:, 3]
+measure_tdb_c_32p9_10min = tower_ori_10min.iloc[:, 4]
+
 # save
 measure_tdb_c_3_10min.to_csv(os.path.join(save_intermediate_path, 'measure_tdb_c_3_10min.csv'))
 measure_tdb_c_15p8_10min.to_csv(os.path.join(save_intermediate_path, 'measure_tdb_c_15p8_10min.csv'))
@@ -61,7 +65,7 @@ mixed_all_sites_hour = plt_tools.clean_bubble_iop(mixed_all_sites_10min_dirty,
                                                     start_time = compare_start_time, end_time = IOP_end_time,
                                                   to_hourly=False)
 #interpolate the missing data
-# mixed_all_sites_hour = mixed_all_sites_hour.interpolate(method='linear')
+mixed_all_sites_hour = mixed_all_sites_hour.interpolate(method='linear')
 # Keep original index, only select one column and keep the column name
 rural_1p5_hour_c = mixed_all_sites_hour.iloc[:,re1_col_idx]
 # Read only VCWG (2, 6, 20m), to direct_predict, real_p0, real_epw
@@ -92,7 +96,9 @@ with open(os.path.join(save_intermediate_path, 'bypass_real_epw_lst_C.pickle'), 
 #       calculate the CVRMSE for direct_predict, real_p0, real_epw
 #Create one 3d array, 0th axis dims: 2 (1.2 m, 26m heights) ,
 # 1st axis dims: 3 (ep, vcwg, bypass), 2nd axis dims: 3 (direct_predict, real_p0, real_epw)
-cvrmse_3d = plt_tools.organize_Vancouver_cvrmse(measure_tdb_c_3_10min,measure_tdb_c_15p8_10min,
+urbanlst_allheights = [measure_tdb_c_3_10min, measure_tdb_c_15p8_10min,
+                       measure_tdb_c_22p9_10min, measure_tdb_c_27p8_10min, measure_tdb_c_32p9_10min]
+cvrmse_3d = plt_tools.organize_CAPITOUL_MNP_cvrmse(urbanlst_allheights,
                              rural_1p5_hour_c,
                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C)
@@ -103,13 +109,23 @@ print(f'3m, real_epw: {cvrmse_3d[0, :, 2]}')
 print(f'15.8m, direct: {cvrmse_3d[1, :, 0]}')
 print(f'15.8m, real_p0: {cvrmse_3d[1, :, 1]}')
 print(f'15.8m, real_epw: {cvrmse_3d[1, :, 2]}')
+print(f'22.9m, direct: {cvrmse_3d[2, :, 0]}')
+print(f'22.9m, real_p0: {cvrmse_3d[2, :, 1]}')
+print(f'22.9m, real_epw: {cvrmse_3d[2, :, 2]}')
+print(f'27.8m, direct: {cvrmse_3d[3, :, 0]}')
+print(f'27.8m, real_p0: {cvrmse_3d[3, :, 1]}')
+print(f'27.8m, real_epw: {cvrmse_3d[3, :, 2]}')
+print(f'32.9m, direct: {cvrmse_3d[4, :, 0]}')
+print(f'32.9m, real_p0: {cvrmse_3d[4, :, 1]}')
+print(f'32.9m, real_epw: {cvrmse_3d[4, :, 2]}')
+
 
 debug_only_ep_5min = pd.read_excel(f'{only_ep_folder}\\{only_ep_filename_prefix}_debugging_canyon.xlsx', header=0, index_col=0)
 debug_only_vcwg_5min = pd.read_excel(f'{only_vcwg_folder}\\{only_vcwg_filename_prefix}_debugging_canyon.xlsx',
                                      header=0, index_col=0)
 debug_bypass = pd.read_excel(f'{bypass_folder}\\{bypass_filename_prefix}_debugging_canyon.xlsx',
                                 header=0, index_col=0)
-plt_tools.save_TwoHeights_debug(measure_tdb_c_3_10min,measure_tdb_c_15p8_10min,
+plt_tools.save_OneOrTwoHeights_debug(urbanlst_allheights,
                              rural_1p5_hour_c,
                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C,
