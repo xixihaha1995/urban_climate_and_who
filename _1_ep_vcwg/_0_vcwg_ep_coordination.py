@@ -1,4 +1,12 @@
+import configparser, os
 
+def read_ini(config_file_name):
+    global config
+    config = configparser.ConfigParser()
+    # find the project path
+    project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    config_path = os.path.join(project_path, '_7_configs',config_file_name)
+    config.read(config_path)
 def init_saving_data():
     global saving_data
     saving_data = {}
