@@ -11,8 +11,11 @@ def run_ep_api():
                                                                                         time_step_handlers.overwrite_ep_weather)
     # coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
     #                                                                                 time_step_handlers.midRiseAprt_get_ep_results)
-    coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
-                                                                                  time_step_handlers.smallOffice_get_ep_results)
+    # coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
+    #                                                                               time_step_handlers.smallOffice_get_ep_results)
+    if 'mediumOffice' in coordination.config['_1_Main_Run_EP22_VCWG2.py']['time_step_handlers']:
+        coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
+                                                                      time_step_handlers.mediumOffice_get_ep_results)
     # coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
     #                                                               time_step_handlers_1.mediumOffice_get_ep_results)
 
@@ -29,6 +32,7 @@ def run_ep_api():
     coordination.ep_api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
+    coordination.read_ini('case8_CAPITOUL_MNP_bypass.ini')
     time_step_handler_ver = 1.1
     # case_name = '_BSPA_Ue2_bypass_'
     # case_name = 'Ue1_bypass'
@@ -36,10 +40,10 @@ if __name__ == '__main__':
     # case_name = 'CAPITOUL_Bypass_2004'
     # case_name = 'Vancouver_TopForcing_ByPass_2008Jul'
     # case_name = 'Vancouver_Rural_ByPass_2008Jul'
-    case_name = 'Vancouver_Rural_Interpolated_ByPass_2008Jul'
+    case_name = coordination.config['_1_Main_Run_EP22_VCWG2.py']['case_name']
     # start_time = '2002-06-10 00:00:00'
     # start_time = '2004-06-01 00:00:00'
-    start_time = '2008-07-01 00:00:00'
+    start_time = coordination.config['_1_Main_Run_EP22_VCWG2.py']['start_time']
     time_interval_sec = 300
     # ep_files_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\MidRiseApartment_4C_Rural'
     # ep_files_path = '_2_cases_input_outputs\\_05_Basel_BSPR_ue1\\MidRiseApart_4C_Rural_LiteratureAlbedo'
@@ -50,13 +54,13 @@ if __name__ == '__main__':
     # ep_files_path = '_2_cases_input_outputs\\_08_CAPITOUL\\MediumOffice_4B_Literature_MNP'
     # ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\TopForcing_Refined_SMALL_OFFICE'
     # ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\Rural_Refined_Small_Office'
-    ep_files_path = '_2_cases_input_outputs\\_07_vancouver\\Rural_Refined_SmallOffice_4C_CorrectTime'
+    ep_files_path = coordination.config['_1_Main_Run_EP22_VCWG2.py']['ep_files_path']
     # epwFileName = 'Basel.epw'
     # epwFileName = 'Mondouzil_tdb_td_rh_P_2004.epw'
     # epwFileName = 'VancouverTopForcing.epw'
     # epwFileName = 'VancouverRural718920.epw'
     # epwFileName = 'Vancouver718920CorrectTime.epw'
-    epwFileName = 'Interpolated_Vancouver718920CorrectTime.epw'
+    epwFileName = coordination.config['_1_Main_Run_EP22_VCWG2.py']['epwFileName']
     # idfFileName = 'BUBBLE_Ue1_LiteratureAlbedo.idf'
     # idfFileName = 'BUBBLE_Ue2_LiteratureAlbedo.idf'
     # idfFileName = 'BUBBLE_Ue2.idf'
@@ -65,7 +69,7 @@ if __name__ == '__main__':
     # idfFileName = 'RefBldgSmallOfficePost1980_v1.4_7.2_4C_USA_WA_SEATTLE.idf'
     # idfFileName = 'CAPITOUL_4B.idf'
     # idfFileName = 'Vancouver_SmallOffice.idf'
-    idfFileName = 'Vancouver_SmallOffice_Refined.idf'
+    idfFileName = coordination.config['_1_Main_Run_EP22_VCWG2.py']['idfFileName']
 
     vcwg_ep_saving_path = ep_files_path + f'\\c_vcwg_ep_saving\\ver{time_step_handler_ver}'
 
