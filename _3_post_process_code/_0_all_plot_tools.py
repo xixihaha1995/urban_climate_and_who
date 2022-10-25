@@ -281,13 +281,10 @@ def general_time_series_comparision(df, txt_info):
     plt.show()
 
 def add_date_index(df, start_date, time_interval_sec):
-    '''
-    generate data series with start_date and time_interval_sec, treat it as non-leap year
-    '''
-    # generate date series
     date_series = pd.date_range(start_date, periods=len(df), freq=f'{time_interval_sec}S')
     date = pd.date_range(start_date, periods=len(df), freq='{}S'.format(time_interval_sec))
     date = pd.Series(date)
+    # 
     # update dataframe index
     df.index = date
     return df
