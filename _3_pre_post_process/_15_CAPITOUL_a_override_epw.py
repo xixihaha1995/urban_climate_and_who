@@ -85,7 +85,9 @@ def get_one_file_data(file_path):
     # iterate the index, fill it with nan
     # for i in index:
     #     df.iloc[i[0], i[1]] = np.nan
-    df[4] = df[4].apply(lambda x: np.nan if x > 100 or x < 0 else x)
+    df[2] = df[2].apply(lambda x: np.nan if x > 69 or x < -69 else x)
+    df[3] = df[3].apply(lambda x: np.nan if x > 1200 or x < 310 else x)
+    df[4] = df[4].apply(lambda x: np.nan if x > 109 or x < 0 else x)
     df = df.replace(9999, pd.np.nan)
     # interpolate the nan with linear method
     df = df.interpolate(method='linear')
