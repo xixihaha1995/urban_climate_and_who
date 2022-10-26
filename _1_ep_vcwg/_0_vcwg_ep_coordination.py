@@ -161,8 +161,8 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     sem3.acquire()
     # VCWG download EP results from Parent
     BEM_building.sensWaste = ep_sensWaste_w_m2_per_floor_area * BEM_building.nFloor
-    # transfer accumulated seconds to Day, Hour, Minute, Second
-    day_hour_min_sec = time.strftime("%dd-%HH:%MM:%SS", time.gmtime(vcwg_time_index_in_seconds))
+    # print(f'VCWG: Update needed time index[Month Day, Hour, Minute, Second]: {}\n')
+    day_hour_min_sec = time.strftime("%m %d %H %M %S", time.gmtime(overwriting_time_index))
 
     print(f"Handler ver{time_step_version}, {day_hour_min_sec}, "
           f"sensWaste (Currently only HVAC Rejection):{BEM_building.sensWaste} watts/ unit footprint area")

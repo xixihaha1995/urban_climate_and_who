@@ -85,6 +85,7 @@ def get_one_file_data(file_path):
     # iterate the index, fill it with nan
     # for i in index:
     #     df.iloc[i[0], i[1]] = np.nan
+    df[4] = df[4].apply(lambda x: np.nan if x > 100 or x < 0 else x)
     df = df.replace(9999, pd.np.nan)
     # interpolate the nan with linear method
     df = df.interpolate(method='linear')
@@ -156,7 +157,7 @@ def overriding_epw(epw_csv, df_measurement):
                 lines[i][9] = str(press_pa)
                 lines[i] = ','.join(lines[i])
     # write the lines to the epw file
-    overwriten_epw = r'..\_2_cases_input_outputs\_08_CAPITOUL\generate_epw\newMondouzil_tdb_td_rh_P_2004.epw'
+    overwriten_epw = r'..\_4_measurements\CAPITOUL\To_GenerateEPW\Mondouzil_tdb_td_rh_P_2004.epw'
     with open(overwriten_epw, 'w') as f:
         f.writelines(lines)
     return overwriten_epw
@@ -178,7 +179,7 @@ def main():
     df_hourly = df.resample('H').mean()
     df_hourly.to_csv(r'..\_4_measurements\CAPITOUL\Rural_Mondouzil_Hour.csv')
     # _2_cases_input_outputs/_08_CAPITOUL/generate_epw/overriding_FRA_Bordeaux.075100_IWECEPW.csv
-    epw_csv = r'..\_2_cases_input_outputs\_08_CAPITOUL\generate_epw\overriding_FRA_Bordeaux.075100_IWEC.epw'
+    epw_csv = r'..\_4_measurements\CAPITOUL\To_GenerateEPW\overriding_FRA_Bordeaux.075100_IWEC.epw'
     overriding_epw(epw_csv, df_hourly)
 
 if __name__ == '__main__':
