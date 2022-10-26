@@ -5,14 +5,6 @@ import pandas as pd, _0_all_plot_tools as plot_tools, matplotlib.pyplot as plt
 sys.path.insert(0, 'C:\EnergyPlusV22-1-0')
 from pyenergyplus.api import EnergyPlusAPI
 
-# 1. read the measured data from all the 12 files, sample rate is 1 minute
-# For one file,
-# 1.1. The first 9 lines are general information
-# 1.2. The 10th line is the column names, in total 14 columns
-# 1.3. The 11th line is the unit of each column, in total 14 columns
-# 1.4. The 12th line is the code for missing value, in total 14 columns
-# 1.5. The 13th line is the references of sensors, in total 14 columns
-# 1.6. The 14th and 15th lines are useless information.
 
 
 def get_clean_airport_measurment(file_path):
@@ -25,11 +17,11 @@ def get_clean_airport_measurment(file_path):
     df = df.set_index('Date/Time')
     # keep 'Temp (°C)', 'Dew Point Temp (°C)', 'Rel Hum (%)'
     df = df[['Temp (°C)', 'Dew Point Temp (°C)', 'Rel Hum (%)']]
-    # dtypes are float64, float64, int64
-    # find the location of missing values
-    # if empty or nan value, then raise an error
-
+    # interpolate the missing values
+    df = df.interpolate(method='linear', axis=0).ffill().bfill()
     if df.isnull().values.any() or df.isna().values.any():
+        # find the location of missing values
+        # if empty or nan value, then raise an error
         raise ValueError('There is empty or nan value in the file: ' + file_path)
     return df
 
@@ -37,13 +29,12 @@ def get_all_epw_files():
     '''
     get all epw files in the folder
     '''
-    _71833_file_template = r'..\_4_measurements\Guelph\en_climate_hourly_ON_6143089_MM-2018_P1H.csv'
-    # we need 07, 08, 09 month data
+    _718920_file_template = r'..\_4_measurements\Vancouver\To_RegenerateEPW\en_climate_hourly_BC_1108447_MM-2008_P1H.csv'
+    # we need 05, 06, 07, 08, 09 month data
     df = pd.DataFrame()
-    for month in ['07', '08', '09']:
-        _71833_file = _71833_file_template.replace('MM', month)
-        df_month = get_clean_airport_measurment(_71833_file)
-        df = pd.concat([df, df_month])
+    for month in ['05', '06', '07', '08', '09']:
+        file_path = _718920_file_template.replace('MM', month)
+        df = df.append(get_clean_airport_measurment(file_path))
     return df
 
 def overriding_epw(epw_file, df_measurement):
@@ -58,11 +49,11 @@ def overriding_epw(epw_file, df_measurement):
     with open(epw_file, 'r') as f:
         lines = f.readlines()
         for i in range(len(lines)):
-            # replace the July, August, September data
-            if i > 4351 and i < 6560:
+            # replace the May, June, July, August, September data
+            if i > 2887 and i < 6560:
                 lines[i] = lines[i].split(',')
                 # lines[i][0:4] is Year, Month, Day, Hour (1-24)
-                year = '2018'
+                year = '2008'
                 month = lines[i][1]
                 day = lines[i][2]
                 # epw is UTC-7, so add 7 hours
@@ -80,12 +71,38 @@ def overriding_epw(epw_file, df_measurement):
                 lines[i][8] = str(rel_hum_percentage)
                 lines[i] = ','.join(lines[i])
     # write the lines to the epw file
-    overwriten_epw = r'..\_4_measurements\Guelph\Guelph_2018.epw'
+    overwriten_epw = r'..\_4_measurements\Vancouver\To_RegenerateEPW\Vancouver_2008.epw'
     with open(overwriten_epw, 'w') as f:
         f.writelines(lines)
     return overwriten_epw
 
+def urban_island_effect(overwriten_epw,compare_start_date,compare_end_date):
+    rural_epw = pd.read_csv(overwriten_epw, skiprows=8, header=None, index_col= None)
+    rural_epw_all = plot_tools.clean_epw(rural_epw)
+    rural_epw_air_temp_c = rural_epw_all.iloc[:, 6]
+    rural_epw_air_temp_c = rural_epw_air_temp_c[compare_start_date:compare_end_date]
+    # rural_epw_air_temp_c = rural_epw_air_temp_c.resample('30min').interpolate()
 
+    urban_path = r'..\_4_measurements\Vancouver\SSDTA_all_30min.csv'
+    ss4_tower_ori_30min = pd.read_csv(urban_path, index_col=0, parse_dates=True)
+    ss4_tower_ori_30min = ss4_tower_ori_30min[compare_start_date:compare_end_date]
+    # original sampling rate is 30min, convert to 1hour
+    ss4_tower_ori_30min = ss4_tower_ori_30min.astype(float)
+    # convert nan to 0
+    ss4_tower_ori_30min = ss4_tower_ori_30min.fillna(0)
+    ss4_tower_ori_30min = ss4_tower_ori_30min.interpolate(method='linear')
+    # create a new dataframe, nased as uhi_df, including ss4_tower_ori_30min, rural_epw_air_temp_c
+    uhi_df = pd.concat([ss4_tower_ori_30min, rural_epw_air_temp_c], axis=1)
+    uhi_df = uhi_df.interpolate(method='linear')
+    # rename the columns, keep ss4_tower_ori_30min name, add one more column name for rural_epw_air_temp_c
+
+    new_columns = ss4_tower_ori_30min.columns.tolist() + ['rural_epw_air_temp_c']
+    uhi_df.columns = new_columns
+    # save the uhi_df to excel
+    uhi_df.to_excel(r'..\_4_measurements\Vancouver\To_RegenerateEPW\Vancouver_Urban_Rural_May_To_Sep_2008.xlsx')
+    # plot the first and last column
+    uhi_df.plot()
+    plt.show()
 def init_ep_api():
     global psychrometric, state
     ep_api = EnergyPlusAPI()
@@ -97,9 +114,10 @@ def main():
     # get the data from all the files
     df = get_all_epw_files()
     # save the data to csv file
-    df.to_csv(r'..\_4_measurements\Guelph\clean_en_climate_hourly_ON_6143089_MM-2018_P1H.csv')
-    epw_file = r'..\_4_measurements\Guelph\overriding_ERA5_Guelph.epw'
-    overriding_epw(epw_file, df)
+    df.to_csv(r'..\_4_measurements\Vancouver\To_RegenerateEPW\clean_en_climate_hourly_BC_1108447_MM-2008_P1H.csv')
+    epw_file = r'..\_4_measurements\Vancouver\To_RegenerateEPW\overridingCAN_BC_Vancouver.718920_CWEC.epw'
+    overwriten_epw = overriding_epw(epw_file, df)
+    urban_island_effect(overwriten_epw, '2008-05-01 00:00:00', '2008-09-30 23:30:00')
 
 if __name__ == '__main__':
     main()
