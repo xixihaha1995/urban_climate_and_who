@@ -285,9 +285,10 @@ def add_date_index(df, start_date, time_interval_sec):
     df is [date, sensible/latent]
     '''
     date = pd.date_range(start_date, periods=len(df), freq='{}S'.format(time_interval_sec))
-    date = pd.Series(date)
-    if date[0].year % 4 == 0:
-        # for date later than Feb 29, we add 1 day to the date
+    date = pd.to_datetime(date)
+    year = date[0].year
+    this_year_feb_29 = pd.to_datetime(str(year) + '-02-29')
+    if year % 4 == 0 and (date == this_year_feb_29).any():
         date = date.apply(lambda x: x + pd.Timedelta(days=1) if x >= pd.Timestamp(date[0].year, 2, 29) else x)
     df.index = date
     return df
