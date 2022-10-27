@@ -157,6 +157,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\_4_measurements\CAPITOUL\Urban_Pomme_Ori_1_min.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\_4_measurements\Vancouver\To_GenerateEPW\clean_IntegratedSurfaceDataset_Vancouver_INT_Airport_2008.csv">
           <value>
             <Attribute>

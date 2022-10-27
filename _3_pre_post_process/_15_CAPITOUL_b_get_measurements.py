@@ -7,6 +7,7 @@ Measurement (Mini Zone 7, Cité_Administrative) sampling rate: 12 minutes (save 
     d. The rest lines are the data, 4 columns separated by ';'
 Measurement (Tower Roof, Pomme Road) sampling rate: 1 minute (save first)
 '''
+import numpy as np
 import pandas as pd, os, matplotlib.pyplot as plt
 def zone7_read_one_file(file_path):
     # 3. read the rest lines, which are the data
@@ -93,12 +94,25 @@ def pomme_read_one_file(file_path):
     # print all columns data types
     # print(data.dtypes)
     data.index = data['Date']
-    data = data.replace(9999, pd.np.nan)
-    data.iloc[:, 3] = data.iloc[:, 3].interpolate()
-    # find index for 3rd column, where element is 9999
-    index_9999 = data[data.iloc[:, 2] == 9999].index
-    #drop Date column
     data.drop(['Date'], axis=1, inplace=True)
+    repeated_index = data.index[data.index.duplicated()]
+    # drop the repeated index
+    data = data.drop(repeated_index)
+
+    target_idx = pd.date_range(start=data.index[0], end=data.index[-1], freq='1min')
+    missing_index = target_idx.difference(data.index)
+    if len(repeated_index) != 0 or len(missing_index) != 0:
+        print('Repeated index:', repeated_index)
+        print('Missing index:', missing_index)
+        print('File path:', file_path)
+        print('---------------------------------------------------')
+    # 3. add the missed empty rows, dtype is float
+    data = data.reindex(target_idx)
+    #except the 2nd column, replace 9999 with NaN
+    data.iloc[:, 3:] = data.iloc[:, 3:].replace(9999, np.nan)
+    # interpolate the missing values
+    data = data.interpolate(method='linear')
+
     return data
 
 
@@ -124,7 +138,7 @@ def main():
     # df_zone7 = zone7_read_all_files()
     # df_zone7.to_csv('..\\_4_measurements\\CAPITOUL\\Mini_Zone7_Ori_12_min.csv')
     df_pomme = pomme_read_all_files()
-    df_pomme.to_csv('..\\_4_measurements\\CAPITOUL\\newPomme_Ori_1_min.csv')
+    df_pomme.to_csv('..\\_4_measurements\\CAPITOUL\\Urban_Pomme_Ori_1_min.csv')
     # plot df_pomme column 'Air_Temperature_C' with index
     df_pomme['Air_Temperature_C'].plot()
     plt.show()
