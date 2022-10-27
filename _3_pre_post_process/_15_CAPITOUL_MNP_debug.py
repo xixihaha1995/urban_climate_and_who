@@ -16,6 +16,7 @@ only_ep_folder= f'{prediction_folder_prefix}\\a_ep_saving'
 only_vcwg_folder = f'{prediction_folder_prefix}\\b_vcwg_saving'
 bypass_folder = f'{prediction_folder_prefix}\\c_vcwg_ep_saving'
 epw_atm_filename = r'Mondouzil_tdb_td_rh_P_2004'
+debug_name = epw_atm_filename + '_OnlyJune_debug'
 ruralFilename = 'Rural_Mondouzil_Processed'
 
 only_ep_filename_prefix = 'CAPITOUL_only_ep_2004'
@@ -35,7 +36,7 @@ if os.path.exists(f'{save_intermediate_path}\\{urban_ori_filename}.csv'):
     rural_MON_5min = pd.read_csv(os.path.join(save_intermediate_path, f'{ruralFilename}.csv'),
                                     index_col=0, parse_dates=True)
 else:
-    pomme_ori_1min = pd.read_csv(os.path.join(measure_results_folder, 'newUrban_Pomme_Ori_1_min.csv'),
+    pomme_ori_1min = pd.read_csv(os.path.join(measure_results_folder, 'Urban_Pomme_Ori_1_min.csv'),
                                                 index_col=0, parse_dates=True)
     #interpolate missing data
     pomme_ori_1min = pomme_ori_1min.interpolate(method='linear')
@@ -111,7 +112,7 @@ plt_tools.save_OneOrTwoHeights_debug(urbanLst,rural_MNP_19m_5min_tdb_c,
                               prediction_folder_prefix,
                               debug_only_ep_5min, debug_only_vcwg_5min, debug_bypass,
                                 sheet_names=selected_sensor_heights,
-                                debug_file_name = epw_atm_filename)
+                                debug_file_name = debug_name)
 
 plt_tools.shared_x_plot(prediction_folder_prefix, canyon_name=f'{str(selected_sensor_heights[0])}m Real EPW',
-                        debug_file_name = epw_atm_filename)
+                        debug_file_name = debug_name)

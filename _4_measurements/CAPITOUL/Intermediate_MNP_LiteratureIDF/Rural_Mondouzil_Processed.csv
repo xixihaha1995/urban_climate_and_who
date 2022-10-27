@@ -1,4 +1,4 @@
-date_time,'rft_time_campbel13_%60'_HHMMSS.SSS UTC,tpr_air2m_c13_cal_%60'_celsius,pre_air_c13_cal_%60'_hPa,'hum_relcapa_c13_cal_%60'_percent,prp_intensrr_c13_cal_%60'_millimeter/hour,'ven_ddmoy_c13_cal_%60'_degre,ven_ffmoy_c13_cal_%60'_m/s,flx_rvd_c13_cal_%60'_watt/m2,flx_rvm_c13_cal_%60'_watt/m2,flx_ird_c13_%60'_watt/m2,flx_irm_c13_%60'_watt/m2
+,'rft_time_campbel13_%60'_HHMMSS.SSS UTC,tpr_air2m_c13_cal_%60'_celsius,pre_air_c13_cal_%60'_hPa,'hum_relcapa_c13_cal_%60'_percent,prp_intensrr_c13_cal_%60'_millimeter/hour,'ven_ddmoy_c13_cal_%60'_degre,ven_ffmoy_c13_cal_%60'_m/s,flx_rvd_c13_cal_%60'_watt/m2,flx_rvm_c13_cal_%60'_watt/m2,flx_ird_c13_%60'_watt/m2,flx_irm_c13_%60'_watt/m2
 2004-06-01 00:00:00,200.0,14.175999999999998,997.4399999999999,95.0,0.0,69.2,0.6799999999999999,-0.096,0.0,378.082,386.986
 2004-06-01 00:05:00,700.0,14.13,997.4,95.0,0.0,62.0,0.6,-0.154,0.0,377.272,387.15999999999997
 2004-06-01 00:10:00,1200.0,14.148000000000001,997.3799999999999,95.0,0.0,52.6,0.6799999999999999,-0.02,0.0,377.254,387.046
