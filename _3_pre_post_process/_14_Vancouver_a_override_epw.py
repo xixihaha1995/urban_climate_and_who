@@ -50,6 +50,15 @@ air relative humidity (position 6 meters high) : Celsius
 def get_clean_airport_measurment(file_path):
     # read one file, read the second column as string
     df = pd.read_csv(file_path, header=0, index_col= 1, sep=',')
+    # The index (date) might have some repeated entires, or missing entries. Find them.
+    # 1. find the repeated entries
+    df.index = pd.to_datetime(df.index)
+    repeated_index = df.index[df.index.duplicated()]
+    # 2. find the missing entries, sample rate is 1 hour
+    target_idx = pd.date_range(start=df.index[0], end=df.index[-1], freq='1H')
+    missing_index = target_idx.difference(df.index)
+    # 3. add the missed empty rows, dtype is float
+    df = df.reindex(target_idx)
     # only keep these columns: TMP,DEW,SLP
     df = df[['TMP', 'DEW', 'SLP']]
     # convert types to string
@@ -82,9 +91,6 @@ def get_clean_airport_measurment(file_path):
     # rename the columns 'TMP' to 'Dry Bulb Temperature {C}', 'DEW' to 'Dew Point Temperature {C}', 'SLP' to 'Atmospheric Station Pressure {Pa}'
     df = df.rename(columns={'TMP': 'Dry Bulb Temperature {C}', 'DEW': 'Dew Point Temperature {C}', 'SLP': 'Atmospheric Station Pressure {Pa}'})
     # combine the date and time, and convert to datetime format
-    df.index = pd.to_datetime(df.index)
-    # convert the index to hourly
-    df = df.resample('H').mean()
     return df
 def overriding_epw(epw_file, df_measurement):
     '''
@@ -124,7 +130,7 @@ def overriding_epw(epw_file, df_measurement):
                 lines[i][9] = str(sea_level_press_pa)
                 lines[i] = ','.join(lines[i])
     # write the lines to the epw file
-    overwriten_epw = r'..\_4_measurements\Vancouver\To_GenerateEPW\newVancouver718920CorrectTime.epw'
+    overwriten_epw = r'..\_4_measurements\Vancouver\To_GenerateEPW\overwrittenCAN_BC_Vancouver.718920_CWEC.epw'
     with open(overwriten_epw, 'w') as f:
         f.writelines(lines)
     return overwriten_epw
@@ -165,14 +171,14 @@ def main():
     # df.iloc[:, 0].plot()
     # plt.show()
     # save the data to csv file
-    df.to_csv(r'..\_4_measurements\Vancouver\To_GenerateEPW\clean_IntegratedSurfaceDataset_Vancouver_INT_Airport_2008.csv')
+    df.to_csv(r'..\_4_measurements\Vancouver\To_GenerateEPW\clean_NCDC_Vancouver_INT_Airport_2008.csv')
     # _2_cases_input_outputs/_08_CAPITOUL/generate_epw/overriding_FRA_Bordeaux.075100_IWECEPW.csv
     epw_file = r'..\_4_measurements\Vancouver\To_GenerateEPW\overridingCAN_BC_Vancouver.718920_CWEC.epw'
     overwriten_epw = overriding_epw(epw_file, df)
-    compare_start_date = '2008-07-01 00:00:00'
-    compare_end_date = '2008-07-31 23:00:00'
-
-    urban_island_effect(overwriten_epw,compare_start_date,compare_end_date)
+    # compare_start_date = '2008-07-01 00:00:00'
+    # compare_end_date = '2008-07-31 23:00:00'
+    #
+    # urban_island_effect(overwriten_epw,compare_start_date,compare_end_date)
 
 if __name__ == '__main__':
     main()

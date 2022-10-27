@@ -30,11 +30,10 @@ def get_all_epw_files():
     get all epw files in the folder
     '''
     _718920_file_template = r'..\_4_measurements\Vancouver\To_RegenerateEPW\en_climate_hourly_BC_1108447_MM-2008_P1H.csv'
-    # we need 05, 06, 07, 08, 09 month data
     df = pd.DataFrame()
-    for month in ['05', '06', '07', '08', '09']:
-        file_path = _718920_file_template.replace('MM', month)
-        df = df.append(get_clean_airport_measurment(file_path))
+    for month in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']:
+        _718920_file = _718920_file_template.replace('MM', month)
+        df = df.append(get_clean_airport_measurment(_718920_file))
     return df
 
 def overriding_epw(epw_file, df_measurement):
@@ -49,7 +48,6 @@ def overriding_epw(epw_file, df_measurement):
     with open(epw_file, 'r') as f:
         lines = f.readlines()
         for i in range(len(lines)):
-            # replace the May, June, July, August, September data
             if i > 2887 and i < 6560:
                 lines[i] = lines[i].split(',')
                 # lines[i][0:4] is Year, Month, Day, Hour (1-24)
@@ -76,7 +74,7 @@ def overriding_epw(epw_file, df_measurement):
         f.writelines(lines)
     return overwriten_epw
 
-def urban_island_effect(overwriten_epw,compare_start_date,compare_end_date):
+def urban_island_effect(compare_start_date,compare_end_date):
     rural_epw = pd.read_csv(overwriten_epw, skiprows=8, header=None, index_col= None)
     rural_epw_all = plot_tools.clean_epw(rural_epw)
     rural_epw_air_temp_c = rural_epw_all.iloc[:, 6]
@@ -110,14 +108,14 @@ def init_ep_api():
     psychrometric = ep_api.functional.psychrometrics(state)
 
 def main():
-    init_ep_api()
-    # get the data from all the files
-    df = get_all_epw_files()
-    # save the data to csv file
-    df.to_csv(r'..\_4_measurements\Vancouver\To_RegenerateEPW\clean_en_climate_hourly_BC_1108447_MM-2008_P1H.csv')
-    epw_file = r'..\_4_measurements\Vancouver\To_RegenerateEPW\overridingCAN_BC_Vancouver.718920_CWEC.epw'
+    # init_ep_api()
+    # # get the data from all the files
+    # df = get_all_epw_files()
+    # # save the data to csv file
+    # df.to_csv(r'..\_4_measurements\Vancouver\To_RegenerateEPW\clean_en_climate_hourly_BC_1108447_MM-2008_P1H.csv')
+    # epw_file = r'..\_4_measurements\Vancouver\To_RegenerateEPW\overridingCAN_BC_Vancouver.718920_CWEC.epw'
     overwriten_epw = overriding_epw(epw_file, df)
-    urban_island_effect(overwriten_epw, '2008-05-01 00:00:00', '2008-09-30 23:30:00')
+    urban_island_effect('2008-05-01 00:00:00', '2008-09-30 23:30:00')
 
 if __name__ == '__main__':
     main()

@@ -88,7 +88,9 @@ def overwrite_ep_weather(state):
     if not warm_up:
         if not called_vcwg_bool:
             called_vcwg_bool = True
-            Thread(target=run_vcwg).start()
+            vcwg_thread = Thread(target=run_vcwg)
+            vcwg_thread.daemon = True
+            vcwg_thread.start()
         # Wait for the upstream (VCWG upload canyon info to Parent) to finish
         coordination.sem1.acquire()
         # EP download the canyon info from Parent
