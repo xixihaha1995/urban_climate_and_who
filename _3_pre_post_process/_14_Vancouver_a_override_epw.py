@@ -54,6 +54,9 @@ def get_clean_airport_measurment(file_path):
     # 1. find the repeated entries
     df.index = pd.to_datetime(df.index)
     repeated_index = df.index[df.index.duplicated()]
+    if len(repeated_index) != 0:
+        print('repeated_index', repeated_index)
+        raise ValueError('repeated_index')
     # 2. find the missing entries, sample rate is 1 hour
     target_idx = pd.date_range(start=df.index[0], end=df.index[-1], freq='1H')
     missing_index = target_idx.difference(df.index)
@@ -130,7 +133,7 @@ def overriding_epw(epw_file, df_measurement):
                 lines[i][9] = str(sea_level_press_pa)
                 lines[i] = ','.join(lines[i])
     # write the lines to the epw file
-    overwriten_epw = r'..\_4_measurements\Vancouver\To_GenerateEPW\overwrittenCAN_BC_Vancouver.718920_CWEC.epw'
+    overwriten_epw = r'..\_4_measurements\Vancouver\To_GenerateEPW\NCDC_Vancouver.epw'
     with open(overwriten_epw, 'w') as f:
         f.writelines(lines)
     return overwriten_epw

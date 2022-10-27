@@ -74,8 +74,28 @@ def get_one_file_data(file_path):
     1. first column is data, format DD/MM/AAAA
     2. second column is time, format HHMNSS.SSS, fill the missing 0
     '''
-    # for the 3rd column, set the outliner to nan
-    df[2] = df[2].apply(lambda x: np.nan if x > 200 or x < -100 else x)
+    # Fix the timestamp first
+    df[0] = df[0].apply(lambda x: x.replace('/', '-'))
+    df[1] = df[1].apply(lambda x: x.zfill(8))
+    df['date_time'] = df.iloc[:, 0] + ' ' + df.iloc[:, 1]
+    df['date_time'] = pd.to_datetime(df['date_time'], format='%d-%m-%Y %H%M%S.%f')
+    # set the date_time as index
+    df = df.set_index('date_time')
+
+    repeated_index = df.index[df.index.duplicated()]
+    # drop the repeated index
+    df = df.drop(repeated_index)
+
+    target_idx = pd.date_range(start=df.index[0], end=df.index[-1], freq='1min')
+    missing_index = target_idx.difference(df.index)
+    if len(repeated_index) != 0 or len(missing_index) != 0:
+        print('Repeated index:', repeated_index)
+        print('Missing index:', missing_index)
+        print('File path:', file_path)
+        print('---------------------------------------------------')
+    # 3. add the missed empty rows, dtype is float
+    df = df.reindex(target_idx)
+
     #get one subset df by dropping the last two columns
     df = df.iloc[:, :-2]
     # find the index (row, col) of element is 9999
@@ -91,14 +111,8 @@ def get_one_file_data(file_path):
     df = df.replace(9999, pd.np.nan)
     # interpolate the nan with linear method
     df = df.interpolate(method='linear')
-    df[0] = df[0].apply(lambda x: x.replace('/', '-'))
-    df[1] = df[1].apply(lambda x: x.zfill(8))
 
-    # combine the date and time, and convert to datetime format
-    df['date_time'] = df.iloc[:, 0] + ' ' + df.iloc[:, 1]
-    df['date_time'] = pd.to_datetime(df['date_time'], format='%d-%m-%Y %H%M%S.%f')
-    # set the date_time as index
-    df = df.set_index('date_time')
+
     return df
 
 def get_all_files_data():
