@@ -31,7 +31,7 @@ def get_clean_airport_measurment(file_path):
     df = df.reindex(target_idx)
 
     # keep 'Temp (°C)', 'Dew Point Temp (°C)', 'Rel Hum (%)'
-    df = df[['Temp (°C)', 'Dew Point Temp (°C)', 'Rel Hum (%)']]
+    df = df[['Temp (°C)', 'Dew Point Temp (°C)', 'Rel Hum (%)','Stn Press (kPa)']]
     # interpolate the missing values
     df = df.interpolate(method='linear', axis=0).ffill().bfill()
     if df.isnull().values.any() or df.isna().values.any():
@@ -77,11 +77,13 @@ def overriding_epw(epw_file, df_measurement):
                 dry_bulb_c = measurements['Temp (°C)']
                 dew_point_c = measurements['Dew Point Temp (°C)']
                 rel_hum_percentage = measurements['Rel Hum (%)']
+                stn_press_kpa = measurements['Stn Press (kPa)']
 
                 lines[i][0] = year
                 lines[i][6] = str(dry_bulb_c)
                 lines[i][7] = str(dew_point_c)
                 lines[i][8] = str(rel_hum_percentage)
+                lines[i][9] = str(stn_press_kpa*1000)
                 lines[i] = ','.join(lines[i])
     # write the lines to the epw file
     overwriten_epw = r'..\_4_measurements\Vancouver\To_RegenerateEPW\ECCC_Vancouver_2008.epw'
@@ -137,21 +139,15 @@ def urban_island_effect(compare_start_date,compare_end_date):
     # plot the first and last column
     uhi_df.plot()
     plt.show()
-def init_ep_api():
-    global psychrometric, state
-    ep_api = EnergyPlusAPI()
-    state = ep_api.state_manager.new_state()
-    psychrometric = ep_api.functional.psychrometrics(state)
 
 def main():
-    # init_ep_api()
-    # # get the data from all the files
-    # df = get_all_epw_files()
-    # # save the data to csv file
-    # df.to_csv(r'..\_4_measurements\Vancouver\To_RegenerateEPW\clean_en_climate_hourly_BC_1108447_MM-2008_P1H.csv')
-    # epw_file = r'..\_4_measurements\Vancouver\To_RegenerateEPW\overridingCAN_BC_Vancouver.718920_CWEC.epw'
-    # overwriten_epw = overriding_epw(epw_file, df)
-    urban_island_effect('2008-05-01 00:00:00', '2008-09-30 23:30:00')
+    # get the data from all the files
+    df = get_all_epw_files()
+    # save the data to csv file
+    df.to_csv(r'..\_4_measurements\Vancouver\To_RegenerateEPW\clean_en_climate_hourly_BC_1108447_MM-2008_P1H.csv')
+    epw_file = r'..\_4_measurements\Vancouver\To_RegenerateEPW\overridingCAN_BC_Vancouver.718920_CWEC.epw'
+    overwriten_epw = overriding_epw(epw_file, df)
+    # urban_island_effect('2008-05-01 00:00:00', '2008-09-30 23:30:00')
 
 if __name__ == '__main__':
     main()
