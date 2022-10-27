@@ -2,7 +2,7 @@ import os, pickle
 import _0_all_plot_tools as plt_tools
 import pandas as pd, numpy as np
 # Hardcoded parameters
-compare_start_time = '2004-02-20 00:00:00'
+compare_start_time = '2004-03-01 00:00:00'
 compare_end_time = '2004-12-31 23:00:00'
 measure_results_folder = r'..\_4_measurements\CAPITOUL'
 save_intermediate_path = r'..\_4_measurements\CAPITOUL\Intermediate_MNP_LiteratureIDF'
