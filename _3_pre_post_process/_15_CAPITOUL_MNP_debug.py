@@ -2,27 +2,27 @@ import os, pickle
 import _0_all_plot_tools as plt_tools
 import pandas as pd, numpy as np
 # Hardcoded parameters
-compare_start_time = '2004-06-01 00:00:00'
-compare_end_time = '2004-06-30 23:00:00'
+compare_start_time = '2004-02-20 00:00:00'
+compare_end_time = '2004-12-31 23:00:00'
 measure_results_folder = r'..\_4_measurements\CAPITOUL'
 save_intermediate_path = r'..\_4_measurements\CAPITOUL\Intermediate_MNP_LiteratureIDF'
 if not os.path.exists(save_intermediate_path):
     os.makedirs(save_intermediate_path)
 
-urban_ori_filename = r'Urban_Pomme_Ori_Processed'
+urban_ori_filename = r'Urban_Pomme_Ori_Annual_Processed'
 
 prediction_folder_prefix = r'..\_2_cases_input_outputs\_08_CAPITOUL\MediumOffice_4B_Literature_MNP'
 only_ep_folder= f'{prediction_folder_prefix}\\a_ep_saving'
 only_vcwg_folder = f'{prediction_folder_prefix}\\b_vcwg_saving'
 bypass_folder = f'{prediction_folder_prefix}\\c_vcwg_ep_saving'
 epw_atm_filename = r'Mondouzil_tdb_td_rh_P_2004'
-debug_name = epw_atm_filename + '_OnlyJune_debug'
-ruralFilename = 'Rural_Mondouzil_Processed'
+debug_name = epw_atm_filename + '_Annual_debug'
+ruralFilename = 'Rural_Mondouzil_Annual_Processed'
 
-only_ep_filename_prefix = 'CAPITOUL_only_ep_2004'
-only_vcwg_filename_prefix = 'CAPITOUL_2004_only_vcwg'
+only_ep_filename_prefix = 'CAPITOUL_only_ep_2004_annual'
+only_vcwg_filename_prefix = 'CAPITOUL_OnlyVCWG_2004_Annual'
 # only_vcwg_filename_prefix = 'CAPITOUL_2004_only_vcwg_Updated_Width'
-bypass_filename_prefix = 'ver1.1\\CAPITOUL_Bypass_2004'
+bypass_filename_prefix = 'ver1.1\\CAPITOUL_Bypass_2004_Annual'
 
 domain_height = 60
 vcwg_heights_profile = [0.5 + i for i in range(domain_height)]
@@ -35,6 +35,25 @@ if os.path.exists(f'{save_intermediate_path}\\{urban_ori_filename}.csv'):
                              index_col=0, parse_dates=True)
     rural_MON_5min = pd.read_csv(os.path.join(save_intermediate_path, f'{ruralFilename}.csv'),
                                     index_col=0, parse_dates=True)
+    # 'only_vcwg_direct_lst_C.pickle'
+    with open(os.path.join(save_intermediate_path, f'{only_vcwg_filename_prefix}_direct_lst_C.pickle'), 'rb') as f:
+        only_vcwg_direct_lst_C = pickle.load(f)
+    # 'only_vcwg_real_p0_lst_C.pickle'
+    with open(os.path.join(save_intermediate_path, f'{only_vcwg_filename_prefix}_real_p0_lst_C.pickle'), 'rb') as f:
+        only_vcwg_real_p0_lst_C = pickle.load(f)
+    # 'only_vcwg_real_epw_lst_C.pickle'
+    with open(os.path.join(save_intermediate_path, f'{only_vcwg_filename_prefix}_real_epw_lst_C.pickle'), 'rb') as f:
+        only_vcwg_real_epw_lst_C = pickle.load(f)
+    # 'bypass_direct_lst_C.pickle'
+    with open(os.path.join(save_intermediate_path, f'{bypass_filename_prefix}_direct_lst_C.pickle'), 'rb') as f:
+        bypass_direct_lst_C = pickle.load(f)
+    # 'bypass_real_p0_lst_C.pickle'
+    with open(os.path.join(save_intermediate_path, f'{bypass_filename_prefix}_real_p0_lst_C.pickle'), 'rb') as f:
+        bypass_real_p0_lst_C = pickle.load(f)
+    # 'bypass_real_epw_lst_C.pickle'
+    with open(os.path.join(save_intermediate_path, f'{bypass_filename_prefix}_real_epw_lst_C.pickle'), 'rb') as f:
+        bypass_real_epw_lst_C = pickle.load(f)
+
 else:
     pomme_ori_1min = pd.read_csv(os.path.join(measure_results_folder, 'Urban_Pomme_Ori_1_min.csv'),
                                                 index_col=0, parse_dates=True)
@@ -52,46 +71,46 @@ else:
     rural_MON_5min = rural_MON_ori_1min.resample('5T').mean()
     rural_MON_5min.to_csv(os.path.join(save_intermediate_path, f'{ruralFilename}.csv'))
 
-urban_MNP_19m_5min_tdb_c = pomme_5min.iloc[:, 2]
-rural_MNP_19m_5min_tdb_c = rural_MON_5min.iloc[:, 1]
-
-epw_all_dirty = pd.read_csv( f'{prediction_folder_prefix}\\{epw_atm_filename}.epw',
-                                 skiprows= 8, header= None, index_col=None,)
-epw_all_clean = plt_tools.clean_epw(epw_all_dirty,
-                                               start_time = compare_start_time)
-epw_staPre_Pa_all = epw_all_clean.iloc[:, 9]
-epw_staPre_Pa_all.index = pd.to_datetime(epw_staPre_Pa_all.index)
-epw_staPre_Pa_all.index = epw_staPre_Pa_all.index.strftime('%m-%d %H:%M:%S')
+    epw_all_dirty = pd.read_csv( f'{prediction_folder_prefix}\\{epw_atm_filename}.epw',
+                                     skiprows= 8, header= None, index_col=None,)
+    epw_all_clean = plt_tools.clean_epw(epw_all_dirty,
+                                                   start_time = compare_start_time)
+    epw_staPre_Pa_all = epw_all_clean.iloc[:, 9]
+    epw_staPre_Pa_all.index = pd.to_datetime(epw_staPre_Pa_all.index)
+    epw_staPre_Pa_all.index = epw_staPre_Pa_all.index.strftime('%m-%d %H:%M:%S')
 
 
-# Read only VCWG (2, 6, 20m), to direct_predict, real_p0, real_epw
-only_vcwg_direct_lst_C, only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C = \
-    plt_tools.excel_to_direct_real_p0_real_epw(only_vcwg_filename_prefix, only_vcwg_folder,
-                                               vcwg_heights_profile, selected_sensor_heights, target_interval_mins,p0,
-                                               compare_start_time,compare_end_time, epw_staPre_Pa_all)
-# Read Bypass (2, 6, 20m), to direct_predict, real_p0, real_epw
-bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C = \
-    plt_tools.excel_to_direct_real_p0_real_epw(bypass_filename_prefix, bypass_folder,
-                                                  vcwg_heights_profile, selected_sensor_heights, target_interval_mins,p0,
-                                                    compare_start_time,compare_end_time, epw_staPre_Pa_all)
-#pickle
-with open(os.path.join(save_intermediate_path, 'only_vcwg_direct_lst_C.pickle'), 'wb') as f:
-    pickle.dump(only_vcwg_direct_lst_C, f)
-with open(os.path.join(save_intermediate_path, 'only_vcwg_real_p0_lst_C.pickle'), 'wb') as f:
-    pickle.dump(only_vcwg_real_p0_lst_C, f)
-with open(os.path.join(save_intermediate_path, 'only_vcwg_real_epw_lst_C.pickle'), 'wb') as f:
-    pickle.dump(only_vcwg_real_epw_lst_C, f)
-with open(os.path.join(save_intermediate_path, 'bypass_direct_lst_C.pickle'), 'wb') as f:
-    pickle.dump(bypass_direct_lst_C, f)
-with open(os.path.join(save_intermediate_path, 'bypass_real_p0_lst_C.pickle'), 'wb') as f:
-    pickle.dump(bypass_real_p0_lst_C, f)
-with open(os.path.join(save_intermediate_path, 'bypass_real_epw_lst_C.pickle'), 'wb') as f:
-    pickle.dump(bypass_real_epw_lst_C, f)
+    # Read only VCWG (2, 6, 20m), to direct_predict, real_p0, real_epw
+    only_vcwg_direct_lst_C, only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C = \
+        plt_tools.excel_to_direct_real_p0_real_epw(only_vcwg_filename_prefix, only_vcwg_folder,
+                                                   vcwg_heights_profile, selected_sensor_heights, target_interval_mins,p0,
+                                                   compare_start_time,compare_end_time, epw_staPre_Pa_all)
+    # Read Bypass (2, 6, 20m), to direct_predict, real_p0, real_epw
+    bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C = \
+        plt_tools.excel_to_direct_real_p0_real_epw(bypass_filename_prefix, bypass_folder,
+                                                      vcwg_heights_profile, selected_sensor_heights, target_interval_mins,p0,
+                                                        compare_start_time,compare_end_time, epw_staPre_Pa_all)
+    #pickle
+    with open(os.path.join(save_intermediate_path, 'only_vcwg_direct_lst_C.pickle'), 'wb') as f:
+        pickle.dump(only_vcwg_direct_lst_C, f)
+    with open(os.path.join(save_intermediate_path, 'only_vcwg_real_p0_lst_C.pickle'), 'wb') as f:
+        pickle.dump(only_vcwg_real_p0_lst_C, f)
+    with open(os.path.join(save_intermediate_path, 'only_vcwg_real_epw_lst_C.pickle'), 'wb') as f:
+        pickle.dump(only_vcwg_real_epw_lst_C, f)
+    with open(os.path.join(save_intermediate_path, 'bypass_direct_lst_C.pickle'), 'wb') as f:
+        pickle.dump(bypass_direct_lst_C, f)
+    with open(os.path.join(save_intermediate_path, 'bypass_real_p0_lst_C.pickle'), 'wb') as f:
+        pickle.dump(bypass_real_p0_lst_C, f)
+    with open(os.path.join(save_intermediate_path, 'bypass_real_epw_lst_C.pickle'), 'wb') as f:
+        pickle.dump(bypass_real_epw_lst_C, f)
 # For height:
 #   For ep, vcwg, bypass:
 #       calculate the CVRMSE for direct_predict, real_p0, real_epw
 #Create one 3d array, 0th axis dims: 2 (1.2 m, 26m heights) ,
 # 1st axis dims: 3 (ep, vcwg, bypass), 2nd axis dims: 3 (direct_predict, real_p0, real_epw)
+urban_MNP_19m_5min_tdb_c = pomme_5min.iloc[:, 2]
+rural_MNP_19m_5min_tdb_c = rural_MON_5min.iloc[:, 1]
+
 urbanLst = [urban_MNP_19m_5min_tdb_c]
 cvrmse_3d = plt_tools.organize_CAPITOUL_MNP_cvrmse(urbanLst, rural_MNP_19m_5min_tdb_c,
                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
