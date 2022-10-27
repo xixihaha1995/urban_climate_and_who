@@ -36,22 +36,22 @@ if os.path.exists(f'{save_intermediate_path}\\{urban_ori_filename}.csv'):
     rural_MON_5min = pd.read_csv(os.path.join(save_intermediate_path, f'{ruralFilename}.csv'),
                                     index_col=0, parse_dates=True)
     # 'only_vcwg_direct_lst_C.pickle'
-    with open(os.path.join(save_intermediate_path, f'{only_vcwg_filename_prefix}_direct_lst_C.pickle'), 'rb') as f:
+    with open(os.path.join(save_intermediate_path, 'only_vcwg_direct_lst_C.pickle'), 'rb') as f:
         only_vcwg_direct_lst_C = pickle.load(f)
     # 'only_vcwg_real_p0_lst_C.pickle'
-    with open(os.path.join(save_intermediate_path, f'{only_vcwg_filename_prefix}_real_p0_lst_C.pickle'), 'rb') as f:
+    with open(os.path.join(save_intermediate_path, 'only_vcwg_real_p0_lst_C.pickle'), 'rb') as f:
         only_vcwg_real_p0_lst_C = pickle.load(f)
-    # 'only_vcwg_real_epw_lst_C.pickle'
-    with open(os.path.join(save_intermediate_path, f'{only_vcwg_filename_prefix}_real_epw_lst_C.pickle'), 'rb') as f:
+    # 'only_vcwg_real_p0_lst_C.pickle'
+    with open(os.path.join(save_intermediate_path, 'only_vcwg_real_epw_lst_C.pickle'), 'rb') as f:
         only_vcwg_real_epw_lst_C = pickle.load(f)
-    # 'bypass_direct_lst_C.pickle'
-    with open(os.path.join(save_intermediate_path, f'{bypass_filename_prefix}_direct_lst_C.pickle'), 'rb') as f:
+    # bypass_direct_lst_C
+    with open(os.path.join(save_intermediate_path, 'bypass_direct_lst_C.pickle'), 'rb') as f:
         bypass_direct_lst_C = pickle.load(f)
-    # 'bypass_real_p0_lst_C.pickle'
-    with open(os.path.join(save_intermediate_path, f'{bypass_filename_prefix}_real_p0_lst_C.pickle'), 'rb') as f:
+    # bypass_real_p0_lst_C
+    with open(os.path.join(save_intermediate_path, 'bypass_real_p0_lst_C.pickle'), 'rb') as f:
         bypass_real_p0_lst_C = pickle.load(f)
-    # 'bypass_real_epw_lst_C.pickle'
-    with open(os.path.join(save_intermediate_path, f'{bypass_filename_prefix}_real_epw_lst_C.pickle'), 'rb') as f:
+    # bypass_real_epw_lst_C
+    with open(os.path.join(save_intermediate_path, 'bypass_real_epw_lst_C.pickle'), 'rb') as f:
         bypass_real_epw_lst_C = pickle.load(f)
 
 else:
@@ -133,5 +133,5 @@ plt_tools.save_OneOrTwoHeights_debug(urbanLst,rural_MNP_19m_5min_tdb_c,
                                 sheet_names=selected_sensor_heights,
                                 debug_file_name = debug_name)
 
-plt_tools.shared_x_plot(prediction_folder_prefix, canyon_name=f'{str(selected_sensor_heights[0])}m Real EPW',
+plt_tools.shared_x_plot(prediction_folder_prefix, canyon_name=f'{str(selected_sensor_heights[0])}m Direct',
                         debug_file_name = debug_name)
