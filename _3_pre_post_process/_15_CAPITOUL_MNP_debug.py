@@ -2,27 +2,28 @@ import os, pickle
 import _0_all_plot_tools as plt_tools
 import pandas as pd, numpy as np
 # Hardcoded parameters
-compare_start_time = '2004-03-01 00:00:00'
-compare_end_time = '2004-12-31 23:00:00'
+compare_start_time = '2004-06-01 00:00:00'
+compare_end_time = '2004-06-30 23:00:00'
 measure_results_folder = r'..\_4_measurements\CAPITOUL'
-save_intermediate_path = r'..\_4_measurements\CAPITOUL\Intermediate_MNP_LiteratureIDF'
+save_intermediate_path = r'..\_4_measurements\CAPITOUL\Intermediate_WCanyon'
 if not os.path.exists(save_intermediate_path):
     os.makedirs(save_intermediate_path)
 
-urban_ori_filename = r'Urban_Pomme_Ori_Annual_Processed'
+urban_ori_filename = r'Urban_Pomme_Ori_Processed'
+ruralFilename = 'Rural_Mondouzil_Processed'
 
 prediction_folder_prefix = r'..\_2_cases_input_outputs\_08_CAPITOUL\MediumOffice_4B_Literature_MNP'
 only_ep_folder= f'{prediction_folder_prefix}\\a_ep_saving'
 only_vcwg_folder = f'{prediction_folder_prefix}\\b_vcwg_saving'
 bypass_folder = f'{prediction_folder_prefix}\\c_vcwg_ep_saving'
 epw_atm_filename = r'Mondouzil_tdb_td_rh_P_2004'
-debug_name = epw_atm_filename + '_Annual_debug'
-ruralFilename = 'Rural_Mondouzil_Annual_Processed'
+debug_name = epw_atm_filename + '_June_WRatio_debug'
 
-only_ep_filename_prefix = 'CAPITOUL_only_ep_2004_annual'
-only_vcwg_filename_prefix = 'CAPITOUL_OnlyVCWG_2004_Annual'
+
+only_ep_filename_prefix = 'CAPITOUL_only_ep_2004'
+only_vcwg_filename_prefix = 'CAPITOUL_MNP_OnlyVCWG_June_WRatio1'
 # only_vcwg_filename_prefix = 'CAPITOUL_2004_only_vcwg_Updated_Width'
-bypass_filename_prefix = 'ver1.1\\CAPITOUL_Bypass_2004_Annual'
+bypass_filename_prefix = 'ver1.1\\CAPITOUL_Bypass_2004'
 
 domain_height = 60
 vcwg_heights_profile = [0.5 + i for i in range(domain_height)]
