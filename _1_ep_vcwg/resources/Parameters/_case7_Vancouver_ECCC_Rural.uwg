@@ -11,7 +11,7 @@
 # Simulation parameters,
 Month,7,           # starting month 6
 Day,1,             # starting day (1-31) 16
-nDay,31,           # number of days to run simulation 31
+nDay,10,           # number of days to run simulation 31
 dtSim,300,         # simulation time step [s]
 dtWeather,3600,    # weather time step [s]
 nDay_spinup,1,     # Number of days accounted for spin-up
@@ -22,7 +22,7 @@ Elevation,90,     # Elevation above sea level [m]
 # =================================================
 # Control switches
 # =================================================
-OPTION_RAY,1,         # 1: read the view factors from an existing file, 0: calculate view factors by ray tracing
+OPTION_RAY,0,         # 1: read the view factors from an existing file, 0: calculate view factors by ray tracing
 Rural_Model_name,2,   # 1: MOST, 2: Using an external forcing file with variables specified at the top of the domain
 EB_RuralModel_name,2, # 1: Louis, 2: Penman_Monteith
 Tdeep_ctrl,1,         # 1: Using force restore method, 2: Using climate data (from epw file). If reliable estimate of deep soil temperature is not available using force restore method is recommended
@@ -30,8 +30,8 @@ Tdeep_ctrl,1,         # 1: Using force restore method, 2: Using climate data (fr
 # =================================================
 # Urban Configuration
 # =================================================
-nz,20,                 # number of points (nz*dz = 3*bldHeight)
-nz_u,6.5,               # number of canopy levels in the vertical (nz_u*dz = bldHeight)
+nz,15,                 # number of points (nz*dz = 3*bldHeight)
+nz_u,5,               # number of canopy levels in the vertical (nz_u*dz = bldHeight)
 dz,1,                  # vertical resolution [m]
 Width_canyon,23,       # distance between buildings at street level in the x and y direction must be equal [m]
 Width_roof,10,         # building dimension [m]
@@ -154,8 +154,8 @@ Sl_G,0.035,           # specific leaf area of  biomass [m^2 gC^-1]
 # =================================================
 # Tree Vegetation Parameters
 # =================================================
-Radius_tree,1.0,       # Radius of tree crown [m]
-distance_tree,2.0,     # Tree-to-wall distance [m]
+Radius_tree,5.0,       # Radius of tree crown [m]
+distance_tree,5.5,     # Tree-to-wall distance [m]
 LAD,                   # height measured from the ground [m], leaf area density profile per unit volume of the canyon [m^2 m^-3]
 0,1,2,3,4,5,
 0,0.03,0.046,0.04,0.036,0.01,
@@ -268,7 +268,7 @@ WindMin_Urban,0.01,    # min wind speed in the urban area [m s^-1]
 # =================================================
 # Building Energy Model
 # =================================================
-glzR,0.1,              # Glazing Ratio (0 - 1)
+glzR,0.212,              # Glazing Ratio (0 - 1)
 autosize,0,            # autosize HVAC (1 for yes; 0 for no)
 sensOcc,100,           # Sensible heat per occupant [W]
 LatFOcc,0.3,           # Latent heat fraction from occupant (normally 0.3)

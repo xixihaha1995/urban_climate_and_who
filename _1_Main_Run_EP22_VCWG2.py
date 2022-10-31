@@ -16,8 +16,9 @@ def run_ep_api():
     if 'mediumOffice' in coordination.config['_1_Main_Run_EP22_VCWG2.py']['time_step_handlers']:
         coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
                                                                       time_step_handlers.mediumOffice_get_ep_results)
-    # coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
-    #                                                               time_step_handlers_1.mediumOffice_get_ep_results)
+    if 'smallOffice' in coordination.config['_1_Main_Run_EP22_VCWG2.py']['time_step_handlers']:
+        coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
+                                                                      time_step_handlers.smallOffice_get_ep_results)
 
     coordination.ep_api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
     coordination.ep_api.exchange.request_variable(state, "Site Wind Speed", "ENVIRONMENT")
@@ -32,12 +33,13 @@ def run_ep_api():
     coordination.ep_api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    coordination.read_ini('case8_CAPITOUL_MNP_bypass.ini')
+    prompt = 'Please enter the configuration file name: '
+    config_file_name = input(prompt) or 'case7_Vancouver_ECCC_bypass.ini'
+    coordination.read_ini(config_file_name)
     time_step_handler_ver = 1.1
     # case_name = '_BSPA_Ue2_bypass_'
     # case_name = 'Ue1_bypass'
     # case_name = 'Ue2_bypass'
-    # case_name = 'CAPITOUL_Bypass_2004'
     # case_name = 'Vancouver_TopForcing_ByPass_2008Jul'
     # case_name = 'Vancouver_Rural_ByPass_2008Jul'
     case_name = coordination.config['_1_Main_Run_EP22_VCWG2.py']['case_name']
