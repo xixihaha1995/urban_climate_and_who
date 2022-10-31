@@ -107,7 +107,7 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
         ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, ep_wall_Text_K, ep_wall_Tint_K
 
     # Waiting for the upstream (VCWG download EP results from Parent) to finish
-    if not sem0.acquire(timeout= 600):
+    if not sem0.acquire(timeout= 600+120):
         sys.exit('BEMCalc_Element: sem0.acquire() timeout')
     # VCWG upload canyon info to Parent
     vcwg_time_index_in_seconds = (it + 1) * simTime.dt

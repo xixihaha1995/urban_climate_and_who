@@ -33,7 +33,7 @@ def run_ep_api():
     coordination.ep_api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    prompt = 'Please enter the configuration file name: '
+    prompt = 'Please enter the configuration file name: [case7_Vancouver_ECCC_bypass.ini]'
     config_file_name = input(prompt) or 'case7_Vancouver_ECCC_bypass.ini'
     coordination.read_ini(config_file_name)
     time_step_handler_ver = 1.1
