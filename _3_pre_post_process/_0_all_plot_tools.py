@@ -703,8 +703,8 @@ def general_time_series_comparision(df, txt_info, CVRMSE_display = True):
     # from 1 iteraterat through all columns, make a txt for error info
     if CVRMSE_display:
         txt = 'Maximum Daily UHI effect: 5.2 K'
-        txt +='\nVCWGv2.0.0 (Monthly) MeanBiasError: -0.53(K), RMSE: 0.56(K), R2: 0.98(-)'
-        txt +='\nUWG Monthly MBE: -0.6(K), RMSE: 0.9(K)'
+        # txt +='\nVCWGv2.0.0 (Monthly) MeanBiasError: -0.53(K), RMSE: 0.56(K), R2: 0.98(-)'
+        # txt +='\nUWG Monthly MBE: -0.6(K), RMSE: 0.9(K)'
         txt += f'\nNMBE(%), CV-RMSE(%), R2(-)'
 
         for i in range(1, len(txt_info)):
@@ -712,8 +712,6 @@ def general_time_series_comparision(df, txt_info, CVRMSE_display = True):
         print(txt)
         ax.text(0.05, 1, txt, transform=ax.transAxes, fontsize=10,
             verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
-    # lim
-    ax.set_ylim(10, 40)
     ax.set_title(txt_info[0][0])
     # set x name, y name, and title
     ax.set_xlabel(txt_info[0][1])
@@ -754,7 +752,7 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
     else:
         df.columns = [f'(m) {file_name}_' + str(0.5 + i) for i in range(len(df.columns))]
     df = add_date_index(df, start_time, time_interval_sec)
-    # save to excel, if non-exist, create one
+    # save to excel, if non-exi-st, create one
     if not os.path.exists(vcwg_ep_saving_path):
         os.makedirs(vcwg_ep_saving_path)
     df.to_excel(os.path.join(vcwg_ep_saving_path, f'{case_name}_{file_name}.xlsx'))

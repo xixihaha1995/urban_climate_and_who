@@ -9,9 +9,9 @@
 # SIMULATION CONTROL,
 # =================================================
 # Simulation parameters,
-Month,6,           # starting month 6
+Month,1,           # starting month 6
 Day,1,             # starting day (1-31) 16
-nDay,30,           # number of days to run simulation 14
+nDay,31,           # number of days to run simulation 14
 dtSim,300,         # simulation time step [s]
 dtWeather,3600,    # weather time step [s]
 nDay_spinup,1,     # Number of days accounted for spin-up
@@ -268,7 +268,7 @@ WindMin_Urban,0.01,    # min wind speed in the urban area [m s^-1]
 # =================================================
 # Building Energy Model
 # =================================================
-glzR,0.1,              # Glazing Ratio (0 - 1)
+glzR,0.33,              # Glazing Ratio (0 - 1)
 autosize,0,            # autosize HVAC (1 for yes; 0 for no)
 sensOcc,100,           # Sensible heat per occupant [W]
 LatFOcc,0.3,           # Latent heat fraction from occupant (normally 0.3)
@@ -305,8 +305,8 @@ bld,
 0,0,0,    # Hospital
 0,0,0,    # LargeHotel
 0,0,0,    # LargeOffice
-0,1,0,    # MediumOffice
-0,0,0,    # MidRiseApartment
+0,0.5,0,    # MediumOffice
+0,0.5,0,    # MidRiseApartment
 0,0,0,    # OutPatient
 0,0,0,    # PrimarySchool
 0,0,0,    # QuickServiceRestaurant

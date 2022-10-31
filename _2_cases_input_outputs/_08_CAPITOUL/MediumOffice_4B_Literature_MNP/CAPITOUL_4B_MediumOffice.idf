@@ -91,7 +91,7 @@
     1,                       !- Begin Month
     1,                       !- Begin Day of Month
     ,                        !- Begin Year
-    12,                      !- End Month
+    1,                      !- End Month
     31,                      !- End Day of Month
     ,                        !- End Year
     Thursday,                  !- Day of Week for Start Day

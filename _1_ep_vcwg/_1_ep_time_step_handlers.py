@@ -1055,7 +1055,7 @@ def mediumOffice_get_ep_results(state):
     if called_vcwg_bool:
         global ep_last_call_time_seconds, zone_floor_area_m2
 
-        # coordination.sem2.acquire()
+        coordination.sem2.acquire()
         zone_floor_area_m2 = coordination.ep_api.exchange.get_internal_variable_value(state, zone_flr_area_handle)
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
         curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600  # Should always accumulate, since system time always advances
