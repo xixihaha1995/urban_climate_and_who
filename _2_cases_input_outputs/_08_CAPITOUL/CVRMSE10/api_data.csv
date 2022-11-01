@@ -30,7 +30,7 @@ Actuator,Schedule:Compact,Schedule Value,SWHSYS1 WATER HEATER AMBIENT TEMPERATUR
 Actuator,Schedule:Compact,Schedule Value,SWHSYS1 WATER HEATER SETPOINT TEMPERATURE SCHEDULE NAME;
 Actuator,Schedule:Compact,Schedule Value,SWHSYS1-LOOP-TEMP-SCHEDULE;
 Actuator,Schedule:Compact,Schedule Value,CLGSETP_SCH_ORG;
-Actuator,Schedule:Compact,Schedule Value,CLGSETP_SCH_NO_COOLING;
+Actuator,Schedule:Compact,Schedule Value,CLGSETP_SCH;
 Actuator,Material,Surface Property Solar Absorptance,I01 30MM INSULATION BOARD;
 Actuator,Material,Surface Property Thermal Absorptance,I01 30MM INSULATION BOARD;
 Actuator,Material,Surface Property Visible Absorptance,I01 30MM INSULATION BOARD;

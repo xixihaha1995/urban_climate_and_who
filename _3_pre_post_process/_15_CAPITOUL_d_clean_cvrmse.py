@@ -41,13 +41,14 @@ if os.path.exists(os.path.join(save_intermediate_path, "comparison.csv")):
     comparison = pd.read_csv(os.path.join(save_intermediate_path, "comparison.csv"), index_col=0)
 else:
     comparison = measurements.copy()
-    prediction_columns = ['Bypass_RealEPW']
+    prediction_columns = ['Bypass_Direct', 'Bypass_Real_P0', 'Bypass_Real_EPW']
 
     domain_height = 50
     vcwg_heights_profile = [0.5 + i for i in range(domain_height)]
     sensor_heights = [19]
     target_interval = [5]
     p0 = 100000
+    selected_prediction_idx = [18]
     cases_outputs = r'..\\_2_cases_input_outputs\\_08_CAPITOUL\\'
 
     this_case = 'CVRMSE10'
@@ -59,7 +60,10 @@ else:
     bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C = \
         plt_tools.excel_to_direct_real_p0_real_epw(bypass_filename_prefix, bypass_folder,
                                                       vcwg_heights_profile, sensor_heights, target_interval,p0,
-                                                        compare_start_time,compare_end_time, staPre_Pa_all)
+                                                        compare_start_time,compare_end_time, staPre_Pa_all,
+                                                   mapped_indices=selected_prediction_idx, )
+    comparison['Bypass_Direct'] = bypass_direct_lst_C[0]
+    comparison['Bypass_Real_P0'] = bypass_real_p0_lst_C[0]
     comparison['Bypass_RealEPW'] = bypass_real_epw_lst_C[0]
     comparison.to_csv(os.path.join(save_intermediate_path, "comparison.csv"))
 
@@ -69,19 +73,22 @@ else:
 #        'ECCC_staPre_Pa', 'NCDC_dryBulAirTemp_C', 'NCDC_staPre_Pa',
 #        'TopForcing_Bypass_ECCC_RealEPW'
 all_df_column_names = ['Urban19m', 'Rural_MON',
-                       'Bypass_MON_RealEPW']
+                          'Bypass_Direct', 'Bypass_Real_P0', 'Bypass_RealEPW']
 rural_mon_cvrmse = plt_tools.bias_rmse_r2(comparison['Urban_MNP_19m_5min_tdb_c'], comparison['Rural_MNP_1p2m_5min_tdb_c'],
                                            'Rural_MON')
-bypass_mon_cvrmse = plt_tools.bias_rmse_r2(comparison['Urban_MNP_19m_5min_tdb_c'],
-                                            comparison['Bypass_RealEPW'],
-                                            'Bypass_MON_RealEPW')
+bypass_direct_cvrmse = plt_tools.bias_rmse_r2(comparison['Urban_MNP_19m_5min_tdb_c'], comparison['Bypass_Direct'],
+                                                  'Bypass_Direct')
+bypass_real_p0_cvrmse = plt_tools.bias_rmse_r2(comparison['Urban_MNP_19m_5min_tdb_c'], comparison['Bypass_Real_P0'],
+                                                    'Bypass_Real_P0')
+bypass_real_epw_cvrmse = plt_tools.bias_rmse_r2(comparison['Urban_MNP_19m_5min_tdb_c'], comparison['Bypass_RealEPW'],
+                                                        'Bypass_RealEPW')
 
 all_df_lst = [comparison['Urban_MNP_19m_5min_tdb_c'], comparison['Rural_MNP_1p2m_5min_tdb_c'],
-                comparison['Bypass_RealEPW']]
+                comparison['Bypass_Direct'], comparison['Bypass_Real_P0'], comparison['Bypass_RealEPW']]
 
 all_df_in_one = plt_tools.merge_multiple_df(all_df_lst, all_df_column_names)
 all_df_in_one.index = pd.to_datetime(all_df_in_one.index)
 
 case_name = (f"June 2004, CAPITOUL Urban Heat Island Effect", "Date", "Temperature (C)")
-txt_info = [case_name, rural_mon_cvrmse, bypass_mon_cvrmse]
+txt_info = [case_name, rural_mon_cvrmse, bypass_direct_cvrmse, bypass_real_p0_cvrmse, bypass_real_epw_cvrmse]
 plt_tools.general_time_series_comparision(all_df_in_one, txt_info)
