@@ -791,7 +791,7 @@ def excel_to_direct_real_p0_real_epw(filename, results_folder, heights_profile,
     th_target_intverval_C_lst = [i - 273.15 for i in th_target_intverval_K_lst]
     real_p0_target_interval_C_lst = [i - 273.15 for i in real_p0_target_interval_K_lst]
     real_epw_target_interval_C_lst = [i - 273.15 for i in real_epw_target_interval_K_lst]
-    return th_target_intverval_C_lst, real_p0_target_interval_C_lst, real_epw_target_interval_C_lst
+    return pres_target_intverval_Pa_lst, th_target_intverval_C_lst, real_p0_target_interval_C_lst, real_epw_target_interval_C_lst
 
 def potential_to_real(potentialProf_K, presProf_pa, epw_staPre_Pa_all):
     '''

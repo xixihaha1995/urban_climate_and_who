@@ -41,7 +41,7 @@ if os.path.exists(os.path.join(save_intermediate_path, "comparison.csv")):
     comparison = pd.read_csv(os.path.join(save_intermediate_path, "comparison.csv"), index_col=0)
 else:
     comparison = measurements.copy()
-    prediction_columns = ['Bypass_Direct', 'Bypass_Real_P0', 'Bypass_Real_EPW']
+    prediction_columns = ['Pres_Profile_Pa','Bypass_Direct', 'Bypass_Real_P0', 'Bypass_Real_EPW']
 
     domain_height = 50
     vcwg_heights_profile = [0.5 + i for i in range(domain_height)]
@@ -57,11 +57,12 @@ else:
     bypass_filename_prefix = 'ver1.1\\CAPITOUL_Bypass_CVRMSE10'
     staPre_Pa_all = measurements['Rural_MNP_1p2m_5min_Sta_pa']
     staPre_Pa_all.index = pd.to_datetime(staPre_Pa_all.index)
-    bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C = \
+    presProf_lst_Pa = bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C = \
         plt_tools.excel_to_direct_real_p0_real_epw(bypass_filename_prefix, bypass_folder,
                                                       vcwg_heights_profile, sensor_heights, target_interval,p0,
                                                         compare_start_time,compare_end_time, staPre_Pa_all,
                                                    mapped_indices=selected_prediction_idx, )
+    comparison['Pres_Profile_Pa'] = presProf_lst_Pa[0]
     comparison['Bypass_Direct'] = bypass_direct_lst_C[0]
     comparison['Bypass_Real_P0'] = bypass_real_p0_lst_C[0]
     comparison['Bypass_RealEPW'] = bypass_real_epw_lst_C[0]
