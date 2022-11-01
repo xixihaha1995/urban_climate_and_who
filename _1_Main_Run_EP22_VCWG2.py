@@ -54,8 +54,8 @@ def run_vcwg():
 
 if __name__ == '__main__':
     # Lichen: init the synchronization lock related settings: locks, shared variables.
-    prompt = 'Please input the configuration file name: [case8_CAPITOUL_MNP_onlyVCWG_WRatio.ini]'
-    configFileName = input(prompt) or 'case8_CAPITOUL_MNP_onlyVCWG_WRatio.ini'
+    prompt = 'Please input the configuration file name: [case8_CAPITOUL_MNP_onlyVCWG.ini]'
+    configFileName = input(prompt) or 'case8_CAPITOUL_MNP_onlyVCWG.ini'
     #config_file_name = input(prompt)
     coordination.read_ini(configFileName)
     coordination.init_saving_data()
