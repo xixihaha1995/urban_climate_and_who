@@ -795,51 +795,6 @@ def excel_to_direct_real_p0_real_epw(filename, results_folder, heights_profile,
     real_epw_target_interval_C_lst = [i - 273.15 for i in real_epw_target_interval_K_lst]
     return th_target_intverval_C_lst, real_p0_target_interval_C_lst, real_epw_target_interval_C_lst
 
-def excel_to_potential_real_df(filename, results_folder, p0, heights_profile, ue1_heights,compare_start_time,
-                               compare_end_time, epw_staPre_Pa_all = None, Sensor_Height_Bool = True):
-    th_profie_5min = pd.read_excel(f'{results_folder}\\{filename}_TempProfile_K.xlsx',
-                                                   sheet_name='Sheet1', header=0, index_col=0)
-    # ue1_heights is sensor heights, heights_profile is the heights of predictions
-    # find the mapped indices in heights_profile
-    heights_profile = np.array(heights_profile)
-    ue1_heights = np.array(ue1_heights)
-    mapped_indices = [np.argmin(np.abs(heights_profile - i)) for i in ue1_heights]
-    # sensor_idx = np.argmin(np.abs(np.array(heights_profile) - v200_sensor_height))
-    if not Sensor_Height_Bool:
-        th_sensor_5min = th_profie_5min
-    else:
-        th_sensor_5min = th_profie_5min.iloc[:, mapped_indices]
-    th_sensor_5min_K_compare = th_sensor_5min[compare_start_time:compare_end_time]
-    th_sensor_5min_K_compare_df = pd.DataFrame(th_sensor_5min_K_compare)
-    th_sensor_10min_K_compare = _5min_to_10min(th_sensor_5min_K_compare_df)
-
-    pres_profile_5min = pd.read_excel(f'{results_folder}\\{filename}_PressProfile_Pa.xlsx',
-                                                      sheet_name='Sheet1', header=0, index_col=0)
-    if not Sensor_Height_Bool:
-        pres_sensor_5min = pres_profile_5min
-    else:
-        pres_sensor_5min = pres_profile_5min.iloc[:, mapped_indices]
-    pres_sensor_5min_pa_compare = pres_sensor_5min[compare_start_time:compare_end_time]
-    pres_sensor_5min_pa_compare_df = pd.DataFrame(pres_sensor_5min_pa_compare)
-    pres_sensor_10min_pa_compare = _5min_to_10min(
-        pres_sensor_5min_pa_compare_df)
-    # real temperature  = th_sensor_10min_c_compare * (pres_sensor_10min_pa_compare/p0)^0.286
-    # both pres_sensor_10min_pa_compare and th_sensor_10min_c_compare have 6 columns
-    # get real_sensor_10min_c_compare (element wise calculation)
-    # epw_staPre_Pa_all can be None or a Series, when it is None, we use p0 based real temperature
-    if epw_staPre_Pa_all is None:
-        real_sensor_10min_K_compare_arr = th_sensor_10min_K_compare.values *\
-                                      (pres_sensor_10min_pa_compare.values / p0) ** 0.286
-    else:
-        real_sensor_10min_K_compare_arr = potential_to_real(th_sensor_10min_K_compare, pres_sensor_10min_pa_compare,
-                                                        epw_staPre_Pa_all)
-    real_sensor_10min_K_compare = pd.DataFrame(real_sensor_10min_K_compare_arr,
-                                                  index=th_sensor_10min_K_compare.index,
-                                                    columns=th_sensor_10min_K_compare.columns)
-    th_sensor_10min_c_compare = th_sensor_10min_K_compare - 273.15
-    real_sensor_10min_c_compare = real_sensor_10min_K_compare - 273.15
-    return th_sensor_10min_c_compare, real_sensor_10min_c_compare
-
 def potential_to_real(potentialProf_K, presProf_pa, epw_staPre_Pa_all):
     '''
     Both potentialProf_K and presProf_pa are 10 mins timestep from '2002-06-10 01:00:00' to '2002-07-09 22:00:00'
@@ -865,7 +820,8 @@ def potential_to_real(potentialProf_K, presProf_pa, epw_staPre_Pa_all):
         time_hour = time.replace(minute=0, second=0)
         #from epw_staPre_Pa_all find the corresponding pressure according to time_hour (hourly based comparison)
         # find the corresponding pressure
-        corr_p0 = epw_staPre_Pa_all.loc[time_hour.strftime('%m-%d %H:%M:%S')]
+        corr_p0 = epw_staPre_Pa_all[time_hour]
+        # corr_p0 = epw_staPre_Pa_all.loc[time_hour.strftime('%m-%d %H:%M:%S')]
         #pres.shape(6,),potentialProf_K.iloc[i, :].shape(6,), corr_p0 is one number
         # based on element wise calculation, calculate realProf_K.iloc[i, :]
         # real = potential * (pres / p0) ** 0.286
