@@ -33,8 +33,8 @@ def run_ep_api():
     coordination.ep_api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    prompt = 'Please enter the configuration file name: [case7_Vancouver_Rural_bypass.ini]'
-    config_file_name = input(prompt) or 'case7_Vancouver_Rural_bypass.ini'
+    prompt = 'Please enter the configuration file name: [case8_CAPITOUL_MNP_bypass.ini]'
+    config_file_name = input(prompt) or 'case8_CAPITOUL_MNP_bypass.ini'
     coordination.read_ini(config_file_name)
     time_step_handler_ver = 1.1
     # case_name = '_BSPA_Ue2_bypass_'
