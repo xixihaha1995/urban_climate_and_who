@@ -86,10 +86,6 @@ else:
     comparison.to_csv(os.path.join(save_intermediate_path, comparison_file))
 
 # 4. Calculate CVRMSE, Plot the comparison
-# 'Air Temperature (1.20m)', 'Air Temperature (26.00m)',
-#        'Acoustic Temperature (Corrected) (28.80m)', 'ECCC_dryBulAirTemp_C',
-#        'ECCC_staPre_Pa', 'NCDC_dryBulAirTemp_C', 'NCDC_staPre_Pa',
-#        'TopForcing_Bypass_ECCC_RealEPW'
 all_df_column_names = ['Urban19m', 'Rural_MON',
                           'VCWG_Direct', 'VCWG_Real_P0', 'VCWG_Real_EPW',
                           'Bypass_Direct', 'Bypass_Real_P0', 'Bypass_RealEPW']
