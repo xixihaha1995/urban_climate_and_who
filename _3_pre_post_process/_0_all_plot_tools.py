@@ -694,8 +694,6 @@ def general_time_series_comparision(df, txt_info, CVRMSE_display = True):
     for i in range(0, len(df.columns)):
         if 'Urban' in df.columns[i]:
             ax.plot(df.iloc[:,i], label= df.columns[i], color='black', linestyle='--')
-        elif 'Rural' in df.columns[i]:
-            ax.plot(df.iloc[:,i], label= df.columns[i], color='black', linestyle=':')
         else:
             ax.plot(df.iloc[:,i], label= df.columns[i])
     # make legend located at the best position
@@ -723,11 +721,11 @@ def add_date_index(df, start_date, time_interval_sec):
     df is [date, sensible/latent]
     '''
     date = pd.date_range(start_date, periods=len(df), freq='{}S'.format(time_interval_sec))
-    date = pd.Series(date)
-    if date[0].year % 4 == 0:
-        # for date later than Feb 29, we add 1 day to the date
+    date = pd.Series(pd.to_datetime(date))
+    year = date[0].year
+    this_year_feb_29 = pd.to_datetime(str(year) + '-02-29')
+    if year % 4 == 0 and (date == this_year_feb_29).any():
         date = date.apply(lambda x: x + pd.Timedelta(days=1) if x >= pd.Timestamp(date[0].year, 2, 29) else x)
-    # update dataframe index
     df.index = date
     return df
 

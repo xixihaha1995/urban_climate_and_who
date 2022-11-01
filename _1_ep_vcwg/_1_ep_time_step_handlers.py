@@ -20,7 +20,10 @@ def api_to_csv(state):
     newFile.close()
 def run_vcwg():
     # BUBBLE, CAPITOUL, Vancouver
-    epwFileName = coordination.config['_1_ep_time_step_handlers.py']['epwFileName']
+    if 'None' in coordination.config['_1_ep_time_step_handlers.py']['epwFileName']:
+        epwFileName = None
+    else:
+        epwFileName = coordination.config['_1_ep_time_step_handlers.py']['epwFileName']
     # epwFileName = 'Basel.epw'
     # epwFileName = 'Vancouver718920CorrectTime.epw'
     # epwFileName = 'Interpolated_Vancouver718920CorrectTime.epw'
@@ -40,7 +43,7 @@ def run_vcwg():
     # case = '_BSPA_Ue2'
     # case = 'BUBBLE_Ue1'
     # case = 'BUBBLE_Ue2'
-    case = coordination.config['_1_ep_time_step_handlers.py']['case']
+    vcwg_case = coordination.config['_1_ep_time_step_handlers.py']['vcwg_case']
     # case = '_case7_Vancouver_Rural'
     # case = '_case7_Vancouver_Rural_Interpolated'
     # # '''
@@ -52,7 +55,7 @@ def run_vcwg():
     # case = '_case7_Vancouver_LCZ1'
     # # Initialize the UWG object and run the simulation
 
-    VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
+    VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, vcwg_case)
     VCWG.run()
 
 def overwrite_ep_weather(state):

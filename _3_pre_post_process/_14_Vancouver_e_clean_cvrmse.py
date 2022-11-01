@@ -13,6 +13,8 @@ processed_measurements = 'Vancouver_measurements_' + pd.to_datetime(compare_star
                          + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
 measure_results_folder = r'..\_4_measurements\Vancouver'
 save_intermediate_path = measure_results_folder + '\Intermediate' + '\which_epw'
+if not os.path.exists(save_intermediate_path):
+    os.makedirs(save_intermediate_path)
 
 # 2. Get the associated Urban and Rural
 if os.path.exists(os.path.join(measure_results_folder, processed_measurements)):
@@ -73,144 +75,77 @@ else:
     measurements.to_csv(os.path.join(measure_results_folder, processed_measurements))
 
 # 3. Specify which "model" to compare, Rural, only-vcwg1, only-vcwg2, or Bypass (TempProfile, PresProfile)
-prediction_columns = ['TopForcing_Bypass_NCDC_RealEPW', 'TopForcing_Bypass_ECCC_RealEPW']
+if os.path.exists(os.path.join(save_intermediate_path, "comparison.csv")):
+    comparison = pd.read_csv(os.path.join(save_intermediate_path, "comparison.csv"), index_col=0)
+else:
+    comparison = measurements.copy()
+    prediction_columns = ['Rural_Bypass_NCDC_RealEPW', 'Rural_Bypass_ECCC_RealEPW']
 
-domain_height = 20
-vcwg_heights_profile = [0.5 + i for i in range(domain_height)]
-sensor_heights = [1.2]
-target_interval = [30]
-p0 = 100000
-selected_prediction_idx = [1]
-cases_outputs = r'..\\_2_cases_input_outputs\\_07_vancouver\\'
+    domain_height = 20
+    vcwg_heights_profile = [0.5 + i for i in range(domain_height)]
+    sensor_heights = [1.2]
+    target_interval = [30]
+    p0 = 100000
+    selected_prediction_idx = [1]
+    cases_outputs = r'..\\_2_cases_input_outputs\\_07_vancouver\\'
 
-this_case = 'TopForcing_ECCC'
-prediction_folder_prefix = cases_outputs + this_case
-bypass_folder = f'{prediction_folder_prefix}\\c_vcwg_ep_saving'
-bypass_filename_prefix = 'ver1.1\\Vancouver_TopForcing_ECCC_Bypass'
-epw_staPre_Pa_all = measurements['ECCC_staPre_Pa']
-bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C = \
-    plt_tools.excel_to_direct_real_p0_real_epw(bypass_filename_prefix, bypass_folder,
-                                                  vcwg_heights_profile, sensor_heights, target_interval,p0,
-                                                    compare_start_time,compare_end_time, epw_staPre_Pa_all,
-                                               mapped_indices = selected_prediction_idx,)
-measurements['TopForcing_Bypass_ECCC_RealEPW'] = bypass_real_epw_lst_C[0]
-
-# this_case = 'TopForcing_NCDC'
-# prediction_folder_prefix = cases_outputs + this_case
-# bypass_folder = f'{prediction_folder_prefix}\\c_vcwg_ep_saving'
-# bypass_filename_prefix = 'ver1.1\\Vancouver_TopForcing_ECCC_Bypass'
-# epw_staPre_Pa_all = measurements['ECCC_staPre_Pa']
-# bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C = \
-#     plt_tools.excel_to_direct_real_p0_real_epw(bypass_filename_prefix, bypass_folder,
-#                                                   vcwg_heights_profile, sensor_heights, target_interval,p0,
-#                                                     compare_start_time,compare_end_time, epw_staPre_Pa_all,
-#                                                mapped_indices = selected_prediction_idx,)
-# measurements['TopForcing_Bypass_ECCC_RealEPW'] = bypass_real_epw_lst_C[0]
+    this_case = 'Rural_ECCC'
+    prediction_folder_prefix = cases_outputs + this_case
+    bypass_folder = f'{prediction_folder_prefix}\\c_vcwg_ep_saving'
+    bypass_filename_prefix = 'ver1.1\\Vancouver_Rural_ECCC_Bypass'
+    epw_staPre_Pa_all = measurements['ECCC_staPre_Pa']
+    epw_staPre_Pa_all.index = pd.to_datetime(epw_staPre_Pa_all.index)
+    bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C = \
+        plt_tools.excel_to_direct_real_p0_real_epw(bypass_filename_prefix, bypass_folder,
+                                                      vcwg_heights_profile, sensor_heights, target_interval,p0,
+                                                        compare_start_time,compare_end_time, epw_staPre_Pa_all,
+                                                   mapped_indices = selected_prediction_idx,)
+    comparison['Rural_Bypass_ECCC_RealEPW'] = bypass_real_epw_lst_C[0]
 
 
-# prediction_folder_prefix = r'..\\_2_cases_input_outputs\\_07_vancouver\\Rural_Refined_SmallOffice_4C_CorrectTime'
-# only_ep_folder= f'{prediction_folder_prefix}\\a_ep_saving'
-# only_vcwg_folder = f'{prediction_folder_prefix}\\b_vcwg_saving'
-# bypass_folder = f'{prediction_folder_prefix}\\c_vcwg_ep_saving'
-# epw_atm_filename = r'Interpolated_Vancouver718920CorrectTime'
-#
-# only_ep_filename_prefix = 'Vancouver_RuralCorrectTime_only_ep_2008_July'
-# only_vcwg_filename_prefix = 'Vancouver_Rural_CorrectTime_only_vcwg_2008_Jul'
-# bypass_filename_prefix = 'ver1.1\\Vancouver_Rural_Interpolated_ByPass_2008Jul'
-#
+    this_case = 'Rural_Refined_SmallOffice_4C_CorrectTime'
+    prediction_folder_prefix = cases_outputs + this_case
+    bypass_folder = f'{prediction_folder_prefix}\\c_vcwg_ep_saving'
+    bypass_filename_prefix = 'ver1.1\\Vancouver_Rural_Interpolated_ByPass_2008Jul'
+    epw_staPre_Pa_all = measurements['NCDC_staPre_Pa']
+    epw_staPre_Pa_all.index = pd.to_datetime(epw_staPre_Pa_all.index)
+    bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C = \
+        plt_tools.excel_to_direct_real_p0_real_epw(bypass_filename_prefix, bypass_folder,
+                                                      vcwg_heights_profile, sensor_heights, target_interval,p0,
+                                                        compare_start_time,compare_end_time, epw_staPre_Pa_all,
+                                                   mapped_indices = selected_prediction_idx,)
+    comparison['Rural_Bypass_NCDC_RealEPW'] = bypass_real_epw_lst_C[0]
+    # save measurements into intermediate folder
+    comparison.to_csv(os.path.join(save_intermediate_path, "comparison.csv"))
 
-# p0 = 100000
-# sensor_heights = [1.2, 26]
-# target_interval = [30,30]
-# selected_prediction_idx = [1,-1]
-# # The rural data looks is like 5 hours later than actual time
-# # Read measured then convert to target interval
-# ss4_tower_ori_30min = pd.read_csv(os.path.join(measure_results_folder, ss4_tower_ori_filename),
-#                                             index_col=0, parse_dates=True)
-# #interpolate the missing data
-# ss4_tower_ori_30min = ss4_tower_ori_30min.interpolate(method='linear')
-# ss4_tower_ori_30min = ss4_tower_ori_30min.loc[compare_start_time:compare_end_time]
-# epw_all_dirty = pd.read_csv( f'{prediction_folder_prefix}\\{epw_atm_filename}.epw',
-#                                  skiprows= 8, header= None, index_col=None,)
-# epw_all_clean = plt_tools.clean_epw(epw_all_dirty,
-#                                                start_time = compare_start_time)
-# epw_staPre_Pa_all = epw_all_clean.iloc[:, 9]
-# epw_staPre_Pa_all.index = pd.to_datetime(epw_staPre_Pa_all.index)
-# epw_staPre_Pa_all.index = epw_staPre_Pa_all.index.strftime('%m-%d %H:%M:%S')
-#
-# epw_dryBulAirTemp_C_all = epw_all_clean.iloc[:, 6]
-# epw_dryBulAirTemp_C_all.index = pd.to_datetime(epw_dryBulAirTemp_C_all.index)
-# epw_dryBulAirTemp_C_hourly = epw_dryBulAirTemp_C_all.loc[compare_start_time:compare_end_time]
-# # interpolate hourly data to 30 min
-# epw_dryBulAirTemp_C_30min = epw_dryBulAirTemp_C_hourly.resample('30min').interpolate()
-# # Measurements: 2,6,20m measured data, convert to target interval (hourly, 5min)
-# measure_tdb_c_1p2m_30min = ss4_tower_ori_30min.iloc[:, 0]
-# measure_tdb_c_26m_30min = ss4_tower_ori_30min.iloc[:, 1]
-# # save
-# if not os.path.exists(save_intermediate_path):
-#     os.makedirs(save_intermediate_path)
-# measure_tdb_c_1p2m_30min.to_csv(os.path.join(save_intermediate_path, 'measure_tdb_c_1p2m_30min.csv'))
-# measure_tdb_c_26m_30min.to_csv(os.path.join(save_intermediate_path, 'measure_tdb_c_26m_30min.csv'))
-#
-#
-# # Predictions: Read only EP, get 1.2, 26(target interval), to direct_predict
-# debug_only_ep_5min = pd.read_excel(f'{only_ep_folder}\\{only_ep_filename_prefix}_debugging_canyon.xlsx', header=0, index_col=0)
-# only_ep_degC_1p2_26m_30min = debug_only_ep_5min.iloc[:, 4].resample('30T').mean() - 273.15
-# only_ep_degC_1p2_26m_30min.to_csv(os.path.join(save_intermediate_path, 'only_ep_degC_1p2_26m_30min.csv'))
-# # Read only VCWG (2, 6, 20m), to direct_predict, real_p0, real_epw
-# only_vcwg_direct_lst_C, only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C = \
-#     plt_tools.excel_to_direct_real_p0_real_epw(only_vcwg_filename_prefix, only_vcwg_folder,
-#                                                vcwg_heights_profile, sensor_heights, target_interval,p0,
-#                                                compare_start_time,compare_end_time, epw_staPre_Pa_all,
-#                                                mapped_indices = selected_prediction_idx)
-# # Read Bypass (2, 6, 20m), to direct_predict, real_p0, real_epw
-# bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C = \
-#     plt_tools.excel_to_direct_real_p0_real_epw(bypass_filename_prefix, bypass_folder,
-#                                                   vcwg_heights_profile, sensor_heights, target_interval,p0,
-#                                                     compare_start_time,compare_end_time, epw_staPre_Pa_all,
-#                                                mapped_indices = selected_prediction_idx,
-#                                                )
-# #pickle
-# with open(os.path.join(save_intermediate_path, 'only_vcwg_direct_lst_C.pickle'), 'wb') as f:
-#     pickle.dump(only_vcwg_direct_lst_C, f)
-# with open(os.path.join(save_intermediate_path, 'only_vcwg_real_p0_lst_C.pickle'), 'wb') as f:
-#     pickle.dump(only_vcwg_real_p0_lst_C, f)
-# with open(os.path.join(save_intermediate_path, 'only_vcwg_real_epw_lst_C.pickle'), 'wb') as f:
-#     pickle.dump(only_vcwg_real_epw_lst_C, f)
-# with open(os.path.join(save_intermediate_path, 'bypass_direct_lst_C.pickle'), 'wb') as f:
-#     pickle.dump(bypass_direct_lst_C, f)
-# with open(os.path.join(save_intermediate_path, 'bypass_real_p0_lst_C.pickle'), 'wb') as f:
-#     pickle.dump(bypass_real_p0_lst_C, f)
-# with open(os.path.join(save_intermediate_path, 'bypass_real_epw_lst_C.pickle'), 'wb') as f:
-#     pickle.dump(bypass_real_epw_lst_C, f)
-# # For 1.2m, 26m:
-# #   For ep, vcwg, bypass:
-# #       calculate the CVRMSE for direct_predict, real_p0, real_epw
-# #Create one 3d array, 0th axis dims: 2 (1.2 m, 26m heights) ,
-# # 1st axis dims: 3 (ep, vcwg, bypass), 2nd axis dims: 3 (direct_predict, real_p0, real_epw)
-# cvrmse_3d = plt_tools.organize_Vancouver_cvrmse(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
-#                              epw_dryBulAirTemp_C_30min,
-#                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
-#                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C)
-# print("CVRMSE (%), (Rural, OnlyVCWG, Bypass)")
-# print(f'1.2m, direct: {cvrmse_3d[0, :, 0]}')
-# print(f'1.2m, real_p0: {cvrmse_3d[0, :, 1]}')
-# print(f'1.2m, real_epw: {cvrmse_3d[0, :, 2]}')
-# print(f'26m, direct: {cvrmse_3d[1, :, 0]}')
-# print(f'26m, real_p0: {cvrmse_3d[1, :, 1]}')
-# print(f'26m, real_epw: {cvrmse_3d[1, :, 2]}')
-#
-# debug_only_ep_5min = pd.read_excel(f'{only_ep_folder}\\{only_ep_filename_prefix}_debugging_canyon.xlsx', header=0, index_col=0)
-# debug_only_vcwg_5min = pd.read_excel(f'{only_vcwg_folder}\\{only_vcwg_filename_prefix}_debugging_canyon.xlsx',
-#                                      header=0, index_col=0)
-# debug_bypass = pd.read_excel(f'{bypass_folder}\\{bypass_filename_prefix}_debugging_canyon.xlsx',
-#                                 header=0, index_col=0)
-# plt_tools.save_TwoHeights_debug(measure_tdb_c_1p2m_30min,measure_tdb_c_26m_30min,
-#                              epw_dryBulAirTemp_C_30min,
-#                              only_vcwg_direct_lst_C,only_vcwg_real_p0_lst_C, only_vcwg_real_epw_lst_C,
-#                              bypass_direct_lst_C, bypass_real_p0_lst_C, bypass_real_epw_lst_C,
-#                               prediction_folder_prefix,
-#                               debug_only_ep_5min, debug_only_vcwg_5min, debug_bypass,
-#                                 debug_file_name = epw_atm_filename)
-#
-# plt_tools.shared_x_plot(prediction_folder_prefix, canyon_name='1p2m Direct',debug_file_name = epw_atm_filename)
+# 4. Calculate CVRMSE, Plot the comparison
+# 'Air Temperature (1.20m)', 'Air Temperature (26.00m)',
+#        'Acoustic Temperature (Corrected) (28.80m)', 'ECCC_dryBulAirTemp_C',
+#        'ECCC_staPre_Pa', 'NCDC_dryBulAirTemp_C', 'NCDC_staPre_Pa',
+#        'TopForcing_Bypass_ECCC_RealEPW'
+all_df_column_names = ['Urban1.2m', 'Rural_NCDC', 'Rural_ECCC',
+                       'Rural_Bypass_NCDC_RealEPW',
+                       'Rural_Bypass_ECCC_RealEPW']
+rural_ncdc_cvrmse = plt_tools.bias_rmse_r2(comparison['Air Temperature (1.20m)'], comparison['NCDC_dryBulAirTemp_C'],
+                                           'Rural_NCDC')
+rural_eccc_cvrmse = plt_tools.bias_rmse_r2(comparison['Air Temperature (1.20m)'], comparison['ECCC_dryBulAirTemp_C'],
+                                             'Rural_ECCC')
+bypass_ncdc_cvrmse = plt_tools.bias_rmse_r2(comparison['Air Temperature (1.20m)'],
+                                            comparison['Rural_Bypass_NCDC_RealEPW'],
+                                            'Rural_Bypass_NCDC_RealEPW')
+bypass_eccc_cvrmse = plt_tools.bias_rmse_r2(comparison['Air Temperature (1.20m)'],
+                                            comparison['Rural_Bypass_ECCC_RealEPW'],
+                                            'Rural_Bypass_ECCC_RealEPW')
+
+all_df_lst = [comparison['Air Temperature (1.20m)'],
+              comparison['NCDC_dryBulAirTemp_C'], comparison['ECCC_dryBulAirTemp_C'],
+              comparison['Rural_Bypass_NCDC_RealEPW'],
+              comparison['Rural_Bypass_ECCC_RealEPW']]
+
+all_df_in_one = plt_tools.merge_multiple_df(all_df_lst, all_df_column_names)
+all_df_in_one.index = pd.to_datetime(all_df_in_one.index)
+
+case_name = (f"July_2008, Urban Heat Island Effect", "Date", "Temperature (C)")
+txt_info = [case_name, rural_ncdc_cvrmse, rural_eccc_cvrmse, bypass_ncdc_cvrmse
+            , bypass_eccc_cvrmse]
+plt_tools.general_time_series_comparision(all_df_in_one, txt_info)
