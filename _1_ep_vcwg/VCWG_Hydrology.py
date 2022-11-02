@@ -623,7 +623,7 @@ class VCWG_Hydro(object):
                 # self.BEM[i].building.BEMCalc(canTemp,canHum,self.BEM[i],MeteoData,ParCalculation,self.simTime,self.Geometry_m,
                 #                              self.FractionsRoof,self.EBCanyon.SWR, it)
                 self.BEM[i] = _0_vcwg_ep_coordination.BEMCalc_Element(self.UCM.VerticalProfUrban,
-                                            self.BEM[i], it, self.simTime, self.FractionsRoof, self.Geometry_m)
+                                            self.BEM[i], it, self.simTime, self.FractionsRoof, self.Geometry_m, MeteoData)
 
                 # Electricity consumption of urban area [W]
                 self.BEM[i].ElecTotal = self.BEM[i].building.ElecTotal * self.BEM[i].fl_area

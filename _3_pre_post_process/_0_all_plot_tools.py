@@ -746,7 +746,9 @@ def save_data_to_csv(saving_data, file_name,case_name, start_time, time_interval
     # 'debugging_canyon' includes wallSun, wallShade, floor, roof, sensWaste(W/per unit footprint area),
     # canTemp_ep, canTemp_vcwg
         df.columns = ['s_wall_Text_K', 'n_wall_Text_K', 'floor_K', 'roof_K', 'sensWaste_w_footprint_m2',
-                      'canTemp_ep_K', 'canTemp_vcwg_K','overwriting_seconds','overwriten_seconds']
+                      'canTemp_ep_K', 'canTemp_vcwg_K','overwriting_seconds','overwriten_seconds',
+                      'TempProf_cur[sensor_idx]', 'PresProf_cur[sensor_idx]',
+                      'MeteoData.Tatm', 'MeteoData.Pre']
     else:
         df.columns = [f'(m) {file_name}_' + str(0.5 + i) for i in range(len(df.columns))]
     df = add_date_index(df, start_time, time_interval_sec)

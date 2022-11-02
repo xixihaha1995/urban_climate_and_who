@@ -92,7 +92,7 @@ def init_saving_data(_in_vcwg_ep_saving_path = '_2_saved\BUBBLE_VCWG-EP-detailed
 
     vcwg_ep_saving_path = _in_vcwg_ep_saving_path
 
-def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_m):
+def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_m, MeteoData):
     """
     type(self.BEM[i])
     <class 'BEMDef.BEMDef'>
@@ -178,10 +178,14 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     BEM.wallShade.Text = ep_wallShade_Text_K
     BEM.wallShade.Tint = ep_wallShade_Tint_K
 
+    sensor_idx = int(config['_0_vcwg_ep_coordination.py']['sensor_idx'])
+
     saving_data['debugging_canyon'].append([BEM.wallSun.Text,
                                             BEM.wallShade.Text, BEM.mass.Text, ep_roof_Text_K,
                                             BEM_building.sensWaste, ep_oaTemp_C + 273.15, canTemp,
-                                            overwriting_time_index, overwriten_time_index])
+                                            overwriting_time_index, overwriten_time_index,
+                                            TempProf_cur[sensor_idx], PresProf_cur[sensor_idx],
+                                            MeteoData.Tatm,MeteoData.Pre])
 
     saving_data['s_wall_Text_K_n_wall_Text_K'].append([BEM.wallSun.Text, BEM.wallShade.Text])
 
