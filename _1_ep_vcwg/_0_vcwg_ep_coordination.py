@@ -180,12 +180,6 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
 
     sensor_idx = int(config['_0_vcwg_ep_coordination.py']['sensor_idx'])
 
-    saving_data['debugging_canyon'].append([BEM.wallSun.Text,
-                                            BEM.wallShade.Text, BEM.mass.Text, ep_roof_Text_K,
-                                            BEM_building.sensWaste, ep_oaTemp_C + 273.15, canTemp,
-                                            overwriting_time_index, overwriten_time_index,
-                                            TempProf_cur[sensor_idx], PresProf_cur[sensor_idx],
-                                            MeteoData.Tatm,MeteoData.Pre])
 
     saving_data['s_wall_Text_K_n_wall_Text_K'].append([BEM.wallSun.Text, BEM.wallShade.Text])
 
@@ -242,5 +236,12 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     BEM_building.fluxMass = 0
     # Notify to the downstream (VCWG upload canyon info to Parent) to start
     sem0.release()
+    saving_data['debugging_canyon'].append([BEM.wallSun.Text,
+                                            BEM.wallShade.Text, BEM.mass.Text, ep_roof_Text_K,
+                                            BEM_building.sensWaste, ep_oaTemp_C + 273.15, canTemp,
+                                            overwriting_time_index, overwriten_time_index,
+                                            TempProf_cur[sensor_idx], PresProf_cur[sensor_idx],
+                                            MeteoData.Tatm,MeteoData.Pre])
+
 
     return BEM
