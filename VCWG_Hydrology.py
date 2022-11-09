@@ -638,10 +638,10 @@ class VCWG_Hydro(object):
                 # Calculate one-point temperature and humidity in the canyon: Using 1-D profiles in the canyon
                 canTemp = numpy.mean(self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u])
                 canHum = numpy.mean(self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u])
-                ### modified
-                self.BEM[i] = coordination.BEMCalc_Element(self.UCM.VerticalProfUrban,
-                                                                      self.BEM[i], it, self.simTime, self.FractionsRoof,
-                                                                      self.Geometry_m, MeteoData)
+                ### original
+                self.BEM[i].building.BEMCalc(canTemp,canHum,self.BEM[i],MeteoData,ParCalculation,self.simTime,self.Geometry_m,
+                                             self.FractionsRoof,self.EBCanyon.SWR, self.UCM.VerticalProfUrban, it)
+
                 ###
                 # Electricity consumption of urban area [W]
                 self.BEM[i].ElecTotal = self.BEM[i].building.ElecTotal * self.BEM[i].fl_area
