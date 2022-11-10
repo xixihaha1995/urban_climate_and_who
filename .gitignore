@@ -12,7 +12,7 @@ epluszsz.csv
 !A_prepost_processing/measurements/*.zip
 *.pkl
 *.pyc
-*.png
+#*.png
 *.zip
 EPTEMP-00000001/
 *.bnd
