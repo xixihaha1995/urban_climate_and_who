@@ -1,0 +1,35 @@
+Shading:Building:Detailed,
+  Shading Surface 1 South,                      !- Name
+  ,                                       !- Transmittance Schedule Name
+  ,                                       !- Number of Vertices
+  -30.089, -9, 15,                        !- X,Y,Z Vertex 1 {m}
+  -30.089, -9, 0,                         !- X,Y,Z Vertex 2 {m}
+  49.911, -9, 0,                          !- X,Y,Z Vertex 3 {m}
+  49.911, -9, 15;                         !- X,Y,Z Vertex 4 {m}
+
+Shading:Building:Detailed,
+  Shading Surface 2 East,                      !- Name
+  ,                                       !- Transmittance Schedule Name
+  ,                                       !- Number of Vertices
+  61.911, 0, 15,                          !- X,Y,Z Vertex 1 {m}
+  61.911, 0, 0,                           !- X,Y,Z Vertex 2 {m}
+  61.911, 45.2738, 0,                     !- X,Y,Z Vertex 3 {m}
+  61.911, 45.2738, 15;                    !- X,Y,Z Vertex 4 {m}
+
+Shading:Building:Detailed,
+  Shading Surface 3 North,                      !- Name
+  ,                                       !- Transmittance Schedule Name
+  ,                                       !- Number of Vertices
+  -3, 45.2738, 15,                        !- X,Y,Z Vertex 1 {m}
+  61.911, 45.2738, 15,                    !- X,Y,Z Vertex 2 {m}
+  61.911, 45.2738, 0,                     !- X,Y,Z Vertex 3 {m}
+  -3, 45.2738, 0;                         !- X,Y,Z Vertex 4 {m}
+
+Shading:Building:Detailed,
+  Shading Surface 4 West,                      !- Name
+  ,                                       !- Transmittance Schedule Name
+  ,                                       !- Number of Vertices
+  -3, 45.2738, 15,                        !- X,Y,Z Vertex 1 {m}
+  -3, 45.2738, 0,                         !- X,Y,Z Vertex 2 {m}
+  -3, 0, 0,                               !- X,Y,Z Vertex 3 {m}
+  -3, 0, 15;                              !- X,Y,Z Vertex 4 {m}
