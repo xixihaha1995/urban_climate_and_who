@@ -56,7 +56,7 @@ class VCWG_Hydro(object):
 
         # Calculate view factors
         RadFun = RadiationFunctions()
-        self.ViewFactor, ViewFactorPoint = RadFun.VFUrbanCanyon(ViewFactorCal_Param, self.Geometry_m, self.geometry,
+        self. ViewFactor, ViewFactorPoint = RadFun.VFUrbanCanyon(ViewFactorCal_Param, self.Geometry_m, self.geometry,
                                                                 self.Person, self.ParTree,self.ViewFactorFileName)
 
     def read_epw(self):

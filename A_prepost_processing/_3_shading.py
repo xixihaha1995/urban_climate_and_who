@@ -25,9 +25,9 @@ def plot_one_subfigure(data, category, ax):
     y5 = data[[col for col in data.columns if 'Bypass_' + category in col]] - 273.15
     ax.plot(x, y1, label='Rural', color='black')
     ax.plot(x, y3, label='VCWG', linestyle='--')
-    ax.plot(x, y2, label='EP')
-    ax.plot(x, y4, label='EP-With-Shading')
-    ax.plot(x, y5, label='EP-With-VCWG')
+    ax.plot(x, y2, label='EP-Bare')
+    ax.plot(x, y4, label='EP-Shading')
+    ax.plot(x, y5, label='Bypass')
     ax.set_title(category)
     ax.set_ylabel(' Temperature (C)')
     ax.legend()
