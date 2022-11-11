@@ -163,7 +163,7 @@ def mediumOffice_get_ep_results(state):
             os.getpid()
             os.kill(os.getpid(), signal.SIGTERM)
 
-    if get_ep_results_inited_handle and coordination.ep_api.exchange.api_data_fully_ready(state):
+    if (get_ep_results_inited_handle ) and (not coordination.ep_api.exchange.warmup_flag(state)):
         global ep_last_call_time_seconds, zone_floor_area_m2
         zone_floor_area_m2 = coordination.ep_api.exchange.get_internal_variable_value(state, zone_flr_area_handle)
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)

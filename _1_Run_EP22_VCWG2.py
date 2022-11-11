@@ -27,14 +27,15 @@ def run_vcwg():
 
 def run_ep():
     time_step_handlers.save_path_clean = False
+    time_step_handlers.get_ep_results_inited_handle = False
     idfFileName = coordination.config['shading']['idfFileName']
     epwFileName = coordination.config['shading']['epwFileName']
     coordination.ep_api.state_manager.reset_state(coordination.state)
     state = coordination.ep_api.state_manager.new_state()
     coordination.state = state
-    coordination.psychrometric=coordination.ep_api.functional.psychrometrics(coordination.state)
+    coordination.psychrometric=coordination.ep_api.functional.psychrometrics(state)
     if 'mediumOffice' in coordination.config['shading']['time_step_handlers']:
-        coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(coordination.state,
+        coordination.ep_api.runtime.callback_end_system_timestep_after_hvac_reporting(state,
                                                                                       time_step_handlers.mediumOffice_get_ep_results)
     coordination.ep_api.exchange.request_variable(state, "HVAC System Total Heat Rejection Energy", "SIMHVAC")
     coordination.ep_api.exchange.request_variable(state, "Site Wind Speed", "ENVIRONMENT")

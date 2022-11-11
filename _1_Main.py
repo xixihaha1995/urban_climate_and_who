@@ -12,12 +12,12 @@ def for_loop_all_ini():
     ini_files = [
         "EP_ShadingSurface.ini",
                  "EP_Surface.ini",
-                 "VCWG_ShadingSurface.ini",
+                 # "VCWG_ShadingSurface.ini",
     ]
     for ini_file in ini_files:
         read_ini(ini_file)
-        ByPass.shading_init(config)
-        print(f'Finished {ini_file}')
-
+        # ByPass.shading_init(config)
+        p = Process(target=ByPass.shading_init, args=(config,))
+        p.start()
 if __name__ == '__main__':
     for_loop_all_ini()
