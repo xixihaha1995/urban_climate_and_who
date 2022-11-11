@@ -10,65 +10,17 @@ def init_ep_api():
     ep_api=EnergyPlusAPI()
     psychrometric =None
 
-def read_ini(input_config, input_uwgVariable, input_uwgVariableValue):
-    global config, project_path, sensor_heights, uwgVariable, uwgVariableValue
+def read_ini(input_config):
+    global config, project_path, sensor_heights, uwgVariable, uwgVariableValue, \
+        theme, data_saving_path, mediumOfficeBld_floor_area_m2
     # find the project path
     project_path = os.path.dirname(os.path.abspath(__file__))
     config = input_config
-    uwgVariable = input_uwgVariable
-    uwgVariableValue = input_uwgVariableValue
-    sensor_heights = [int(i) for i in config['_0_vcwg_ep_coordination.py']['sensor_height_meter'].split(',')]
-
-def init_semaphore_lock_settings():
-    global sem0, sem1, sem2, sem3
-    sem0 = threading.Semaphore(1)
-    sem1 = threading.Semaphore(0)
-    sem2 = threading.Semaphore(0)
-    sem3 = threading.Semaphore(0)
-    # sem0 VCWG calculates canyon data for EP
-    # sem1 EP download canyon data
-    # sem2 EP calculates sensHVAC, surface temperature
-    # sem3 VCWG download sensHVAC, surface temperature from EP
-def init_variables_for_vcwg_ep():
-    global vcwg_needed_time_idx_in_seconds,\
-        vcwg_canTemp_K, vcwg_canSpecHum_Ratio, vcwg_canPress_Pa, vcwg_wsp_mps, vcwg_wdir_deg,\
-        ep_indoorTemp_C, ep_indoorHum_Ratio, ep_sensCoolDemand_w_m2, ep_sensHeatDemand_w_m2, ep_coolConsump_w_m2, ep_heatConsump_w_m2,\
-        ep_elecTotal_w_m2_per_floor_area, ep_sensWaste_w_m2_per_floor_area, \
-        ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, \
-        ep_wallSun_Text_K, ep_wallSun_Tint_K,ep_wallShade_Text_K, ep_wallShade_Tint_K,\
-        midRiseApartmentBld_floor_area_m2, mediumOfficeBld_floor_area_m2, smallOfficeBld_floor_area_m2, time_step_version, ep_files_path,\
-        ep_oaTemp_C, overwriting_time_index, overwriten_time_index, count
-    count=0
-    vcwg_wsp_mps = 0
-    vcwg_wdir_deg = 0
-    midRiseApartmentBld_floor_area_m2 = 3135
-    smallOfficeBld_floor_area_m2 = 511
+    sensor_heights = [int(i) for i in config['shading']['sensor_height_meter'].split(',')]
+    theme = config['shading']['theme']
+    data_saving_path = os.path.join(project_path, 'A_prepost_processing', 'shading_saving',
+                                    f'{theme}.csv')
     mediumOfficeBld_floor_area_m2 = 4982
-    vcwg_needed_time_idx_in_seconds = 0
-    overwriting_time_index = 0
-    overwriten_time_index = 0
-    vcwg_canTemp_K = 300
-    vcwg_canSpecHum_Ratio = 0
-    vcwg_canPress_Pa = 0
-    ep_indoorTemp_C = 20
-    ep_indoorHum_Ratio = 0.006
-    ep_sensCoolDemand_w_m2 = 0
-    ep_sensHeatDemand_w_m2 = 0
-    ep_coolConsump_w_m2 = 0
-    ep_heatConsump_w_m2 = 0
-    ep_elecTotal_w_m2_per_floor_area = 0
-    ep_sensWaste_w_m2_per_floor_area = 0
-    ep_oaTemp_C = 7
-
-    ep_floor_Text_K = 300
-    ep_floor_Tint_K = 300
-    ep_roof_Text_K = 300
-    ep_roof_Tint_K = 300
-    ep_wallSun_Text_K = 300
-    ep_wallSun_Tint_K = 300
-    ep_wallShade_Text_K = 300
-    ep_wallShade_Tint_K = 300
-
 def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_m, MeteoData):
 
     global vcwg_needed_time_idx_in_seconds,\
@@ -225,14 +177,14 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
         str_variable = '0'
 
     data_saving_path = os.path.join(project_path, 'A_prepost_processing','sensitivity_saving',
-                                    config['_0_vcwg_ep_coordination.py']['site_location'],
+                                    config['_0_coordination.py']['site_location'],
                                     config['sensitivity']['theme'], f'{str_variable}.csv')
     global save_path_clean
     if os.path.exists(data_saving_path) and not save_path_clean:
         os.remove(data_saving_path)
         save_path_clean = True
     # start_time + accumulative_seconds
-    cur_datetime = datetime.datetime.strptime(config['_0_vcwg_ep_coordination.py']['start_time'], '%Y-%m-%d %H:%M:%S') + \
+    cur_datetime = datetime.datetime.strptime(config['_0_coordination.py']['start_time'], '%Y-%m-%d %H:%M:%S') + \
                       datetime.timedelta(seconds=vcwg_time_index_in_seconds - simTime.dt)
     domain_height = len(TempProf_cur)
     vcwg_heights_profile = np.array([0.5 + i for i in range(domain_height)])

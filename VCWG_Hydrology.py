@@ -28,7 +28,7 @@ from ReadDOE import readDOE
 from Material import Material
 from psychrometrics import HumFromRHumTemp
 from EPWGenerator import write_epw
-import _0_vcwg_ep_coordination as coordination
+import _0_coordination as coordination
 """
 Main VCWG script 
 Developed by Mohsen Moradi and Amir A. Aliabadi
@@ -176,14 +176,6 @@ class VCWG_Hydro(object):
         # Define BEM for each DOE type (read the fraction)
         # Open pickle file in binary form
         # refDOE, refBEM, refSchedule = readDOE(False)
-        # #multiprocessing safe open
-        # if coordination.uwgVariableValue > 0:
-        #     str_variable = 'positive' + str(abs(coordination.uwgVariableValue))
-        # elif coordination.uwgVariableValue < 0:
-        #     str_variable = 'negative' + str(abs(coordination.uwgVariableValue))
-        # else:
-        #     str_variable = '0'
-        # pklName = f'{coordination.uwgVariable}_{str_variable}readDOE.pkl'
         pklName = 'readDOE.pkl'
         readDOE_file = open(pklName, 'rb')
         refDOE = cPickle.load(readDOE_file)
@@ -639,10 +631,9 @@ class VCWG_Hydro(object):
                 canTemp = numpy.mean(self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u])
                 canHum = numpy.mean(self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u])
                 ### modified
-                self.BEM[i] = coordination.BEMCalc_Element(self.UCM.VerticalProfUrban,
-                                                                      self.BEM[i], it, self.simTime, self.FractionsRoof,
-                                                                      self.Geometry_m, MeteoData)
-                ###
+                self.BEM[i].building.BEMCalc(canTemp, canHum, self.BEM[i], MeteoData, ParCalculation, self.simTime,
+                                             self.Geometry_m,
+                                             self.FractionsRoof, self.EBCanyon.SWR, self.UCM.VerticalProfUrban, it)
                 # Electricity consumption of urban area [W]
                 self.BEM[i].ElecTotal = self.BEM[i].building.ElecTotal * self.BEM[i].fl_area
 

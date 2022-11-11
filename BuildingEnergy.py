@@ -1,8 +1,14 @@
+import datetime
+import os
+import numpy as np
+import _0_coordination as coordination
 
 from psychrometrics import psychrometrics, moist_air_density
 import logging
 import numpy
 import copy
+
+save_path_clean = False
 """
 Calculate building characteristics
 Developed by Mohsen Moradi and Amir A. Aliabadi
@@ -129,7 +135,8 @@ class Building(object):
     def is_near_zero(self,val,tol=1e-14):
         return abs(float(val)) < tol
 
-    def _deleted_BEMCalc(self,canTemp,canHum,BEM,MeteoData,ParCalculation,simTime,Geometry_m,FractionsRoof,SWR):
+    def BEMCalc(self,canTemp,canHum,BEM,MeteoData,ParCalculation,simTime,Geometry_m,FractionsRoof,SWR,
+                VerticalProfUrban, it):
 
         """
         ------
@@ -472,3 +479,48 @@ class Building(object):
         # Calculate total gas consumption per unit floor area [W m^-2] which is equal to gas consumption per unit floor area +
         # energy consumption for domestic hot water per unit floor area + energy consumption of the heating system per unit floor area
         self.GasTotal = BEM.Gas + (massFlorRateSWH*CpH20*(T_hot - MeteoData.waterTemp)/self.nFloor)/self.heatEff + self.heatConsump/self.nFloor
+
+        TempProf_cur = VerticalProfUrban.th
+        PresProf_cur = VerticalProfUrban.presProf
+        vcwg_canPress_Pa = np.mean(PresProf_cur[0:Geometry_m.nz_u])
+
+        sensor_heights = [int(i) for i in coordination.config['shading']['sensor_height_meter'].split(',')]
+        vcwg_time_index_in_seconds = (it + 1) * simTime.dt
+
+        data_saving_path = coordination.data_saving_path
+        global save_path_clean
+        if os.path.exists(data_saving_path) and not save_path_clean:
+            os.remove(data_saving_path)
+            save_path_clean = True
+        # start_time + accumulative_seconds
+        cur_datetime = datetime.datetime.strptime(coordination.config['shading']['start_time'],
+                                                  '%Y-%m-%d %H:%M:%S') + \
+                       datetime.timedelta(seconds=vcwg_time_index_in_seconds - simTime.dt)
+        domain_height = len(TempProf_cur)
+        vcwg_heights_profile = np.array([0.5 + i for i in range(domain_height)])
+        mapped_indices = [np.argmin(np.abs(vcwg_heights_profile - i)) for i in sensor_heights]
+
+        # if not exist, create the file and write the header
+        if not os.path.exists(data_saving_path):
+            os.makedirs(os.path.dirname(data_saving_path), exist_ok=True)
+            with open(data_saving_path, 'a') as f1:
+                # prepare the header string for different sensors
+                header_str = 'cur_datetime,WallshadeT,WalllitT,RoofT,canTemp_K,rh_%,vcwg_canPress_Pa,' \
+                             'senWaste,MeteoData.Tatm,MeteoData.Pre,'
+                for i in mapped_indices:
+                    header_str += 'TempProf_cur[%d],' % i + 'PresProf_cur[%d],' % i
+                header_str += '\n'
+                f1.write(header_str)
+
+        rh = 100 * coordination.psychrometric.relative_humidity_b(coordination.state, canTemp - 273.15,canHum,vcwg_canPress_Pa)
+        WallshadeT = BEM.wallShade.Text
+        WalllitT = BEM.wallSun.Text
+        RoofT = FractionsRoof.fimp*BEM.roofImp.Text+FractionsRoof.fveg*BEM.roofVeg.Text
+
+        with open(data_saving_path, 'a') as f1:
+            fmt1 = "%s," * 1 % (cur_datetime) + \
+                   "%.3f," * 9 % (WallshadeT, WalllitT, RoofT, canTemp, rh, vcwg_canPress_Pa,
+                                  self.sensWaste, MeteoData.Tatm, MeteoData.Pre) + \
+                   "%.3f," * 2 * len(mapped_indices) % tuple([TempProf_cur[i] for i in mapped_indices] + \
+                                                             [PresProf_cur[i] for i in mapped_indices]) + '\n'
+            f1.write(fmt1)
