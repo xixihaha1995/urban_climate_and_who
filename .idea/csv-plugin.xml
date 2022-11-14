@@ -17,6 +17,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\A_prepost_processing\sensitivity_saving\CAPITOUL\albedo\albedopositive0.25.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\A_prepost_processing\sensitivity_saving\CAPITOUL\canyonWidth9ToRoofWidth\Width_roof18.2.csv">
           <value>
             <Attribute>

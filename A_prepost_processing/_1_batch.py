@@ -31,27 +31,19 @@ def get_measurements():
     comparison.to_csv('measurements\\' + processed_measurements)
     return comparison
 
-def read_sql(theme,csv_file, report_name, table_name, row_name, col_name, offline_bool):
-    if not offline_bool:
-        if "heta_canyon" in theme:
-            ep_folder_name = theme + 'theta_canyon' + re.search(r'(.*)\.csv', csv_file).group(1)
-        else:
-            ep_folder_name = theme + re.search(r'(.*)\.csv', csv_file).group(1)
-        sql_path = os.path.join('..\\resources\\idf', ep_folder_name+'ep_outputs', 'eplusout.sql')
-    else:
-        csv_name = re.search(r'(.*)\.csv', csv_file).group(1)
-        current_path = os.path.join('.\\offline_saving\\CAPITOUL', theme)
-        # from all the folders in the current path, find the one that contains the csv file
-        for folder in os.listdir(current_path):
-            if csv_name in folder and 'ep_outputs' in folder:
-                sql_path = os.path.join(current_path, folder, 'eplusout.sql')
-                break
+def read_sql(csv_file):
+    csv_name = re.search(r'(.*)\.csv', csv_file).group(1)
+    current_path = '.\\shading_Bypass_saving'
+    for folder in os.listdir(current_path):
+        if csv_name in folder and 'ep_outputs' in folder:
+            sql_path = os.path.join(current_path, folder, 'eplusout.sql')
+            break
     if not os.path.exists(sql_path):
         return None
     abs_sql_path = os.path.abspath(sql_path)
     sql_uri = '{}?mode=ro'.format(pathlib.Path(abs_sql_path).as_uri())
-    query = f"SELECT * FROM TabularDataWithStrings WHERE ReportName = '{report_name}' AND TableName = '{table_name}'" \
-            f" AND RowName = '{row_name}' AND ColumnName = '{col_name}'"
+    query = f"SELECT * FROM TabularDataWithStrings WHERE ReportName = '{sql_report_name}' AND TableName = '{sql_table_name}'" \
+            f" AND RowName = '{sql_row_name}' AND ColumnName = '{sql_col_name}'"
     with sqlite3.connect(sql_uri, uri=True) as con:
         cursor = con.cursor()
         results = cursor.execute(query).fetchall()
@@ -64,7 +56,7 @@ def read_sql(theme,csv_file, report_name, table_name, row_name, col_name, offlin
     regex = r'(\d+\.?\d*)'
     number = float(re.findall(regex, results[0][1])[0])
     return number
-def process_one_theme(theme, path, offline_bool = False):
+def process_one_theme(path):
     #find all csv files in the path, which does not contain 'save'
     csv_files = []
     for file in os.listdir(path):
@@ -82,50 +74,12 @@ def process_one_theme(theme, path, offline_bool = False):
         comparison['PresProf_' + csv_file] = df['PresProf_cur[19]']
         comparison['MeteoData.Pre_RealTempProf_' + csv_file] = (df['TempProf_cur[19]'])* \
                                                  (df['PresProf_cur[19]'] / comparison['MeteoData.Pre']) ** 0.286 - 273.15
-        comparison['Rural_Pres_Pa_RealTempProf_' + csv_file] = (df['TempProf_cur[19]'])* \
-                                                    (df['PresProf_cur[19]'] / comparison['Rural_Pres_Pa']) ** 0.286 - 273.15
-        # from string csv_file extract float number based on regex
-        if theme == "cooling":
-            if "NoCooling" in csv_file:
-                key_name = "Without"
-            else:
-                key_name = "With"
-        else:
-            regex = r'(\d+\.?\d*)'
-            number = float(re.findall(regex, csv_file)[0])
-            if "positive" in csv_file:
-                number = "+" + str(number)
-            if "negative" in csv_file:
-                number = "-" + str(number)
-            if "theta" in csv_file:
-                if number == 0:
-                    key_name = "Ori_0"
-                else: key_name = str(number)
-            elif "NoIDF" in theme:
-                key_name = str(number) + "(NI)"
-            else:
-                key_name = str(number)
-        cvrmse_dict['MeteoData.Pre_'+key_name] = cvrmse(comparison['Urban_DBT_C'], comparison['MeteoData.Pre_RealTempProf_' + csv_file])
-        cvrmse_dict['Rural_Pres_Pa_'+key_name] = cvrmse(comparison['Urban_DBT_C'], comparison['Rural_Pres_Pa_RealTempProf_' + csv_file])
+        cvrmse_dict['CVRMSE'] = cvrmse(comparison['Urban_DBT_C'], comparison['MeteoData.Pre_RealTempProf_' + csv_file])
 
-        sql_dict[key_name] = read_sql(theme,csv_file, sql_report_name, sql_table_name, sql_row_name, sql_col_name, offline_bool)
-    # create new Excel file, where the first sheet is the comparison, and the second sheet is the cvrmse
-    # third sheet is sql data
-    if not offline_bool:
-        if os.path.exists('sensitivity_saving\\' + theme + '\\comparison.xlsx'):
-            os.remove('sensitivity_saving\\' + theme + '\\comparison.xlsx')
-        writer = pd.ExcelWriter(path + '\\' + theme + '_sensitivity_analysis.xlsx')
-        if os.path.exists('sensitivity_saving\\' + theme + '\\comparison.xlsx'):
-            os.remove('sensitivity_saving\\' + theme + '\\comparison.xlsx')
-    else:
-        if os.path.exists('offline_saving\\' + theme + '\\comparison.xlsx'):
-            os.remove('offline_saving\\' + theme + '\\comparison.xlsx')
-        writer = pd.ExcelWriter(path + '\\' + theme + '_sensitivity_analysis.xlsx')
-        if os.path.exists('offline_saving\\' + theme + '\\comparison.xlsx'):
-            os.remove('offline_saving\\' + theme + '\\comparison.xlsx')
-
+    if os.path.exists('shading_Bypass_saving\\comparison.xlsx'):
+        os.remove('shading_Bypass_saving\\comparison.xlsx')
+    writer = pd.ExcelWriter('shading_Bypass_saving\\comparison.xlsx')
     comparison.to_excel(writer, 'comparison')
-    # For the cvrmse, the index is the csv file name, and the column is the cvrmse
     cvrmse_df = pd.DataFrame.from_dict(cvrmse_dict, orient='index', columns=['cvrmse'])
     cvrmse_df.to_excel(writer, 'cvrmse')
     sql_df = pd.DataFrame.from_dict(sql_dict, orient='index', columns=['total_site_energy'])
@@ -133,15 +87,15 @@ def process_one_theme(theme, path, offline_bool = False):
     writer.save()
 
 def process_all_themes():
-    online_themes_path = r'sensitivity_saving\CAPITOUL'
-    online_themes = os.listdir(online_themes_path)
-    for online_theme in online_themes:
-        process_one_theme(online_theme, online_themes_path + '\\' + online_theme)
+    shading_bypass_path = r'shading_Bypass_saving'
+    cases = os.listdir(shading_bypass_path)
+    for case in cases:
+        process_one_theme(shading_bypass_path)
 
-    offline_themes_path = r'offline_saving\CAPITOUL'
-    offline_themes = os.listdir(offline_themes_path)
-    for offline_theme in offline_themes:
-        process_one_theme(offline_theme, offline_themes_path + '\\' + offline_theme, offline_bool = True)
+def plots():
+    pass
+    #Measurements: Rural, Urban
+    #Predictions: VCWG, Bypass-Default, Bypass-Shading, Bypass-ViewFactor, Bypass-Shading-ViewFactor
 
 def main():
     global processed_measurements, compare_start_time, compare_end_time, sql_report_name, sql_table_name, sql_row_name, sql_col_name

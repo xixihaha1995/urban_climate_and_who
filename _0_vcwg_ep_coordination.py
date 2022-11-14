@@ -10,12 +10,11 @@ def init_ep_api():
     ep_api=EnergyPlusAPI()
     psychrometric =None
 
-def read_ini(input_config, input_uwgVariable, input_uwgVariableValue):
-    global config, project_path, sensor_heights, uwgVariable, uwgVariableValue
+def read_ini(input_config,input_uwgVariableValue):
+    global config, project_path, sensor_heights, uwgVariableValue
     # find the project path
     project_path = os.path.dirname(os.path.abspath(__file__))
     config = input_config
-    uwgVariable = input_uwgVariable
     uwgVariableValue = input_uwgVariableValue
     sensor_heights = [int(i) for i in config['_0_vcwg_ep_coordination.py']['sensor_height_meter'].split(',')]
 
@@ -180,53 +179,10 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     WalllitT = BEM.wallSun.Text
     RoofT = BEM.roofImp.Text
     senWaste = BEM_building.sensWaste
-    # with open('tempProfile.csv','a') as f0:
-    # fmt0 = "%.3f," * 301 % (simTime.secDay, TempProf_cur, HumProf_cur, PresProf_cur,vxProf, vyProf, HfluxProf) + "\n"
-    #    fmt0 = ["%.3f"% i for i in TempProf_cur]
-    #    f0.write(str(fmt0)+"\n")
-    # with open('VCWG_result_ue1.csv', 'a') as f1:
-    '''with open('VCWG_EP_result_ue1.csv', 'a') as f1:
-        fmt1 = "%.3f," * 18 % (simTime.secDay, WallshadeT, WalllitT, RoofT, canTemp, senWaste, TempProf_cur[2], TempProf_cur[13], \
-        TempProf_cur[17], TempProf_cur[21],TempProf_cur[25], TempProf_cur[31], PresProf_cur[2], PresProf_cur[13], \
-        PresProf_cur[17], PresProf_cur[21], PresProf_cur[25], PresProf_cur[31]) + "\n"
-        # fmt = "%.3f, %.2f, %.2f, %.2f, %.2f,%.2f\n" % (simTime.secDay,WallshadeT,WalllitT,RoofT,canTemp,senWaste)
-        f1.write(fmt1)
-    with open('10min_VCWG_EP_result_ue1.csv', 'a') as f2:
-        fmt2 = "%.3f," * 18 % (simTime.secDay, WallshadeT, WalllitT, RoofT, canTemp, senWaste, TempProf_cur[2], TempProf_cur[13], \
-        TempProf_cur[17], TempProf_cur[21],TempProf_cur[25], TempProf_cur[31], PresProf_cur[2], PresProf_cur[13], \
-        PresProf_cur[17], PresProf_cur[21], PresProf_cur[25], PresProf_cur[31]) + "\n"
-        # fmt = "%.3f, %.2f, %.2f, %.2f, %.2f,%.2f\n" % (simTime.secDay,WallshadeT,WalllitT,RoofT,canTemp,senWaste)
-        count=count+1
-        if count%2==0:
-            f2.write(fmt2)
-    '''
-    '''with open('VCWG_0HVAC_result_ue2.csv', 'a') as f1:
-        fmt1 = "%.3f," * 16 % (
-        simTime.secDay, WallshadeT, WalllitT, RoofT, canTemp, senWaste, TempProf_cur[2], TempProf_cur[15], \
-        TempProf_cur[22], TempProf_cur[27], TempProf_cur[32], PresProf_cur[2], \
-        PresProf_cur[15], PresProf_cur[22], PresProf_cur[27], PresProf_cur[32]) + "\n"
-        # fmt = "%.3f, %.2f, %.2f, %.2f, %.2f,%.2f\n" % (simTime.secDay,WallshadeT,WalllitT,RoofT,canTemp,senWaste)
-        f1.write(fmt1)
-    with open('10min_VCWG_0HVAC_result_ue2.csv', 'a') as f2:
-        fmt2 = "%.3f," * 16 % (simTime.secDay, WallshadeT, WalllitT, RoofT, canTemp, senWaste, TempProf_cur[2], \
-                               TempProf_cur[15], TempProf_cur[22], TempProf_cur[27], TempProf_cur[32], PresProf_cur[2],
-                               PresProf_cur[15], \
-                               PresProf_cur[22], PresProf_cur[27], PresProf_cur[32]) + "\n"
-        # fmt = "%.3f, %.2f, %.2f, %.2f, %.2f,%.2f\n" % (simTime.secDay,WallshadeT,WalllitT,RoofT,canTemp,senWaste)
-        count = count + 1
-        if count % 2 == 0:
-            f2.write(fmt2)
-    '''
-    if uwgVariableValue > 0:
-        str_variable = 'positive' + str(abs(uwgVariableValue))
-    elif uwgVariableValue < 0:
-        str_variable = 'negative' + str(abs(uwgVariableValue))
-    else:
-        str_variable = '0'
 
-    data_saving_path = os.path.join(project_path, 'A_prepost_processing','sensitivity_saving',
-                                    config['_0_vcwg_ep_coordination.py']['site_location'],
-                                    config['sensitivity']['theme'], f'{uwgVariable}{str_variable}.csv')
+    experiments = config['shading']['experiments']
+    data_saving_path = os.path.join(project_path, 'A_prepost_processing',experiments,
+                                f'{uwgVariableValue}.csv')
     global save_path_clean
     if os.path.exists(data_saving_path) and not save_path_clean:
         os.remove(data_saving_path)
@@ -256,40 +212,5 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
                "%.3f," * 2* len(mapped_indices) % tuple([TempProf_cur[i] for i in mapped_indices] + \
                                                         [PresProf_cur[i] for i in mapped_indices]) + '\n'
         f1.write(fmt1)
-    # with open('capitoul.csv', 'a') as f1:
-    #     fmt1 = "%.3f," * 8 % (
-    #     simTime.secDay, WallshadeT, WalllitT, RoofT, canTemp, senWaste, TempProf_cur[19], PresProf_cur[19]) \
-    #      + "\n"
-    #     # fmt = "%.3f, %.2f, %.2f, %.2f, %.2f,%.2f\n" % (simTime.secDay,WallshadeT,WalllitT,RoofT,canTemp,senWaste)
-    #     f1.write(fmt1)
 
-    '''
-    with open('vancouver.csv', 'a') as f1:
-        fmt1 = "%.3f," * 10 % (
-            simTime.secDay, WallshadeT, WalllitT, RoofT, canTemp, senWaste, TempProf_cur[1],TempProf_cur[19], PresProf_cur[1],PresProf_cur[19]) \
-               + "\n"
-        # fmt = "%.3f, %.2f, %.2f, %.2f, %.2f,%.2f\n" % (simTime.secDay,WallshadeT,WalllitT,RoofT,canTemp,senWaste)
-        f1.write(fmt1)
-    with open('30min_vancouver.csv', 'a') as f2:
-        fmt2 = "%.3f," * 10 % (simTime.secDay, WallshadeT, WalllitT, RoofT, canTemp, senWaste, TempProf_cur[1], \
-                              TempProf_cur[19],PresProf_cur[1],PresProf_cur[19]) + "\n"
-        # fmt = "%.3f, %.2f, %.2f, %.2f, %.2f,%.2f\n" % (simTime.secDay,WallshadeT,WalllitT,RoofT,canTemp,senWaste)
-        count = count + 1
-        if count % 6 == 0:
-            f2.write(fmt2)
-    '''
-    '''with open('guelph.csv', 'a') as f1:
-        fmt1 = "%.3f," * 12 % (
-            simTime.secDay, WallshadeT, WalllitT, RoofT, canTemp, senWaste, TempProf_cur[2],TempProf_cur[5],TempProf_cur[17], PresProf_cur[2],PresProf_cur[5],PresProf_cur[17]) \
-               + "\n"
-        # fmt = "%.3f, %.2f, %.2f, %.2f, %.2f,%.2f\n" % (simTime.secDay,WallshadeT,WalllitT,RoofT,canTemp,senWaste)
-        f1.write(fmt1)
-    with open('30min_guelph.csv', 'a') as f2:
-        fmt2 = "%.3f," * 12 % (simTime.secDay, WallshadeT, WalllitT, RoofT, canTemp, senWaste, TempProf_cur[2], TempProf_cur[5], \
-                              TempProf_cur[17],PresProf_cur[2],PresProf_cur[5], PresProf_cur[17]) + "\n"
-        # fmt = "%.3f, %.2f, %.2f, %.2f, %.2f,%.2f\n" % (simTime.secDay,WallshadeT,WalllitT,RoofT,canTemp,senWaste)
-        count = count + 1
-        if count % 6 == 0:
-            f2.write(fmt2)
-    '''
     return BEM

@@ -15,14 +15,13 @@ def read_ini(config_file_name):
     config_path = os.path.join(project_path,'A_prepost_processing', 'configs',config_file_name)
     config.read(config_path)
 
-def one_ini(sensitivity_file_name):
-    info(f'main line{sensitivity_file_name}')
-    read_ini(sensitivity_file_name)
-    uwgVariable = config['sensitivity']['uwgVariable']
-    value_list = [float(i) for i in config['sensitivity']['value_list'].split(',')]
+def one_ini(ini_file):
+    info(f'main line{ini_file}')
+    read_ini(ini_file)
+    idf_suffix_string = [i for i in config['shading']['IDF_Name_Suffix_List'].split(',')]
     this_ini_process = []
-    for value in value_list:
-        p = Process(target=ByPass.run_ep_api, args=(config,uwgVariable, value))
+    for value in idf_suffix_string:
+        p = Process(target=ByPass.run_ep_api, args=(config, value))
         p.start()
         this_ini_process.append(p)
     return this_ini_process
@@ -45,7 +44,7 @@ def for_loop_all_ini():
     #              "SensitivityCAPITOUL_NoCooling_CanyonWidthToRoofWidth.ini",
     #              "SensitivityCAPITOUL_fveg_G.ini", "SensitivityCAPITOUL_NoCooling_fveg_G.ini",
     #              "SensitivityCAPITOUL_theta_canyon.ini", "SensitivityCAPITOUL_NoCooling_theta_canyon.ini"]
-    selected_jobs = ["SensitivityCAPITOUL_NoCooling_albedo.ini"]
+    selected_jobs = ["Shading.ini"]
     nbr_job_for_one_batch = 1
     for i in range(0,len(selected_jobs),nbr_job_for_one_batch):
         print('Todo jobs',selected_jobs[i:i+nbr_job_for_one_batch])

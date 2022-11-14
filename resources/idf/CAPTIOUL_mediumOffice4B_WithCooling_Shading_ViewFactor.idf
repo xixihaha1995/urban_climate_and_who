@@ -4799,6 +4799,34 @@ BuildingSurface:Detailed,
       -3, 0, 0,                               !- X,Y,Z Vertex 3 {m}
       -3, 0, 15;                              !- X,Y,Z Vertex 4 {m}
 
+    ShadingProperty:Reflectance,
+    Shading Surface 1 South,  !- Shading Surface Name
+    0.3,                     !- Diffuse Solar Reflectance of Unglazed Part of Shading Surface
+    0.3,                     !- Diffuse Visible Reflectance of Unglazed Part of Shading Surface
+    1,                     !- Fraction of Shading Surface That Is Glazed
+    UWG_CAPITOUL_Wall;  !- Glazing Construction Name
+
+    ShadingProperty:Reflectance,
+        Shading Surface 2 East,  !- Shading Surface Name
+        0.3,                     !- Diffuse Solar Reflectance of Unglazed Part of Shading Surface
+        0.3,                     !- Diffuse Visible Reflectance of Unglazed Part of Shading Surface
+        1,                     !- Fraction of Shading Surface That Is Glazed
+        UWG_CAPITOUL_Wall;  !- Glazing Construction Name
+
+    ShadingProperty:Reflectance,
+        Shading Surface 3 North,  !- Shading Surface Name
+        0.3,                     !- Diffuse Solar Reflectance of Unglazed Part of Shading Surface
+        0.3,                     !- Diffuse Visible Reflectance of Unglazed Part of Shading Surface
+        1,                     !- Fraction of Shading Surface That Is Glazed
+        UWG_CAPITOUL_Wall;  !- Glazing Construction Name
+
+    ShadingProperty:Reflectance,
+        Shading Surface 4 West,  !- Shading Surface Name
+        0.3,                     !- Diffuse Solar Reflectance of Unglazed Part of Shading Surface
+        0.3,                     !- Diffuse Visible Reflectance of Unglazed Part of Shading Surface
+        1,                     !- Fraction of Shading Surface That Is Glazed
+        UWG_CAPITOUL_Wall;  !- Glazing Construction Name
+
   SurfaceProperty:SurroundingSurfaces,
     SrdSurfs:Import_From_VCWG,  !- Name
     ,                     !- Sky View Factor
