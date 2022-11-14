@@ -94,6 +94,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\A_prepost_processing\shading_saving\EP_Shading_Surface_ViewFactor.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\A_prepost_processing\shading_saving\VCWG_Shading_Surface.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\resources\DOERefBuildings\BLD10\BLD10_BuildingSummary.csv">
           <value>
             <Attribute>

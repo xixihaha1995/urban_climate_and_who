@@ -266,6 +266,8 @@ def mediumOffice_get_ep_results(state):
         if os.path.exists(data_saving_path) and not save_path_clean:
             os.remove(data_saving_path)
             save_path_clean = True
+        # round curr_sim_time_in_seconds to nearest 10 seconds
+        curr_sim_time_in_seconds = round(curr_sim_time_in_seconds, -1)
         cur_datetime = datetime.datetime.strptime(coordination.config['shading']['start_time'],
                                                   '%Y-%m-%d %H:%M:%S') + \
                        datetime.timedelta(seconds=curr_sim_time_in_seconds)

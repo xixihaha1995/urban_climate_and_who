@@ -12,8 +12,8 @@ def for_loop_all_ini():
     ini_files = [
         "EP_ShadingSurface_ViewFactor.ini",
         "EP_ViewFactor.ini",
-        # "EP_ShadingSurface.ini",
-        # "EP_Surface.ini",
+        "EP_ShadingSurface.ini",
+        "EP_Surface.ini",
         # "VCWG_ShadingSurface.ini",
     ]
     for ini_file in ini_files:
