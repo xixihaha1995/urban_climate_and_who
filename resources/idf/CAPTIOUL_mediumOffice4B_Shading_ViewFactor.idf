@@ -4763,6 +4763,226 @@ BuildingSurface:Detailed,
     4.5732,                  !- Vertex 4 Y-coordinate {m}
     10.6680;                 !- Vertex 4 Z-coordinate {m}
 
+    Shading:Building:Detailed,
+      Shading Surface 1 South,                      !- Name
+      ,                                       !- Transmittance Schedule Name
+      ,                                       !- Number of Vertices
+      -30.089, -9, 15,                        !- X,Y,Z Vertex 1 {m}
+      -30.089, -9, 0,                         !- X,Y,Z Vertex 2 {m}
+      49.911, -9, 0,                          !- X,Y,Z Vertex 3 {m}
+      49.911, -9, 15;                         !- X,Y,Z Vertex 4 {m}
+
+    Shading:Building:Detailed,
+      Shading Surface 2 East,                      !- Name
+      ,                                       !- Transmittance Schedule Name
+      ,                                       !- Number of Vertices
+      61.911, 0, 15,                          !- X,Y,Z Vertex 1 {m}
+      61.911, 0, 0,                           !- X,Y,Z Vertex 2 {m}
+      61.911, 45.2738, 0,                     !- X,Y,Z Vertex 3 {m}
+      61.911, 45.2738, 15;                    !- X,Y,Z Vertex 4 {m}
+
+    Shading:Building:Detailed,
+      Shading Surface 3 North,                      !- Name
+      ,                                       !- Transmittance Schedule Name
+      ,                                       !- Number of Vertices
+      -3, 45.2738, 15,                        !- X,Y,Z Vertex 1 {m}
+      61.911, 45.2738, 15,                    !- X,Y,Z Vertex 2 {m}
+      61.911, 45.2738, 0,                     !- X,Y,Z Vertex 3 {m}
+      -3, 45.2738, 0;                         !- X,Y,Z Vertex 4 {m}
+
+    Shading:Building:Detailed,
+      Shading Surface 4 West,                      !- Name
+      ,                                       !- Transmittance Schedule Name
+      ,                                       !- Number of Vertices
+      -3, 45.2738, 15,                        !- X,Y,Z Vertex 1 {m}
+      -3, 45.2738, 0,                         !- X,Y,Z Vertex 2 {m}
+      -3, 0, 0,                               !- X,Y,Z Vertex 3 {m}
+      -3, 0, 15;                              !- X,Y,Z Vertex 4 {m}
+
+  SurfaceProperty:SurroundingSurfaces,
+    SrdSurfs:Import_From_VCWG,  !- Name
+    ,                     !- Sky View Factor
+    ,                        !- Sky Temperature Schedule Name
+    ,                     !- Ground View Factor
+    ,                        !- Ground Temperature Schedule Name
+    VCWG:F_ww_nT,     !- Surrounding Surface 1 Name
+    0.566,                     !- Surrounding Surface 1 View Factor
+    Surrounding Temp Sch 1;  !- Surrounding Surface 1 Temperature Schedule Name
+
+  SurfaceProperty:LocalEnvironment,
+    LocEnv:Bot_Plenum_East,    !- Name
+    Perimeter_bot_Plenum_Wall_East,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+  SurfaceProperty:LocalEnvironment,
+    LocEnv:Bot_Plenum_North,    !- Name
+    Perimeter_bot_Plenum_Wall_North,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+  SurfaceProperty:LocalEnvironment,
+    LocEnv:Bot_Plenum_South,    !- Name
+    Perimeter_bot_Plenum_Wall_South,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Bot_Plenum_West,    !- Name
+    Perimeter_bot_Plenum_Wall_West,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Mid_Plenum_East,    !- Name
+    Perimeter_mid_Plenum_Wall_East,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Mid_Plenum_North,    !- Name
+    Perimeter_mid_Plenum_Wall_North,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Mid_Plenum_South,    !- Name
+    Perimeter_mid_Plenum_Wall_South,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Mid_Plenum_West,    !- Name
+    Perimeter_mid_Plenum_Wall_West,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Top_Plenum_East,    !- Name
+    Perimeter_top_Plenum_Wall_East,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Top_Plenum_North,    !- Name
+    Perimeter_top_Plenum_Wall_North,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Top_Plenum_South,    !- Name
+    Perimeter_top_Plenum_Wall_South,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Top_Plenum_West,    !- Name
+    Perimeter_top_Plenum_Wall_West,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Bot_ZN1_South,    !- Name
+    Perimeter_bot_ZN_1_Wall_South,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Bot_ZN2_East,    !- Name
+    Perimeter_bot_ZN_2_Wall_East,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Bot_ZN3_North,    !- Name
+    Perimeter_bot_ZN_3_Wall_North,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Bot_ZN4_West,    !- Name
+    Perimeter_bot_ZN_4_Wall_West,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Mid_ZN1_South,    !- Name
+    Perimeter_mid_ZN_1_Wall_South,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Mid_ZN2_East,    !- Name
+    Perimeter_mid_ZN_2_Wall_East,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Mid_ZN3_North,    !- Name
+    Perimeter_mid_ZN_3_Wall_North,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Mid_ZN4_West,    !- Name
+    Perimeter_mid_ZN_4_Wall_West,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Top_ZN1_South,    !- Name
+    Perimeter_top_ZN_1_Wall_South,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Top_ZN2_East,    !- Name
+    Perimeter_top_ZN_2_Wall_East,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Top_ZN3_North,    !- Name
+    Perimeter_top_ZN_3_Wall_North,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+    SurfaceProperty:LocalEnvironment,
+    LocEnv:Top_ZN4_West,    !- Name
+    Perimeter_top_ZN_4_Wall_West,           !- Exterior Surface Name
+    ,                        !- External Shading Fraction Schedule Name
+    SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
+    ;                        !- Outdoor Air Node Name
+
+
+
+
+
+
+
 
 !-   ===========  ALL OBJECTS IN CLASS: FENESTRATIONSURFACE:DETAILED ===========
 
