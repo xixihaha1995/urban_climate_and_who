@@ -103,7 +103,7 @@ def merge_all_shading_related_csv():
         data.to_excel(writer, sheet_name=sheet_name, index=True)
     writer.save()
 def main():
-    # merge_all_shading_related_csv()
+    merge_all_shading_related_csv()
     compare_columns = ['VCWG_Shading_Surface', 'EP_Surface', 'EP_Shading_Surface', 'EP_ViewFactor',
                'EP_Shading_Surface_ViewFactor', 'Bypass']
     # compare_columns = ['EP_ViewFactor',
