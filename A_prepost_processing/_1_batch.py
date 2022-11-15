@@ -3,6 +3,8 @@ import os, csv, numpy as np, pandas as pd, re
 import pathlib
 import sqlite3
 
+from matplotlib import pyplot as plt
+
 
 def cvrmse(measurements, predictions):
     bias = predictions - measurements
@@ -12,7 +14,9 @@ def cvrmse(measurements, predictions):
 
 def get_measurements():
     if os.path.exists('measurements\\' + processed_measurements):
-        return pd.read_csv('measurements\\' + processed_measurements, index_col=0, parse_dates=True)
+        measurements = pd.read_csv('measurements\\' + processed_measurements, index_col=0, parse_dates=True)
+        measurements = measurements[compare_start_time:compare_end_time]
+        return measurements
     urban_path = r'measurements\Urban_Pomme_Ori_1_min.csv'
     rural_path = r'measurements\Rural_Ori_1_min.csv'
     urban = pd.read_csv(urban_path, index_col=0, parse_dates=True)
@@ -70,11 +74,15 @@ def process_one_theme(path):
         df = pd.read_csv(path + '\\' + csv_file, index_col=0, parse_dates=True)
         df = df[compare_start_time:compare_end_time]
         comparison['MeteoData.Pre'] = df['MeteoData.Pre']
+        comparison['senWaste_' + csv_file] = df['senWaste']
+        comparison['Wallshade_' + csv_file] = df['WallshadeT'] - 273.15
+        comparison['Walllit_' + csv_file] = df['WalllitT'] - 273.15
+        comparison['Roof_' + csv_file] = df['RoofT'] - 273.15
         comparison['TempProf_' + csv_file] = df['TempProf_cur[19]']
         comparison['PresProf_' + csv_file] = df['PresProf_cur[19]']
-        comparison['MeteoData.Pre_RealTempProf_' + csv_file] = (df['TempProf_cur[19]'])* \
+        comparison['RealTempProf_' + csv_file] = (df['TempProf_cur[19]'])* \
                                                  (df['PresProf_cur[19]'] / comparison['MeteoData.Pre']) ** 0.286 - 273.15
-        cvrmse_dict['CVRMSE'] = cvrmse(comparison['Urban_DBT_C'], comparison['MeteoData.Pre_RealTempProf_' + csv_file])
+        cvrmse_dict[csv_file] = cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_' + csv_file])
 
     if os.path.exists('shading_Bypass_saving\\comparison.xlsx'):
         os.remove('shading_Bypass_saving\\comparison.xlsx')
@@ -92,10 +100,64 @@ def process_all_themes():
     for case in cases:
         process_one_theme(shading_bypass_path)
 
-def plots():
+def plot_one_subfigure(fig, df, ax, category, compare_cols):
     pass
+    global legend_bool
+    x = pd.to_datetime(df.index)
+    ax.set_title(category)
+    if category == 'senWaste':
+        ax.set_ylabel('W/m2')
+    else:
+        ax.set_ylabel(' Temperature (C)')
+    col_name_fix = category + '_'
+    if not legend_bool:
+        for col in compare_cols:
+            if "Bypass-" in col:
+                #remove the "Bypass-" in the col
+                col_idx = col.replace("Bypass-", "")
+            else:
+                col_idx = col
+            if col == "Rural_DBT_C":
+                ax.plot(x, df[col], label=col_idx, color='black', linestyle='--')
+            elif col == "Urban_DBT_C":
+                ax.plot(x, df[col], label=col_idx, color='black', linestyle=':')
+            else:
+                ax.plot(x, df[col_name_fix+col_idx +'.csv'], label=col)
+        legend_bool = True
+        fig.legend(loc='center right', bbox_to_anchor=(1, 0.5), borderaxespad=0., fontsize=plot_fontsize)
+    else:
+        for col in compare_cols:
+            if "Bypass-" in col:
+                #remove the "Bypass-" in the col
+                col_idx = col.replace("Bypass-", "")
+            else:
+                col_idx = col
+            ax.plot(x, df[col_name_fix+col_idx+'.csv'])
+
+
+def plots():
     #Measurements: Rural, Urban
-    #Predictions: VCWG, Bypass-Default, Bypass-Shading, Bypass-ViewFactor, Bypass-Shading-ViewFactor
+    #Predictions: VCWG, Bypass-Default, Bypass-Shading, Bypass-ViewFactor, Bypass-Shading_ViewFactor
+    # All_subfigures: Canyon, Wallshade, Walllit, Roof, Wastez
+    global plot_fontsize, legend_bool
+    legend_bool = False
+    data = pd.read_excel('shading_Bypass_saving\\comparison.xlsx', sheet_name='comparison', index_col=0, parse_dates=True)
+    plot_fontsize = 6
+    measurements_cols = ['Rural_DBT_C','Urban_DBT_C']
+    predictions_cols = ['VCWG', 'Bypass-Default', 'Bypass-Shading', 'Bypass-ViewFactor', 'Bypass-Shading_ViewFactor']
+    all_subfigures_cols = ['RealTempProf', 'Wallshade', 'Walllit', 'Roof', 'senWaste']
+    fig, axes = plt.subplots(5, 1, figsize=(12, 4), sharex=True)
+    fig.subplots_adjust(right=0.76)
+    for ax in axes:
+        ax.tick_params(axis='x', labelsize=plot_fontsize)
+
+    for i, sub_fig in enumerate(all_subfigures_cols):
+        if sub_fig == 'RealTempProf':
+            compare_cols = measurements_cols + predictions_cols
+        else:
+            compare_cols = predictions_cols
+        plot_one_subfigure(fig, data, axes[i],sub_fig, compare_cols)
+    plt.show()
 
 def main():
     global processed_measurements, compare_start_time, compare_end_time, sql_report_name, sql_table_name, sql_row_name, sql_col_name
@@ -107,6 +169,7 @@ def main():
     compare_end_time = '2004-06-30 22:55:00'
     processed_measurements = 'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                              + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
-    process_all_themes()
+    # process_all_themes()
+    plots()
 if __name__ == '__main__':
     main()
