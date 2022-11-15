@@ -37,7 +37,7 @@ def get_measurements():
 
 def read_sql(csv_file):
     csv_name = re.search(r'(.*)\.csv', csv_file).group(1)
-    current_path = '.\\shading_Bypass_saving'
+    current_path = '.\\shading_Bypass_saving_nFloor'
     for folder in os.listdir(current_path):
         if csv_name in folder and 'ep_outputs' in folder:
             sql_path = os.path.join(current_path, folder, 'eplusout.sql')
@@ -84,9 +84,9 @@ def process_one_theme(path):
                                                  (df['PresProf_cur[19]'] / comparison['MeteoData.Pre']) ** 0.286 - 273.15
         cvrmse_dict[csv_file] = cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_' + csv_file])
 
-    if os.path.exists('shading_Bypass_saving\\comparison.xlsx'):
-        os.remove('shading_Bypass_saving\\comparison.xlsx')
-    writer = pd.ExcelWriter('shading_Bypass_saving\\comparison.xlsx')
+    if os.path.exists('shading_Bypass_saving_nFloor\\comparison.xlsx'):
+        os.remove('shading_Bypass_saving_nFloor\\comparison.xlsx')
+    writer = pd.ExcelWriter('shading_Bypass_saving_nFloor\\comparison.xlsx')
     comparison.to_excel(writer, 'comparison')
     cvrmse_df = pd.DataFrame.from_dict(cvrmse_dict, orient='index', columns=['cvrmse'])
     cvrmse_df.to_excel(writer, 'cvrmse')
@@ -95,7 +95,7 @@ def process_one_theme(path):
     writer.save()
 
 def process_all_themes():
-    shading_bypass_path = r'shading_Bypass_saving'
+    shading_bypass_path = r'shading_Bypass_saving_nFloor'
     cases = os.listdir(shading_bypass_path)
     for case in cases:
         process_one_theme(shading_bypass_path)
@@ -141,7 +141,7 @@ def plots():
     # All_subfigures: Canyon, Wallshade, Walllit, Roof, Wastez
     global plot_fontsize, legend_bool
     legend_bool = False
-    data = pd.read_excel('shading_Bypass_saving\\comparison.xlsx', sheet_name='comparison', index_col=0, parse_dates=True)
+    data = pd.read_excel('shading_Bypass_saving_nFloor\\comparison.xlsx', sheet_name='comparison', index_col=0, parse_dates=True)
     plot_fontsize = 6
     measurements_cols = ['Rural_DBT_C','Urban_DBT_C']
     predictions_cols = ['VCWG', 'Bypass-Default', 'Bypass-Shading', 'Bypass-ViewFactor', 'Bypass-Shading_ViewFactor']
@@ -169,7 +169,7 @@ def main():
     compare_end_time = '2004-06-30 22:55:00'
     processed_measurements = 'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                              + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
-    # process_all_themes()
+    process_all_themes()
     plots()
 if __name__ == '__main__':
     main()
