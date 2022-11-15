@@ -21,9 +21,10 @@ def one_ini(ini_file):
     idf_suffix_string = [i for i in config['shading']['IDF_Name_Suffix_List'].split(',')]
     this_ini_process = []
     for value in idf_suffix_string:
-        p = Process(target=ByPass.run_ep_api, args=(config, value))
-        p.start()
-        this_ini_process.append(p)
+        # p = Process(target=ByPass.run_ep_api, args=(config, value))
+        # p.start()
+        ByPass.run_ep_api(config, value)
+        # this_ini_process.append(p)
     return this_ini_process
 
 def batch_run(ini_files):
@@ -44,7 +45,7 @@ def for_loop_all_ini():
     #              "SensitivityCAPITOUL_NoCooling_CanyonWidthToRoofWidth.ini",
     #              "SensitivityCAPITOUL_fveg_G.ini", "SensitivityCAPITOUL_NoCooling_fveg_G.ini",
     #              "SensitivityCAPITOUL_theta_canyon.ini", "SensitivityCAPITOUL_NoCooling_theta_canyon.ini"]
-    selected_jobs = ["ShadingNFloor.ini"]
+    selected_jobs = ["ShadingOpposite.ini"]
     nbr_job_for_one_batch = 1
     for i in range(0,len(selected_jobs),nbr_job_for_one_batch):
         print('Todo jobs',selected_jobs[i:i+nbr_job_for_one_batch])

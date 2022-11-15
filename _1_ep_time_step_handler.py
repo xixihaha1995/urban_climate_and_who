@@ -12,6 +12,15 @@ zone_floor_area_m2 = 0
 ep_last_accumulated_time_index_in_seconds = 0
 ep_last_call_time_seconds = 0
 
+def api_to_csv(state):
+    orig = coordination.ep_api.exchange.list_available_api_data_csv(state)
+    newFileByteArray = bytearray(orig)
+    api_path = os.path.join('A_prepost_processing',coordination.config['shading']['experiments'],
+                            f'{coordination.uwgVariableValue}api_data.csv')
+    newFile = open(api_path, "wb")
+    newFile.write(newFileByteArray)
+    newFile.close()
+
 def run_vcwg():
     epwFileName = coordination.config['shading']['epwFileName']
     TopForcingFileName = None
@@ -49,6 +58,7 @@ def overwrite_ep_weather(state):
     if not overwrite_ep_weather_inited_handle:
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
             return
+        api_to_csv(state)
         overwrite_ep_weather_inited_handle = True
         odb_actuator_handle = coordination.ep_api.exchange.\
             get_actuator_handle(state, "Weather Data", "Outdoor Dry Bulb", "Environment")
@@ -811,12 +821,24 @@ def mediumOffice_get_ep_results(state):
         flr_core_Tint_handle, \
         roof_Tint_handle, \
         s_wall_bot_1_Tint_handle, s_wall_mid_1_Tint_handle, s_wall_top_1_Tint_handle, \
-        n_wall_bot_1_Tint_handle, n_wall_mid_1_Tint_handle, n_wall_top_1_Tint_handle
+        n_wall_bot_1_Tint_handle, n_wall_mid_1_Tint_handle, n_wall_top_1_Tint_handle,\
+        surd_south_temp_actuator_handle, surd_north_temp_actuator_handle, \
+        surd_east_temp_actuator_handle, surd_west_temp_actuator_handle
 
     if not get_ep_results_inited_handle:
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
             return
         get_ep_results_inited_handle = True
+
+        surd_south_temp_actuator_handle = odb_actuator_handle = coordination.ep_api.exchange.\
+            get_actuator_handle(state, "Schedule:Compact", "Schedule Value", "SURROUNDING TEMP SCH SOUTH")
+        surd_north_temp_actuator_handle = odb_actuator_handle = coordination.ep_api.exchange.\
+            get_actuator_handle(state, "Schedule:Compact", "Schedule Value", "SURROUNDING TEMP SCH NORTH")
+        surd_east_temp_actuator_handle = odb_actuator_handle = coordination.ep_api.exchange.\
+            get_actuator_handle(state, "Schedule:Compact", "Schedule Value", "SURROUNDING TEMP SCH EAST")
+        surd_west_temp_actuator_handle = odb_actuator_handle = coordination.ep_api.exchange.\
+            get_actuator_handle(state, "Schedule:Compact", "Schedule Value", "SURROUNDING TEMP SCH WEST")
+
         oat_sensor_handle = coordination.ep_api.exchange.get_variable_handle(state,\
                                                                              "Site Outdoor Air Drybulb Temperature",\
                                                                              "Environment")
@@ -936,7 +958,9 @@ def mediumOffice_get_ep_results(state):
                 flr_pre1_Tint_handle == -1 or flr_pre2_Tint_handle == -1 or flr_pre3_Tint_handle == -1 or\
                 flr_pre4_Tint_handle == -1 or flr_core_Tint_handle == -1 or roof_Tint_handle == -1 or\
                 s_wall_bot_1_Tint_handle == -1 or s_wall_mid_1_Tint_handle == -1 or s_wall_top_1_Tint_handle == -1 or\
-                n_wall_bot_1_Tint_handle == -1 or n_wall_mid_1_Tint_handle == -1 or n_wall_top_1_Tint_handle == -1):
+                n_wall_bot_1_Tint_handle == -1 or n_wall_mid_1_Tint_handle == -1 or n_wall_top_1_Tint_handle == -1) or \
+                surd_south_temp_actuator_handle == -1 or surd_north_temp_actuator_handle == -1 or \
+                surd_east_temp_actuator_handle == -1 or surd_west_temp_actuator_handle == -1:
             print('mediumOffice_get_ep_results(): some handle not available')
             os.getpid()
             os.kill(os.getpid(), signal.SIGTERM)
@@ -1053,10 +1077,20 @@ def mediumOffice_get_ep_results(state):
             coordination.ep_wallSun_Tint_K = s_wall_Tint_c + 273.15
             coordination.ep_wallShade_Text_K = n_wall_Text_c + 273.15
             coordination.ep_wallShade_Tint_K = n_wall_Tint_c + 273.15
+
+            coordination.ep_api.exchange.set_actuator_value(state, surd_south_temp_actuator_handle, coordination.ep_wallShade_Text_K - 273.15)
+            coordination.ep_api.exchange.set_actuator_value(state, surd_east_temp_actuator_handle, coordination.ep_wallShade_Text_K - 273.15)
+            coordination.ep_api.exchange.set_actuator_value(state, surd_north_temp_actuator_handle, coordination.ep_wallSun_Text_K - 273.15)
+            coordination.ep_api.exchange.set_actuator_value(state, surd_west_temp_actuator_handle, coordination.ep_wallSun_Text_K - 273.15)
         else:
             coordination.ep_wallSun_Text_K = n_wall_Text_c + 273.15
             coordination.ep_wallSun_Tint_K = n_wall_Tint_c + 273.15
             coordination.ep_wallShade_Text_K = s_wall_Text_c + 273.15
             coordination.ep_wallShade_Tint_K = s_wall_Tint_c + 273.15
+
+            coordination.ep_api.exchange.set_actuator_value(state, surd_south_temp_actuator_handle, coordination.ep_wallSun_Text_K - 273.15)
+            coordination.ep_api.exchange.set_actuator_value(state, surd_east_temp_actuator_handle, coordination.ep_wallSun_Text_K - 273.15)
+            coordination.ep_api.exchange.set_actuator_value(state, surd_north_temp_actuator_handle, coordination.ep_wallShade_Text_K - 273.15)
+            coordination.ep_api.exchange.set_actuator_value(state, surd_west_temp_actuator_handle, coordination.ep_wallShade_Text_K - 273.15)
 
         coordination.sem3.release()
