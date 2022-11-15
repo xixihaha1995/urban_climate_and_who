@@ -38,6 +38,7 @@ def get_measurements():
 def read_sql(csv_file):
     csv_name = re.search(r'(.*)\.csv', csv_file).group(1)
     current_path = '.\\shading_Bypass_saving_nFloor'
+    sql_path = "foo"
     for folder in os.listdir(current_path):
         if csv_name in folder and 'ep_outputs' in folder:
             sql_path = os.path.join(current_path, folder, 'eplusout.sql')
@@ -69,6 +70,7 @@ def process_one_theme(path):
     #process each csv file
     comparison = get_measurements()
     cvrmse_dict = {}
+    cvrmse_dict['Rural'] = cvrmse(comparison['Urban_DBT_C'], comparison['Rural_DBT_C'])
     sql_dict = {}
     for csv_file in csv_files:
         df = pd.read_csv(path + '\\' + csv_file, index_col=0, parse_dates=True)
@@ -83,6 +85,7 @@ def process_one_theme(path):
         comparison['RealTempProf_' + csv_file] = (df['TempProf_cur[19]'])* \
                                                  (df['PresProf_cur[19]'] / comparison['MeteoData.Pre']) ** 0.286 - 273.15
         cvrmse_dict[csv_file] = cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_' + csv_file])
+        sql_dict[csv_file] = read_sql(csv_file)
 
     if os.path.exists('shading_Bypass_saving_nFloor\\comparison.xlsx'):
         os.remove('shading_Bypass_saving_nFloor\\comparison.xlsx')

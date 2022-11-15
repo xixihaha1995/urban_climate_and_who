@@ -16,7 +16,7 @@ def run_vcwg():
     epwFileName = coordination.config['shading']['epwFileName']
     TopForcingFileName = None
     VCWGParamFileName = coordination.config['_1_ep_time_step_handler.py']['VCWGParamFileName']
-    idf_suffix = coordination.config['shading']['IDF_Name_Suffix_List']
+    idf_suffix = coordination.uwgVariableValue
     ViewFactorFileName = f'ShadingBypass_{idf_suffix}ViewFactor_Capitoul_MOST.txt'
     # Case name to append output file names with
     case = f'ShadingBypass_{idf_suffix}_Capitoul_MOST'
