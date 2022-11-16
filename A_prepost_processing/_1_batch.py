@@ -64,7 +64,7 @@ def process_one_theme(path):
     #find all csv files in the path, which does not contain 'save'
     csv_files = []
     for file in os.listdir(path):
-        if file.endswith('.csv') and 'save' not in file:
+        if file.endswith('.csv'):
             csv_files.append(file)
     #process each csv file
     comparison = get_measurements()
@@ -135,8 +135,7 @@ def plots():
     data = pd.read_excel(f'{experiments_folder}\\comparison.xlsx', sheet_name='comparison', index_col=0, parse_dates=True)
     plot_fontsize = 6
     measurements_cols = ['Rural_DBT_C','Urban_DBT_C']
-    # Copy r'.\offline_saving\CAPITOUL\albedo\positive_0.25.csv' to 'VCWG.csv'
-    copyfile(r'.\offline_saving\CAPITOUL\albedo\positive_0.25.csv', f'.\\{experiments_folder}\\VCWG.csv')
+
     predictions_cols = []
     for file in os.listdir(f'.\\{experiments_folder}'):
         if file.endswith('.csv'):
@@ -158,7 +157,7 @@ def plots():
 def main():
     global processed_measurements, compare_start_time, compare_end_time, sql_report_name, sql_table_name, sql_row_name, sql_col_name
     global experiments_folder
-    experiments_folder = r''
+    experiments_folder = 'shading_Replicate'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
@@ -167,7 +166,9 @@ def main():
     compare_end_time = '2004-06-30 22:55:00'
     processed_measurements = 'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                              + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
-    # process_all_themes()
+    # Copy r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv' to 'VCWG.csv'
+    copyfile(r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv', f'.\\{experiments_folder}\\VCWG.csv')
+    process_all_themes()
     plots()
 if __name__ == '__main__':
     main()
