@@ -104,7 +104,7 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     vcwg_wdir_deg = np.mean(canWdirProf_cur) + Geometry_m.theta_canyon
     BEM_building = BEM.building
     #hard coded nFloor same as the IDF models
-    BEM_building.nFloor = 3
+    BEM_building.nFloor = max(Geometry_m.Height_canyon / float(BEM_building.floorHeight), 1)
     vcwg_needed_time_idx_in_seconds = vcwg_time_index_in_seconds
     vcwg_canTemp_K = canTemp
     vcwg_canSpecHum_Ratio = canHum
