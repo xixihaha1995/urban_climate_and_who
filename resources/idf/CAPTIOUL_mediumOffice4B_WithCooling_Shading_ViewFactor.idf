@@ -662,7 +662,7 @@ Schedule:Compact,
     4;                       !- Field 4
 
 Schedule:Compact,
-    HTGSETP_SCH_org,             !- Name
+    HTGSETP_SCH,             !- Name
     Temperature,             !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
     For: Weekdays,           !- Field 2
@@ -690,7 +690,7 @@ Schedule:Compact,
     15.6;                    !- Field 24
 
 Schedule:Compact,
-    HTGSETP_SCH,             !- Name
+    HTGSETP_SCH_noHeating,             !- Name
     Temperature,             !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
     For: AllDays,            !- Field 2

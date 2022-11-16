@@ -44,7 +44,7 @@ def for_loop_all_ini():
     #              "SensitivityCAPITOUL_NoCooling_CanyonWidthToRoofWidth.ini",
     #              "SensitivityCAPITOUL_fveg_G.ini", "SensitivityCAPITOUL_NoCooling_fveg_G.ini",
     #              "SensitivityCAPITOUL_theta_canyon.ini", "SensitivityCAPITOUL_NoCooling_theta_canyon.ini"]
-    selected_jobs = ["ShadingNoHeating.ini"]
+    selected_jobs = ["ShadingSchedule.ini"]
     nbr_job_for_one_batch = 1
     for i in range(0,len(selected_jobs),nbr_job_for_one_batch):
         print('Todo jobs',selected_jobs[i:i+nbr_job_for_one_batch])
