@@ -172,7 +172,7 @@ def main():
     compare_end_time = '2004-06-30 22:55:00'
     processed_measurements = 'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                              + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
-    # process_all_themes()
+    process_all_themes()
     plots()
 if __name__ == '__main__':
     main()
