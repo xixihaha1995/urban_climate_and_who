@@ -35,14 +35,14 @@ def init_variables_for_vcwg_ep():
         ep_elecTotal_w_m2_per_floor_area, ep_sensWaste_w_m2_per_floor_area, \
         ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, \
         ep_wallSun_Text_K, ep_wallSun_Tint_K,ep_wallShade_Text_K, ep_wallShade_Tint_K,\
-        midRiseApartmentBld_floor_area_m2, mediumOfficeBld_floor_area_m2, smallOfficeBld_floor_area_m2, time_step_version, ep_files_path,\
+        midRiseApartmentBld_floor_area_m2, mediumOfficeBld_one_floor_area_m2, smallOfficeBld_floor_area_m2, time_step_version, ep_files_path,\
         ep_oaTemp_C, overwriting_time_index, overwriten_time_index, count
     count=0
     vcwg_wsp_mps = 0
     vcwg_wdir_deg = 0
     midRiseApartmentBld_floor_area_m2 = 3135
     smallOfficeBld_floor_area_m2 = 511
-    mediumOfficeBld_floor_area_m2 = 4982
+    mediumOfficeBld_one_floor_area_m2 = 4982 / 3
     vcwg_needed_time_idx_in_seconds = 0
     overwriting_time_index = 0
     overwriten_time_index = 0
@@ -103,8 +103,6 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     vcwg_wsp_mps = np.mean(canWspdProf_cur)
     vcwg_wdir_deg = np.mean(canWdirProf_cur) + Geometry_m.theta_canyon
     BEM_building = BEM.building
-    #hard coded nFloor same as the IDF models
-    BEM_building.nFloor = max(Geometry_m.Height_canyon / float(BEM_building.floorHeight), 1)
     vcwg_needed_time_idx_in_seconds = vcwg_time_index_in_seconds
     vcwg_canTemp_K = canTemp
     vcwg_canSpecHum_Ratio = canHum
@@ -115,7 +113,7 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     sem3.acquire()
     # VCWG download EP results from Parent
 
-    BEM_building.sensWaste = ep_sensWaste_w_m2_per_floor_area * BEM_building.nFloor
+    BEM_building.sensWaste = ep_sensWaste_w_m2_per_floor_area
     ep_sensWaste_w_m2_per_floor_area = 0
 
     BEM_building.ElecTotal = ep_elecTotal_w_m2_per_floor_area * BEM_building.nFloor
