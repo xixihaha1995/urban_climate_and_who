@@ -953,7 +953,7 @@ def mediumOffice_get_ep_results(state):
         ep_last_call_time_seconds = curr_sim_time_in_seconds
         hvac_heat_rejection_J = coordination.ep_api.exchange.get_variable_value(state,hvac_heat_rejection_sensor_handle)
         hvac_waste_w_m2 = hvac_heat_rejection_J / accumulated_time_in_seconds / coordination.mediumOfficeBld_one_floor_area_m2
-        coordination.ep_sensWaste_w_m2_per_floor_area += hvac_waste_w_m2
+        coordination.ep_sensWaste_w_m2_per_footprint_area += hvac_waste_w_m2
 
         time_index_alignment_bool = 1 > abs(curr_sim_time_in_seconds - coordination.vcwg_needed_time_idx_in_seconds)
 
@@ -1018,7 +1018,7 @@ def mediumOffice_get_ep_results(state):
 
 
 
-        coordination.ep_elecTotal_w_m2_per_floor_area = elec_bld_meter_w_m2
+        coordination.ep_elecTotal_w_m2_per_footprint_area = elec_bld_meter_w_m2
         coordination.ep_indoorTemp_C = zone_indor_temp_value
         coordination.ep_indoorHum_Ratio = zone_indor_spe_hum_value
         coordination.ep_sensCoolDemand_w_m2 = sens_cool_demand_w_m2_value

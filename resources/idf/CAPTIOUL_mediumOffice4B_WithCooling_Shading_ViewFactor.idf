@@ -690,14 +690,6 @@ Schedule:Compact,
     15.6;                    !- Field 24
 
 Schedule:Compact,
-    HTGSETP_SCH_noHeating,             !- Name
-    Temperature,             !- Schedule Type Limits Name
-    Through: 12/31,          !- Field 1
-    For: AllDays,            !- Field 2
-    Until: 24:00,            !- Field 7
-    -20;                    !- Field 24
-
-Schedule:Compact,
     HVACOperationSchd,       !- Name
     On/Off,                  !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
@@ -752,14 +744,6 @@ Schedule:Compact,
 ! ***SWH SCHEDULES***
 Schedule:Compact,
     BLDG_SWH_SCH,            !- Name
-    Fraction,                !- Schedule Type Limits Name
-    Through: 12/31,          !- Field 1
-    For: AllDays,  !- Field 2
-    Until: 24:00,            !- Field 3
-    0;                    !- Field 4
-
-Schedule:Compact,
-    BLDG_SWH_SCH_org,            !- Name
     Fraction,                !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
     For: Weekdays SummerDesignDay,  !- Field 2
@@ -4779,7 +4763,7 @@ BuildingSurface:Detailed,
     4.5732,                  !- Vertex 4 Y-coordinate {m}
     10.6680;                 !- Vertex 4 Z-coordinate {m}
 
-    Shading:Building:Detailed,
+Shading:Building:Detailed,
       Shading Surface 1 South,                      !- Name
       ,                                       !- Transmittance Schedule Name
       ,                                       !- Number of Vertices
@@ -5020,12 +5004,6 @@ BuildingSurface:Detailed,
     ,                        !- External Shading Fraction Schedule Name
     SrdSurfs:Import_From_VCWG,  !- Surrounding Surfaces Object Name
     ;                        !- Outdoor Air Node Name
-
-
-
-
-
-
 
 
 !-   ===========  ALL OBJECTS IN CLASS: FENESTRATIONSURFACE:DETAILED ===========
@@ -6183,8 +6161,7 @@ ElectricEquipment,
     Core_bottom,             !- Zone or ZoneList or Space or SpaceList Name
     BLDG_ELEVATORS,          !- Schedule Name
     EquipmentLevel,          !- Design Level Calculation Method
-!    32109.8901098901,        !- Design Level {W}
-    0,        !- Design Level {W}
+    32109.8901098901,        !- Design Level {W}
     ,                        !- Watts per Zone Floor Area {W/m2}
     ,                        !- Watts per Person {W/person}
     0.0000,                  !- Fraction Latent
