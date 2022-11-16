@@ -433,7 +433,7 @@ Schedule:Compact,
     Until: 17:00,            !- Field 23
     0.46,                    !- Field 24
     Until: 18:00,            !- Field 25
-    0.3,                    !- Field 26
+    0.62,                    !- Field 26
     Until: 19:00,            !- Field 27
     0.12,                    !- Field 28
     Until: 20:00,            !- Field 29
@@ -6175,7 +6175,8 @@ ElectricEquipment,
     Core_bottom,             !- Zone or ZoneList or Space or SpaceList Name
     BLDG_ELEVATORS,          !- Schedule Name
     EquipmentLevel,          !- Design Level Calculation Method
-    32109.8901098901,        !- Design Level {W}
+!    32109.8901098901,        !- Design Level {W}
+    0,        !- Design Level {W}
     ,                        !- Watts per Zone Floor Area {W/m2}
     ,                        !- Watts per Person {W/person}
     0.0000,                  !- Fraction Latent
