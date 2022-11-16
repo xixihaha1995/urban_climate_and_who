@@ -36,7 +36,7 @@ def batch_run(ini_files):
         for p in ini_processes:
             p.join()
 def for_loop_all_ini():
-    selected_jobs = ["Shading_Replicate.ini"]
+    selected_jobs = ["Shading_Enhance.ini"]
     nbr_job_for_one_batch = 1
     for i in range(0,len(selected_jobs),nbr_job_for_one_batch):
         print('Todo jobs',selected_jobs[i:i+nbr_job_for_one_batch])
