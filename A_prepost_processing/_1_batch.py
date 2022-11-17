@@ -168,7 +168,7 @@ def main():
                              + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
     # Copy r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv' to 'VCWG.csv'
     copyfile(r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv', f'.\\{experiments_folder}\\VCWG.csv')
-    process_all_themes()
+    # process_all_themes()
     plots()
 if __name__ == '__main__':
     main()
