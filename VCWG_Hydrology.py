@@ -1,4 +1,6 @@
 import os
+import datetime
+
 import numpy
 import math
 from pprint import pprint
@@ -438,26 +440,12 @@ class VCWG_Hydro(object):
 
         # Start simulation
         for it in range(0,self.simTime.nt-1,1):
-            print(r'Progress [%]', numpy.round(100 * it / self.simTime.nt, 2))
+            # print(r'Progress [%]', numpy.round(100 * it / self.simTime.nt, 2))
 
             # Simulation time increment raised to weather time step
             SunPosition,MeteoData,Anthropogenic,location,ParCalculation = \
                 ForcingData(self.MeteoDataRaw_intp,it, self.WBCanyon.SoilPotW, self.VCWGParamFileName,self.simTime)
             self.simTime.UpdateDate()
-            #print(self.simTime.hourDay)
-            #print(self.simTime.dt)
-            #print(self.simTime.timeForcing)
-            #print(self.simTime.month)
-            #print(self.simTime.day)
-            #print(self.simTime.days)
-            #print(self.simTime.timePrint)
-            #print(self.simTime.timeDay)
-            #print(self.simTime.timeSim)
-            #print(self.simTime.timeMax)
-            #print(self.simTime.nt)
-            #print(self.simTime.hourDay)
-            #print(self.simTime.secDay)
-            #print(it)
             inobis = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
             Esimtime = int((inobis[self.simTime.month - 1] + self.simTime.day - 1) * self.simTime.timeDay)+(it-1)*300/3600
             #print(Esimtime)
@@ -487,8 +475,12 @@ class VCWG_Hydro(object):
                 TwallShade_ext = TwallShade_ext + self.BEM[i].wallShade.Text*self.BEM[i].frac
                 TwallSun_int = TwallSun_int + self.BEM[i].wallSun.Tint*self.BEM[i].frac
                 TwallShade_int = TwallShade_int + self.BEM[i].wallShade.Tint*self.BEM[i].frac
-
-            TemperatureC = [self.GroundImp.Text,self.GroundBare.Text,self.GroundVeg.Text,TwallSun_ext,TwallShade_ext,
+            curdatetime = datetime.datetime.strptime(coordination.config['_0_vcwg_ep_coordination.py']['start_time'], '%Y-%m-%d %H:%M:%S') + \
+                datetime.timedelta(seconds=it*self.simTime.dt)
+            bool_if_later = curdatetime > datetime.datetime.strptime('2004-06-02 18:45:00', '%Y-%m-%d %H:%M:%S')
+            TemperatureC = [
+                self.GroundImp.Text,self.GroundBare.Text,
+                            self.GroundVeg.Text,TwallSun_ext,TwallShade_ext,
                             self.EBCanyon.Ttree[0]]
 
             # Update surface temperature from two steps back if the force-restore method is used for ground
@@ -639,6 +631,8 @@ class VCWG_Hydro(object):
                 canTemp = numpy.mean(self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u])
                 canHum = numpy.mean(self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u])
                 ### original
+
+                print(f'curdatetime: {curdatetime}, TemperatureC: {canTemp - 273.15}, Humidity: {canHum}')
                 self.BEM[i].building.BEMCalc(canTemp,canHum,self.BEM[i],MeteoData,ParCalculation,self.simTime,self.Geometry_m,
                                              self.FractionsRoof,self.EBCanyon.SWR, self.UCM.VerticalProfUrban, it)
 

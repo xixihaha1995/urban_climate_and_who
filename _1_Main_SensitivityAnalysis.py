@@ -22,9 +22,10 @@ def one_ini(sensitivity_file_name):
     value_list = [float(i) for i in config['sensitivity']['value_list'].split(',')]
     this_ini_process = []
     for value in value_list:
-        p = Process(target=ByPass.run_offline, args=(config,uwgVariable, value))
-        p.start()
-        this_ini_process.append(p)
+        # p = Process(target=ByPass.run_offline, args=(config,uwgVariable, value))
+        # p.start()
+        # this_ini_process.append(p)
+        ByPass.run_offline(config,uwgVariable, value)
     return this_ini_process
 
 def batch_run(ini_files):
@@ -38,15 +39,15 @@ def batch_run(ini_files):
             p.join()
 
 def for_loop_all_ini():
-    todo_jobs = ["SensitivityCAPITOUL_albedo.ini", "SensitivityCAPITOUL_NoCooling_albedo.ini",
-                  "SensitivityCAPITOUL_albedoNoIDF.ini", "SensitivityCAPITOUL_NoCooling_albedoNoIDF.ini",
-                  "SensitivityCAPITOUL_CanyonWidthToCanyonHeight.ini",
-                  "SensitivityCAPITOUL_NoCooling_CanyonWidthToCanyonHeight.ini",
-                  "SensitivityCAPITOUL_CanyonWidthToRoofWidth.ini","SensitivityCAPITOUL_NoCooling_CanyonWidthToRoofWidth.ini",
-                 "SensitivityCAPITOUL_fveg_G.ini","SensitivityCAPITOUL_NoCooling_fveg_G.ini",
-                 "SensitivityCAPITOUL_theta_canyon.ini","SensitivityCAPITOUL_NoCooling_theta_canyon.ini"]
-
-    nbr_job_for_one_batch = 2
+    # todo_jobs = ["SensitivityCAPITOUL_albedo.ini", "SensitivityCAPITOUL_NoCooling_albedo.ini",
+    #               "SensitivityCAPITOUL_albedoNoIDF.ini", "SensitivityCAPITOUL_NoCooling_albedoNoIDF.ini",
+    #               "SensitivityCAPITOUL_CanyonWidthToCanyonHeight.ini",
+    #               "SensitivityCAPITOUL_NoCooling_CanyonWidthToCanyonHeight.ini",
+    #               "SensitivityCAPITOUL_CanyonWidthToRoofWidth.ini","SensitivityCAPITOUL_NoCooling_CanyonWidthToRoofWidth.ini",
+    #              "SensitivityCAPITOUL_fveg_G.ini","SensitivityCAPITOUL_NoCooling_fveg_G.ini",
+    #              "SensitivityCAPITOUL_theta_canyon.ini","SensitivityCAPITOUL_NoCooling_theta_canyon.ini"]
+    todo_jobs = ['SensitivityCAPITOUL_NoCooling_albedo.ini']
+    nbr_job_for_one_batch = 1
     for i in range(0,len(todo_jobs),nbr_job_for_one_batch):
         print('Todo jobs',todo_jobs[i:i+nbr_job_for_one_batch])
         batch_run(todo_jobs[i:i+nbr_job_for_one_batch])
