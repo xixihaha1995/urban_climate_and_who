@@ -189,7 +189,6 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     # start_time + accumulative_seconds
     cur_datetime = datetime.datetime.strptime(config['_0_vcwg_ep_coordination.py']['start_time'], '%Y-%m-%d %H:%M:%S') + \
                       datetime.timedelta(seconds=vcwg_time_index_in_seconds - simTime.dt)
-    print(f'cur_datetime: {cur_datetime}, indoorTemp: {BEM_building.indoorTemp}')
     domain_height = len(TempProf_cur)
     vcwg_heights_profile = np.array([0.5 + i for i in range(domain_height)])
     mapped_indices = [np.argmin(np.abs(vcwg_heights_profile - i)) for i in sensor_heights]

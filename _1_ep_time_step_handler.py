@@ -89,7 +89,6 @@ def overwrite_ep_weather(state):
         rh = 100*coordination.psychrometric.relative_humidity_b(state, coordination.vcwg_canTemp_K - 273.15,
                                                coordination.vcwg_canSpecHum_Ratio, coordination.vcwg_canPress_Pa)
         coordination.ep_api.exchange.set_actuator_value(state, odb_actuator_handle, coordination.vcwg_canTemp_K - 273.15)
-        print(f'EP: set odb to {coordination.vcwg_canTemp_K - 273.15}')
         coordination.ep_api.exchange.set_actuator_value(state, orh_actuator_handle, rh)
         # Notify the downstream (EP upload EP results to Parent) to start
         #coordination.sem1.release()#
@@ -1072,7 +1071,7 @@ def mediumOffice_get_ep_results(state):
         n_wall_Text_c = (n_wall_bot_1_Text_c + n_wall_mid_1_Text_c + n_wall_top_1_Text_c)/3
         n_wall_Tint_c = (n_wall_bot_1_Tint_c + n_wall_mid_1_Tint_c + n_wall_top_1_Tint_c)/3
 
-        if s_wall_Solar_w_m2 > n_wall_Solar_w_m2:
+        if s_wall_Solar_w_m2 >= n_wall_Solar_w_m2:
             coordination.ep_wallSun_Text_K = s_wall_Text_c + 273.15
             coordination.ep_wallSun_Tint_K = s_wall_Tint_c + 273.15
             coordination.ep_wallShade_Text_K = n_wall_Text_c + 273.15

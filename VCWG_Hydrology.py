@@ -1,3 +1,4 @@
+import datetime
 import os
 import numpy
 import math
@@ -631,6 +632,11 @@ class VCWG_Hydro(object):
                 canTemp = numpy.mean(self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u])
                 canHum = numpy.mean(self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u])
                 ### modified
+                curdatetime = datetime.datetime.strptime(
+                    coordination.config['_0_vcwg_ep_coordination.py']['start_time'], '%Y-%m-%d %H:%M:%S') + \
+                              datetime.timedelta(seconds=it * self.simTime.dt)
+                print(f'curdatetime: {curdatetime}, TemperatureC: {canTemp - 273.15}, Humidity: {canHum}')
+
                 self.BEM[i] = coordination.BEMCalc_Element(self.UCM.VerticalProfUrban,
                                                                       self.BEM[i], it, self.simTime, self.FractionsRoof,
                                                                       self.Geometry_m, MeteoData)

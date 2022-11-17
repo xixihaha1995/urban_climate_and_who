@@ -4875,7 +4875,7 @@ BuildingSurface:Detailed,
     ,                     !- Ground View Factor
     ,                        !- Ground Temperature Schedule Name
     VCWG:F_ww_nT,     !- Surrounding Surface 1 Name
-    0.566,                     !- Surrounding Surface 1 View Factor
+    0.648,                     !- Surrounding Surface 1 View Factor
     Surrounding Temp Sch South;  !- Surrounding Surface 1 Temperature Schedule Name
 
     SurfaceProperty:SurroundingSurfaces,
@@ -4885,7 +4885,7 @@ BuildingSurface:Detailed,
     ,                     !- Ground View Factor
     ,                        !- Ground Temperature Schedule Name
     VCWG:F_ww_nT,     !- Surrounding Surface 1 Name
-    0.566,                     !- Surrounding Surface 1 View Factor
+    0.648,                     !- Surrounding Surface 1 View Factor
     Surrounding Temp Sch East;  !- Surrounding Surface 1 Temperature Schedule Name
 
     SurfaceProperty:SurroundingSurfaces,
@@ -4895,7 +4895,7 @@ BuildingSurface:Detailed,
     ,                     !- Ground View Factor
     ,                        !- Ground Temperature Schedule Name
     VCWG:F_ww_nT,     !- Surrounding Surface 1 Name
-    0.566,                     !- Surrounding Surface 1 View Factor
+    0.648,                     !- Surrounding Surface 1 View Factor
     Surrounding Temp Sch North;  !- Surrounding Surface 1 Temperature Schedule Name
 
     SurfaceProperty:SurroundingSurfaces,
@@ -4905,7 +4905,7 @@ BuildingSurface:Detailed,
     ,                     !- Ground View Factor
     ,                        !- Ground Temperature Schedule Name
     VCWG:F_ww_nT,     !- Surrounding Surface 1 Name
-    0.566,                     !- Surrounding Surface 1 View Factor
+    0.648,                     !- Surrounding Surface 1 View Factor
     Surrounding Temp Sch West;  !- Surrounding Surface 1 Temperature Schedule Name
 
   SurfaceProperty:LocalEnvironment,
