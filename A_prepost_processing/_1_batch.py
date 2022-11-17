@@ -1,10 +1,9 @@
-
 import os, csv, numpy as np, pandas as pd, re
 import pathlib
 import sqlite3
+from shutil import copyfile
 
 from matplotlib import pyplot as plt
-
 
 def cvrmse(measurements, predictions):
     bias = predictions - measurements
@@ -37,7 +36,8 @@ def get_measurements():
 
 def read_sql(csv_file):
     csv_name = re.search(r'(.*)\.csv', csv_file).group(1)
-    current_path = '.\\shading_Bypass_saving_Opposite'
+    current_path = f'.\\{experiments_folder}'
+    sql_path = "foo"
     for folder in os.listdir(current_path):
         if csv_name in folder and 'ep_outputs' in folder:
             sql_path = os.path.join(current_path, folder, 'eplusout.sql')
@@ -64,11 +64,12 @@ def process_one_theme(path):
     #find all csv files in the path, which does not contain 'save'
     csv_files = []
     for file in os.listdir(path):
-        if file.endswith('.csv') and 'save' not in file:
+        if file.endswith('.csv'):
             csv_files.append(file)
     #process each csv file
     comparison = get_measurements()
     cvrmse_dict = {}
+    cvrmse_dict['Rural'] = cvrmse(comparison['Urban_DBT_C'], comparison['Rural_DBT_C'])
     sql_dict = {}
     for csv_file in csv_files:
         df = pd.read_csv(path + '\\' + csv_file, index_col=0, parse_dates=True)
@@ -83,10 +84,11 @@ def process_one_theme(path):
         comparison['RealTempProf_' + csv_file] = (df['TempProf_cur[19]'])* \
                                                  (df['PresProf_cur[19]'] / comparison['MeteoData.Pre']) ** 0.286 - 273.15
         cvrmse_dict[csv_file] = cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_' + csv_file])
+        sql_dict[csv_file] = read_sql(csv_file)
 
-    if os.path.exists('shading_Bypass_saving_Opposite\\comparison.xlsx'):
-        os.remove('shading_Bypass_saving_Opposite\\comparison.xlsx')
-    writer = pd.ExcelWriter('shading_Bypass_saving_Opposite\\comparison.xlsx')
+    if os.path.exists(f'{experiments_folder}\\comparison.xlsx'):
+        os.remove(f'{experiments_folder}\\comparison.xlsx')
+    writer = pd.ExcelWriter(f'{experiments_folder}\\comparison.xlsx')
     comparison.to_excel(writer, 'comparison')
     cvrmse_df = pd.DataFrame.from_dict(cvrmse_dict, orient='index', columns=['cvrmse'])
     cvrmse_df.to_excel(writer, 'cvrmse')
@@ -95,7 +97,7 @@ def process_one_theme(path):
     writer.save()
 
 def process_all_themes():
-    shading_bypass_path = r'shading_Bypass_saving_Opposite'
+    shading_bypass_path = f'{experiments_folder}'
     cases = os.listdir(shading_bypass_path)
     for case in cases:
         process_one_theme(shading_bypass_path)
@@ -112,28 +114,17 @@ def plot_one_subfigure(fig, df, ax, category, compare_cols):
     col_name_fix = category + '_'
     if not legend_bool:
         for col in compare_cols:
-            if "Bypass-" in col:
-                #remove the "Bypass-" in the col
-                col_idx = col.replace("Bypass-", "")
-            else:
-                col_idx = col
             if col == "Rural_DBT_C":
-                ax.plot(x, df[col], label=col_idx, color='black', linestyle='--')
+                ax.plot(x, df[col], label=col, color='black', linestyle='--')
             elif col == "Urban_DBT_C":
-                ax.plot(x, df[col], label=col_idx, color='black', linestyle=':')
+                ax.plot(x, df[col], label=col, color='black', linestyle=':')
             else:
-                ax.plot(x, df[col_name_fix+col_idx +'.csv'], label=col)
+                ax.plot(x, df[col_name_fix+col +'.csv'], label=col)
         legend_bool = True
         fig.legend(loc='center right', bbox_to_anchor=(1, 0.5), borderaxespad=0., fontsize=plot_fontsize)
     else:
         for col in compare_cols:
-            if "Bypass-" in col:
-                #remove the "Bypass-" in the col
-                col_idx = col.replace("Bypass-", "")
-            else:
-                col_idx = col
-            ax.plot(x, df[col_name_fix+col_idx+'.csv'])
-
+            ax.plot(x, df[col_name_fix+col+'.csv'])
 
 def plots():
     #Measurements: Rural, Urban
@@ -141,16 +132,20 @@ def plots():
     # All_subfigures: Canyon, Wallshade, Walllit, Roof, Wastez
     global plot_fontsize, legend_bool
     legend_bool = False
-    data = pd.read_excel('shading_Bypass_saving_Opposite\\comparison.xlsx', sheet_name='comparison', index_col=0, parse_dates=True)
+    data = pd.read_excel(f'{experiments_folder}\\comparison.xlsx', sheet_name='comparison', index_col=0, parse_dates=True)
     plot_fontsize = 6
     measurements_cols = ['Rural_DBT_C','Urban_DBT_C']
-    predictions_cols = ['VCWG', 'Bypass-Default', 'Bypass-Shading', 'Bypass-ViewFactor', 'Bypass-Shading_ViewFactor']
+
+    predictions_cols = []
+    for file in os.listdir(f'.\\{experiments_folder}'):
+        if file.endswith('.csv'):
+            #remove the '.csv' in the file name
+            predictions_cols.append(file.replace('.csv', ''))
     all_subfigures_cols = ['RealTempProf', 'Wallshade', 'Walllit', 'Roof', 'senWaste']
     fig, axes = plt.subplots(5, 1, figsize=(12, 4), sharex=True)
     fig.subplots_adjust(right=0.76)
     for ax in axes:
         ax.tick_params(axis='x', labelsize=plot_fontsize)
-
     for i, sub_fig in enumerate(all_subfigures_cols):
         if sub_fig == 'RealTempProf':
             compare_cols = measurements_cols + predictions_cols
@@ -161,6 +156,8 @@ def plots():
 
 def main():
     global processed_measurements, compare_start_time, compare_end_time, sql_report_name, sql_table_name, sql_row_name, sql_col_name
+    global experiments_folder
+    experiments_folder = 'shading_Enhance'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
@@ -169,7 +166,9 @@ def main():
     compare_end_time = '2004-06-30 22:55:00'
     processed_measurements = 'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                              + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
-    process_all_themes()
+    # Copy r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv' to 'VCWG.csv'
+    copyfile(r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv', f'.\\{experiments_folder}\\VCWG.csv')
+    # process_all_themes()
     plots()
 if __name__ == '__main__':
     main()

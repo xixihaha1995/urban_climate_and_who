@@ -32,17 +32,17 @@ def init_variables_for_vcwg_ep():
     global vcwg_needed_time_idx_in_seconds,\
         vcwg_canTemp_K, vcwg_canSpecHum_Ratio, vcwg_canPress_Pa, vcwg_wsp_mps, vcwg_wdir_deg,\
         ep_indoorTemp_C, ep_indoorHum_Ratio, ep_sensCoolDemand_w_m2, ep_sensHeatDemand_w_m2, ep_coolConsump_w_m2, ep_heatConsump_w_m2,\
-        ep_elecTotal_w_m2_per_floor_area, ep_sensWaste_w_m2_per_floor_area, \
+        ep_elecTotal_w_m2_per_footprint_area, ep_sensWaste_w_m2_per_footprint_area, \
         ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, \
         ep_wallSun_Text_K, ep_wallSun_Tint_K,ep_wallShade_Text_K, ep_wallShade_Tint_K,\
-        midRiseApartmentBld_floor_area_m2, mediumOfficeBld_floor_area_m2, smallOfficeBld_floor_area_m2, time_step_version, ep_files_path,\
+        midRiseApartmentBld_floor_area_m2, mediumOfficeBld_one_floor_area_m2, smallOfficeBld_floor_area_m2, time_step_version, ep_files_path,\
         ep_oaTemp_C, overwriting_time_index, overwriten_time_index, count
     count=0
     vcwg_wsp_mps = 0
     vcwg_wdir_deg = 0
     midRiseApartmentBld_floor_area_m2 = 3135
     smallOfficeBld_floor_area_m2 = 511
-    mediumOfficeBld_floor_area_m2 = 4982
+    mediumOfficeBld_one_floor_area_m2 = 4982 / 3
     vcwg_needed_time_idx_in_seconds = 0
     overwriting_time_index = 0
     overwriten_time_index = 0
@@ -55,8 +55,8 @@ def init_variables_for_vcwg_ep():
     ep_sensHeatDemand_w_m2 = 0
     ep_coolConsump_w_m2 = 0
     ep_heatConsump_w_m2 = 0
-    ep_elecTotal_w_m2_per_floor_area = 0
-    ep_sensWaste_w_m2_per_floor_area = 0
+    ep_elecTotal_w_m2_per_footprint_area = 0
+    ep_sensWaste_w_m2_per_footprint_area = 0
     ep_oaTemp_C = 7
 
     ep_floor_Text_K = 300
@@ -73,7 +73,7 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     global vcwg_needed_time_idx_in_seconds,\
         vcwg_canTemp_K, vcwg_canSpecHum_Ratio, vcwg_canPress_Pa, vcwg_wsp_mps, vcwg_wdir_deg,\
         ep_indoorTemp_C, ep_indoorHum_Ratio, ep_sensCoolDemand_w_m2, ep_sensHeatDemand_w_m2, ep_coolConsump_w_m2, ep_heatConsump_w_m2,\
-        ep_elecTotal_w_m2_per_floor_area, ep_sensWaste_w_m2_per_floor_area, ep_floor_fluxMass_w_m2, ep_fluxRoof_w_m2, ep_fluxWall_w_m2, \
+        ep_elecTotal_w_m2_per_footprint_area, ep_sensWaste_w_m2_per_footprint_area, ep_floor_fluxMass_w_m2, ep_fluxRoof_w_m2, ep_fluxWall_w_m2, \
         ep_floor_Text_K, ep_floor_Tint_K, ep_roof_Text_K, ep_roof_Tint_K, ep_wall_Text_K, ep_wall_Tint_K, count
     #Wait for the upstream (VCWG download EP results from Parent) to finish
     sem0.acquire()
@@ -103,8 +103,6 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     vcwg_wsp_mps = np.mean(canWspdProf_cur)
     vcwg_wdir_deg = np.mean(canWdirProf_cur) + Geometry_m.theta_canyon
     BEM_building = BEM.building
-    #hard coded nFloor same as the IDF models
-    BEM_building.nFloor = 3
     vcwg_needed_time_idx_in_seconds = vcwg_time_index_in_seconds
     vcwg_canTemp_K = canTemp
     vcwg_canSpecHum_Ratio = canHum
@@ -115,10 +113,10 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     sem3.acquire()
     # VCWG download EP results from Parent
 
-    BEM_building.sensWaste = ep_sensWaste_w_m2_per_floor_area * BEM_building.nFloor
-    ep_sensWaste_w_m2_per_floor_area = 0
+    BEM_building.sensWaste = ep_sensWaste_w_m2_per_footprint_area
+    ep_sensWaste_w_m2_per_footprint_area = 0
 
-    BEM_building.ElecTotal = ep_elecTotal_w_m2_per_floor_area * BEM_building.nFloor
+    BEM_building.ElecTotal = ep_elecTotal_w_m2_per_footprint_area
     BEM.mass.Text = ep_floor_Text_K
     BEM.mass.Tint = ep_floor_Tint_K
     BEM.wallSun.Text = ep_wallSun_Text_K
@@ -191,6 +189,7 @@ def BEMCalc_Element(VerticalProfUrban,BEM, it, simTime, FractionsRoof, Geometry_
     # start_time + accumulative_seconds
     cur_datetime = datetime.datetime.strptime(config['_0_vcwg_ep_coordination.py']['start_time'], '%Y-%m-%d %H:%M:%S') + \
                       datetime.timedelta(seconds=vcwg_time_index_in_seconds - simTime.dt)
+    print(f'cur_datetime: {cur_datetime}, indoorTemp: {BEM_building.indoorTemp}')
     domain_height = len(TempProf_cur)
     vcwg_heights_profile = np.array([0.5 + i for i in range(domain_height)])
     mapped_indices = [np.argmin(np.abs(vcwg_heights_profile - i)) for i in sensor_heights]

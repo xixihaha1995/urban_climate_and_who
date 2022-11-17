@@ -25,7 +25,7 @@ def run_vcwg():
     epwFileName = coordination.config['shading']['epwFileName']
     TopForcingFileName = None
     VCWGParamFileName = coordination.config['_1_ep_time_step_handler.py']['VCWGParamFileName']
-    idf_suffix = coordination.config['shading']['IDF_Name_Suffix_List']
+    idf_suffix = coordination.uwgVariableValue
     ViewFactorFileName = f'ShadingBypass_{idf_suffix}ViewFactor_Capitoul_MOST.txt'
     # Case name to append output file names with
     case = f'ShadingBypass_{idf_suffix}_Capitoul_MOST'
@@ -976,8 +976,8 @@ def mediumOffice_get_ep_results(state):
         accumulated_time_in_seconds = curr_sim_time_in_seconds - ep_last_call_time_seconds
         ep_last_call_time_seconds = curr_sim_time_in_seconds
         hvac_heat_rejection_J = coordination.ep_api.exchange.get_variable_value(state,hvac_heat_rejection_sensor_handle)
-        hvac_waste_w_m2 = hvac_heat_rejection_J / accumulated_time_in_seconds / coordination.mediumOfficeBld_floor_area_m2
-        coordination.ep_sensWaste_w_m2_per_floor_area += hvac_waste_w_m2
+        hvac_waste_w_m2 = hvac_heat_rejection_J / accumulated_time_in_seconds / coordination.mediumOfficeBld_one_floor_area_m2
+        coordination.ep_sensWaste_w_m2_per_footprint_area += hvac_waste_w_m2
 
         time_index_alignment_bool = 1 > abs(curr_sim_time_in_seconds - coordination.vcwg_needed_time_idx_in_seconds)
 
@@ -1002,7 +1002,7 @@ def mediumOffice_get_ep_results(state):
         heat_consumption_w_m2_value = heat_consumption_w_value / zone_floor_area_m2
 
         elec_bld_meter_j_hourly = coordination.ep_api.exchange.get_variable_value(state, elec_bld_meter_handle)
-        elec_bld_meter_w_m2 = elec_bld_meter_j_hourly / 3600 / coordination.mediumOfficeBld_floor_area_m2
+        elec_bld_meter_w_m2 = elec_bld_meter_j_hourly / 3600 / coordination.mediumOfficeBld_one_floor_area_m2
 
         flr_core_Text_c = coordination.ep_api.exchange.get_variable_value(state, flr_core_Text_handle)
         flr_pre1_Text_c = coordination.ep_api.exchange.get_variable_value(state, flr_pre1_Text_handle)
@@ -1042,7 +1042,7 @@ def mediumOffice_get_ep_results(state):
 
 
 
-        coordination.ep_elecTotal_w_m2_per_floor_area = elec_bld_meter_w_m2
+        coordination.ep_elecTotal_w_m2_per_footprint_area = elec_bld_meter_w_m2
         coordination.ep_indoorTemp_C = zone_indor_temp_value
         coordination.ep_indoorHum_Ratio = zone_indor_spe_hum_value
         coordination.ep_sensCoolDemand_w_m2 = sens_cool_demand_w_m2_value
