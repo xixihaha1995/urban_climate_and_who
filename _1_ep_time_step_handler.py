@@ -1081,7 +1081,7 @@ def mediumOffice_get_ep_results(state):
             coordination.ep_api.exchange.set_actuator_value(state, surd_south_temp_actuator_handle, coordination.ep_wallShade_Text_K - 273.15)
             coordination.ep_api.exchange.set_actuator_value(state, surd_east_temp_actuator_handle, coordination.ep_wallShade_Text_K - 273.15)
             coordination.ep_api.exchange.set_actuator_value(state, surd_north_temp_actuator_handle, coordination.ep_wallSun_Text_K - 273.15)
-            coordination.ep_api.exchange.set_actuator_value(state, surd_west_temp_actuator_handle, coordination.ep_wallShade_Text_K - 273.15)
+            coordination.ep_api.exchange.set_actuator_value(state, surd_west_temp_actuator_handle, coordination.ep_wallSun_Text_K - 273.15)
         else:
             coordination.ep_wallSun_Text_K = n_wall_Text_c + 273.15
             coordination.ep_wallSun_Tint_K = n_wall_Tint_c + 273.15
@@ -1091,6 +1091,6 @@ def mediumOffice_get_ep_results(state):
             coordination.ep_api.exchange.set_actuator_value(state, surd_south_temp_actuator_handle, coordination.ep_wallSun_Text_K - 273.15)
             coordination.ep_api.exchange.set_actuator_value(state, surd_east_temp_actuator_handle, coordination.ep_wallSun_Text_K - 273.15)
             coordination.ep_api.exchange.set_actuator_value(state, surd_north_temp_actuator_handle, coordination.ep_wallShade_Text_K - 273.15)
-            coordination.ep_api.exchange.set_actuator_value(state, surd_west_temp_actuator_handle, coordination.ep_wallSun_Text_K - 273.15)
+            coordination.ep_api.exchange.set_actuator_value(state, surd_west_temp_actuator_handle, coordination.ep_wallShade_Text_K - 273.15)
 
         coordination.sem3.release()
