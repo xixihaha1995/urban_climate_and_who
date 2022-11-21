@@ -430,7 +430,7 @@ class VCWG_Hydro(object):
 
         # Start simulation
         for it in range(0,self.simTime.nt-1,1):
-            print(r'VCWG: Progress [%]', numpy.round(100 * it / self.simTime.nt, 2))
+            # print(r'VCWG: Progress [%]', numpy.round(100 * it / self.simTime.nt, 2))
             # Simulation time increment raised to weather time step
             SunPosition,MeteoData,Anthropogenic,location,ParCalculation = \
                 ForcingData(self.MeteoDataRaw_intp,it, self.WBCanyon.SoilPotW, self.VCWGParamFileName,self.simTime)
@@ -617,7 +617,7 @@ class VCWG_Hydro(object):
                 # Lichen:
                 #   Bypassing the following function BEMCal():
                 self.BEM[i].building.BEMCalc(canTemp,canHum,self.BEM[i],MeteoData,ParCalculation,self.simTime,self.Geometry_m,
-                                             self.FractionsRoof,self.EBCanyon.SWR, self.UCM.VerticalProfUrban)
+                                             self.FractionsRoof,self.EBCanyon.SWR, self.UCM.VerticalProfUrban,it)
                 # self.BEM[i] = _0_vcwg_ep_coordination.BEMCalc_Element(self.UCM.VerticalProfUrban,
                 #                             self.BEM[i], it, self.simTime, self.FractionsRoof, self.Geometry_m)
 

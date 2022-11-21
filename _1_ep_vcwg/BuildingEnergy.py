@@ -1,9 +1,12 @@
+import datetime
+import os
+
 from .psychrometrics import psychrometrics, moist_air_density
 import logging
 import numpy
 import copy
 
-from  . import _0_vcwg_ep_coordination as _0_global_save
+from  . import _0_vcwg_ep_coordination as coordination
 
 # Lichen: import the parent coordination class needed for EP and VCWG
 
@@ -134,7 +137,7 @@ class Building(object):
         return abs(float(val)) < tol
 
     def BEMCalc(self, canTemp, canHum, BEM, MeteoData, ParCalculation, simTime, Geometry_m, FractionsRoof, SWR,
-                VerticalProfUrban):
+                VerticalProfUrban, it ):
 
         """
         ------
@@ -184,46 +187,6 @@ class Building(object):
         QWater: energy consumption for domestic hot water [W m^-2]
         QGas: energy consumption for gas [W m^-2]
         """
-        # canTempProf_cur = self.UCM.VerticalProfUrban.th[0:self.Geometry_m.nz_u]
-        # canHumProf_cur = self.UCM.VerticalProfUrban.qn[0:self.Geometry_m.nz_u]
-        # canPresProf_cur = self.UCM.VerticalProfUrban.presProf[0:self.Geometry_m.nz_u]
-
-        TempProf_cur = VerticalProfUrban.th
-        HumProf_cur = VerticalProfUrban.qn
-        PresProf_cur = VerticalProfUrban.presProf
-        vxProf = VerticalProfUrban.vx
-        vyProf = VerticalProfUrban.vy
-        wind_magnitudeProf = VerticalProfUrban.s
-        tkeProf = VerticalProfUrban.tke
-        rhoProf = VerticalProfUrban.rho
-        HfluxProf = VerticalProfUrban.Hflux
-        LEfluxProf = VerticalProfUrban.LEflux
-
-        _0_global_save.saving_data['TempProfile_K'].append(TempProf_cur)
-        _0_global_save.saving_data['SpecHumProfile_Ratio'].append(HumProf_cur)
-        _0_global_save.saving_data['PressProfile_Pa'].append(PresProf_cur)
-        _0_global_save.saving_data['wind_vxProfile_mps'].append(vxProf)
-        _0_global_save.saving_data['wind_vyProfile_mps'].append(vyProf)
-        _0_global_save.saving_data['wind_SpeedProfile_mps'].append(wind_magnitudeProf)
-        _0_global_save.saving_data['turbulence_tkeProfile_m2s2'].append(tkeProf)
-        _0_global_save.saving_data['air_densityProfile_kgm3'].append(rhoProf)
-        _0_global_save.saving_data['sensible_heat_fluxProfile_Wm2'].append(HfluxProf)
-        _0_global_save.saving_data['latent_heat_fluxProfile_Wm2'].append(LEfluxProf)
-
-        _0_global_save.saving_data['s_wall_Text_K_n_wall_Text_K'].append([BEM.wallSun.Text, BEM.wallShade.Text])
-
-        canWspdProf_cur = wind_magnitudeProf[0:Geometry_m.nz_u]
-        # tan(wdir) = vx/vy, wdir unit is degree from 0 to 360, 0 is north, 90 is east, 180 is south, 270 is west
-        canWdirProf_cur = numpy.arctan(vxProf[0:Geometry_m.nz_u] / vyProf[0:Geometry_m.nz_u]) * 180 / numpy.pi
-        vcwg_wsp_mps = numpy.mean(canWspdProf_cur)
-        vcwg_wdir_deg = numpy.mean(canWdirProf_cur) + Geometry_m.theta_canyon
-        _0_global_save.saving_data['vcwg_wsp_mps_wdir_deg'].append(
-            [vcwg_wsp_mps, vcwg_wdir_deg])
-        canPresProf_cur = PresProf_cur[0:Geometry_m.nz_u]
-        vcwg_canPress_Pa = numpy.mean(canPresProf_cur)
-        _0_global_save.saving_data['can_Averaged_temp_k_specHum_ratio_press_pa']. \
-            append([canTemp, canHum, vcwg_canPress_Pa])
-
         self.logger.debug("Logging at {} {}".format(__name__, self.__repr__()))
 
         # Building Energy Model
@@ -519,12 +482,42 @@ class Building(object):
         self.QWater = (1 / self.heatEff - 1.) * self.sensWaterHeatDemand
         self.QGas = BEM.Gas * (1 - self.heatEff) * self.nFloor
         self.sensWaste = self.sensWasteCoolHeatDehum + self.QWater + self.QGas
-
-        _0_global_save.saving_data['debugging_canyon'].append(
-            [BEM.wallSun.Text, BEM.wallShade.Text,  (BEM.roofImp.Text + BEM.roofImp.Text) / 2,
-             self.sensWaste, canTemp])
         # Calculate total gas consumption per unit floor area [W m^-2] which is equal to gas consumption per unit floor area +
         # energy consumption for domestic hot water per unit floor area + energy consumption of the heating system per unit floor area
         self.GasTotal = BEM.Gas + (massFlorRateSWH * CpH20 * (
                     T_hot - MeteoData.waterTemp) / self.nFloor) / self.heatEff + self.heatConsump / self.nFloor
+
+        if os.path.exists(coordination.data_saving_path) and not coordination.save_path_clean:
+            os.remove(coordination.data_saving_path)
+            coordination.save_path_clean = True
+
+        TempProf_cur = VerticalProfUrban.th
+        PresProf_cur = VerticalProfUrban.presProf
+        vcwg_needed_time_idx_in_seconds = it * simTime.dt
+        cur_datetime = datetime.datetime.strptime(coordination.config['__main__']['start_time'],
+                                                  '%Y-%m-%d %H:%M:%S') + \
+                       datetime.timedelta(seconds= vcwg_needed_time_idx_in_seconds)
+        print('current time: ', cur_datetime)
+        domain_height = len(TempProf_cur)
+        vcwg_heights_profile = numpy.array([0.5 + i for i in range(domain_height)])
+        mapped_indices = [numpy.argmin(numpy.abs(vcwg_heights_profile - float(i))) for i in
+                          coordination.config['run_vcwg()']['sensor_heights']]
+
+        if not os.path.exists(coordination.data_saving_path):
+            os.makedirs(os.path.dirname(coordination.data_saving_path), exist_ok=True)
+            with open(coordination.data_saving_path, 'a') as f1:
+                # prepare the header string for different sensors
+                header_str = 'cur_datetime,sensWaste,MeteoData.Tatm,MeteoData.Pre,'
+                for i in mapped_indices:
+                    header_str += 'TempProf_cur[%d],' % i + 'PresProf_cur[%d],' % i
+                header_str += '\n'
+                f1.write(header_str)
+
+            # write the data
+        with open(coordination.data_saving_path, 'a') as f1:
+            fmt1 = "%s," * 1 % (cur_datetime) + \
+                   "%.3f," * 3 % (self.sensWaste, MeteoData.Tatm, MeteoData.Pre) + \
+                   "%.3f," * 2 * len(mapped_indices) % tuple([TempProf_cur[i] for i in mapped_indices] + \
+                                                             [PresProf_cur[i] for i in mapped_indices]) + '\n'
+            f1.write(fmt1)
 
