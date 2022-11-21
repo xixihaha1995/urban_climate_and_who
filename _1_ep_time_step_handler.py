@@ -677,8 +677,4 @@ def general_get_ep_results(state):
         if not time_index_alignment_bool:
             coordination.sem2.release()
             return
-
-        coordination.ep_indoorTemp_C = coordination.ep_api.exchange.get_variable_value(state, zone_indor_temp_sensor_handle)
-        coordination.ep_indoorHum_Ratio = coordination.ep_api.exchange.get_variable_value(state,
-                                                                                   zone_indor_spe_hum_sensor_handle)
         coordination.sem3.release()
