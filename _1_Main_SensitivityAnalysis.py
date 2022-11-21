@@ -45,6 +45,6 @@ def for_loop_all_ini():
         print('Todo jobs',selected_jobs[i:i+nbr_job_for_one_batch])
         batch_run(selected_jobs[i:i+nbr_job_for_one_batch])
 
-
 if __name__ == '__main__':
     for_loop_all_ini()
+    # one_ini('IDFs_Type.ini')
