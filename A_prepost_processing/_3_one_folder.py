@@ -39,7 +39,7 @@ def read_sql(csv_file):
     current_path = f'./{experiments_folder}'
     sql_path = "foo"
     for folder in os.listdir(current_path):
-        if csv_name in folder and 'ep_outputs' in folder:
+        if csv_name in folder and 'ep_trivial_outputs' in folder:
             sql_path = os.path.join(current_path, folder, 'eplusout.sql')
             break
     if not os.path.exists(sql_path):
@@ -147,7 +147,7 @@ def plots():
 def main():
     global processed_measurements, compare_start_time, compare_end_time, sql_report_name, sql_table_name, sql_row_name, sql_col_name
     global experiments_folder
-    experiments_folder = 'IDFs_Size'
+    experiments_folder = 'IDFs_Type'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
@@ -157,7 +157,7 @@ def main():
     processed_measurements = 'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                              + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
     # Copy r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv' to 'VCWG.csv'
-    # copyfile(r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv', f'./{experiments_folder}/VCWG.csv')
+    # copyfile(r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv', f'.\{experiments_folder}\VCWG.csv')
     process_one_theme(experiments_folder)
     plots()
 if __name__ == '__main__':
