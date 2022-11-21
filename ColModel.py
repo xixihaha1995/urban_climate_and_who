@@ -242,7 +242,11 @@ def ColumnModelCal(z0_road,z0_roof,Ceps,Cdrag,Ck,thb,qhb,tvb,FractionsGround,Fra
     # Solve TKE equation
     tke_new,wtke,dwtkedz = Sol.Solver(Geometry_m.nz,Geometry_m.nz,tke_bc_bottom,tke_bc_top,dts,rho,tke,Km,srim_tke,srex_tke,sf,vol,Geometry_m.dz)
     # Solve temperature equation
-    print(f'ex: {numpy.mean(srex_th)}, im: {numpy.mean(srim_th)}')
+    bld_mean = numpy.mean(srex_th[0:Geometry_m.nz_u])
+    bld_around = [srex_th[Geometry_m.nz_u - 1], srex_th[Geometry_m.nz_u], srex_th[Geometry_m.nz_u + 1]]
+    bld_th = th[0:Geometry_m.nz_u+1]
+    sum_srex_th = numpy.sum(srex_th)
+    print(f'bld_around: {bld_around},sum_srex_th: {sum_srex_th}')
     th_new,wth,dwthdz = Sol.Solver(Geometry_m.nz,Geometry_m.nz,T_bc_bottom,T_bc_top,dts,rho,th,Km/ColParam.prandtl,srim_th,srex_th,sf,vol,Geometry_m.dz)
     # Solve specific humidity equation
     qn_new,wqn,dwqndz = Sol.Solver(Geometry_m.nz,Geometry_m.nz,q_bc_bottom,q_bc_top,dts,rho,qn,Km/ColParam.schmidt,srim_qn,srex_qn,sf,vol,Geometry_m.dz)

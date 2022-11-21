@@ -477,7 +477,7 @@ class VCWG_Hydro(object):
                 TwallShade_int = TwallShade_int + self.BEM[i].wallShade.Tint*self.BEM[i].frac
             curdatetime = datetime.datetime.strptime(coordination.config['_0_vcwg_ep_coordination.py']['start_time'], '%Y-%m-%d %H:%M:%S') + \
                 datetime.timedelta(seconds=it*self.simTime.dt)
-            bool_if_later = curdatetime > datetime.datetime.strptime('2004-06-02 18:45:00', '%Y-%m-%d %H:%M:%S')
+            bool_if_later = curdatetime > datetime.datetime.strptime('2004-06-08 00:00:00', '%Y-%m-%d %H:%M:%S')
             TemperatureC = [
                 self.GroundImp.Text,self.GroundBare.Text,
                             self.GroundVeg.Text,TwallSun_ext,TwallShade_ext,
