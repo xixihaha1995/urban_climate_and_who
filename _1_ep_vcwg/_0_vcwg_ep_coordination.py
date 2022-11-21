@@ -1,7 +1,7 @@
 import configparser, os
 
 def ini_all(config_file_name):
-    global config, data_saving_path, save_path_clean
+    global config, data_saving_path, save_path_clean, sensor_heights
     config = configparser.ConfigParser()
     # find the project path
     project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -11,3 +11,5 @@ def ini_all(config_file_name):
     data_saving_path = os.path.join(project_path, 'A_prepost_processing',
                                     experiments_theme,'saving.csv')
     save_path_clean = False
+    sensor_heights = [int(i) for i in config['run_vcwg()']['sensor_height_meter'].split(',')]
+

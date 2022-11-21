@@ -500,14 +500,13 @@ class Building(object):
         print('current time: ', cur_datetime)
         domain_height = len(TempProf_cur)
         vcwg_heights_profile = numpy.array([0.5 + i for i in range(domain_height)])
-        mapped_indices = [numpy.argmin(numpy.abs(vcwg_heights_profile - float(i))) for i in
-                          coordination.config['run_vcwg()']['sensor_heights']]
+        mapped_indices = [numpy.argmin(numpy.abs(vcwg_heights_profile - i)) for i in coordination.sensor_heights]
 
         if not os.path.exists(coordination.data_saving_path):
             os.makedirs(os.path.dirname(coordination.data_saving_path), exist_ok=True)
             with open(coordination.data_saving_path, 'a') as f1:
                 # prepare the header string for different sensors
-                header_str = 'cur_datetime,sensWaste,MeteoData.Tatm,MeteoData.Pre,'
+                header_str = 'cur_datetime,canTemp,sensWaste,MeteoData.Tatm,MeteoData.Pre,'
                 for i in mapped_indices:
                     header_str += 'TempProf_cur[%d],' % i + 'PresProf_cur[%d],' % i
                 header_str += '\n'
@@ -516,7 +515,7 @@ class Building(object):
             # write the data
         with open(coordination.data_saving_path, 'a') as f1:
             fmt1 = "%s," * 1 % (cur_datetime) + \
-                   "%.3f," * 3 % (self.sensWaste, MeteoData.Tatm, MeteoData.Pre) + \
+                   "%.3f," * 4 % (canTemp,self.sensWaste, MeteoData.Tatm, MeteoData.Pre) + \
                    "%.3f," * 2 * len(mapped_indices) % tuple([TempProf_cur[i] for i in mapped_indices] + \
                                                              [PresProf_cur[i] for i in mapped_indices]) + '\n'
             f1.write(fmt1)

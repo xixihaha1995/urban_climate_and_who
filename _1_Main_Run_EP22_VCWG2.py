@@ -2,8 +2,6 @@ import os, numpy as np, pandas as pd
 from threading import Thread
 import _1_ep_vcwg._0_vcwg_ep_coordination as coordination
 from _1_ep_vcwg.VCWG_Hydrology import VCWG_Hydro
-from _3_post_process_code import _0_all_plot_tools as plot_tools
-
 
 def run_vcwg():
     epwFileName = coordination.config['run_vcwg()']['epwFileName']
