@@ -440,7 +440,7 @@ def Data_Site(InputFile):
         ipd['bld'][3][1] = 1
     elif "MidRiseApartment" in coordination.controlValue:
         ipd['bld'][5][1] = 1
-    elif "Stand-aloneRetail" in coordination.controlValue:
+    elif "StandAloneRetail" in coordination.controlValue:
         ipd['bld'][12][1] = 1
     elif "StripMall" in coordination.controlValue:
         ipd['bld'][13][1] = 1
