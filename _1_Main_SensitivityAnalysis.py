@@ -47,3 +47,4 @@ def for_loop_all_ini():
 
 if __name__ == '__main__':
     for_loop_all_ini()
+    # one_ini('IDFs_Type.ini')
