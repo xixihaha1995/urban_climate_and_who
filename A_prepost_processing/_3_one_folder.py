@@ -59,6 +59,17 @@ def read_sql(csv_file):
             raise ValueError(msg)
     regex = r'(\d+\.?\d*)'
     number = float(re.findall(regex, results[0][1])[0])
+
+    hvac_electricity_query = f"SELECT * FROM TabularDataWithStrings " \
+                             f"WHERE ReportName = '{sql_report_name}'" \
+                             f"AND TableName = 'Utility Use Per Total Floor Area' And RowName = 'HVAC' " \
+                             f"AND ColumnName = 'Electricity Intensity'"
+    hvac_electricity_query_results = cursor.execute(hvac_electricity_query).fetchall()
+    hvac_gas_query = f"SELECT * FROM TabularDataWithStrings " \
+                        f"WHERE ReportName = '{sql_report_name}'" \
+                        f"AND TableName = 'Utility Use Per Total Floor Area' And RowName = 'HVAC' " \
+                        f"AND ColumnName = 'Natural Gas Intensity'"
+    hvac_gas_query_results = cursor.execute(hvac_gas_query).fetchall()
     return number
 def process_one_theme(path):
     #find all csv files in the path, which does not contain 'save'
