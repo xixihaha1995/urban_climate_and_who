@@ -17,8 +17,7 @@ def run_vcwg():
 
 
 if __name__ == '__main__':
-    prompt = 'Please input the configuration file name: [CAPITOUL_debug.ini]'
-    configFileName = input(prompt) or 'CAPITOUL_debug.ini'
+    configFileName = 'CAPITOUL_debug.ini'
     coordination.ini_all(configFileName)
     time_interval_sec = 300
     vcwg_thread = Thread(target=run_vcwg)

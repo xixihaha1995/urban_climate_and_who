@@ -1,3 +1,6 @@
+import datetime
+import os
+
 import numpy
 import math
 from .BuildingColumnModel import BuildingCol
@@ -7,7 +10,7 @@ from .Buoyancy import BuoProd
 from .NumericalSolver import Diff
 from .Invert import Invert
 import copy
-
+from  . import _0_vcwg_ep_coordination as coordination
 """
 Column Model for momentum, turbulent kinetic energy, temperature, and specific humidity in the urban environment
 Developed by Mohsen Moradi and Amir A. Aliabadi
@@ -18,7 +21,8 @@ Originally developed by Alberto Martilli, Scott Krayenhoff, and Negin Nazarian
 
 def ColumnModelCal(z0_road,z0_roof,Ceps,Cdrag,Ck,thb,qhb,tvb,FractionsGround,FractionsRoof,TemperatureC,TemperatureR,
                    ForcingVariable,VerticalProfUrban,Geometry_m,geometry,ColParam,f_LAD,dlk,dls,pb,ss,sf,vol,Cp,Ustar,
-                   SensHt_HVAC,dts,Rural_Model_name):
+                   SensHt_HVAC,dts,Rural_Model_name,
+                   it,simTime):
     """
     ------
     INPUT:
@@ -132,6 +136,7 @@ def ColumnModelCal(z0_road,z0_roof,Ceps,Cdrag,Ck,thb,qhb,tvb,FractionsGround,Fra
     T_bc_bottom = 1
     T_bc_top = 2
     th[Geometry_m.nz - 1] = ForcingVariable[0]
+    print(f'ForcingVariable[0] = {ForcingVariable[0] - 273.15} C')
 
     # Define boundary conditions for humidity (1:Neumann boundary condition (Flux), 2:Dirichlet boundary condition (Constant value))
     q_bc_bottom = 1
@@ -175,7 +180,10 @@ def ColumnModelCal(z0_road,z0_roof,Ceps,Cdrag,Ck,thb,qhb,tvb,FractionsGround,Fra
     # Drag coefficient for vegetation foliage
     cdv = 0.2
 
-    # Calculate source and sink terms caused by trees and then calculate total source and sink terms
+    # # Calculate source and sink terms caused by trees and then calculate total source and sink terms
+    # print(f'mean srex_th_h: {numpy.mean(BuildingCoef.srex_th_h)}, '
+    #       f'mean srex_th_v: {numpy.mean(BuildingCoef.srex_th_v)}, mean srex_th_veg: {numpy.mean(srex_th_veg)}')
+
     for i in range(0, Geometry_m.nz):
 
         # source/sink terms of specific humidity
@@ -210,7 +218,6 @@ def ColumnModelCal(z0_road,z0_roof,Ceps,Cdrag,Ck,thb,qhb,tvb,FractionsGround,Fra
         # Explicit term in temperature equation [K s^-1] = term from urban horizontal surfaces [K s^-1] +
         # term from walls [K s^-1] + term caused by vegetation [K s^-1]
         srex_th[i] = BuildingCoef.srex_th_h[i] + BuildingCoef.srex_th_v[i] + srex_th_veg[i]
-
         # Explicit term in humidity equation [K s^-1] = term caused by latent heat from ground and vegetation [K s^-1]
         srex_qn[i] = BuildingCoef.srex_qn_h[i] + srex_qn[i] + srex_qn_veg[i]
 
@@ -242,6 +249,28 @@ def ColumnModelCal(z0_road,z0_roof,Ceps,Cdrag,Ck,thb,qhb,tvb,FractionsGround,Fra
     # Solve TKE equation
     tke_new,wtke,dwtkedz = Sol.Solver(Geometry_m.nz,Geometry_m.nz,tke_bc_bottom,tke_bc_top,dts,rho,tke,Km,srim_tke,srex_tke,sf,vol,Geometry_m.dz)
     # Solve temperature equation
+
+    if os.path.exists(coordination.data_saving_path) and not coordination.save_path_clean:
+        os.remove(coordination.data_saving_path)
+        coordination.save_path_clean = True
+
+    cur_datetime = datetime.datetime.strptime(coordination.config['__main__']['start_time'],
+                                              '%Y-%m-%d %H:%M:%S') + \
+                   datetime.timedelta(seconds=it * simTime.dt)
+
+    if not os.path.exists(coordination.data_saving_path):
+        os.makedirs(os.path.dirname(coordination.data_saving_path), exist_ok=True)
+        with open(coordination.data_saving_path, 'a') as f1:
+            # prepare the header string for different sensors
+            header_str = 'cur_datetime,canTemp,ForcingVariable[0],srex_th_mean'
+            header_str += '\n'
+            f1.write(header_str)
+    canTemp = numpy.mean(th[0:Geometry_m.nz_u])
+    with open(coordination.data_saving_path, 'a') as f1:
+        fmt1 = "%s," * 1 % (cur_datetime) + \
+               "%.3f," * 4 % (canTemp,canTemp, ForcingVariable[0],numpy.mean(srex_th))+ '\n'
+        f1.write(fmt1)
+
     th_new,wth,dwthdz = Sol.Solver(Geometry_m.nz,Geometry_m.nz,T_bc_bottom,T_bc_top,dts,rho,th,Km/ColParam.prandtl,srim_th,srex_th,sf,vol,Geometry_m.dz)
     # Solve specific humidity equation
     qn_new,wqn,dwqndz = Sol.Solver(Geometry_m.nz,Geometry_m.nz,q_bc_bottom,q_bc_top,dts,rho,qn,Km/ColParam.schmidt,srim_qn,srex_qn,sf,vol,Geometry_m.dz)

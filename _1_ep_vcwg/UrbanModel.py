@@ -81,7 +81,8 @@ class UCM_Def():
 
     def UCMCal(self,TemperatureR,TemperatureC,FractionsGround,FractionsRoof,ForcTemp,Forcq_Top,ForcWindSpeed,ForcWindDir,
                Geometry_m,ParCalculation,ParVegGround,ParVegRoof,thb_roof,thb_ground,tvb_wall,qhb_roof,qhb_ground,
-               Hflux_canyon,LEflux_canyon,Hflux_roof,LEflux_roof,geometry,ParTree,ColParam,BEM,Ustar,Rural_Model_name):
+               Hflux_canyon,LEflux_canyon,Hflux_roof,LEflux_roof,geometry,ParTree,ColParam,BEM,Ustar,Rural_Model_name,
+               it, simTime):
         """
         ------
         INPUT:
@@ -247,7 +248,8 @@ class UCM_Def():
         vx, vy, tke, th, qn, presProf, th_eq, vx_eq, vy_eq, tke_eq, qn_eq, self.ColumnModel_OtherParam = \
             ColumnModelCal(zom_ground_ground,zom_ground_roof,Ceps,Cdrag,Ck,self.thb,self.qhb,self.tvb,FractionsGround,
                            FractionsRoof,TemperatureC,TemperatureR,ForcingVariable,self.VerticalProfUrban,Geometry_m,geometry,
-                           ColParam,f_LAD,dlk,dls,pb,ss,sf,vol,Cp,Ustar,SensHt_HVAC,ParCalculation.dts,Rural_Model_name)
+                           ColParam,f_LAD,dlk,dls,pb,ss,sf,vol,Cp,Ustar,SensHt_HVAC,ParCalculation.dts,Rural_Model_name,
+                           it, simTime)
 
         self.VerticalProfUrban.vx = vx
         self.VerticalProfUrban.vy = vy

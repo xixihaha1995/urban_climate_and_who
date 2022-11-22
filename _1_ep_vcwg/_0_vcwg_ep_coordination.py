@@ -9,7 +9,7 @@ def ini_all(config_file_name):
     config.read(config_path)
     experiments_theme = config['run_vcwg()']['experiments_theme']
     data_saving_path = os.path.join(project_path, 'A_prepost_processing',
-                                    experiments_theme,'saving.csv')
+                                    experiments_theme,'debug_saving.csv')
     save_path_clean = False
     sensor_heights = [int(i) for i in config['run_vcwg()']['sensor_height_meter'].split(',')]
 

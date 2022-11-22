@@ -1,3 +1,4 @@
+import datetime
 import os
 import numpy
 import math
@@ -29,7 +30,7 @@ from .Material import Material
 from .psychrometrics import HumFromRHumTemp
 from .EPWGenerator import write_epw
 
-from . import _0_vcwg_ep_coordination
+from . import _0_vcwg_ep_coordination as coordination
 """
 Main VCWG script 
 Developed by Mohsen Moradi and Amir A. Aliabadi
@@ -432,6 +433,12 @@ class VCWG_Hydro(object):
         for it in range(0,self.simTime.nt-1,1):
             # print(r'VCWG: Progress [%]', numpy.round(100 * it / self.simTime.nt, 2))
             # Simulation time increment raised to weather time step
+            cur_datetime = datetime.datetime.strptime(coordination.config['__main__']['start_time'],
+                                                      '%Y-%m-%d %H:%M:%S') + \
+                           datetime.timedelta(seconds=it * self.simTime.dt)
+            print(f'current time: {cur_datetime}')
+            bool_later_than_start_time = cur_datetime > \
+                                         datetime.datetime.strptime("2004-06-02 18:55:00", '%Y-%m-%d %H:%M:%S')
             SunPosition,MeteoData,Anthropogenic,location,ParCalculation = \
                 ForcingData(self.MeteoDataRaw_intp,it, self.WBCanyon.SoilPotW, self.VCWGParamFileName,self.simTime)
             self.simTime.UpdateDate()
@@ -519,6 +526,7 @@ class VCWG_Hydro(object):
             self.Rural.Element(self.EBRural.EnergyFlux.SWRabsRural,self.EBRural.EnergyFlux.LWRabsRural,self.EBRural.EnergyFlux.LEfluxRural,
                                self.EBRural.EnergyFlux.HfluxRural,self.TimeParam.dts,self.EBRural.Td,2)
             Text_Rrual = self.Rural.Text
+            print('Rural surface temperature: ', Text_Rrual - 273.15, 'C')
 
             # -----------------------------------------------------
             # Update rural model and boundary conditions at the top
@@ -549,7 +557,8 @@ class VCWG_Hydro(object):
                             TOPBC_Urban_WindSpeed,TOPBC_Urban_WindDir,self.Geometry_m,ParCalculation,self.ParVegGround,
                             self.ParVegRoof,self.EBRoof.Src.thb,self.EBCanyon.Src.thb,self.EBCanyon.Src.tvb,self.EBRoof.Src.qhb,
                             self.EBCanyon.Src.qhb,self.EBCanyon.Hflux,self.EBCanyon.LEflux,self.EBRoof.Hflux,self.EBRoof.LEflux,
-                            self.geometry,self.ParTree,self.ColParam,self.BEM,Ustar,self.RSMParam.Rural_Model_name)
+                            self.geometry,self.ParTree,self.ColParam,self.BEM,Ustar,self.RSMParam.Rural_Model_name,
+                            it,self.simTime)
 
             # ----------------------------
             # Update building energy model
