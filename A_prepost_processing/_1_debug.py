@@ -102,16 +102,27 @@ def process_one_theme(path):
 
 def plots():
     #Urban_DBT_C, Rural_DBT_C,sensWaste, canTemp, ForcingVariable[0], srex_th_mean
-    df = pd.read_csv(f'{experiments_folder}/debug.xlsx', index_col=0, parse_dates=True)
+    plot_fontsize = 10
+    df = pd.read_excel(f'{experiments_folder}/debug.xlsx', index_col=0, parse_dates=True)
     # plot into one subfigure: 6 timeseries
-    fig, ax = plt.subplots(1, 1, figsize=(10, 6))
-    # srex_th_mean has different scale, plot it in second y axis
-    ax2 = ax.twinx()
-    ax2.set_ylabel('srex_th_mean')
-    ax2.plot(df.index, df['srex_th_mean'], color='black', linestyle='--')
-    for col in ['Urban_DBT_C', 'Rural_DBT_C', 'sensWaste', 'canTemp', 'ForcingVariable[0]']:
-        ax.plot(df.index, df[col], label=col)
-    ax.legend()
+    fig, axes = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
+    fig.subplots_adjust(right=0.76)
+
+    # 'sensWaste', srex_th_mean has different scale, plot it in the second subfigure
+    compare_cols = ['Urban_DBT_C', 'Rural_DBT_C', 'canTemp', 'ForcingVariable[0]']
+    for col in compare_cols:
+        if col == "canTemp" or col == "ForcingVariable[0]":
+            axes[0].plot(df.index, df[col] - 273.15, label=col)
+        else:
+            axes[0].plot(df.index, df[col], label=col)
+    axes[0].set_ylabel('Temperature (C)')
+
+    axes[0].set_title('Temperature')
+    srex_ax = axes[1].twinx()
+    srex_ax.plot(df.index, df['srex_th_mean'], label='srex_th_mean', color='black', linestyle='--')
+    axes[1].plot(df.index, df['sensWaste'], label='sensWaste')
+    axes[1].set_ylabel('W/m2')
+    fig.legend(loc='center right', bbox_to_anchor=(1, 0.5), borderaxespad=0., fontsize=plot_fontsize)
     plt.show()
 
 
@@ -123,7 +134,7 @@ def main():
     compare_end_time = '2004-06-30 22:55:00'
     processed_measurements = 'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                              + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
-    process_one_theme(experiments_folder)
+    # process_one_theme(experiments_folder)
     plots()
 if __name__ == '__main__':
     main()
