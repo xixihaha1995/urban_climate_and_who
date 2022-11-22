@@ -3,6 +3,20 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="\A_prepost_processing\IDFs_Size\VCWG.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\A_prepost_processing\IDFs_Type\VCWG.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\A_prepost_processing\sensitivity_saving\CAPITOUL\canyonWidth9ToRoofWidth\Width_roof18.2.csv">
           <value>
             <Attribute>
