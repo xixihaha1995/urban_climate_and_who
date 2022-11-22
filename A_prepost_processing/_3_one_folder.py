@@ -46,31 +46,33 @@ def read_sql(csv_file):
         return None
     abs_sql_path = os.path.abspath(sql_path)
     sql_uri = '{}?mode=ro'.format(pathlib.Path(abs_sql_path).as_uri())
-    query = f"SELECT * FROM TabularDataWithStrings WHERE ReportName = '{sql_report_name}' AND TableName = '{sql_table_name}'" \
+    totalEnergyQuery = f"SELECT * FROM TabularDataWithStrings WHERE ReportName = '{sql_report_name}' AND TableName = '{sql_table_name}'" \
             f" AND RowName = '{sql_row_name}' AND ColumnName = '{sql_col_name}'"
     with sqlite3.connect(sql_uri, uri=True) as con:
         cursor = con.cursor()
-        results = cursor.execute(query).fetchall()
-        if results:
+        totalEnergyRes = cursor.execute(totalEnergyQuery).fetchall()
+        if totalEnergyRes:
             pass
         else:
             msg = ("Cannot find the EnergyPlusVersion in the SQL file. "
-                   "Please inspect query used:\n{}".format(query))
+                   "Please inspect query used:\n{}".format(totalEnergyQuery))
             raise ValueError(msg)
     regex = r'(\d+\.?\d*)'
-    number = float(re.findall(regex, results[0][1])[0])
+    totalEnergy = float(re.findall(regex, totalEnergyRes[0][1])[0])
 
     hvac_electricity_query = f"SELECT * FROM TabularDataWithStrings " \
                              f"WHERE ReportName = '{sql_report_name}'" \
                              f"AND TableName = 'Utility Use Per Total Floor Area' And RowName = 'HVAC' " \
                              f"AND ColumnName = 'Electricity Intensity'"
     hvac_electricity_query_results = cursor.execute(hvac_electricity_query).fetchall()
+    hvac_electricity = float(re.findall(regex, hvac_electricity_query_results[0][1])[0])
     hvac_gas_query = f"SELECT * FROM TabularDataWithStrings " \
                         f"WHERE ReportName = '{sql_report_name}'" \
                         f"AND TableName = 'Utility Use Per Total Floor Area' And RowName = 'HVAC' " \
                         f"AND ColumnName = 'Natural Gas Intensity'"
     hvac_gas_query_results = cursor.execute(hvac_gas_query).fetchall()
-    return number
+    hvac_gas = float(re.findall(regex, hvac_gas_query_results[0][1])[0])
+    return totalEnergy, hvac_electricity, hvac_gas
 def process_one_theme(path):
     #find all csv files in the path, which does not contain 'save'
     csv_files = []
@@ -91,7 +93,7 @@ def process_one_theme(path):
         comparison['RealTempProf_' + csv_file] = (df['TempProf_cur[19]'])* \
                                                  (df['PresProf_cur[19]'] / comparison['MeteoData.Pre']) ** 0.286 - 273.15
         cvrmse_dict[csv_file] = cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_' + csv_file])
-        sql_dict[csv_file] = read_sql(csv_file)
+        sql_dict[csv_file] = [read_sql(csv_file)]
 
     if os.path.exists(f'{experiments_folder}/comparison.xlsx'):
         os.remove(f'{experiments_folder}/comparison.xlsx')
@@ -99,7 +101,7 @@ def process_one_theme(path):
     comparison.to_excel(writer, 'comparison')
     cvrmse_df = pd.DataFrame.from_dict(cvrmse_dict, orient='index', columns=['cvrmse'])
     cvrmse_df.to_excel(writer, 'cvrmse')
-    sql_df = pd.DataFrame.from_dict(sql_dict, orient='index', columns=['total_site_energy'])
+    sql_df = pd.DataFrame.from_dict(sql_dict, orient='index', columns=['total_site_energy', 'hvac_electricity', 'hvac_gas'])
     sql_df.to_excel(writer, 'sql')
     writer.save()
 
@@ -158,7 +160,7 @@ def plots():
 def main():
     global processed_measurements, compare_start_time, compare_end_time, sql_report_name, sql_table_name, sql_row_name, sql_col_name
     global experiments_folder
-    experiments_folder = 'IDFs_Size'
+    experiments_folder = 'IDFs_Type'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
