@@ -43,7 +43,7 @@ def read_sql(csv_file):
             sql_path = os.path.join(current_path, folder, 'eplusout.sql')
             break
     if not os.path.exists(sql_path):
-        return None
+        return None, None, None
     abs_sql_path = os.path.abspath(sql_path)
     sql_uri = '{}?mode=ro'.format(pathlib.Path(abs_sql_path).as_uri())
     totalEnergyQuery = f"SELECT * FROM TabularDataWithStrings WHERE ReportName = '{sql_report_name}' AND TableName = '{sql_table_name}'" \
@@ -93,7 +93,7 @@ def process_one_theme(path):
         comparison['RealTempProf_' + csv_file] = (df['TempProf_cur[19]'])* \
                                                  (df['PresProf_cur[19]'] / comparison['MeteoData.Pre']) ** 0.286 - 273.15
         cvrmse_dict[csv_file] = cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_' + csv_file])
-        sql_dict[csv_file] = [read_sql(csv_file)]
+        sql_dict[csv_file] = (read_sql(csv_file))
 
     if os.path.exists(f'{experiments_folder}/comparison.xlsx'):
         os.remove(f'{experiments_folder}/comparison.xlsx')
@@ -101,7 +101,7 @@ def process_one_theme(path):
     comparison.to_excel(writer, 'comparison')
     cvrmse_df = pd.DataFrame.from_dict(cvrmse_dict, orient='index', columns=['cvrmse'])
     cvrmse_df.to_excel(writer, 'cvrmse')
-    sql_df = pd.DataFrame.from_dict(sql_dict, orient='index', columns=['total_site_energy', 'hvac_electricity', 'hvac_gas'])
+    sql_df = pd.DataFrame.from_dict(sql_dict, orient='index', columns=['total_site_energy_GJ', 'hvac_electricity_MJ_m2', 'hvac_gas_MJ_m2'])
     sql_df.to_excel(writer, 'sql')
     writer.save()
 
@@ -160,7 +160,7 @@ def plots():
 def main():
     global processed_measurements, compare_start_time, compare_end_time, sql_report_name, sql_table_name, sql_row_name, sql_col_name
     global experiments_folder
-    experiments_folder = 'IDFs_Type'
+    experiments_folder = 'IDFs_Size'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
@@ -172,6 +172,6 @@ def main():
     # Copy r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv' to 'VCWG.csv'
     # copyfile(r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv', f'.\{experiments_folder}\VCWG.csv')
     process_one_theme(experiments_folder)
-    plots()
+    # plots()
 if __name__ == '__main__':
     main()
