@@ -1,3 +1,66 @@
+Shading:Building:Detailed,
+  Shading Surface 1 South,                      !- Name
+  ,                                       !- Transmittance Schedule Name
+  ,                                       !- Number of Vertices
+  -72.089, -40, 6.09,                        !- X,Y,Z Vertex 1 {m}
+  -72.089, -40, 0,                         !- X,Y,Z Vertex 2 {m}
+  36.78, -40, 0,                          !- X,Y,Z Vertex 3 {m}
+  36.78, -40, 6.09;                         !- X,Y,Z Vertex 4 {m}
+
+Shading:Building:Detailed,
+  Shading Surface 2 East,                      !- Name
+  ,                                       !- Transmittance Schedule Name
+  ,                                       !- Number of Vertices
+  49, 0, 6.09,                          !- X,Y,Z Vertex 1 {m}
+  49, 0, 0,                           !- X,Y,Z Vertex 2 {m}
+  49, 45.2738, 0,                     !- X,Y,Z Vertex 3 {m}
+  49, 45.2738, 6.09;                    !- X,Y,Z Vertex 4 {m}
+
+Shading:Building:Detailed,
+  Shading Surface 3 North,                      !- Name
+  ,                                       !- Transmittance Schedule Name
+  ,                                       !- Number of Vertices
+  -45, 45.2738, 6.09,                        !- X,Y,Z Vertex 1 {m}
+  49, 45.2738, 6.09,                    !- X,Y,Z Vertex 2 {m}
+  49, 45.2738, 0,                     !- X,Y,Z Vertex 3 {m}
+  -45, 45.2738, 0;                         !- X,Y,Z Vertex 4 {m}
+
+Shading:Building:Detailed,
+  Shading Surface 4 West,                      !- Name
+  ,                                       !- Transmittance Schedule Name
+  ,                                       !- Number of Vertices
+  -45, 45.2738, 6.09,                        !- X,Y,Z Vertex 1 {m}
+  -45, 45.2738, 0,                         !- X,Y,Z Vertex 2 {m}
+  -45, 0, 0,                               !- X,Y,Z Vertex 3 {m}
+  -45, 0, 6.09;                              !- X,Y,Z Vertex 4 {m}
+
+ShadingProperty:Reflectance,
+    Shading Surface 1 South,  !- Shading Surface Name
+    0.3,                     !- Diffuse Solar Reflectance of Unglazed Part of Shading Surface
+    0.3,                     !- Diffuse Visible Reflectance of Unglazed Part of Shading Surface
+    1,                     !- Fraction of Shading Surface That Is Glazed
+    Mass Non-res Ext Wall;  !- Glazing Construction Name
+
+ShadingProperty:Reflectance,
+    Shading Surface 2 East,  !- Shading Surface Name
+    0.3,                     !- Diffuse Solar Reflectance of Unglazed Part of Shading Surface
+    0.3,                     !- Diffuse Visible Reflectance of Unglazed Part of Shading Surface
+    1,                     !- Fraction of Shading Surface That Is Glazed
+    Mass Non-res Ext Wall;  !- Glazing Construction Name
+
+ShadingProperty:Reflectance,
+    Shading Surface 3 North,  !- Shading Surface Name
+    0.3,                     !- Diffuse Solar Reflectance of Unglazed Part of Shading Surface
+    0.3,                     !- Diffuse Visible Reflectance of Unglazed Part of Shading Surface
+    1,                     !- Fraction of Shading Surface That Is Glazed
+    Mass Non-res Ext Wall;  !- Glazing Construction Name
+
+ShadingProperty:Reflectance,
+    Shading Surface 4 West,  !- Shading Surface Name
+    0.3,                     !- Diffuse Solar Reflectance of Unglazed Part of Shading Surface
+    0.3,                     !- Diffuse Visible Reflectance of Unglazed Part of Shading Surface
+    1,                     !- Fraction of Shading Surface That Is Glazed
+    Mass Non-res Ext Wall;  !- Glazing Construction Name
 ! DOE Commercial Reference Building
 ! Supermarket, post-1980 construction
 ! Version 1.3_5.0
