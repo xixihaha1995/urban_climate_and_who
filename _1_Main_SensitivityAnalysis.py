@@ -12,7 +12,7 @@ def read_ini(config_file_name):
     global config
     config = configparser.ConfigParser()
     project_path = os.path.dirname(os.path.abspath(__file__))
-    config_path = os.path.join(project_path,'A_prepost_processing', 'configs',config_file_name)
+    config_path = os.path.join(project_path,'A_prepost_processing', 'configs','shading_boosted',config_file_name)
     config.read(config_path)
 
 def one_ini(sensitivity_file_name):
@@ -37,19 +37,18 @@ def batch_run(ini_files):
         for p in ini_processes:
             p.join()
 def for_loop_all_ini():
-    # todo_jobs = ["SensitivityCAPITOUL_albedo.ini", "SensitivityCAPITOUL_NoCooling_albedo.ini",
-    #              "SensitivityCAPITOUL_albedoNoIDF.ini", "SensitivityCAPITOUL_NoCooling_albedoNoIDF.ini",
-    #              "SensitivityCAPITOUL_CanyonWidthToCanyonHeight.ini",
-    #              "SensitivityCAPITOUL_NoCooling_CanyonWidthToCanyonHeight.ini",
-    #              "SensitivityCAPITOUL_CanyonWidthToRoofWidth.ini",
-    #              "SensitivityCAPITOUL_NoCooling_CanyonWidthToRoofWidth.ini",
-    #              "SensitivityCAPITOUL_fveg_G.ini", "SensitivityCAPITOUL_NoCooling_fveg_G.ini",
-    #              "SensitivityCAPITOUL_theta_canyon.ini", "SensitivityCAPITOUL_NoCooling_theta_canyon.ini"]
-    selected_jobs = ["SensitivityCAPITOUL_albedo.ini"]
-    nbr_job_for_one_batch = 1
-    for i in range(0,len(selected_jobs),nbr_job_for_one_batch):
-        print('Todo jobs',selected_jobs[i:i+nbr_job_for_one_batch])
-        batch_run(selected_jobs[i:i+nbr_job_for_one_batch])
+    todo_jobs = ["SensitivityCAPITOUL_albedo.ini", "SensitivityCAPITOUL_NoCooling_albedo.ini",
+                 "SensitivityCAPITOUL_albedoNoIDF.ini", "SensitivityCAPITOUL_NoCooling_albedoNoIDF.ini",
+                 "SensitivityCAPITOUL_CanyonWidthToCanyonHeight.ini",
+                 "SensitivityCAPITOUL_NoCooling_CanyonWidthToCanyonHeight.ini",
+                 "SensitivityCAPITOUL_CanyonWidthToRoofWidth.ini",
+                 "SensitivityCAPITOUL_NoCooling_CanyonWidthToRoofWidth.ini",
+                 "SensitivityCAPITOUL_fveg_G.ini", "SensitivityCAPITOUL_NoCooling_fveg_G.ini",
+                 "SensitivityCAPITOUL_theta_canyon.ini", "SensitivityCAPITOUL_NoCooling_theta_canyon.ini"]
+    nbr_job_for_one_batch = 2
+    for i in range(0,len(todo_jobs),nbr_job_for_one_batch):
+        print('Todo jobs',todo_jobs[i:i+nbr_job_for_one_batch])
+        batch_run(todo_jobs[i:i+nbr_job_for_one_batch])
 
 
 if __name__ == '__main__':

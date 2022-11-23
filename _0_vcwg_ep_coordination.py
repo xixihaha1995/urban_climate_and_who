@@ -30,7 +30,7 @@ def ini_all(input_config, input_uwgVariableValue):
     else:
         str_variable = '0'
     theme = config['sensitivity']['theme']
-    epout_saving_folder = os.path.join(data_saving_folder, f'{theme}{str_variable}ep_outputs')
+    epout_saving_folder = os.path.join(data_saving_folder, f'{uwgVariable}_{str_variable}ep_outputs')
 
     sensor_heights = [int(i) for i in config['_0_vcwg_ep_coordination.py']['sensor_height_meter'].split(',')]
     if config['Default']['operating_system'] == 'windows':
