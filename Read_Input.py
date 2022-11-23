@@ -415,20 +415,20 @@ def Data_Site(InputFile):
 
     ipd = read_VCWG_param(InputFile)
     if coordination.uwgVariable == 'fveg_G':
-        ipd[coordination.uwgVariable] = coordination.uwgVariableValue
+        ipd[coordination.uwgVariable] = coordination.controlValue
         ipd['fimp_G'] = 1 - ipd['fveg_G']
     elif coordination.uwgVariable == 'albedo' or coordination.uwgVariable == 'albedoNoIDF':
-        ipd['aimp_R'] = coordination.uwgVariableValue
-        ipd['abare_G'] = coordination.uwgVariableValue
-        ipd['aimp_G'] = coordination.uwgVariableValue
-        ipd['albedo_W'] = coordination.uwgVariableValue
+        ipd['aimp_R'] = coordination.controlValue
+        ipd['abare_G'] = coordination.controlValue
+        ipd['aimp_G'] = coordination.controlValue
+        ipd['albedo_W'] = coordination.controlValue
     elif coordination.uwgVariable == 'theta_canyon':
-        if coordination.uwgVariableValue == 180:
+        if coordination.controlValue == 180:
             ipd['theta_canyon'] = 0
         else:
-            ipd['theta_canyon'] = coordination.uwgVariableValue
+            ipd['theta_canyon'] = coordination.controlValue
     else:
-        ipd[coordination.uwgVariable] = coordination.uwgVariableValue
+        ipd[coordination.uwgVariable] = coordination.controlValue
     # Rural model parameters
     class RSMParam_Def():
         pass

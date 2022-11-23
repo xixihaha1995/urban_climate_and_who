@@ -17,7 +17,8 @@ def run_vcwg():
     TopForcingFileName = None
     VCWGParamFileName = coordination.config['_1_ep_time_step_handler.py']['VCWGParamFileName']
     theme = coordination.config['sensitivity']['theme']
-    ViewFactorFileName = f'{theme}{coordination.uwgVariable}{str(coordination.uwgVariableValue)}ViewFactor_Capitoul_MOST.txt'
+    uwgVariable = coordination.config['sensitivity']['uwgVariable']
+    ViewFactorFileName = f'{theme}_{uwgVariable}_{str(coordination.controlValue)}ViewFactor_Capitoul_MOST.txt'
     # Case name to append output file names with
     case = 'Capitoul_MOST'
     '''
@@ -952,8 +953,8 @@ def mediumOffice_get_ep_results(state):
         accumulated_time_in_seconds = curr_sim_time_in_seconds - ep_last_call_time_seconds
         ep_last_call_time_seconds = curr_sim_time_in_seconds
         hvac_heat_rejection_J = coordination.ep_api.exchange.get_variable_value(state,hvac_heat_rejection_sensor_handle)
-        hvac_waste_w_m2 = hvac_heat_rejection_J / accumulated_time_in_seconds / coordination.mediumOfficeBld_floor_area_m2
-        coordination.ep_sensWaste_w_m2_per_floor_area += hvac_waste_w_m2
+        hvac_waste_w_m2 = hvac_heat_rejection_J / accumulated_time_in_seconds / coordination.footprint_area_m2
+        coordination.ep_sensWaste_w_m2_per_footprint_area += hvac_waste_w_m2
 
         time_index_alignment_bool = 1 > abs(curr_sim_time_in_seconds - coordination.vcwg_needed_time_idx_in_seconds)
 
@@ -978,7 +979,7 @@ def mediumOffice_get_ep_results(state):
         heat_consumption_w_m2_value = heat_consumption_w_value / zone_floor_area_m2
 
         elec_bld_meter_j_hourly = coordination.ep_api.exchange.get_variable_value(state, elec_bld_meter_handle)
-        elec_bld_meter_w_m2 = elec_bld_meter_j_hourly / 3600 / coordination.mediumOfficeBld_floor_area_m2
+        elec_bld_meter_w_m2 = elec_bld_meter_j_hourly / 3600 / coordination.footprint_area_m2
 
         flr_core_Text_c = coordination.ep_api.exchange.get_variable_value(state, flr_core_Text_handle)
         flr_pre1_Text_c = coordination.ep_api.exchange.get_variable_value(state, flr_pre1_Text_handle)
