@@ -11,28 +11,28 @@ Shading:Building:Detailed,
   Shading Surface 2 East,                      !- Name
   ,                                       !- Transmittance Schedule Name
   ,                                       !- Number of Vertices
-  49, 0, 6.09,                          !- X,Y,Z Vertex 1 {m}
-  49, 0, 0,                           !- X,Y,Z Vertex 2 {m}
-  49, 45.2738, 0,                     !- X,Y,Z Vertex 3 {m}
-  49, 45.2738, 6.09;                    !- X,Y,Z Vertex 4 {m}
+  49, -30, 6.09,                          !- X,Y,Z Vertex 1 {m}
+  49, -30, 0,                           !- X,Y,Z Vertex 2 {m}
+  49, 34, 0,                     !- X,Y,Z Vertex 3 {m}
+  49, 34, 6.09;                    !- X,Y,Z Vertex 4 {m}
 
 Shading:Building:Detailed,
   Shading Surface 3 North,                      !- Name
   ,                                       !- Transmittance Schedule Name
   ,                                       !- Number of Vertices
-  -45, 45.2738, 6.09,                        !- X,Y,Z Vertex 1 {m}
-  49, 45.2738, 6.09,                    !- X,Y,Z Vertex 2 {m}
-  49, 45.2738, 0,                     !- X,Y,Z Vertex 3 {m}
-  -45, 45.2738, 0;                         !- X,Y,Z Vertex 4 {m}
+  -45, 34, 6.09,                        !- X,Y,Z Vertex 1 {m}
+  49, 34, 6.09,                    !- X,Y,Z Vertex 2 {m}
+  49, 34, 0,                     !- X,Y,Z Vertex 3 {m}
+  -45, 34, 0;                         !- X,Y,Z Vertex 4 {m}
 
 Shading:Building:Detailed,
   Shading Surface 4 West,                      !- Name
   ,                                       !- Transmittance Schedule Name
   ,                                       !- Number of Vertices
-  -45, 45.2738, 6.09,                        !- X,Y,Z Vertex 1 {m}
-  -45, 45.2738, 0,                         !- X,Y,Z Vertex 2 {m}
-  -45, 0, 0,                               !- X,Y,Z Vertex 3 {m}
-  -45, 0, 6.09;                              !- X,Y,Z Vertex 4 {m}
+  -45, 34, 6.09,                        !- X,Y,Z Vertex 1 {m}
+  -45, 34, 0,                         !- X,Y,Z Vertex 2 {m}
+  -45, -30, 0,                               !- X,Y,Z Vertex 3 {m}
+  -45, -30, 6.09;                              !- X,Y,Z Vertex 4 {m}
 
 ShadingProperty:Reflectance,
     Shading Surface 1 South,  !- Shading Surface Name
