@@ -23,7 +23,7 @@ EPTEMP-00000001/
 *.mtd
 *.mtr
 *.rvaudit
-*.sql
+#*.sql
 *.svg
 *.html
 *.mdd
