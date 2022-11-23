@@ -43,7 +43,7 @@ def read_sql(csv_file):
             sql_path = os.path.join(current_path, folder, 'eplusout.sql')
             break
     if not os.path.exists(sql_path):
-        return None, None, None
+        return 0,0,0
     abs_sql_path = os.path.abspath(sql_path)
     sql_uri = '{}?mode=ro'.format(pathlib.Path(abs_sql_path).as_uri())
     totalEnergyQuery = f"SELECT * FROM TabularDataWithStrings WHERE ReportName = '{sql_report_name}' AND TableName = '{sql_table_name}'" \
@@ -83,6 +83,7 @@ def process_one_theme(path):
     cvrmse_dict = {}
     cvrmse_dict['Rural'] = cvrmse(comparison['Urban_DBT_C'], comparison['Rural_DBT_C'])
     sql_dict = {}
+    cvrmse_energy_dict = {}
     for csv_file in csv_files:
         df = pd.read_csv(path + '/' + csv_file, index_col=0, parse_dates=True)
         df = df[compare_start_time:compare_end_time]
@@ -92,17 +93,47 @@ def process_one_theme(path):
         comparison['PresProf_' + csv_file] = df['PresProf_cur[19]']
         comparison['RealTempProf_' + csv_file] = (df['TempProf_cur[19]'])* \
                                                  (df['PresProf_cur[19]'] / comparison['MeteoData.Pre']) ** 0.286 - 273.15
-        cvrmse_dict[csv_file] = cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_' + csv_file])
+        cvrmse_value = round(cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_' + csv_file]) * 100, 3)
+        cvrmse_dict[csv_file] = cvrmse_value
         sql_dict[csv_file] = (read_sql(csv_file))
-
-    if os.path.exists(f'{experiments_folder}/comparison.xlsx'):
-        os.remove(f'{experiments_folder}/comparison.xlsx')
-    writer = pd.ExcelWriter(f'{experiments_folder}/comparison.xlsx')
+        if 'MidriseApartment' in csv_file:
+            area_ft2 = bld_type_area_ft2_dict['MidriseApartment']
+        elif 'StandAloneRetail' in csv_file:
+            area_ft2 = bld_type_area_ft2_dict['StandAloneRetail']
+        elif 'StripMall' in csv_file:
+            area_ft2 = bld_type_area_ft2_dict['StripMall']
+        elif 'SuperMarket' in csv_file:
+            area_ft2 = bld_type_area_ft2_dict['SuperMarket']
+        elif 'LargeOffice' in csv_file:
+            area_ft2 = bld_type_area_ft2_dict['LargeOffice']
+        elif 'MediumOffice' in csv_file:
+            area_ft2 = bld_type_area_ft2_dict['MediumOffice']
+        elif 'SmallOffice' in csv_file:
+            area_ft2 = bld_type_area_ft2_dict['SmallOffice']
+        else:
+            area_ft2 = 0
+        cvrmse_energy_dict[csv_file] = [area_ft2 * 0.0923, cvrmse_value]
+        cvrmse_energy_dict[csv_file].extend(sql_dict[csv_file])
+        hvac_electricity = sql_dict[csv_file][1] * area_ft2
+        hvac_gas = sql_dict[csv_file][2] * area_ft2
+        cvrmse_energy_dict[csv_file].extend([hvac_electricity, hvac_gas])
+    if os.path.exists(f'{experiments_folder}/comparison_{experiments_folder}.xlsx'):
+        os.remove(f'{experiments_folder}/comparison_{experiments_folder}.xlsx')
+    writer = pd.ExcelWriter(f'{experiments_folder}/comparison_{experiments_folder}.xlsx')
     comparison.to_excel(writer, 'comparison')
     cvrmse_df = pd.DataFrame.from_dict(cvrmse_dict, orient='index', columns=['cvrmse'])
     cvrmse_df.to_excel(writer, 'cvrmse')
-    sql_df = pd.DataFrame.from_dict(sql_dict, orient='index', columns=['total_site_energy_GJ', 'hvac_electricity_MJ_m2', 'hvac_gas_MJ_m2'])
+    sql_df = pd.DataFrame.from_dict(sql_dict, orient='index', columns=['Total Site Energy [GJ]',
+                                                                       'HVAC Electricity Intensity [MJ/m2]',
+                                                                       'HVAC Natural Gas Intensity [MJ/m2]'])
     sql_df.to_excel(writer, 'sql')
+    cvrmse_energy_df = pd.DataFrame.from_dict(cvrmse_energy_dict, orient='index',
+                                              columns=['Area[m2]', 'CVRMSE [%]', 'Total Site Energy [GJ]',
+                                                         'HVAC Electricity Intensity [MJ/m2]',
+                                                            'HVAC Natural Gas Intensity [MJ/m2]',
+                                                            'HVAC Electricity [MJ]',
+                                                            'HVAC Natural Gas [MJ]'])
+    cvrmse_energy_df.to_excel(writer, 'cvrmse_energy')
     writer.save()
 
 def plot_one_subfigure(fig, df, ax, category, compare_cols):
@@ -159,8 +190,19 @@ def plots():
 
 def main():
     global processed_measurements, compare_start_time, compare_end_time, sql_report_name, sql_table_name, sql_row_name, sql_col_name
-    global experiments_folder
-    experiments_folder = 'IDFs_Size'
+    global experiments_folder, bld_type_area_ft2_dict
+
+    bld_type_area_ft2_dict = {
+        'MidriseApartment': 33740,
+        'StandAloneRetail': 24962,
+        'StripMall': 22500,
+        'SuperMarket': 45000,
+        'LargeOffice': 498588,
+        'MediumOffice': 53628,
+        'SmallOffice': 5500,
+    }
+
+    experiments_folder = 'IDFs_Size_Shading'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
@@ -170,7 +212,11 @@ def main():
     processed_measurements = 'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                              + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
     # Copy r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv' to 'VCWG.csv'
-    # copyfile(r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv', f'.\{experiments_folder}\VCWG.csv')
+    copyfile(r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv', f'.\\{experiments_folder}\\VCWG.csv')
+    # change the column of 'VCWG.csv': senWaste to sensWaste
+    df = pd.read_csv(f'.\\{experiments_folder}\\VCWG.csv', index_col=0, parse_dates=True)
+    df.rename(columns={'senWaste': 'sensWaste'}, inplace=True)
+    df.to_csv(f'.\\{experiments_folder}\\VCWG.csv')
     process_one_theme(experiments_folder)
     # plots()
 if __name__ == '__main__':
