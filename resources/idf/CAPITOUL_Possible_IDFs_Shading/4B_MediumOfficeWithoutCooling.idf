@@ -1,3 +1,66 @@
+Shading:Building:Detailed,
+  Shading Surface 1 South,                      !- Name
+  ,                                       !- Transmittance Schedule Name
+  ,                                       !- Number of Vertices
+  -30.089, -9, 15,                        !- X,Y,Z Vertex 1 {m}
+  -30.089, -9, 0,                         !- X,Y,Z Vertex 2 {m}
+  49.911, -9, 0,                          !- X,Y,Z Vertex 3 {m}
+  49.911, -9, 15;                         !- X,Y,Z Vertex 4 {m}
+
+Shading:Building:Detailed,
+  Shading Surface 2 East,                      !- Name
+  ,                                       !- Transmittance Schedule Name
+  ,                                       !- Number of Vertices
+  61.911, 0, 15,                          !- X,Y,Z Vertex 1 {m}
+  61.911, 0, 0,                           !- X,Y,Z Vertex 2 {m}
+  61.911, 45.2738, 0,                     !- X,Y,Z Vertex 3 {m}
+  61.911, 45.2738, 15;                    !- X,Y,Z Vertex 4 {m}
+
+Shading:Building:Detailed,
+  Shading Surface 3 North,                      !- Name
+  ,                                       !- Transmittance Schedule Name
+  ,                                       !- Number of Vertices
+  -3, 45.2738, 15,                        !- X,Y,Z Vertex 1 {m}
+  61.911, 45.2738, 15,                    !- X,Y,Z Vertex 2 {m}
+  61.911, 45.2738, 0,                     !- X,Y,Z Vertex 3 {m}
+  -3, 45.2738, 0;                         !- X,Y,Z Vertex 4 {m}
+
+Shading:Building:Detailed,
+  Shading Surface 4 West,                      !- Name
+  ,                                       !- Transmittance Schedule Name
+  ,                                       !- Number of Vertices
+  -3, 45.2738, 15,                        !- X,Y,Z Vertex 1 {m}
+  -3, 45.2738, 0,                         !- X,Y,Z Vertex 2 {m}
+  -3, 0, 0,                               !- X,Y,Z Vertex 3 {m}
+  -3, 0, 15;                              !- X,Y,Z Vertex 4 {m}
+
+ShadingProperty:Reflectance,
+    Shading Surface 1 South,  !- Shading Surface Name
+    0.3,                     !- Diffuse Solar Reflectance of Unglazed Part of Shading Surface
+    0.3,                     !- Diffuse Visible Reflectance of Unglazed Part of Shading Surface
+    1,                     !- Fraction of Shading Surface That Is Glazed
+    UWG_CAPITOUL_Wall;  !- Glazing Construction Name
+
+ShadingProperty:Reflectance,
+    Shading Surface 2 East,  !- Shading Surface Name
+    0.3,                     !- Diffuse Solar Reflectance of Unglazed Part of Shading Surface
+    0.3,                     !- Diffuse Visible Reflectance of Unglazed Part of Shading Surface
+    1,                     !- Fraction of Shading Surface That Is Glazed
+    UWG_CAPITOUL_Wall;  !- Glazing Construction Name
+
+ShadingProperty:Reflectance,
+    Shading Surface 3 North,  !- Shading Surface Name
+    0.3,                     !- Diffuse Solar Reflectance of Unglazed Part of Shading Surface
+    0.3,                     !- Diffuse Visible Reflectance of Unglazed Part of Shading Surface
+    1,                     !- Fraction of Shading Surface That Is Glazed
+    UWG_CAPITOUL_Wall;  !- Glazing Construction Name
+
+ShadingProperty:Reflectance,
+    Shading Surface 4 West,  !- Shading Surface Name
+    0.3,                     !- Diffuse Solar Reflectance of Unglazed Part of Shading Surface
+    0.3,                     !- Diffuse Visible Reflectance of Unglazed Part of Shading Surface
+    1,                     !- Fraction of Shading Surface That Is Glazed
+    UWG_CAPITOUL_Wall;  !- Glazing Construction Name
 !-Generator IDFEditor 1.51
 !-Option SortedOrder
 
@@ -895,7 +958,7 @@ Schedule:Compact,
     60.0;                    !- Field 4
 
 Schedule:Compact,
-    CLGSETP_SCH_org,         !- Name
+    CLGSETP_SCH_WithCooling,         !- Name
     Temperature,             !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
     For: Weekdays SummerDesignDay,  !- Field 2
@@ -920,7 +983,7 @@ Schedule:Compact,
     26.7;                    !- Field 21
 
 Schedule:Compact,
-    CLGSETP_SCH,             !- Name
+    CLGSETP_SCH_WithoutCooling,             !- Name
     Temperature,             !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
     For: Weekdays SummerDesignDay,  !- Field 2
@@ -6921,77 +6984,77 @@ ZoneControl:Thermostat,
 ThermostatSetpoint:DualSetpoint,
     Core_bottom DualSPSched, !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 ThermostatSetpoint:DualSetpoint,
     Core_mid DualSPSched,    !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 ThermostatSetpoint:DualSetpoint,
     Core_top DualSPSched,    !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 ThermostatSetpoint:DualSetpoint,
     Perimeter_bot_ZN_1 DualSPSched,  !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 ThermostatSetpoint:DualSetpoint,
     Perimeter_bot_ZN_2 DualSPSched,  !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 ThermostatSetpoint:DualSetpoint,
     Perimeter_bot_ZN_3 DualSPSched,  !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 ThermostatSetpoint:DualSetpoint,
     Perimeter_bot_ZN_4 DualSPSched,  !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 ThermostatSetpoint:DualSetpoint,
     Perimeter_mid_ZN_1 DualSPSched,  !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 ThermostatSetpoint:DualSetpoint,
     Perimeter_mid_ZN_2 DualSPSched,  !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 ThermostatSetpoint:DualSetpoint,
     Perimeter_mid_ZN_3 DualSPSched,  !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 ThermostatSetpoint:DualSetpoint,
     Perimeter_mid_ZN_4 DualSPSched,  !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 ThermostatSetpoint:DualSetpoint,
     Perimeter_top_ZN_1 DualSPSched,  !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 ThermostatSetpoint:DualSetpoint,
     Perimeter_top_ZN_2 DualSPSched,  !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 ThermostatSetpoint:DualSetpoint,
     Perimeter_top_ZN_3 DualSPSched,  !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 ThermostatSetpoint:DualSetpoint,
     Perimeter_top_ZN_4 DualSPSched,  !- Name
     HTGSETP_SCH,             !- Heating Setpoint Temperature Schedule Name
-    CLGSETP_SCH;             !- Cooling Setpoint Temperature Schedule Name
+    CLGSETP_SCH_WithoutCooling;             !- Cooling Setpoint Temperature Schedule Name
 
 
 !-   ===========  ALL OBJECTS IN CLASS: AIRTERMINAL:SINGLEDUCT:VAV:REHEAT ===========
