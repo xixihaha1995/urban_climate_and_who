@@ -44,7 +44,7 @@ def run_ep_api(input_config, input_value):
 
     output_path = coordination.epout_saving_folder
     weather_file_path = os.path.join('.\\resources\\epw', epwFileName)
-    idfFilePath = os.path.join('.\\resources\\idf\\shading_boosted', idfFileName)
+    idfFilePath = os.path.join(coordination.config['sensitivity']['idfFileFolder'], idfFileName)
     sys_args = '-d', output_path, '-w', weather_file_path, idfFilePath
     coordination.ep_api.runtime.run_energyplus(state, sys_args)
 def info(title):
