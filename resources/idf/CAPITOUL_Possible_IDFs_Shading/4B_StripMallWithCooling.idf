@@ -29,10 +29,10 @@ Shading:Building:Detailed,
   Shading Surface 4 West,                      !- Name
   ,                                       !- Transmittance Schedule Name
   ,                                       !- Number of Vertices
-  -3, 35, 15,                        !- X,Y,Z Vertex 1 {m}
+  -3, 35, 5.18,                        !- X,Y,Z Vertex 1 {m}
   -3, 35, 0,                         !- X,Y,Z Vertex 2 {m}
   -3, 0, 0,                               !- X,Y,Z Vertex 3 {m}
-  -3, 0, 15;                              !- X,Y,Z Vertex 4 {m}
+  -3, 0, 5.18;                              !- X,Y,Z Vertex 4 {m}
 
 ShadingProperty:Reflectance,
     Shading Surface 1 South,  !- Shading Surface Name

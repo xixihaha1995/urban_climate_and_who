@@ -1,4 +1,13 @@
 Shading:Building:Detailed,
+  Shading Surface 1 South,                      !- Name
+  ,                                       !- Transmittance Schedule Name
+  ,                                       !- Number of Vertices
+  -30.089, -9, 50,                        !- X,Y,Z Vertex 1 {m}
+  -30.089, -9, 0,                         !- X,Y,Z Vertex 2 {m}
+  73, -9, 0,                          !- X,Y,Z Vertex 3 {m}
+  73, -9, 50;                         !- X,Y,Z Vertex 4 {m}
+
+Shading:Building:Detailed,
   Shading Surface 2 East,                      !- Name
   ,                                       !- Transmittance Schedule Name
   ,                                       !- Number of Vertices
