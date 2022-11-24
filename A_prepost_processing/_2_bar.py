@@ -1,5 +1,4 @@
 import os, pandas as pd
-import matplotlib.pyplot as plt
 def find_the_cvrmse_row_number(df, variable):
     # iterate through df.iloc[:, 0], find the row number of df_cvrmse that contains the value of df.iloc[i, 0]
     # return the row number
@@ -52,46 +51,6 @@ def process_all_themes():
     return data_all
 
 def save_all_data(data_all):
-    # albedo, 0.05
-    # albedo, 0.25
-    # albedo, 0.7
-    # albedoNoIDF, +0.05(NI)
-    # albedoNoIDF, +0.25(NI)
-    # albedoNoIDF, +0.7(NI)
-    # canyonWidth9ToRoofWidth, 4.5
-    # canyonWidth9ToRoofWidth, 9.0
-    # canyonWidth9ToRoofWidth, 18.2
-    # canyonWidthToHeight15, 8.0
-    # canyonWidthToHeight15, 15.0
-    # canyonWidthToHeight15, 30.0
-    # fveg_G, 0.0
-    # fveg_G, 0.5
-    # fveg_G, 1.0
-    # theta_canyon, 0.0
-    # theta_canyon, -56.0
-    # theta_canyon, -90.0
-    # theta_canyon, 180.0
-    # theta_canyon, 90.0
-    # NoCoolingAlbedo, 0.05
-    # NoCoolingAlbedo, 0.25
-    # NoCoolingAlbedo, 0.7
-    # NoCoolingAlbedoNoIDF, +0.05(NI)
-    # NoCoolingAlbedoNoIDF, +0.25(NI)
-    # NoCoolingAlbedoNoIDF, +0.7(NI)
-    # NoCoolingCanyonWidth9ToRoofWidth, 4.5
-    # NoCoolingCanyonWidth9ToRoofWidth, 9.0
-    # NoCoolingCanyonWidth9ToRoofWidth, 18.2
-    # NoCoolingCanyonWidthToHeight15, 8.0
-    # NoCoolingCanyonWidthToHeight15, 15.0
-    # NoCoolingCanyonWidthToHeight15, 30.0
-    # NoCoolingTheta_canyon, 0.0
-    # NoCoolingTheta_canyon, -56.0
-    # NoCoolingTheta_canyon, -90.0
-    # NoCoolingTheta_canyon, 180.0
-    # NoCoolingTheta_canyon, 90.0
-    # NoCooling_fveg_G, 0.0
-    # NoCooling_fveg_G, 0.5
-    # NoCooling_fveg_G, 1.0
     df = pd.DataFrame()
     theme_order = ['albedo', 'albedoNoIDF', 'canyonWidth9ToRoofWidth', 'canyonWidthToHeight15', 'fveg_G',
                    'theta_canyon', 'NoCoolingAlbedo', 'NoCoolingAlbedoNoIDF',
@@ -106,14 +65,12 @@ def save_all_data(data_all):
                 df.loc[f'{theme}, {variable}', 'HVAC Natural Gas Intensity [MJ/m2]'] = value[3]
 
     # df.loc[f'{theme}, {variable}', f'{framework},meteo,cvrmse'] = data[0]
-    df.to_excel(os.path.join(experiment_path, 'all_data_with_shading.xlsx'))
-
-
+    df.to_excel(os.path.join(experiment_path, 'all_data.xlsx'))
 
 
 def main():
     global experiment_path
-    experiment_path = r'sensitivity_shading_boosted'
+    experiment_path = r'UWG_Parameter_Sensitivity_Rerun'
     data_all = process_all_themes()
     save_all_data(data_all)
 
