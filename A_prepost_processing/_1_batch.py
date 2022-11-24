@@ -128,7 +128,7 @@ def process_all_themes():
 def main():
     global processed_measurements, compare_start_time, compare_end_time, \
         sql_report_name, sql_table_name, sql_row_name, sql_col_name, experiments_folder
-    experiments_folder = r'sensitivity_shading_boosted'
+    experiments_folder = r'UWG_Parameter_Sensitivity_Rerun'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
