@@ -11,7 +11,7 @@ def cvrmse(measurements, predictions):
     cvrmse = rmse / np.mean(abs(measurements))
     return cvrmse
 
-def get_measurements():
+def get_CAPITOUL_measurements():
     if os.path.exists('measurements/' + processed_measurements):
         measurements = pd.read_csv('measurements/' + processed_measurements, index_col=0, parse_dates=True)
         measurements = measurements[compare_start_time:compare_end_time]
@@ -147,17 +147,15 @@ def plots():
 def main():
     global processed_measurements, compare_start_time, compare_end_time, sql_report_name, sql_table_name, sql_row_name, sql_col_name
     global experiments_folder
-    experiments_folder = 'CAPITOUL_debug'
+    experiments_folder = 'BUBBLE_debug'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
     sql_col_name = 'Total Energy'
-    compare_start_time = '2004-06-01 00:05:00'
-    compare_end_time = '2004-06-30 22:55:00'
+    compare_start_time = '2002-06-10 00:10:00'
+    compare_end_time = '2002-07-09 21:50:00'
     processed_measurements = 'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                              + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
-    # Copy r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv' to 'VCWG.csv'
-    # copyfile(r'.\offline_saving\CAPITOUL\albedo\positive0.25.csv', f'.\{experiments_folder}\VCWG.csv')
     process_one_theme(experiments_folder)
     plots()
 if __name__ == '__main__':

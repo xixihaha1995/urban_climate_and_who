@@ -17,7 +17,7 @@ def run_vcwg():
 
 
 if __name__ == '__main__':
-    configFileName = 'CAPITOUL_debug.ini'
+    configFileName = 'CAPITOUL_updated_epw_debug.ini'
     coordination.ini_all(configFileName)
     time_interval_sec = 300
     vcwg_thread = Thread(target=run_vcwg)
