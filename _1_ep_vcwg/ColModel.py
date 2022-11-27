@@ -250,26 +250,25 @@ def ColumnModelCal(z0_road,z0_roof,Ceps,Cdrag,Ck,thb,qhb,tvb,FractionsGround,Fra
     tke_new,wtke,dwtkedz = Sol.Solver(Geometry_m.nz,Geometry_m.nz,tke_bc_bottom,tke_bc_top,dts,rho,tke,Km,srim_tke,srex_tke,sf,vol,Geometry_m.dz)
     # Solve temperature equation
 
-    if os.path.exists(coordination.data_saving_path) and not coordination.save_path_clean:
-        os.remove(coordination.data_saving_path)
-        coordination.save_path_clean = True
-
-    cur_datetime = datetime.datetime.strptime(coordination.config['__main__']['start_time'],
-                                              '%Y-%m-%d %H:%M:%S') + \
-                   datetime.timedelta(seconds=it * simTime.dt)
-
-    if not os.path.exists(coordination.data_saving_path):
-        os.makedirs(os.path.dirname(coordination.data_saving_path), exist_ok=True)
-        with open(coordination.data_saving_path, 'a') as f1:
-            # prepare the header string for different sensors
-            header_str = 'cur_datetime,canTemp,ForcingVariable[0],srex_th_mean,'
-            header_str += '\n'
-            f1.write(header_str)
-    canTemp = numpy.mean(th[0:Geometry_m.nz_u])
-    with open(coordination.data_saving_path, 'a') as f1:
-        fmt1 = "%s," * 1 % (cur_datetime) + \
-               "%.3f," * 3 % (canTemp,ForcingVariable[0],numpy.mean(srex_th))+ '\n'
-        f1.write(fmt1)
+    # if os.path.exists(coordination.data_saving_path) and not coordination.save_path_clean:
+    #     os.remove(coordination.data_saving_path)
+    #     coordination.save_path_clean = True
+    # cur_datetime = datetime.datetime.strptime(coordination.config['__main__']['start_time'],
+    #                                           '%Y-%m-%d %H:%M:%S') + \
+    #                datetime.timedelta(seconds=it * simTime.dt)
+    #
+    # if not os.path.exists(coordination.data_saving_path):
+    #     os.makedirs(os.path.dirname(coordination.data_saving_path), exist_ok=True)
+    #     with open(coordination.data_saving_path, 'a') as f1:
+    #         # prepare the header string for different sensors
+    #         header_str = 'cur_datetime,canTemp,ForcingVariable[0],srex_th_mean,'
+    #         header_str += '\n'
+    #         f1.write(header_str)
+    # canTemp = numpy.mean(th[0:Geometry_m.nz_u])
+    # with open(coordination.data_saving_path, 'a') as f1:
+    #     fmt1 = "%s," * 1 % (cur_datetime) + \
+    #            "%.3f," * 3 % (canTemp,ForcingVariable[0],numpy.mean(srex_th))+ '\n'
+    #     f1.write(fmt1)
 
     th_new,wth,dwthdz = Sol.Solver(Geometry_m.nz,Geometry_m.nz,T_bc_bottom,T_bc_top,dts,rho,th,Km/ColParam.prandtl,srim_th,srex_th,sf,vol,Geometry_m.dz)
     # Solve specific humidity equation

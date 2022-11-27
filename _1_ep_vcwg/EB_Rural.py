@@ -150,7 +150,7 @@ class EnergyBalanceRural_Def(object):
                 MultiplierDay = 0.1
                 self.EnergyFlux.GfluxRural = MultiplierDay * (SWR_Rural.SWRabsRural+LWR_Rural.LWRabsRural)
             else:
-                MultiplierNight = 0.5
+                MultiplierNight = 1
                 self.EnergyFlux.GfluxRural = MultiplierNight * (SWR_Rural.SWRabsRural+LWR_Rural.LWRabsRural)
 
             # Calculate latent heat flux [W m^-2]
