@@ -69,7 +69,7 @@ def get_BUUBLE_measurements():
 
     #Air_Temperature_C, tpr_air2m_c13_cal_%60'_celsius, pre_air_c13_cal_%60'_hPa
     # initialize the dataframe, with the same index as rural, and 3 columns
-    comparison = pd.DataFrame(index=mixed_all_sites_10min.index, columns=['Urban_DBT_C', 'Rural_DBT_C'])
+    comparison = pd.DataFrame(index=mixed_all_sites_10min.index, columns=['Urban_DBT_C_2.6', 'Urban_DBT_C_13.9'])
     comparison['Urban_DBT_C_2.6'] = urban.iloc[:, 0]
     comparison['Urban_DBT_C_13.9'] = urban.iloc[:, 1]
     comparison['Rural_DBT_C'] = mixed_all_sites_10min.iloc[:, 7]
@@ -131,9 +131,17 @@ def process_one_theme(path):
     for file in os.listdir(path):
         if file.endswith('.csv'):
             csv_files.append(file)
-    comparison = get_CAPITOUL_measurements()
     cvrmse_dict = {}
-    cvrmse_dict['Rural'] = cvrmse(comparison['Urban_DBT_C'], comparison['Rural_DBT_C'])
+    if "BUBBLE" in experiments_folder:
+        comparison = get_BUUBLE_measurements()
+        cvrmse_dict['Rural_2.6'] = cvrmse(comparison['Urban_DBT_C_2.6'], comparison['Rural_DBT_C'])
+        cvrmse_dict['Rural_13.9'] = cvrmse(comparison['Urban_DBT_C_13.9'], comparison['Rural_DBT_C'])
+        print(f'cvrmse for Rural_2.6 is {cvrmse_dict["Rural_2.6"]}')
+        print(f'cvrmse for Rural_13.9 is {cvrmse_dict["Rural_13.9"]}')
+    else:
+        comparison = get_CAPITOUL_measurements()
+        cvrmse_dict['Rural'] = cvrmse(comparison['Urban_DBT_C'], comparison['Rural_DBT_C'])
+        print(f'cvrmse for Rural is {cvrmse_dict["Rural"]}')
     sql_dict = {}
     for csv_file in csv_files:
         df = pd.read_csv(path + '/' + csv_file, index_col=0, parse_dates=True)
@@ -141,19 +149,19 @@ def process_one_theme(path):
         comparison['MeteoData.Pre'] = df['MeteoData.Pre']
         comparison['sensWaste_' + csv_file] = df['sensWaste']
         if "BUBBLE" in experiments_folder:
-            comparison['TempProf_2.6_' + csv_file] = df['TempProf_cur[1]']
-            comparison['PresProf_2.6_' + csv_file] = df['PresProf_cur[1]']
-            comparison['RealTempProf_2.6_' + csv_file] = (df['TempProf_cur[1]']) * \
-                                                     (df['PresProf_cur[1]'] / comparison[
+            comparison['TempProf_2.6_' + csv_file] = df['TempProf_cur[2]']
+            comparison['PresProf_2.6_' + csv_file] = df['PresProf_cur[2]']
+            comparison['RealTempProf_2.6_' + csv_file] = (df['TempProf_cur[2]']) * \
+                                                     (df['PresProf_cur[2]'] / comparison[
                                                          'MeteoData.Pre']) ** 0.286 - 273.15
-            cvrmse_dict['2.6_'+csv_file] = cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_2.6_' + csv_file])
+            cvrmse_dict['2.6_'+csv_file] = cvrmse(comparison['Urban_DBT_C_2.6'], comparison['RealTempProf_2.6_' + csv_file])
 
-            comparison['TempProf_13.9_' + csv_file] = df['TempProf_cur[2]']
-            comparison['PresProf_13.9_' + csv_file] = df['PresProf_cur[2]']
-            comparison['RealTempProf_13.9_' + csv_file] = (df['TempProf_cur[2]']) * \
-                                                        (df['PresProf_cur[2]'] / comparison[
+            comparison['TempProf_13.9_' + csv_file] = df['TempProf_cur[13]']
+            comparison['PresProf_13.9_' + csv_file] = df['PresProf_cur[13]']
+            comparison['RealTempProf_13.9_' + csv_file] = (df['TempProf_cur[13]']) * \
+                                                        (df['PresProf_cur[13]'] / comparison[
                                                          'MeteoData.Pre']) ** 0.286 - 273.15
-            cvrmse_dict['13.9_'+csv_file] = cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_13.9_' + csv_file])
+            cvrmse_dict['13.9_'+csv_file] = cvrmse(comparison['Urban_DBT_C_13.9'], comparison['RealTempProf_13.9_' + csv_file])
         else:
             comparison['TempProf_' + csv_file] = df['TempProf_cur[19]']
             comparison['PresProf_' + csv_file] = df['PresProf_cur[19]']
@@ -183,20 +191,21 @@ def plot_one_subfigure(fig, df, ax, category, compare_cols):
     else:
         ax.set_ylabel(' Temperature (C)')
     col_name_fix = category + '_'
-    if not legend_bool:
+    if legend_bool > 0:
         for col in compare_cols:
             if col == "Rural_DBT_C":
-                ax.plot(x, df[col], label=col, color='black', linestyle='--')
+                ax.plot(x, df[col], label=col, color='orange', linestyle='--')
             elif col == "Urban_DBT_C":
-                ax.plot(x, df[col], label=col, color='black', linestyle=':')
+                ax.plot(x, df[col], label=col, color='red', linestyle=':')
             elif col == 'Urban_DBT_C_2.6':
-                ax.plot(x, df[col], label=col, color='black', linestyle=':')
+                ax.plot(x, df[col], label=col, color='red', linestyle=':')
             elif col == 'Urban_DBT_C_13.9':
-                ax.plot(x, df[col], label=col, color='black', linestyle='*')
+                ax.plot(x, df[col], label=col, color='purple', linestyle='-.')
             else:
                 ax.plot(x, df[col_name_fix+col +'.csv'], label=col)
-        legend_bool = True
-        fig.legend(loc='center right', bbox_to_anchor=(1, 0.5), borderaxespad=0., fontsize=plot_fontsize)
+        legend_bool -= 1
+        if legend_bool == 0:
+            fig.legend(loc='center right', bbox_to_anchor=(1, 0.5+ legend_bool * 0.2), borderaxespad=0., fontsize=plot_fontsize)
     else:
         for col in compare_cols:
             ax.plot(x, df[col_name_fix+col+'.csv'])
@@ -206,13 +215,15 @@ def plots():
     #Predictions: VCWG, Bypass-Default, Bypass-Shading, Bypass-ViewFactor, Bypass-Shading_ViewFactor
     # All_subfigures: Canyon, Wallshade, Walllit, Roof, Wastez
     global plot_fontsize, legend_bool
-    legend_bool = False
+
     data = pd.read_excel(f'{experiments_folder}/comparison.xlsx', sheet_name='comparison', index_col=0, parse_dates=True)
     plot_fontsize = 8
     if "BUBBLE" in experiments_folder:
         measurements_cols = ['Rural_DBT_C', 'Urban_DBT_C_2.6', 'Urban_DBT_C_13.9']
+        legend_bool = 2
     else:
         measurements_cols = ['Rural_DBT_C','Urban_DBT_C']
+        legend_bool = 1
 
     predictions_cols = []
     for file in os.listdir(f'./{experiments_folder}'):
@@ -220,16 +231,19 @@ def plots():
             #remove the '.csv' in the file name
             predictions_cols.append(file.replace('.csv', ''))
     if "BUBBLE" in experiments_folder:
-        all_subfigures_cols = ['RealTempProf_13.9_', 'RealTempProf_2.6_', 'sensWaste']
+        all_subfigures_cols = ['RealTempProf_13.9', 'RealTempProf_2.6', 'sensWaste']
+        fig, axes = plt.subplots(3, 1, figsize=(12, 4), sharex=True)
     else:
         all_subfigures_cols = ['RealTempProf','sensWaste']
-    fig, axes = plt.subplots(2, 1, figsize=(12, 4), sharex=True)
+        fig, axes = plt.subplots(2, 1, figsize=(12, 4), sharex=True)
     fig.subplots_adjust(right=0.76)
     for ax in axes:
         ax.tick_params(axis='x', labelsize=plot_fontsize)
     for i, sub_fig in enumerate(all_subfigures_cols):
-        if sub_fig == 'RealTempProf':
-            compare_cols = measurements_cols + predictions_cols
+        if  'RealTempProf_13.9' in sub_fig:
+            compare_cols = ['Rural_DBT_C','Urban_DBT_C_13.9'] + predictions_cols
+        elif 'RealTempProf_2.6' in sub_fig:
+            compare_cols = ['Rural_DBT_C','Urban_DBT_C_2.6'] + predictions_cols
         else:
             compare_cols = predictions_cols
         plot_one_subfigure(fig, data, axes[i],sub_fig, compare_cols)
@@ -239,7 +253,7 @@ def main():
     global processed_measurements, compare_start_time, compare_end_time, sql_report_name, sql_table_name, sql_row_name, sql_col_name
     global experiments_folder
     # experiments_folder = 'BUBBLE_debug'
-    experiments_folder = 'CAPITOUL_which_epw_debug'
+    experiments_folder = 'BUBBLE_which_epw_debug'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'

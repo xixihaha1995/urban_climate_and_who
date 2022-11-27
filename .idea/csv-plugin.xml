@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="\A_prepost_processing\BUBBLE_which_epw_debug\Basel.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\A_prepost_processing\CAPITOUL_debug\debug_saving.csv">
           <value>
             <Attribute>
