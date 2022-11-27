@@ -70,7 +70,8 @@ def save_all_data(data_all):
 
 def main():
     global experiment_path
-    experiment_path = r'sensitivity_shading_boosted'
+    # experiment_path = r'sensitivity_shading_boosted'
+    experiment_path = r'shading_boosted'
     data_all = process_all_themes()
     save_all_data(data_all)
 
