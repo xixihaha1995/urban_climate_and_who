@@ -189,6 +189,10 @@ def plot_one_subfigure(fig, df, ax, category, compare_cols):
                 ax.plot(x, df[col], label=col, color='black', linestyle='--')
             elif col == "Urban_DBT_C":
                 ax.plot(x, df[col], label=col, color='black', linestyle=':')
+            elif col == 'Urban_DBT_C_2.6':
+                ax.plot(x, df[col], label=col, color='black', linestyle=':')
+            elif col == 'Urban_DBT_C_13.9':
+                ax.plot(x, df[col], label=col, color='black', linestyle='*')
             else:
                 ax.plot(x, df[col_name_fix+col +'.csv'], label=col)
         legend_bool = True
@@ -205,14 +209,20 @@ def plots():
     legend_bool = False
     data = pd.read_excel(f'{experiments_folder}/comparison.xlsx', sheet_name='comparison', index_col=0, parse_dates=True)
     plot_fontsize = 8
-    measurements_cols = ['Rural_DBT_C','Urban_DBT_C']
+    if "BUBBLE" in experiments_folder:
+        measurements_cols = ['Rural_DBT_C', 'Urban_DBT_C_2.6', 'Urban_DBT_C_13.9']
+    else:
+        measurements_cols = ['Rural_DBT_C','Urban_DBT_C']
 
     predictions_cols = []
     for file in os.listdir(f'./{experiments_folder}'):
         if file.endswith('.csv'):
             #remove the '.csv' in the file name
             predictions_cols.append(file.replace('.csv', ''))
-    all_subfigures_cols = ['RealTempProf','sensWaste']
+    if "BUBBLE" in experiments_folder:
+        all_subfigures_cols = ['RealTempProf_13.9_', 'RealTempProf_2.6_', 'sensWaste']
+    else:
+        all_subfigures_cols = ['RealTempProf','sensWaste']
     fig, axes = plt.subplots(2, 1, figsize=(12, 4), sharex=True)
     fig.subplots_adjust(right=0.76)
     for ax in axes:
@@ -234,13 +244,18 @@ def main():
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
     sql_col_name = 'Total Energy'
-    # compare_start_time = '2002-06-10 00:10:00'
-    # compare_end_time = '2002-07-09 21:50:00'
-    compare_start_time = '2004-06-01 00:05:00'
-    compare_end_time = '2004-06-30 22:55:00'
-    processed_measurements = 'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
-                             + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
+    if "BUBBLE" in experiments_folder:
+        compare_start_time = '2002-06-10 00:10:00'
+        compare_end_time = '2002-07-09 21:50:00'
+        processed_measurements = 'BUBBLE_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
+                                 + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
+    else:
+        compare_start_time = '2004-06-01 00:05:00'
+        compare_end_time = '2004-06-30 22:55:00'
+        processed_measurements = 'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
+                                 + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
+
     process_one_theme(experiments_folder)
-    # plots()
+    plots()
 if __name__ == '__main__':
     main()
