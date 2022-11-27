@@ -17,5 +17,5 @@ def ini_all(config_file_name = None, actual_file = None, _control_value = None):
     data_saving_path = os.path.join(project_path, 'A_prepost_processing',
                                     experiments_theme, save_file_name)
     save_path_clean = False
-    sensor_heights = [int(i) for i in config['run_vcwg()']['sensor_height_meter'].split(',')]
+    sensor_heights = [float(i) for i in config['run_vcwg()']['sensor_height_meter'].split(',')]
 
