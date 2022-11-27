@@ -3,7 +3,7 @@ import math
 from .Radiation_Functions import RadiationFunctions
 import copy
 from .psychrometrics import psychrometrics
-
+from  . import _0_vcwg_ep_coordination as coordination
 """
 Surface energy balance model in the rural area 
 Developed by Mohsen Moradi and Amir A. Aliabadi
@@ -150,7 +150,8 @@ class EnergyBalanceRural_Def(object):
                 MultiplierDay = 0.1
                 self.EnergyFlux.GfluxRural = MultiplierDay * (SWR_Rural.SWRabsRural+LWR_Rural.LWRabsRural)
             else:
-                MultiplierNight = 1
+                MultiplierNight = float(coordination.control_value)
+                print('MultiplierNight', MultiplierNight)
                 self.EnergyFlux.GfluxRural = MultiplierNight * (SWR_Rural.SWRabsRural+LWR_Rural.LWRabsRural)
 
             # Calculate latent heat flux [W m^-2]

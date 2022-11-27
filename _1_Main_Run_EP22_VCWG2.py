@@ -7,14 +7,15 @@ from _1_ep_vcwg.VCWG_Hydrology import VCWG_Hydro
 
 def run_vcwg(config_file_name=None, actual_file=None, _control_value=None):
     coordination.ini_all(config_file_name,actual_file, _control_value)
-    epwFileName = _control_value
     if 'None' in coordination.config['run_vcwg()']['TopForcingFileName']:
         TopForcingFileName = None
     else:
         TopForcingFileName = coordination.config['run_vcwg()']['TopForcingFileName']
+    epwFileName = coordination.config['run_vcwg()']['epwFileNames']
     VCWGParamFileName = coordination.config['run_vcwg()']['VCWGParamFileName']
-    ViewFactorFileName = _control_value[:-4] + '_viewfactor.txt'
-    case = 'CAPITOUL'
+    ViewFactorFileName = coordination.config['run_vcwg()']['control_variable'] + \
+                         '_'+ _control_value + '_viewfactor.txt'
+    case = coordination.config['run_vcwg()']['experiments_theme'] + '_' + _control_value
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
     VCWG.run()
 def read_ini(config_file_name):
@@ -34,5 +35,5 @@ def one_ini(sensitivity_file_name):
         # run_vcwg(sensitivity_file_name, config, value)
 
 if __name__ == '__main__':
-    sensitivity_file_name = 'BUBBLE_which_epw_debug.ini'
+    sensitivity_file_name = 'BUBBLE_which_fractions_debug.ini'
     one_ini(sensitivity_file_name)
