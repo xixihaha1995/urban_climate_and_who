@@ -202,7 +202,7 @@ def main():
         'SmallOffice': 5500,
     }
 
-    experiments_folder = 'IDFs_Size_Shading'
+    experiments_folder = 'IDFs_Type_Shading'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
