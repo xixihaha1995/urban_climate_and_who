@@ -526,7 +526,7 @@ class VCWG_Hydro(object):
             self.Rural.Element(self.EBRural.EnergyFlux.SWRabsRural,self.EBRural.EnergyFlux.LWRabsRural,self.EBRural.EnergyFlux.LEfluxRural,
                                self.EBRural.EnergyFlux.HfluxRural,self.TimeParam.dts,self.EBRural.Td,2)
             Text_Rrual = self.Rural.Text
-            print('Rural surface temperature: ', Text_Rrual - 273.15, 'C')
+            # print('Rural surface temperature: ', Text_Rrual - 273.15, 'C')
 
             # -----------------------------------------------------
             # Update rural model and boundary conditions at the top

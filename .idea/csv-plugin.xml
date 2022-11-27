@@ -17,6 +17,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\A_prepost_processing\CAPITOUL_which_epw_debug\Mondouzil_Bueno_2004.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\_1_ep_vcwg\resources\DOERefBuildings\BLD10\BLD10_ZoneSummary.csv">
           <value>
             <Attribute>

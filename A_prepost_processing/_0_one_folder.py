@@ -10,7 +10,72 @@ def cvrmse(measurements, predictions):
     rmse = np.sqrt(np.mean(bias**2))
     cvrmse = rmse / np.mean(abs(measurements))
     return cvrmse
+def read_text_as_csv(file_path, header=None, index_col=0, skiprows=3):
+    '''
+    df first column is index
+    '''
+    df = pd.read_csv(file_path, skiprows= skiprows, header= header, index_col=index_col, sep= '[ ^]+', engine='python')
+    df.index = pd.to_datetime(df.index, format='%d.%m.%Y')
+    # index format is YYYY-MM-DD HH:MM:SS
+    # replace HH:MM with first 5 char of 0th column, convert to datetime
+    df.index = pd.to_datetime(df.index.strftime('%Y-%m-%d') + ' ' + df.iloc[:,0].str[:5])
+    repeated_index = df.index[df.index.duplicated()]
+    df = df.drop(repeated_index)
+    target_idx = pd.date_range(start=df.index[0], end=df.index[-1], freq='10min')
+    missing_index = target_idx.difference(df.index)
+    if len(repeated_index) != 0 or len(missing_index) != 0:
+        print('Repeated index:', repeated_index)
+        print('Missing index:', missing_index)
+        print('---------------------------------------------------')
+    # 3. add the missed empty rows, dtype is float
+    df = df.reindex(target_idx)
+    # drop the 0th column, according to the index instead of column name
+    df.drop(df.columns[0], axis=1, inplace=True)
+    df.iloc[:, :-1] = df.iloc[:, :-1].apply(lambda x: x.str.replace(',', '')).astype(float)
+    # interpolate the missing values
+    df = df.interpolate(method='linear')
+    return df
 
+def clean_urban(df):
+    repeated_index = df.index[df.index.duplicated()]
+    df = df.drop(repeated_index)
+    target_idx = pd.date_range(start=df.index[0], end=df.index[-1], freq='10min')
+    missing_index = target_idx.difference(df.index)
+    if len(repeated_index) != 0 or len(missing_index) != 0:
+        print('Repeated index:', repeated_index)
+        print('Missing index:', missing_index)
+        print('---------------------------------------------------')
+    # 3. add the missed empty rows, dtype is float
+    df = df.reindex(target_idx)
+    df = df.interpolate(method='linear')
+    return df
+
+def get_BUUBLE_measurements():
+    if os.path.exists('measurements/' + processed_measurements):
+        measurements = pd.read_csv('measurements/' + processed_measurements, index_col=0, parse_dates=True)
+        measurements = measurements[compare_start_time:compare_end_time]
+        return measurements
+
+    urban_path = r'measurements/BUBBLE_BSPR_AT_PROFILE_IOP.txt'
+    rural_path = r'measurements/BUBBLE_AT_IOP.txt'
+
+    urban_dirty = read_text_as_csv(urban_path,header=0, index_col=0, skiprows=16)
+    urban = clean_urban(urban_dirty)
+    urban = urban[compare_start_time:compare_end_time]
+
+    mixed_all_sites_10min = read_text_as_csv(rural_path,header=0, index_col=0, skiprows=25)
+    mixed_all_sites_10min = mixed_all_sites_10min[compare_start_time:compare_end_time]
+
+
+    #Air_Temperature_C, tpr_air2m_c13_cal_%60'_celsius, pre_air_c13_cal_%60'_hPa
+    # initialize the dataframe, with the same index as rural, and 3 columns
+    comparison = pd.DataFrame(index=mixed_all_sites_10min.index, columns=['Urban_DBT_C', 'Rural_DBT_C'])
+    comparison['Urban_DBT_C_2.6'] = urban.iloc[:, 0]
+    comparison['Urban_DBT_C_13.9'] = urban.iloc[:, 1]
+    comparison['Rural_DBT_C'] = mixed_all_sites_10min.iloc[:, 7]
+
+    comparison.to_csv('measurements/' + processed_measurements)
+    return comparison
 def get_CAPITOUL_measurements():
     if os.path.exists('measurements/' + processed_measurements):
         measurements = pd.read_csv('measurements/' + processed_measurements, index_col=0, parse_dates=True)
@@ -66,7 +131,7 @@ def process_one_theme(path):
     for file in os.listdir(path):
         if file.endswith('.csv'):
             csv_files.append(file)
-    comparison = get_measurements()
+    comparison = get_CAPITOUL_measurements()
     cvrmse_dict = {}
     cvrmse_dict['Rural'] = cvrmse(comparison['Urban_DBT_C'], comparison['Rural_DBT_C'])
     sql_dict = {}
@@ -75,11 +140,27 @@ def process_one_theme(path):
         df = df[compare_start_time:compare_end_time]
         comparison['MeteoData.Pre'] = df['MeteoData.Pre']
         comparison['sensWaste_' + csv_file] = df['sensWaste']
-        comparison['TempProf_' + csv_file] = df['TempProf_cur[19]']
-        comparison['PresProf_' + csv_file] = df['PresProf_cur[19]']
-        comparison['RealTempProf_' + csv_file] = (df['TempProf_cur[19]'])* \
-                                                 (df['PresProf_cur[19]'] / comparison['MeteoData.Pre']) ** 0.286 - 273.15
-        cvrmse_dict[csv_file] = cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_' + csv_file])
+        if "BUBBLE" in experiments_folder:
+            comparison['TempProf_2.6_' + csv_file] = df['TempProf_cur[1]']
+            comparison['PresProf_2.6_' + csv_file] = df['PresProf_cur[1]']
+            comparison['RealTempProf_2.6_' + csv_file] = (df['TempProf_cur[1]']) * \
+                                                     (df['PresProf_cur[1]'] / comparison[
+                                                         'MeteoData.Pre']) ** 0.286 - 273.15
+            cvrmse_dict['2.6_'+csv_file] = cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_2.6_' + csv_file])
+
+            comparison['TempProf_13.9_' + csv_file] = df['TempProf_cur[2]']
+            comparison['PresProf_13.9_' + csv_file] = df['PresProf_cur[2]']
+            comparison['RealTempProf_13.9_' + csv_file] = (df['TempProf_cur[2]']) * \
+                                                        (df['PresProf_cur[2]'] / comparison[
+                                                         'MeteoData.Pre']) ** 0.286 - 273.15
+            cvrmse_dict['13.9_'+csv_file] = cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_13.9_' + csv_file])
+        else:
+            comparison['TempProf_' + csv_file] = df['TempProf_cur[19]']
+            comparison['PresProf_' + csv_file] = df['PresProf_cur[19]']
+            comparison['RealTempProf_' + csv_file] = (df['TempProf_cur[19]'])* \
+                                                     (df['PresProf_cur[19]'] / comparison['MeteoData.Pre']) ** 0.286 - 273.15
+            cvrmse_dict[csv_file] = cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_' + csv_file])
+            print(f'cvrmse for {csv_file} is {cvrmse_dict[csv_file]}')
         sql_dict[csv_file] = read_sql(csv_file)
 
     if os.path.exists(f'{experiments_folder}/comparison.xlsx'):
@@ -147,16 +228,19 @@ def plots():
 def main():
     global processed_measurements, compare_start_time, compare_end_time, sql_report_name, sql_table_name, sql_row_name, sql_col_name
     global experiments_folder
-    experiments_folder = 'BUBBLE_debug'
+    # experiments_folder = 'BUBBLE_debug'
+    experiments_folder = 'CAPITOUL_which_epw_debug'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
     sql_col_name = 'Total Energy'
-    compare_start_time = '2002-06-10 00:10:00'
-    compare_end_time = '2002-07-09 21:50:00'
+    # compare_start_time = '2002-06-10 00:10:00'
+    # compare_end_time = '2002-07-09 21:50:00'
+    compare_start_time = '2004-06-01 00:05:00'
+    compare_end_time = '2004-06-30 22:55:00'
     processed_measurements = 'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                              + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
     process_one_theme(experiments_folder)
-    plots()
+    # plots()
 if __name__ == '__main__':
     main()

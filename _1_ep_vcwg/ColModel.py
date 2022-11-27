@@ -136,7 +136,7 @@ def ColumnModelCal(z0_road,z0_roof,Ceps,Cdrag,Ck,thb,qhb,tvb,FractionsGround,Fra
     T_bc_bottom = 1
     T_bc_top = 2
     th[Geometry_m.nz - 1] = ForcingVariable[0]
-    print(f'ForcingVariable[0] = {ForcingVariable[0] - 273.15} C')
+    # print(f'ForcingVariable[0] = {ForcingVariable[0] - 273.15} C')
 
     # Define boundary conditions for humidity (1:Neumann boundary condition (Flux), 2:Dirichlet boundary condition (Constant value))
     q_bc_bottom = 1
