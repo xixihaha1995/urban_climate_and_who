@@ -110,14 +110,16 @@ def get_BUUBLE_Ue2_measurements():
     comparison['Urban_DBT_C_22.9'] = urban.iloc[:, 4]
     comparison['Urban_DBT_C_27.8'] = urban.iloc[:, 5]
     comparison['Urban_DBT_C_32.9'] = urban.iloc[:, 6]
+    comparison.to_csv(file_path)
     return comparison
 def get_CAPITOUL_measurements():
-    if os.path.exists('measurements/' + processed_measurements):
-        measurements = pd.read_csv('measurements/' + processed_measurements, index_col=0, parse_dates=True)
+    file_path = os.path.join(processed_folder, processed_file)
+    if os.path.exists(file_path):
+        measurements = pd.read_csv(file_path, index_col=0, parse_dates=True)
         measurements = measurements[compare_start_time:compare_end_time]
         return measurements
-    urban_path = r'measurements/Urban_Pomme_Ori_1_min.csv'
-    rural_path = r'measurements/Rural_Ori_1_min.csv'
+    urban_path = os.path.join(processed_folder, 'Urban_Pomme_Ori_1_min.csv')
+    rural_path = os.path.join(processed_folder, 'Rural_Ori_1_min.csv')
     urban = pd.read_csv(urban_path, index_col=0, parse_dates=True)
     rural = pd.read_csv(rural_path, index_col=0, parse_dates=True)
     urban_5min = urban.resample('5min').mean()
@@ -130,8 +132,7 @@ def get_CAPITOUL_measurements():
     comparison['Urban_DBT_C'] = urban_5min['Air_Temperature_C']
     comparison['Rural_DBT_C'] = rural_5min['tpr_air2m_c13_cal_%60\'_celsius']
     comparison['Rural_Pres_Pa'] = rural_5min['pre_air_c13_cal_%60\'_hPa'] * 100
-
-    comparison.to_csv('measurements/' + processed_measurements)
+    comparison.to_csv(file_path)
     return comparison
 
 def read_sql(csv_file):
@@ -219,7 +220,11 @@ def process_one_theme(path):
             comparison[csv_file + '_sensor_idx_' + height_idx] = (comparison[csv_file + '_'+temp_prof_cols[i]]) * \
                                                                 (comparison[csv_file + '_'+pres_prof_cols[i]] / comparison['MeteoData.Pre']) \
                                                                 ** 0.286 - 273.15
-            tempCVRMSE = cvrmse(comparison['Urban_DBT_C_'+ height_idx],
+            if 'CAPITOUL' in experiments_folder:
+                _tmp_col = 'Urban_DBT_C_'
+            else:
+                _tmp_col = 'Urban_DBT_C_' + height_idx
+            tempCVRMSE = cvrmse(comparison[_tmp_col],
                                            comparison[csv_file + '_sensor_idx_' + height_idx])
             cvrmse_dict[csv_file + '_sensor_idx_' + height_idx] = tempCVRMSE
             print(f'cvrmse for {csv_file} at height idx:{height_idx} is {tempCVRMSE}')
@@ -308,7 +313,7 @@ def main():
         compare_start_time, compare_end_time, sql_report_name, sql_table_name, sql_row_name, sql_col_name
     global experiments_folder
     # experiments_folder = 'BUBBLE_debug'
-    experiments_folder = 'BUBBLE_Ue2_which_fractions_debug'
+    experiments_folder = 'CAPITOUL_which_fractions_debug'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
