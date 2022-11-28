@@ -351,6 +351,7 @@ def main():
     experiments_folder = 'BUBBLE_Ue1_Bypass'
     experiments_folder = 'BUBBLE_Ue2_Bypass'
     experiments_folder = 'Vancouver_TopForcing_which_fractions_debug'
+    experiments_folder = 'BUBBLE_Ue1_Replicate'
     # experiments_folder = 'Vancouver_Rural_Bypass'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
