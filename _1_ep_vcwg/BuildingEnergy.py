@@ -508,9 +508,11 @@ class Building(object):
                 # prepare the header string for different sensors
                 header_str = 'cur_datetime,canTemp,sensWaste,MeteoData.Tatm,MeteoData.Pre,'
                 for i in mapped_indices:
-                    header_str += 'TempProf_cur[%d],' % i
+                    _temp_height = coordination.sensor_heights[i]
+                    header_str += f'TempProf_cur[{_temp_height}],'
                 for i in mapped_indices:
-                    header_str += 'PresProf_cur[%d],' % i
+                    _temp_height = coordination.sensor_heights[i]
+                    header_str += 'PresProf_cur[{_temp_height}],'
                 header_str += '\n'
                 f1.write(header_str)
             # write the data

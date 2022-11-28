@@ -5,8 +5,8 @@ from threading import Thread
 import _1_ep_vcwg._0_vcwg_ep_coordination as coordination
 from _1_ep_vcwg.VCWG_Hydrology import VCWG_Hydro
 
-def run_vcwg(config_file_name=None, actual_file=None, _control_value=None):
-    coordination.ini_all(config_file_name,actual_file, _control_value)
+def run_vcwg(config_file_name=None, actual_file=None, _control_value_1=None, _control_value_2=None):
+    coordination.ini_all(config_file_name,actual_file, _control_value_1, _control_value_2)
     if 'None' in coordination.config['run_vcwg()']['TopForcingFileName']:
         TopForcingFileName = None
     else:
@@ -14,8 +14,8 @@ def run_vcwg(config_file_name=None, actual_file=None, _control_value=None):
     epwFileName = coordination.config['run_vcwg()']['epwFileNames']
     VCWGParamFileName = coordination.config['run_vcwg()']['VCWGParamFileName']
     ViewFactorFileName = coordination.config['run_vcwg()']['control_variable'] + \
-                         '_'+ _control_value + '_viewfactor.txt'
-    case = coordination.config['run_vcwg()']['experiments_theme'] + '_' + _control_value
+                         '_'+ _control_value_1 + '_' + _control_value_2 + '_viewfactor.txt'
+    case = coordination.config['run_vcwg()']['experiments_theme'] + '_' + _control_value_1 + '_' + _control_value_2
     VCWG = VCWG_Hydro(epwFileName, TopForcingFileName, VCWGParamFileName, ViewFactorFileName, case)
     VCWG.run()
 def read_ini(config_file_name):
@@ -26,14 +26,15 @@ def read_ini(config_file_name):
     config.read(config_path)
 def one_ini(sensitivity_file_name):
     read_ini(sensitivity_file_name)
-    value_list = [i for i in config['run_vcwg()']['control_value_list'].split(',')]
+    value_list_1 = [i for i in config['run_vcwg()']['control_value_list_1'].split(',')]
+    value_list_2 = [i for i in config['run_vcwg()']['control_value_list_2'].split(',')]
     this_ini_process = []
-    for value in value_list:
-        p = Process(target=run_vcwg, args=(sensitivity_file_name,config, value))
-        p.start()
-        this_ini_process.append(p)
-        # run_vcwg(sensitivity_file_name, config, value)
+    for _day in value_list_1:
+        for _night in value_list_2:
+            p = Process(target=run_vcwg, args=(sensitivity_file_name, config, _day, _night))
+            p.start()
+            # run_vcwg(sensitivity_file_name, config, value)
 
 if __name__ == '__main__':
-    sensitivity_file_name = 'BUBBLE_which_fractions_debug.ini'
+    sensitivity_file_name = 'BUBBLE_Ue2_which_fractions_debug.ini'
     one_ini(sensitivity_file_name)
