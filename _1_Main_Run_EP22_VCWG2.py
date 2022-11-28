@@ -28,12 +28,12 @@ def one_ini(sensitivity_file_name):
     read_ini(sensitivity_file_name)
     value_list_1 = [i for i in config['run_vcwg()']['control_value_list_1'].split(',')]
     value_list_2 = [i for i in config['run_vcwg()']['control_value_list_2'].split(',')]
-    this_ini_process = []
     for _day in value_list_1:
         for _night in value_list_2:
             p = Process(target=run_vcwg, args=(sensitivity_file_name, config, _day, _night))
             p.start()
-            # run_vcwg(sensitivity_file_name, config, value)
+            # run_vcwg(sensitivity_file_name, config, _day, _night)
+
 
 if __name__ == '__main__':
     sensitivity_file_name = 'BUBBLE_Ue2_which_fractions_debug.ini'

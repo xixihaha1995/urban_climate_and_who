@@ -507,10 +507,10 @@ class Building(object):
             with open(coordination.data_saving_path, 'a') as f1:
                 # prepare the header string for different sensors
                 header_str = 'cur_datetime,canTemp,sensWaste,MeteoData.Tatm,MeteoData.Pre,'
-                for i in mapped_indices:
+                for i in range(len(mapped_indices)):
                     _temp_height = coordination.sensor_heights[i]
                     header_str += f'TempProf_cur[{_temp_height}],'
-                for i in mapped_indices:
+                for i in range(len(mapped_indices)):
                     _temp_height = coordination.sensor_heights[i]
                     header_str += 'PresProf_cur[{_temp_height}],'
                 header_str += '\n'
