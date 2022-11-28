@@ -39,7 +39,7 @@ def one_ini(sensitivity_file_name):
 
 
 if __name__ == '__main__':
-    sensitivity_file_name = 'CAPITOUL_which_fractions_debug.ini'
+    sensitivity_file_name = 'CAPITOUL_hardcode_WithoutCooling.ini'
     sensitivity_file_name = 'Vancouver_TopForcing_which_fractions_debug.ini'
     sensitivity_file_name = 'BUBBLE_Ue1_Replicate.ini'
     one_ini(sensitivity_file_name)
