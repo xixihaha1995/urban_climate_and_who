@@ -481,7 +481,8 @@ class Building(object):
         # Waste heat of water heating
         self.QWater = (1 / self.heatEff - 1.) * self.sensWaterHeatDemand
         self.QGas = BEM.Gas * (1 - self.heatEff) * self.nFloor
-        self.sensWaste = self.sensWasteCoolHeatDehum + self.QWater + self.QGas
+        # self.sensWaste = self.sensWasteCoolHeatDehum + self.QWater + self.QGas
+        self.sensWaste = 0
         # Calculate total gas consumption per unit floor area [W m^-2] which is equal to gas consumption per unit floor area +
         # energy consumption for domestic hot water per unit floor area + energy consumption of the heating system per unit floor area
         self.GasTotal = BEM.Gas + (massFlorRateSWH * CpH20 * (
