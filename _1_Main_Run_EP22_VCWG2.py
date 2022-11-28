@@ -36,5 +36,5 @@ def one_ini(sensitivity_file_name):
 
 
 if __name__ == '__main__':
-    sensitivity_file_name = 'BUBBLE_Ue2_which_fractions_debug.ini'
+    sensitivity_file_name = 'Vancouver_TopForcing_which_fractions_debug.ini'
     one_ini(sensitivity_file_name)
