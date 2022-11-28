@@ -69,17 +69,16 @@ def get_BUUBLE_Ue1_measurements():
     mixed_all_sites_10min = read_text_as_csv(rural_path,header=0, index_col=0, skiprows=25)
     mixed_all_sites_10min = mixed_all_sites_10min[compare_start_time:compare_end_time]
 
-    comparison = pd.DataFrame(index=mixed_all_sites_10min.index)
-    comparison.columns = ['Urban_DBT_C_2', 'Urban_DBT_C_13',
-                          'Urban_DBT_C_17', 'Urban_DBT_C_21', 'Urban_DBT_C_25', 'Urban_DBT_C_31']
-    comparison['Urban_DBT_C_2'] = urban.iloc[:, 0]
-    comparison['Urban_DBT_C_13'] = urban.iloc[:, 1]
-    comparison['Urban_DBT_C_17'] = urban.iloc[:, 2]
-    comparison['Urban_DBT_C_21'] = urban.iloc[:, 3]
-    comparison['Urban_DBT_C_25'] = urban.iloc[:, 4]
-    comparison['Urban_DBT_C_31'] = urban.iloc[:, 5]
+    comparison = pd.DataFrame(index=mixed_all_sites_10min.index,columns = range(6))
+    comparison.columns = ['Urban_DBT_C_2.6', 'Urban_DBT_C_13.9',
+                          'Urban_DBT_C_17.5', 'Urban_DBT_C_21.5', 'Urban_DBT_C_25.5', 'Urban_DBT_C_31.2']
+    comparison['Urban_DBT_C_2.6'] = urban.iloc[:, 0]
+    comparison['Urban_DBT_C_13.9'] = urban.iloc[:, 1]
+    comparison['Urban_DBT_C_17.5'] = urban.iloc[:, 2]
+    comparison['Urban_DBT_C_21.5'] = urban.iloc[:, 3]
+    comparison['Urban_DBT_C_25.5'] = urban.iloc[:, 4]
+    comparison['Urban_DBT_C_31.2'] = urban.iloc[:, 5]
     comparison['Rural_DBT_C'] = mixed_all_sites_10min.iloc[:, 7]
-
     comparison.to_csv(file_path)
     return comparison
 
@@ -135,6 +134,40 @@ def get_CAPITOUL_measurements():
     comparison.to_csv(file_path)
     return comparison
 
+def get_Vancouver_measurements():
+    file_path = os.path.join(processed_folder, processed_file)
+    if os.path.exists(file_path):
+        measurements = pd.read_csv(file_path, index_col=0, parse_dates=True)
+        measurements = measurements[compare_start_time:compare_end_time]
+        return measurements
+    urban_path = os.path.join(processed_folder, 'SSDTA_all_30min.csv')
+    urban_hourly = pd.read_csv(urban_path, index_col=0, parse_dates=True)
+    urban_hourly = urban_hourly.astype(float)
+    urban_30min = urban_hourly.resample('30min').interpolate()
+    urban_30min = urban_30min[compare_start_time:compare_end_time]
+
+    comparison = pd.DataFrame(index=urban_30min.index, columns=['Urban_DBT_C', 'Rural_DBT_C'])
+    comparison['Urban_DBT_C'] = urban_30min.iloc[:, 0]
+
+
+    if 'TopForcing' in experiments_folder:
+        rural_path = os.path.join(processed_folder, 'Vancouver_TopForcing_2008_ERA5_Jul.csv')
+        rural_hourly = pd.read_csv(rural_path, index_col=0, parse_dates=True, skiprows=1)
+    else:
+        rural_path = os.path.join(processed_folder, 'Vancouver_Rural_ECCC_BC_1108447_MM-2008_P1H.csv')
+        rural_hourly = pd.read_csv(rural_path, index_col=0, parse_dates=True)
+    rural_hourly = rural_hourly.astype(float)
+    rural_30min = rural_hourly.resample('30min').interpolate()
+    rural_30min = rural_30min[compare_start_time:compare_end_time]
+
+    comparison['Rural_DBT_C'] = rural_30min.iloc[:, 0]
+    if 'TopForcing' in experiments_folder:
+        comparison['Rural_Pres_Pa'] = rural_30min.iloc[:, 1] * 100
+    else:
+        comparison['Rural_Pres_Pa'] = rural_30min.iloc[:, 3] * 1000
+    comparison.to_csv(file_path)
+    return comparison
+
 def read_sql(csv_file):
     csv_name = re.search(r'(.*)\.csv', csv_file).group(1)
     current_path = f'./{experiments_folder}'
@@ -177,18 +210,13 @@ def process_one_theme(path):
     cvrmse_dict = {}
     if "BUBBLE_Ue1" in experiments_folder:
         comparison = get_BUUBLE_Ue1_measurements()
-        cvrmse_dict['Rural_2'] = cvrmse(comparison['Urban_DBT_C_2'], comparison['Rural_DBT_C'])
-        cvrmse_dict['Rural_13'] = cvrmse(comparison['Urban_DBT_C_13'], comparison['Rural_DBT_C'])
-        cvrmse_dict['Rural_17'] = cvrmse(comparison['Urban_DBT_C_17'], comparison['Rural_DBT_C'])
-        cvrmse_dict['Rural_21'] = cvrmse(comparison['Urban_DBT_C_21'], comparison['Rural_DBT_C'])
-        cvrmse_dict['Rural_25'] = cvrmse(comparison['Urban_DBT_C_25'], comparison['Rural_DBT_C'])
-        cvrmse_dict['Rural_31'] = cvrmse(comparison['Urban_DBT_C_31'], comparison['Rural_DBT_C'])
-        print(f'cvrmse for Rural vs Urban(2) is {cvrmse_dict["Rural_2"]}')
-        print(f'cvrmse for Rural vs Urban(13) is {cvrmse_dict["Rural_13"]}')
-        print(f'cvrmse for Rural vs Urban(17) is {cvrmse_dict["Rural_17"]}')
-        print(f'cvrmse for Rural vs Urban(21) is {cvrmse_dict["Rural_21"]}')
-        print(f'cvrmse for Rural vs Urban(25) is {cvrmse_dict["Rural_25"]}')
-        print(f'cvrmse for Rural vs Urban(31) is {cvrmse_dict["Rural_31"]}')
+        cvrmse_dict['Rural_2.6'] = cvrmse(comparison['Urban_DBT_C_2.6'], comparison['Rural_DBT_C'])
+        cvrmse_dict['Rural_13.9'] = cvrmse(comparison['Urban_DBT_C_13.9'], comparison['Rural_DBT_C'])
+        cvrmse_dict['Rural_17.5'] = cvrmse(comparison['Urban_DBT_C_17.5'], comparison['Rural_DBT_C'])
+        cvrmse_dict['Rural_21.5'] = cvrmse(comparison['Urban_DBT_C_21.5'], comparison['Rural_DBT_C'])
+        cvrmse_dict['Rural_25.5'] = cvrmse(comparison['Urban_DBT_C_25.5'], comparison['Rural_DBT_C'])
+        cvrmse_dict['Rural_31.2'] = cvrmse(comparison['Urban_DBT_C_31.2'], comparison['Rural_DBT_C'])
+        print(f'cvrmse for Rural vs Urban is {cvrmse_dict}')
     elif "BUBBLE_Ue2" in experiments_folder:
         comparison = get_BUUBLE_Ue2_measurements()
         cvrmse_dict['Rural_3.0'] = cvrmse(comparison['Urban_DBT_C_3.0'], comparison['Rural_DBT_C'])
@@ -202,9 +230,13 @@ def process_one_theme(path):
         print(f'cvrmse for Rural vs Urban(27.8) is {cvrmse_dict["Rural_27.8"]}')
         print(f'cvrmse for Rural vs Urban(32.9) is {cvrmse_dict["Rural_32.9"]}')
     else:
-        comparison = get_CAPITOUL_measurements()
+        if "CAPITOUL" in experiments_folder:
+            comparison = get_CAPITOUL_measurements()
+        else:
+            comparison = get_Vancouver_measurements()
         cvrmse_dict['Rural'] = cvrmse(comparison['Urban_DBT_C'], comparison['Rural_DBT_C'])
         print(f'cvrmse for Rural is {cvrmse_dict["Rural"]}')
+
     sql_dict = {}
     for csv_file in csv_files:
         df = pd.read_csv(path + '/' + csv_file, index_col=0, parse_dates=True)
@@ -220,7 +252,7 @@ def process_one_theme(path):
             comparison[csv_file + '_sensor_idx_' + height_idx] = (comparison[csv_file + '_'+temp_prof_cols[i]]) * \
                                                                 (comparison[csv_file + '_'+pres_prof_cols[i]] / comparison['MeteoData.Pre']) \
                                                                 ** 0.286 - 273.15
-            if 'CAPITOUL' in experiments_folder:
+            if 'CAPITOUL' in experiments_folder or 'Vancouver' in experiments_folder:
                 _tmp_col = 'Urban_DBT_C'
             else:
                 _tmp_col = 'Urban_DBT_C_' + height_idx
@@ -314,6 +346,12 @@ def main():
     global experiments_folder
     # experiments_folder = 'BUBBLE_debug'
     experiments_folder = 'CAPITOUL_which_fractions_debug'
+    experiments_folder = 'CAPITOUL_WithoutCooling_Bypass'
+    experiments_folder = 'CAPITOUL_WithCooling_Bypass'
+    experiments_folder = 'BUBBLE_Ue1_Bypass'
+    experiments_folder = 'BUBBLE_Ue2_Bypass'
+    experiments_folder = 'Vancouver_TopForcing_which_fractions_debug'
+    # experiments_folder = 'Vancouver_Rural_Bypass'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
@@ -321,19 +359,29 @@ def main():
     if "BUBBLE" in experiments_folder:
         compare_start_time = '2002-06-10 00:10:00'
         compare_end_time = '2002-07-09 21:50:00'
-        processed_folder =  r'_measurements\BUBBLE'
+        processed_folder =  os.path.join('_measurements','BUBBLE')
         if 'Ue1' in experiments_folder:
             processed_file = 'BUBBLE_UE1_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                                  + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
         elif 'Ue2' in experiments_folder:
             processed_file = 'BUBBLE_UE2_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                                  + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
-    else:
+    elif "CAPITOUL" in experiments_folder:
         compare_start_time = '2004-06-01 00:05:00'
         compare_end_time = '2004-06-30 22:55:00'
-        processed_folder =  r'_measurements\CAPITOUL'
+        processed_folder =  os.path.join('_measurements','CAPITOUL')
         processed_file = r'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                                  + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
+    else:
+        compare_start_time = '2008-07-01 00:30:00'
+        compare_end_time = '2008-07-31 23:00:00'
+        processed_folder = os.path.join('_measurements', 'VANCOUVER')
+        if 'TopForcing' in experiments_folder:
+            processed_file = r'Vancouver_TopForcing_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
+                         + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
+        else:
+            processed_file = r'Vancouver_Rural_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
+                         + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
 
     process_one_theme(experiments_folder)
     # plots()
