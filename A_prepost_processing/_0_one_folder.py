@@ -221,7 +221,7 @@ def process_one_theme(path):
                                                                 (comparison[csv_file + '_'+pres_prof_cols[i]] / comparison['MeteoData.Pre']) \
                                                                 ** 0.286 - 273.15
             if 'CAPITOUL' in experiments_folder:
-                _tmp_col = 'Urban_DBT_C_'
+                _tmp_col = 'Urban_DBT_C'
             else:
                 _tmp_col = 'Urban_DBT_C_' + height_idx
             tempCVRMSE = cvrmse(comparison[_tmp_col],
