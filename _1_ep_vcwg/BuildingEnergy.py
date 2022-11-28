@@ -512,7 +512,7 @@ class Building(object):
                     header_str += f'TempProf_cur[{_temp_height}],'
                 for i in range(len(mapped_indices)):
                     _temp_height = coordination.sensor_heights[i]
-                    header_str += 'PresProf_cur[{_temp_height}],'
+                    header_str += f'PresProf_cur[{_temp_height}],'
                 header_str += '\n'
                 f1.write(header_str)
             # write the data
