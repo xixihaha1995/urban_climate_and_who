@@ -11,7 +11,10 @@ def run_vcwg(config_file_name=None, actual_file=None, _control_value_1=None, _co
         TopForcingFileName = None
     else:
         TopForcingFileName = coordination.config['run_vcwg()']['TopForcingFileName']
-    epwFileName = coordination.config['run_vcwg()']['epwFileNames']
+    if 'None' in coordination.config['run_vcwg()']['epwFileNames']:
+        epwFileName = None
+    else:
+        epwFileName = coordination.config['run_vcwg()']['epwFileNames']
     VCWGParamFileName = coordination.config['run_vcwg()']['VCWGParamFileName']
     ViewFactorFileName = coordination.config['run_vcwg()']['control_variable'] + \
                          '_'+ _control_value_1 + '_' + _control_value_2 + '_viewfactor.txt'
@@ -36,5 +39,5 @@ def one_ini(sensitivity_file_name):
 
 
 if __name__ == '__main__':
-    sensitivity_file_name = 'Vancouver_TopForcing_which_fractions_debug.ini'
+    sensitivity_file_name = 'CAPITOUL_which_fractions_debug.ini'
     one_ini(sensitivity_file_name)
