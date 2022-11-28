@@ -51,13 +51,16 @@ def clean_urban(df):
     return df
 
 def get_BUUBLE_measurements():
-    if os.path.exists('measurements/' + processed_measurements):
-        measurements = pd.read_csv('measurements/' + processed_measurements, index_col=0, parse_dates=True)
+    file_path  = os.path.join(processed_folder, processed_file)
+    if os.path.exists(file_path):
+        measurements = pd.read_csv(file_path, index_col=0, parse_dates=True)
         measurements = measurements[compare_start_time:compare_end_time]
         return measurements
 
-    urban_path = r'measurements/BUBBLE_BSPR_AT_PROFILE_IOP.txt'
-    rural_path = r'measurements/BUBBLE_AT_IOP.txt'
+    # urban_path = r'measurements/BUBBLE_BSPR_AT_PROFILE_IOP.txt'
+    # rural_path = r'measurements/BUBBLE_AT_IOP.txt'
+    urban_path = os.path.join(processed_folder, 'BUBBLE_BSPR_AT_PROFILE_IOP.txt')
+    rural_path = os.path.join(processed_folder, 'BUBBLE_AT_IOP.txt')
 
     urban_dirty = read_text_as_csv(urban_path,header=0, index_col=0, skiprows=16)
     urban = clean_urban(urban_dirty)
@@ -66,15 +69,18 @@ def get_BUUBLE_measurements():
     mixed_all_sites_10min = read_text_as_csv(rural_path,header=0, index_col=0, skiprows=25)
     mixed_all_sites_10min = mixed_all_sites_10min[compare_start_time:compare_end_time]
 
-
-    #Air_Temperature_C, tpr_air2m_c13_cal_%60'_celsius, pre_air_c13_cal_%60'_hPa
-    # initialize the dataframe, with the same index as rural, and 3 columns
-    comparison = pd.DataFrame(index=mixed_all_sites_10min.index, columns=['Urban_DBT_C_2.6', 'Urban_DBT_C_13.9'])
-    comparison['Urban_DBT_C_2.6'] = urban.iloc[:, 0]
-    comparison['Urban_DBT_C_13.9'] = urban.iloc[:, 1]
+    comparison = pd.DataFrame(index=mixed_all_sites_10min.index)
+    comparison.columns = ['Urban_DBT_C_2', 'Urban_DBT_C_13',
+                          'Urban_DBT_C_17', 'Urban_DBT_C_21', 'Urban_DBT_C_25', 'Urban_DBT_C_31']
+    comparison['Urban_DBT_C_2'] = urban.iloc[:, 0]
+    comparison['Urban_DBT_C_13'] = urban.iloc[:, 1]
+    comparison['Urban_DBT_C_17'] = urban.iloc[:, 2]
+    comparison['Urban_DBT_C_21'] = urban.iloc[:, 3]
+    comparison['Urban_DBT_C_25'] = urban.iloc[:, 4]
+    comparison['Urban_DBT_C_31'] = urban.iloc[:, 5]
     comparison['Rural_DBT_C'] = mixed_all_sites_10min.iloc[:, 7]
 
-    comparison.to_csv('measurements/' + processed_measurements)
+    comparison.to_csv(file_path)
     return comparison
 def get_CAPITOUL_measurements():
     if os.path.exists('measurements/' + processed_measurements):
@@ -125,6 +131,13 @@ def read_sql(csv_file):
     regex = r'(\d+\.?\d*)'
     number = float(re.findall(regex, results[0][1])[0])
     return number
+def find_height_indice(df):
+    cols = df.columns
+    temp_prof_cols = [col for col in cols if 'TempProf_cur' in col]
+    pres_prof_cols = [col for col in cols if 'PresProf_cur' in col]
+    return temp_prof_cols, pres_prof_cols
+
+
 def process_one_theme(path):
     #find all csv files in the path, which does not contain 'save'
     csv_files = []
@@ -134,10 +147,18 @@ def process_one_theme(path):
     cvrmse_dict = {}
     if "BUBBLE" in experiments_folder:
         comparison = get_BUUBLE_measurements()
-        cvrmse_dict['Rural_2.6'] = cvrmse(comparison['Urban_DBT_C_2.6'], comparison['Rural_DBT_C'])
-        cvrmse_dict['Rural_13.9'] = cvrmse(comparison['Urban_DBT_C_13.9'], comparison['Rural_DBT_C'])
-        print(f'cvrmse for Rural_2.6 is {cvrmse_dict["Rural_2.6"]}')
-        print(f'cvrmse for Rural_13.9 is {cvrmse_dict["Rural_13.9"]}')
+        cvrmse_dict['Rural_2'] = cvrmse(comparison['Urban_DBT_C_2'], comparison['Rural_DBT_C'])
+        cvrmse_dict['Rural_13'] = cvrmse(comparison['Urban_DBT_C_13'], comparison['Rural_DBT_C'])
+        cvrmse_dict['Rural_17'] = cvrmse(comparison['Urban_DBT_C_17'], comparison['Rural_DBT_C'])
+        cvrmse_dict['Rural_21'] = cvrmse(comparison['Urban_DBT_C_21'], comparison['Rural_DBT_C'])
+        cvrmse_dict['Rural_25'] = cvrmse(comparison['Urban_DBT_C_25'], comparison['Rural_DBT_C'])
+        cvrmse_dict['Rural_31'] = cvrmse(comparison['Urban_DBT_C_31'], comparison['Rural_DBT_C'])
+        print(f'cvrmse for Rural vs Urban(2) is {cvrmse_dict["Rural_2"]}')
+        print(f'cvrmse for Rural vs Urban(13) is {cvrmse_dict["Rural_13"]}')
+        print(f'cvrmse for Rural vs Urban(17) is {cvrmse_dict["Rural_17"]}')
+        print(f'cvrmse for Rural vs Urban(21) is {cvrmse_dict["Rural_21"]}')
+        print(f'cvrmse for Rural vs Urban(25) is {cvrmse_dict["Rural_25"]}')
+        print(f'cvrmse for Rural vs Urban(31) is {cvrmse_dict["Rural_31"]}')
     else:
         comparison = get_CAPITOUL_measurements()
         cvrmse_dict['Rural'] = cvrmse(comparison['Urban_DBT_C'], comparison['Rural_DBT_C'])
@@ -148,29 +169,21 @@ def process_one_theme(path):
         df = df[compare_start_time:compare_end_time]
         comparison['MeteoData.Pre'] = df['MeteoData.Pre']
         comparison['sensWaste_' + csv_file] = df['sensWaste']
-        if "BUBBLE" in experiments_folder:
-            comparison['TempProf_2.6_' + csv_file] = df['TempProf_cur[2]']
-            comparison['PresProf_2.6_' + csv_file] = df['PresProf_cur[2]']
-            comparison['RealTempProf_2.6_' + csv_file] = (df['TempProf_cur[2]']) * \
-                                                     (df['PresProf_cur[2]'] / comparison[
-                                                         'MeteoData.Pre']) ** 0.286 - 273.15
-            cvrmse_dict['2.6_'+csv_file] = cvrmse(comparison['Urban_DBT_C_2.6'], comparison['RealTempProf_2.6_' + csv_file])
 
-            comparison['TempProf_13.9_' + csv_file] = df['TempProf_cur[13]']
-            comparison['PresProf_13.9_' + csv_file] = df['PresProf_cur[13]']
-            comparison['RealTempProf_13.9_' + csv_file] = (df['TempProf_cur[13]']) * \
-                                                        (df['PresProf_cur[13]'] / comparison[
-                                                         'MeteoData.Pre']) ** 0.286 - 273.15
-            cvrmse_dict['13.9_'+csv_file] = cvrmse(comparison['Urban_DBT_C_13.9'], comparison['RealTempProf_13.9_' + csv_file])
-        else:
-            comparison['TempProf_' + csv_file] = df['TempProf_cur[19]']
-            comparison['PresProf_' + csv_file] = df['PresProf_cur[19]']
-            comparison['RealTempProf_' + csv_file] = (df['TempProf_cur[19]'])* \
-                                                     (df['PresProf_cur[19]'] / comparison['MeteoData.Pre']) ** 0.286 - 273.15
-            cvrmse_dict[csv_file] = cvrmse(comparison['Urban_DBT_C'], comparison['RealTempProf_' + csv_file])
-            print(f'cvrmse for {csv_file} is {cvrmse_dict[csv_file]}')
+        temp_prof_cols, pres_prof_cols = find_height_indice(df)
+        for i in range(len(temp_prof_cols)):
+            comparison[temp_prof_cols[i]] = df[temp_prof_cols[i]]
+            comparison[pres_prof_cols[i]] = df[pres_prof_cols[i]]
+            height_idx = re.search(r'(\d+\.?\d*)', temp_prof_cols[i]).group(1)
+            comparison[csv_file + '_sensor_idx_' + height_idx] = (comparison[temp_prof_cols[i]]) * \
+                                                                (comparison[pres_prof_cols[i]] / comparison['MeteoData.Pre']) \
+                                                                ** 0.286 - 273.15
+            tempCVRMSE = cvrmse(comparison['Urban_DBT_C_'+ height_idx],
+                                           comparison[csv_file + '_sensor_idx_' + height_idx])
+            cvrmse_dict[csv_file + '_sensor_idx_' + height_idx] = tempCVRMSE
+            print(f'cvrmse for {csv_file} at height idx:{height_idx} is {tempCVRMSE}')
+
         sql_dict[csv_file] = read_sql(csv_file)
-
     if os.path.exists(f'{experiments_folder}/comparison.xlsx'):
         os.remove(f'{experiments_folder}/comparison.xlsx')
     writer = pd.ExcelWriter(f'{experiments_folder}/comparison.xlsx')
@@ -250,10 +263,11 @@ def plots():
     plt.show()
 
 def main():
-    global processed_measurements, compare_start_time, compare_end_time, sql_report_name, sql_table_name, sql_row_name, sql_col_name
+    global processed_folder,processed_file,\
+        compare_start_time, compare_end_time, sql_report_name, sql_table_name, sql_row_name, sql_col_name
     global experiments_folder
     # experiments_folder = 'BUBBLE_debug'
-    experiments_folder = 'BUBBLE_which_epw_debug'
+    experiments_folder = 'BUBBLE_which_fractions_debug'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
@@ -261,15 +275,17 @@ def main():
     if "BUBBLE" in experiments_folder:
         compare_start_time = '2002-06-10 00:10:00'
         compare_end_time = '2002-07-09 21:50:00'
-        processed_measurements = 'BUBBLE_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
+        processed_folder =  r'_measurements\BUBBLE'
+        processed_file = 'BUBBLE_UE1_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                                  + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
     else:
         compare_start_time = '2004-06-01 00:05:00'
         compare_end_time = '2004-06-30 22:55:00'
-        processed_measurements = 'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
+        processed_folder =  r'_measurements\CAPITOUL'
+        processed_file = r'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                                  + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
 
     process_one_theme(experiments_folder)
-    plots()
+    # plots()
 if __name__ == '__main__':
     main()
