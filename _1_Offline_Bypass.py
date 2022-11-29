@@ -28,7 +28,7 @@ def run_ep_api(input_value):
         elif input_value == 0.7:
             idfFileName = coordination.config['_1_Main_Run_EP22_VCWG2.py']['idfFileName'][:-4] + '_Albedo0.7.idf'
     elif coordination.config['sensitivity']['uwgVariable'] == 'bld':
-        idfFileName = '4B' + '_' +input_value+coordination['sensitivity']['cooling'] + '.idf'
+        idfFileName = '4B' + '_' +input_value+coordination.config['sensitivity']['cooling'] + '.idf'
     else:
         idfFileName = coordination.config['_1_Main_Run_EP22_VCWG2.py']['idfFileName']
     state = coordination.ep_api.state_manager.new_state()
@@ -38,17 +38,20 @@ def run_ep_api(input_value):
     coordination.ep_api.exchange.request_variable(state, "Site Outdoor Air Drybulb Temperature", "ENVIRONMENT")
     coordination.ep_api.exchange.request_variable(state, "Site Outdoor Air Humidity Ratio", "ENVIRONMENT")
 
-    if coordination.uwgVariableValue > 0:
-        str_variable = 'positive' + str(abs(coordination.uwgVariableValue))
-    elif coordination.uwgVariableValue < 0:
-        str_variable = 'negative' + str(abs(coordination.uwgVariableValue))
+    if coordination.uwgVariableValue.isalpha():
+        str_variable = coordination.uwgVariableValue
     else:
-        str_variable = '0'
-
+        if coordination.uwgVariableValue > 0:
+            str_variable = 'positive' + str(abs(coordination.uwgVariableValue))
+        elif coordination.uwgVariableValue < 0:
+            str_variable = 'negative' + str(abs(coordination.uwgVariableValue))
+        else:
+            str_variable = '0'
+    _cooling = coordination.config['sensitivity']['cooling']
     output_path = os.path.join('./A_prepost_processing/offline_saving_newEPW',
                                coordination.config['_0_vcwg_ep_coordination.py']['site_location'],
                                coordination.config['sensitivity']['theme'],
-                               f'{coordination.uwgVariable}_{str_variable}ep_outputs')
+                               f'{coordination.uwgVariable}_{str_variable}_{_cooling}_ep_outputs')
     idfFilePath = os.path.join('./resources/idf/shading_IDFs', idfFileName)
     sys_args = '-d', output_path, '-w', coordination.generated_epw_path, idfFilePath
     coordination.ep_api.runtime.run_energyplus(state, sys_args)
@@ -146,9 +149,9 @@ def run_offline(input_config, input_uwgVariable, input_value):
     state = coordination.ep_api.state_manager.new_state()
     coordination.state = state
     coordination.psychrometric=coordination.ep_api.functional.psychrometrics(coordination.state)
-    run_vcwg()
-    # generate_epw()
-    # run_ep_api(input_value)
+    # run_vcwg()
+    generate_epw()
+    run_ep_api(input_value)
 
 
 
