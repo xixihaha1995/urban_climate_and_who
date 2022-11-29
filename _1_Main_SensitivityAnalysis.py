@@ -59,6 +59,7 @@ def for_loop_all_ini():
     # todo_jobs = ["SensitivityCAPITOUL_NoCooling_CanyonWidthToRoofWidth.ini",
     #              "SensitivityCAPITOUL_NoCooling_fveg_G.ini",
     #              "SensitivityCAPITOUL_NoCooling_theta_canyon.ini"]
+    todo_jobs = ['SensitivityCAPITOUL_bld_WithCooling.ini']
 
     nbr_job_for_one_batch = 2
     for i in range(0,len(todo_jobs),nbr_job_for_one_batch):

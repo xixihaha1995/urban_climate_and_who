@@ -11,22 +11,6 @@ def init_ep_api():
     psychrometric =None
 
 
-def levenshtein(epw_file, param):
-    # calculate the distance between two strings
-    if len(epw_file) > len(param):
-        epw_file, param = param, epw_file
-    distances = range(len(epw_file) + 1)
-    for index2, char2 in enumerate(param):
-        newDistances = [index2 + 1]
-        for index1, char1 in enumerate(epw_file):
-            if char1 == char2:
-                newDistances.append(distances[index1])
-            else:
-                newDistances.append(1 + min((distances[index1], distances[index1 + 1], newDistances[-1])))
-        distances = newDistances
-    return distances[-1]
-
-
 def read_ini(input_config, input_uwgVariable, input_uwgVariableValue):
     global config, project_path, uwgVariable, uwgVariableValue, vcwg_prediction_saving_path, generated_epw_path
     # find the project path

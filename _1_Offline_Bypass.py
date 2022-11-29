@@ -27,6 +27,8 @@ def run_ep_api(input_value):
             idfFileName = coordination.config['_1_Main_Run_EP22_VCWG2.py']['idfFileName'][:-4] + '_Albedo0.25.idf'
         elif input_value == 0.7:
             idfFileName = coordination.config['_1_Main_Run_EP22_VCWG2.py']['idfFileName'][:-4] + '_Albedo0.7.idf'
+    elif coordination.config['sensitivity']['uwgVariable'] == 'bld':
+        idfFileName = '4B' + '_' +input_value+coordination['sensitivity']['cooling'] + '.idf'
     else:
         idfFileName = coordination.config['_1_Main_Run_EP22_VCWG2.py']['idfFileName']
     state = coordination.ep_api.state_manager.new_state()
@@ -144,9 +146,9 @@ def run_offline(input_config, input_uwgVariable, input_value):
     state = coordination.ep_api.state_manager.new_state()
     coordination.state = state
     coordination.psychrometric=coordination.ep_api.functional.psychrometrics(coordination.state)
-    # run_vcwg()
-    generate_epw()
-    run_ep_api(input_value)
+    run_vcwg()
+    # generate_epw()
+    # run_ep_api(input_value)
 
 
 
