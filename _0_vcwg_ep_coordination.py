@@ -22,6 +22,7 @@ def read_ini(input_config, input_uwgVariable, input_uwgVariableValue):
     if uwgVariableValue.isalpha():
         str_variable = uwgVariableValue
     else:
+        uwgVariableValue = float(uwgVariableValue)
         if uwgVariableValue > 0:
             str_variable = 'positive' + str(abs(uwgVariableValue))
         elif uwgVariableValue < 0:

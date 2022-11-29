@@ -55,7 +55,7 @@ def for_loop_all_ini():
     nbr_job_for_one_batch = 2
     for i in range(0,len(todo_jobs),nbr_job_for_one_batch):
         print('Todo jobs',todo_jobs[i:i+nbr_job_for_one_batch])
-        # batch_run(todo_jobs[i:i+nbr_job_for_one_batch])
+        batch_run(todo_jobs[i:i+nbr_job_for_one_batch])
 
 
 if __name__ == '__main__':
