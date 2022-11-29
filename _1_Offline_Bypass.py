@@ -7,6 +7,8 @@ import _0_vcwg_ep_coordination as coordination
 
 def run_ep_api(input_value):
     coordination.ep_api.state_manager.reset_state(coordination.state)
+    if not input_value.isalpha():
+        input_value = float(input_value)
     if coordination.config['sensitivity']['uwgVariable'] == 'theta_canyon':
         if input_value == -90:
             idfFileName = coordination.config['_1_Main_Run_EP22_VCWG2.py']['idfFileName'][:-4] + '_Ori0.idf'
@@ -41,7 +43,7 @@ def run_ep_api(input_value):
     else:
         str_variable = '0'
 
-    output_path = os.path.join('./A_prepost_processing/offline_saving',
+    output_path = os.path.join('./A_prepost_processing/offline_saving_newEPW',
                                coordination.config['_0_vcwg_ep_coordination.py']['site_location'],
                                coordination.config['sensitivity']['theme'],
                                f'{coordination.uwgVariable}_{str_variable}ep_outputs')
@@ -60,9 +62,42 @@ def date_time_to_epw_ith_row_in_normal_year(date_time):
     ith_row = ith_hour + 8
     return ith_row
 
+def update_epw_path():
+    if str(coordination.uwgVariableValue).isalpha():
+        str_variable = coordination.uwgVariableValue
+    else:
+        uwgVariableValue = float(coordination.uwgVariableValue)
+        if uwgVariableValue > 0:
+            str_variable = 'positive' + str(abs(uwgVariableValue))
+        elif uwgVariableValue < 0:
+            str_variable = 'negative' + str(abs(uwgVariableValue))
+        else:
+            str_variable = '0'
+    theme = coordination.config['sensitivity']['theme']
+    if not os.path.exists(os.path.join(coordination.project_path, 'resources', 'epw_based_onMixed',
+                                       f'{theme}_{coordination.uwgVariable}_{str_variable}.epw')):
+        print('The epw file is not exist, please check the path',
+              os.path.join(coordination.project_path, 'resources', 'epw_based_onMixed',
+                           f'{theme}_{coordination.uwgVariable}_{str_variable}.epw'))
+        if coordination.uwgVariable == 'albedoNoIDF':
+            _target_uwgVariable = 'albedo'
+        else:
+            _target_uwgVariable = coordination.uwgVariable
+        _target_epw = f'_{_target_uwgVariable}_{str_variable}.epw'
+        print('The target epw file is', _target_epw)
+        epw_files = os.listdir(os.path.join(coordination.project_path, 'resources', 'epw_based_onMixed'))
+        epw_files = [epw_file for epw_file in epw_files if epw_file.endswith('.epw')]
+        for epw_file in epw_files:
+            if epw_file.endswith(_target_epw):
+                coordination.generated_epw_path = os.path.join(coordination.project_path, 'resources', 'epw_based_onMixed', epw_file)
+
+                return
 def generate_epw():
     epw_Template_file_path = coordination.config['_1_Main_Run_EP22_VCWG2.py']['epwFileName']
     epw_Template_file_path = os.path.join('./resources/epw', epw_Template_file_path)
+    if not os.path.exists(coordination.vcwg_prediction_saving_path):
+        update_epw_path()
+        return
     vcwg_outputs = pd.read_csv(coordination.vcwg_prediction_saving_path, index_col=0, parse_dates=True)
     vcwg_outputs_hourly = vcwg_outputs.resample('H').mean()
     '''
@@ -109,9 +144,9 @@ def run_offline(input_config, input_uwgVariable, input_value):
     state = coordination.ep_api.state_manager.new_state()
     coordination.state = state
     coordination.psychrometric=coordination.ep_api.functional.psychrometrics(coordination.state)
-    run_vcwg()
+    # run_vcwg()
     generate_epw()
-    # run_ep_api(input_value)
+    run_ep_api(input_value)
 
 
 
