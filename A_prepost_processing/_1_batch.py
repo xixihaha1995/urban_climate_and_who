@@ -48,7 +48,7 @@ def read_sql(path,number):
             break
 
     if not os.path.exists(sql_path):
-        return None
+        return 0,0,0
     abs_sql_path = os.path.abspath(sql_path)
     sql_uri = '{}?mode=ro'.format(pathlib.Path(abs_sql_path).as_uri())
 
@@ -79,9 +79,23 @@ def read_sql(path,number):
     hvac_gas_query_results = cursor.execute(hvac_gas_query).fetchall()
     hvac_gas = float(re.findall(regex, hvac_gas_query_results[0][1])[0])
     return totalEnergy, hvac_electricity, hvac_gas
+
+def find_all_nums(path):
+    nums = []
+    for folder in os.listdir(path):
+        if 'ep_outputs' in folder:
+            regex = r'(\d+\.?\d*)'
+            num = re.findall(regex, folder)
+            if num:
+                if 'negative' in folder:
+                    num[0] = -float(num[0])
+                nums.append(float(num[0]))
+    return nums
 def process_one_theme(theme, path, offline_bool = False):
     #find all csv files in the path, which does not contain 'save'
     csv_files = []
+    if not os.path.isdir(path):
+        return
     for file in os.listdir(path):
         if file.endswith('.csv') and 'save' not in file:
             csv_files.append(file)
@@ -89,6 +103,10 @@ def process_one_theme(theme, path, offline_bool = False):
     comparison = get_measurements()
     cvrmse_dict = {}
     sql_dict = {}
+    if len(csv_files) == 0:
+        nums = find_all_nums(path)
+        for num in nums:
+            sql_dict[str(num)] = (read_sql(path, num))
     for csv_file in csv_files:
         df = pd.read_csv(os.path.join(path ,csv_file), index_col=0, parse_dates=True)
         df = df[compare_start_time:compare_end_time]
@@ -101,6 +119,8 @@ def process_one_theme(theme, path, offline_bool = False):
         # extract the number from the csv file name: such as '0.1.csv' -> 0.1, '-0.1.csv' -> -0.1
         regex = r'(-?\d+\.?\d*)'
         number = float(re.findall(regex, csv_file)[0])
+        if 'negative' in csv_file:
+            number = -number
         key_name = str(number)
         cvrmse_dict[key_name] = cvrmse(comparison['Urban_DBT_C'], comparison['MeteoData.Pre_RealTempProf_' + csv_file])
         sql_dict[key_name] = (read_sql(path,number))
@@ -129,7 +149,7 @@ def main():
     global processed_measurements, compare_start_time, compare_end_time, \
         sql_report_name, sql_table_name, sql_row_name, sql_col_name, experiments_folder
     # experiments_folder = r'UWG_Parameter_Sensitivity_Rerun'
-    experiments_folder = r'shading_boosted'
+    experiments_folder = os.path.join('offline_saving_newEPW','CAPITOUL')
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
