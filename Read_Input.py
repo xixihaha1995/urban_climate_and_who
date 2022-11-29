@@ -427,6 +427,21 @@ def Data_Site(InputFile):
             ipd['theta_canyon'] = 0
         else:
             ipd['theta_canyon'] = coordination.uwgVariableValue
+    elif "bld" in coordination.uwgVariable:
+        if coordination.uwgVariableValue == "MediumOffice":
+            ipd['bld'][4][1] = 1
+        elif coordination.uwgVariableValue == "SmallOffice":
+            ipd['bld'][11][1] = 1
+        elif coordination.uwgVariableValue == "LargeOffice":
+            ipd['bld'][3][1] = 1
+        elif coordination.uwgVariableValue == "MidriseApartment":
+            ipd['bld'][5][1] = 1
+        elif coordination.uwgVariableValue == "StandAloneRetail":
+            ipd['bld'][12][1] = 1
+        elif coordination.uwgVariableValue == "StripMall":
+            ipd['bld'][13][1] = 1
+        elif coordination.uwgVariableValue == "SuperMarket":
+            ipd['bld'][14][1] = 1
     else:
         ipd[coordination.uwgVariable] = coordination.uwgVariableValue
     # Rural model parameters

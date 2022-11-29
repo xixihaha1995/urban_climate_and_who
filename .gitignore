@@ -33,6 +33,7 @@ EPTEMP-00000001/
 *.dbg
 *.end
 *.idd
+*.sql
 1_scripts/EP_And_VCWG_v2.0.0/_02_ep_midRiseApartment/*.csv
 InputOutputReference.pdf
 EMSApplicationGuide.pdf

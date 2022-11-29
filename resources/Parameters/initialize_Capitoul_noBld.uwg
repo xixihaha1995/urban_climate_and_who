@@ -306,7 +306,7 @@ bld,
 0,0,0,    # LargeHotel
 0,0,0,    # LargeOffice
 0,0,0,    # MediumOffice
-0,1,0,    # MidRiseApartment
+0,0,0,    # MidRiseApartment
 0,0,0,    # OutPatient
 0,0,0,    # PrimarySchool
 0,0,0,    # QuickServiceRestaurant

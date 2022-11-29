@@ -18,19 +18,22 @@ def read_ini(input_config, input_uwgVariable, input_uwgVariableValue):
     uwgVariable = input_uwgVariable
     uwgVariableValue = input_uwgVariableValue
 
-
-    if uwgVariableValue > 0:
-        str_variable = 'positive' + str(abs(uwgVariableValue))
-    elif uwgVariableValue < 0:
-        str_variable = 'negative' + str(abs(uwgVariableValue))
+    # detect if the uwgVariableValue is only contain letters
+    if uwgVariableValue.isalpha():
+        str_variable = uwgVariableValue
     else:
-        str_variable = '0'
+        if uwgVariableValue > 0:
+            str_variable = 'positive' + str(abs(uwgVariableValue))
+        elif uwgVariableValue < 0:
+            str_variable = 'negative' + str(abs(uwgVariableValue))
+        else:
+            str_variable = '0'
 
-    vcwg_prediction_saving_path = os.path.join(project_path, 'A_prepost_processing', 'offline_saving',
+    vcwg_prediction_saving_path = os.path.join(project_path, 'A_prepost_processing', 'offline_saving_newEPW',
                                     config['_0_vcwg_ep_coordination.py']['site_location'],
                                     config['sensitivity']['theme'], f'{str_variable}.csv')
     theme = config['sensitivity']['theme']
-    generated_epw_path = os.path.join(project_path, 'resources', 'epw',
+    generated_epw_path = os.path.join(project_path, 'resources', 'epw_based_onMixed',
                                     f'{theme}_{uwgVariable}_{str_variable}.epw')
 
 

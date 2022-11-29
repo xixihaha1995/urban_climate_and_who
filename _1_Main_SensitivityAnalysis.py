@@ -19,13 +19,13 @@ def one_ini(sensitivity_file_name):
     info(f'main line {sensitivity_file_name}')
     read_ini(sensitivity_file_name)
     uwgVariable = config['sensitivity']['uwgVariable']
-    value_list = [float(i) for i in config['sensitivity']['value_list'].split(',')]
+    value_list = [i for i in config['sensitivity']['value_list'].split(',')]
     this_ini_process = []
     for value in value_list:
-        # p = Process(target=ByPass.run_offline, args=(config,uwgVariable, value))
-        # p.start()
-        # this_ini_process.append(p)
-        ByPass.run_offline(config,uwgVariable, value)
+        p = Process(target=ByPass.run_offline, args=(config,uwgVariable, value))
+        p.start()
+        this_ini_process.append(p)
+        # ByPass.run_offline(config,uwgVariable, value)
     return this_ini_process
 
 def batch_run(ini_files):
@@ -46,11 +46,16 @@ def for_loop_all_ini():
     #               "SensitivityCAPITOUL_CanyonWidthToRoofWidth.ini","SensitivityCAPITOUL_NoCooling_CanyonWidthToRoofWidth.ini",
     #              "SensitivityCAPITOUL_fveg_G.ini","SensitivityCAPITOUL_NoCooling_fveg_G.ini",
     #              "SensitivityCAPITOUL_theta_canyon.ini","SensitivityCAPITOUL_NoCooling_theta_canyon.ini"]
-    todo_jobs = ['SensitivityCAPITOUL_NoCooling_albedo.ini']
-    nbr_job_for_one_batch = 1
+    todo_jobs = ["SensitivityCAPITOUL_albedo.ini",
+                  "SensitivityCAPITOUL_CanyonWidthToCanyonHeight.ini",
+                  "SensitivityCAPITOUL_CanyonWidthToRoofWidth.ini",
+                 "SensitivityCAPITOUL_fveg_G.ini",
+                 "SensitivityCAPITOUL_theta_canyon.ini"
+                 ]
+    nbr_job_for_one_batch = 2
     for i in range(0,len(todo_jobs),nbr_job_for_one_batch):
         print('Todo jobs',todo_jobs[i:i+nbr_job_for_one_batch])
-        batch_run(todo_jobs[i:i+nbr_job_for_one_batch])
+        # batch_run(todo_jobs[i:i+nbr_job_for_one_batch])
 
 
 if __name__ == '__main__':
