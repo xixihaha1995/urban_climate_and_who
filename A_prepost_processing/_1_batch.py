@@ -33,6 +33,53 @@ def get_measurements():
     comparison.to_csv(os.path.join('measurements', processed_measurements))
     return comparison
 
+def three_queries(path,csv_name):
+    sql_path = 'None'
+    for folder in os.listdir(path):
+        if csv_name in folder and 'ep_outputs' in folder:
+            sql_path = os.path.join(path, folder, 'eplusout.sql')
+            break
+
+    if not os.path.exists(sql_path):
+        return 0, 0, 0
+    abs_sql_path = os.path.abspath(sql_path)
+    sql_uri = '{}?mode=ro'.format(pathlib.Path(abs_sql_path).as_uri())
+
+    totalEnergyQuery = f"SELECT * FROM TabularDataWithStrings WHERE ReportName = '{sql_report_name}' AND TableName = '{sql_table_name}'" \
+                       f" AND RowName = '{sql_row_name}' AND ColumnName = '{sql_col_name}'"
+    with sqlite3.connect(sql_uri, uri=True) as con:
+        cursor = con.cursor()
+        totalEnergyRes = cursor.execute(totalEnergyQuery).fetchall()
+        if totalEnergyRes:
+            pass
+        else:
+            msg = ("Cannot find the EnergyPlusVersion in the SQL file. "
+                   "Please inspect query used:\n{}".format(totalEnergyQuery))
+            raise ValueError(msg)
+    regex = r'(\d+\.?\d*)'
+    totalEnergy = float(re.findall(regex, totalEnergyRes[0][1])[0])
+
+    hvac_electricity_query = f"SELECT * FROM TabularDataWithStrings " \
+                             f"WHERE ReportName = '{sql_report_name}'" \
+                             f"AND TableName = 'Utility Use Per Total Floor Area' And RowName = 'HVAC' " \
+                             f"AND ColumnName = 'Electricity Intensity'"
+    hvac_electricity_query_results = cursor.execute(hvac_electricity_query).fetchall()
+    hvac_electricity = float(re.findall(regex, hvac_electricity_query_results[0][1])[0])
+    hvac_gas_query = f"SELECT * FROM TabularDataWithStrings " \
+                     f"WHERE ReportName = '{sql_report_name}'" \
+                     f"AND TableName = 'Utility Use Per Total Floor Area' And RowName = 'HVAC' " \
+                     f"AND ColumnName = 'Natural Gas Intensity'"
+    hvac_gas_query_results = cursor.execute(hvac_gas_query).fetchall()
+    hvac_gas = float(re.findall(regex, hvac_gas_query_results[0][1])[0])
+    return totalEnergy, hvac_electricity, hvac_gas
+
+def read_sql_string(path,string):
+    csv_names = [string+ '_WithCooling', string+ '_WithoutCooling']
+    _sql_dict = {}
+    for csv_name in csv_names:
+        _sql_dict[csv_name] = three_queries(path,csv_name)
+    return _sql_dict
+
 def read_sql(path,number):
     if number == 0:
         csv_name = '_0ep_outputs'
@@ -118,12 +165,23 @@ def process_one_theme(theme, path, offline_bool = False):
         # from string csv_file extract float number based on regex
         # extract the number from the csv file name: such as '0.1.csv' -> 0.1, '-0.1.csv' -> -0.1
         regex = r'(-?\d+\.?\d*)'
-        number = float(re.findall(regex, csv_file)[0])
-        if 'negative' in csv_file:
-            number = -number
-        key_name = str(number)
-        cvrmse_dict[key_name] = cvrmse(comparison['Urban_DBT_C'], comparison['MeteoData.Pre_RealTempProf_' + csv_file])
-        sql_dict[key_name] = (read_sql(path,number))
+        nbrs = re.findall(regex, csv_file)
+        if len(nbrs) > 0:
+            number = float(nbrs[0])
+            if 'negative' in csv_file:
+                number = -number
+            key_name = str(number)
+            sql_dict[key_name] = (read_sql(path, number))
+            cvrmse_dict[key_name] = cvrmse(comparison['Urban_DBT_C'],
+                                           comparison['MeteoData.Pre_RealTempProf_' + csv_file])
+        else:
+            key_name = csv_file[:-4]
+            _tmp_sql = read_sql_string(path, key_name)
+            for _key in _tmp_sql.keys():
+                sql_dict[_key] = _tmp_sql[_key]
+                cvrmse_dict[_key] =cvrmse(comparison['Urban_DBT_C'],
+                                           comparison['MeteoData.Pre_RealTempProf_' + csv_file])
+
     # create new Excel file, where the first sheet is the comparison, and the second sheet is the cvrmse
     # third sheet is sql data
     if os.path.exists(os.path.join(path, 'sensitivity_analysis.xlsx')):
