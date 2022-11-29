@@ -59,7 +59,7 @@ def save_all_data(data_all):
     theme_order = ['albedo', 'albedoNoIDF', 'canyonWidth9ToRoofWidth', 'canyonWidthToHeight15', 'fveg_G',
                    'theta_canyon', 'NoCoolingAlbedo', 'NoCoolingAlbedoNoIDF',
                    'NoCoolingCanyonWidth9ToRoofWidth', 'NoCoolingCanyonWidthToHeight15',
-                   'NoCoolingTheta_canyon', 'NoCooling_fveg_G']
+                   'NoCoolingTheta_canyon', 'NoCooling_fveg_G','bld_types']
     for framework, data in data_all.items():
         for theme in theme_order:
             for variable, value in data[theme].items():
@@ -67,13 +67,50 @@ def save_all_data(data_all):
                 df.loc[f'{theme}, {variable}', 'Total Site Energy[GJ]'] = value[1]
                 df.loc[f'{theme}, {variable}', 'HVAC Electricity Intensity [MJ/m2]'] = value[2]
                 df.loc[f'{theme}, {variable}', 'HVAC Natural Gas Intensity [MJ/m2]'] = value[3]
+                _area_m2 = bld_type_footprint_ft2_dict['MediumOffice'] * 0.092903
+                if 'MidriseApartment' in variable:
+                    _area_m2 = bld_type_footprint_ft2_dict['MidriseApartment'] * 0.092903
+                elif 'StandAloneRetail' in variable:
+                    _area_m2 = bld_type_footprint_ft2_dict['StandAloneRetail'] * 0.092903
+                elif 'StripMall' in variable:
+                    _area_m2 = bld_type_footprint_ft2_dict['StripMall'] * 0.092903
+                elif 'SuperMarket' in variable:
+                    _area_m2 = bld_type_footprint_ft2_dict['SuperMarket'] * 0.092903
+                elif 'LargeOffice' in variable:
+                    _area_m2 = bld_type_footprint_ft2_dict['LargeOffice'] * 0.092903
+                elif 'MediumOffice' in variable:
+                    _area_m2 = bld_type_footprint_ft2_dict['MediumOffice'] * 0.092903
+                elif 'SmallOffice' in variable:
+                    _area_m2 = bld_type_footprint_ft2_dict['SmallOffice'] * 0.092903
+                df.loc[f'{theme}, {variable}', 'HVAC Electricity Per Footprint Area [MJ]'] = value[2] * _area_m2
+                df.loc[f'{theme}, {variable}', 'HVAC Natural Gas Per Footprint Area [MJ]'] = value[3] * _area_m2
+
 
     # df.loc[f'{theme}, {variable}', f'{framework},meteo,cvrmse'] = data[0]
-    df.to_excel(os.path.join(experiment_path, 'Offline_all_data.xlsx'))
+    df.to_excel(os.path.join(experiment_path, 'Offline_Sensitivity_Analysis.xlsx'))
 
 
 def main():
-    global experiment_path
+    global experiment_path,bld_type_footprint_ft2_dict
+
+    bld_type_footarea_ft2_dict = {
+        'MidriseApartment': 33740,
+        'StandAloneRetail': 24962,
+        'StripMall': 22500,
+        'SuperMarket': 45000,
+        'LargeOffice': 498588,
+        'MediumOffice': 53628,
+        'SmallOffice': 5500,
+    }
+    bld_type_footprint_ft2_dict = {
+        'MidriseApartment': 33740 / 4,
+        'StandAloneRetail': 24962 / 1,
+        'StripMall': 22500 / 1,
+        'SuperMarket': 45000 / 1,
+        'LargeOffice': 498588 / 12,
+        'MediumOffice': 53628 / 3,
+        'SmallOffice': 5500 / 1,
+    }
     # experiment_path = r'sensitivity_shading_boosted'
     experiment_path = os.path.join("offline_saving_newEPW", 'CAPITOUL')
     data_all = process_all_themes()
