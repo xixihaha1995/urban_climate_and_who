@@ -46,19 +46,19 @@ def for_loop_all_ini():
                   "SensitivityCAPITOUL_CanyonWidthToRoofWidth.ini","SensitivityCAPITOUL_NoCooling_CanyonWidthToRoofWidth.ini",
                  "SensitivityCAPITOUL_fveg_G.ini","SensitivityCAPITOUL_NoCooling_fveg_G.ini",
                  "SensitivityCAPITOUL_theta_canyon.ini","SensitivityCAPITOUL_NoCooling_theta_canyon.ini"]
-    todo_jobs = ["SensitivityCAPITOUL_albedo.ini"]
-    todo_jobs = ["SensitivityCAPITOUL_NoCooling_albedo.ini"]
-    todo_jobs = ["SensitivityCAPITOUL_albedoNoIDF.ini"]
-    todo_jobs = ["SensitivityCAPITOUL_NoCooling_albedoNoIDF.ini"]
-    todo_jobs = ["SensitivityCAPITOUL_CanyonWidthToCanyonHeight.ini",
-                  "SensitivityCAPITOUL_NoCooling_CanyonWidthToCanyonHeight.ini",
-                  "SensitivityCAPITOUL_CanyonWidthToRoofWidth.ini","SensitivityCAPITOUL_NoCooling_CanyonWidthToRoofWidth.ini",
-                 "SensitivityCAPITOUL_fveg_G.ini","SensitivityCAPITOUL_NoCooling_fveg_G.ini",
-                 "SensitivityCAPITOUL_theta_canyon.ini","SensitivityCAPITOUL_NoCooling_theta_canyon.ini"]
-
-    todo_jobs = ["SensitivityCAPITOUL_NoCooling_CanyonWidthToRoofWidth.ini",
-                 "SensitivityCAPITOUL_NoCooling_fveg_G.ini",
-                 "SensitivityCAPITOUL_NoCooling_theta_canyon.ini"]
+    # todo_jobs = ["SensitivityCAPITOUL_albedo.ini"]
+    # todo_jobs = ["SensitivityCAPITOUL_NoCooling_albedo.ini"]
+    # todo_jobs = ["SensitivityCAPITOUL_albedoNoIDF.ini"]
+    # todo_jobs = ["SensitivityCAPITOUL_NoCooling_albedoNoIDF.ini"]
+    # todo_jobs = ["SensitivityCAPITOUL_CanyonWidthToCanyonHeight.ini",
+    #               "SensitivityCAPITOUL_NoCooling_CanyonWidthToCanyonHeight.ini",
+    #               "SensitivityCAPITOUL_CanyonWidthToRoofWidth.ini","SensitivityCAPITOUL_NoCooling_CanyonWidthToRoofWidth.ini",
+    #              "SensitivityCAPITOUL_fveg_G.ini","SensitivityCAPITOUL_NoCooling_fveg_G.ini",
+    #              "SensitivityCAPITOUL_theta_canyon.ini","SensitivityCAPITOUL_NoCooling_theta_canyon.ini"]
+    #
+    # todo_jobs = ["SensitivityCAPITOUL_NoCooling_CanyonWidthToRoofWidth.ini",
+    #              "SensitivityCAPITOUL_NoCooling_fveg_G.ini",
+    #              "SensitivityCAPITOUL_NoCooling_theta_canyon.ini"]
 
     nbr_job_for_one_batch = 2
     for i in range(0,len(todo_jobs),nbr_job_for_one_batch):

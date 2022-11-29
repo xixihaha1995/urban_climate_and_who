@@ -47,7 +47,7 @@ def run_ep_api(input_value):
                                coordination.config['_0_vcwg_ep_coordination.py']['site_location'],
                                coordination.config['sensitivity']['theme'],
                                f'{coordination.uwgVariable}_{str_variable}ep_outputs')
-    idfFilePath = os.path.join('./resources/idf', idfFileName)
+    idfFilePath = os.path.join('./resources/idf/shading_IDFs', idfFileName)
     sys_args = '-d', output_path, '-w', coordination.generated_epw_path, idfFilePath
     coordination.ep_api.runtime.run_energyplus(state, sys_args)
 
