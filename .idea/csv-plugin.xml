@@ -31,6 +31,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\A_prepost_processing\_measurements\CAPITOUL\Rural_Mondouzil_Hourly.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\A_prepost_processing\_measurements\CAPITOUL\rural_weather_data_capEPW.csv">
           <value>
             <Attribute>

@@ -80,8 +80,15 @@ else:
     _measurements_file = os.path.join(working_path, 'Rural_Mondouzil_Minute.csv')
     _measurements = pd.read_csv(_measurements_file, sep=',', index_col= 0, parse_dates=True)
     # to hourly, 00:00:00 to 00:59:59 averaged at 01:00:00,ffill
-    _measurements_hourly = _measurements.resample('H').bfill()
+    # _measurements_hourly = _measurements.resample('H').ffill()
+    _measurements_hourly = _measurements.resample('H').mean()
+    #1. copy the original index
+    #2. shift (increase) row index by 1
+    #3. copy the last row into the first row, drop the last row
     _measurements_hourly.index = pd.to_datetime(_measurements_hourly.index, format='%d/%m/%Y %H:%M:%S')
+    _measurements_hourly.index = _measurements_hourly.index.shift(1, freq='H')
+    _measurements_hourly.iloc[0,:] = _measurements.iloc[0,:]
+    _measurements_hourly = _measurements_hourly.iloc[:-1,:]
     # drop Feb 29
     mask = _measurements_hourly.index.is_leap_year & (_measurements_hourly.index.month == 2) \
            & (_measurements_hourly.index.day == 29)
