@@ -16,12 +16,13 @@ def ini_all(sensitivity_file_name):
     project_path = os.path.dirname(os.path.abspath(__file__))
     config_path = os.path.join(project_path, '_0_configs', sensitivity_file_name)
     config.read(config_path)
-    bld_type = config['Bypass']['bld_type']
-    experiments_theme = config['Bypass']['experiments_theme']
+    bld_type = config['Default']['bld_type']
+    experiments_theme = config['Default']['experiments_theme']
     save_path_clean = False
-    sensor_heights = [float(i) for i in config['Bypass']['sensor_height_meter'].split(',')]
+    sensor_heights = [float(i) for i in config['Default']['sensor_height_meter'].split(',')]
+    csv_file = config['Default']['csv_file']
     data_saving_path = os.path.join(project_path, 'A_prepost_processing',
-                                    experiments_theme,'saving.csv')
+                                    experiments_theme,f'{csv_file}.csv')
     ep_trivial_path = os.path.join(project_path, 'A_prepost_processing', experiments_theme, "ep_trivial_outputs")
     if config['Default']['operating_system'] == 'windows':
         sys.path.insert(0, 'C:/EnergyPlusV22-1-0')

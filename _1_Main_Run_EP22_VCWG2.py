@@ -25,8 +25,8 @@ def run_ep_api():
     coordination.ep_api.exchange.request_variable(state, "Site Outdoor Air Drybulb Temperature", "ENVIRONMENT")
     coordination.ep_api.exchange.request_variable(state, "Site Outdoor Air Humidity Ratio", "ENVIRONMENT")
 
-    idfFileName = coordination.config['Bypass']['idfFileName']
-    epwFileName = coordination.config['Bypass']['epwFileName']
+    idfFileName = coordination.config['Default']['idfFileName']
+    epwFileName = coordination.config['Default']['epwFileName']
     output_path = coordination.ep_trivial_path
     weather_file_path = os.path.join('.\\resources\\epw', epwFileName)
     idfFilePath = os.path.join(f'.\\resources\\idf', idfFileName)
