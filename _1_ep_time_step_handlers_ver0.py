@@ -1,7 +1,16 @@
-import _0_vcwg_ep_coordination as coordination
+import datetime
+import os
 
+from scipy import signal
+
+import _0_vcwg_ep_coordination as coordination
+zone_time_step_seconds = 0
+accu_hvac_heat_rejection_J = 0
+ep_last_call_time_seconds = 0
+get_ep_results_inited_handle = False
 def MediumOffice_get_ep_results(state):
-    global get_ep_results_inited_handle, oat_sensor_handle, \
+    global zone_time_step_seconds,\
+        get_ep_results_inited_handle, oat_sensor_handle, \
         hvac_heat_rejection_sensor_handle, elec_bld_meter_handle, zone_flr_area_handle, \
         zone_indor_temp_sensor_handle, zone_indor_spe_hum_sensor_handle, \
         sens_cool_demand_sensor_handle, sens_heat_demand_sensor_handle, \
@@ -11,6 +20,8 @@ def MediumOffice_get_ep_results(state):
         roof_Text_handle, \
         s_wall_bot_1_Text_handle, s_wall_mid_1_Text_handle, s_wall_top_1_Text_handle, \
         n_wall_bot_1_Text_handle, n_wall_mid_1_Text_handle, n_wall_top_1_Text_handle, \
+        e_wall_bot_1_Text_handle, e_wall_mid_1_Text_handle, e_wall_top_1_Text_handle, \
+        w_wall_bot_1_Text_handle, w_wall_mid_1_Text_handle, w_wall_top_1_Text_handle, \
         s_wall_bot_1_Solar_handle, s_wall_mid_1_Solar_handle, s_wall_top_1_Solar_handle, \
         n_wall_bot_1_Solar_handle, n_wall_mid_1_Solar_handle, n_wall_top_1_Solar_handle, \
         flr_pre1_Tint_handle, flr_pre2_Tint_handle, flr_pre3_Tint_handle, flr_pre4_Tint_handle, \
@@ -23,6 +34,7 @@ def MediumOffice_get_ep_results(state):
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
             return
         get_ep_results_inited_handle = True
+        zone_time_step_seconds = 3600 / coordination.ep_api.exchange.num_time_steps_in_hour(state)
         oat_sensor_handle = coordination.ep_api.exchange.get_variable_handle(state,\
                                                                              "Site Outdoor Air Drybulb Temperature",\
                                                                              "Environment")
@@ -80,54 +92,25 @@ def MediumOffice_get_ep_results(state):
         n_wall_top_1_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,\
                                                                                     "Surface Outside Face Temperature",\
                                                                                     "Perimeter_top_ZN_3_Wall_North")
-        s_wall_bot_1_Solar_handle = coordination.ep_api.exchange.get_variable_handle(state,\
-                                                                                     "Surface Outside Face Incident Solar Radiation Rate per Area",\
-                                                                                     "Perimeter_bot_ZN_1_Wall_South")
-        s_wall_mid_1_Solar_handle = coordination.ep_api.exchange.get_variable_handle(state,\
-                                                                                     "Surface Outside Face Incident Solar Radiation Rate per Area",\
-                                                                                     "Perimeter_mid_ZN_1_Wall_South")
-        s_wall_top_1_Solar_handle = coordination.ep_api.exchange.get_variable_handle(state,\
-                                                                                     "Surface Outside Face Incident Solar Radiation Rate per Area",\
-                                                                                     "Perimeter_top_ZN_1_Wall_South")
-        n_wall_bot_1_Solar_handle = coordination.ep_api.exchange.get_variable_handle(state,\
-                                                                                     "Surface Outside Face Incident Solar Radiation Rate per Area",\
-                                                                                     "Perimeter_bot_ZN_3_Wall_North")
-        n_wall_mid_1_Solar_handle = coordination.ep_api.exchange.get_variable_handle(state,\
-                                                                                     "Surface Outside Face Incident Solar Radiation Rate per Area",\
-                                                                                     "Perimeter_mid_ZN_3_Wall_North")
-        n_wall_top_1_Solar_handle = coordination.ep_api.exchange.get_variable_handle(state,\
-                                                                                     "Surface Outside Face Incident Solar Radiation Rate per Area",\
-                                                                                     "Perimeter_top_ZN_3_Wall_North")
-        flr_pre1_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",\
-                                                                                "Perimeter_bot_ZN_1_Floor")
-        flr_pre2_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",\
-                                                                                "Perimeter_bot_ZN_2_Floor")
-        flr_pre3_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",\
-                                                                                "Perimeter_bot_ZN_3_Floor")
-        flr_pre4_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",\
-                                                                                "Perimeter_bot_ZN_4_Floor")
-        flr_core_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",\
-                                                                                "Core_bot_ZN_5_Floor")
-        roof_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Inside Face Temperature",\
-                                                                            "Building_Roof")
-        s_wall_bot_1_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state,\
-                                                                                    "Surface Inside Face Temperature",\
-                                                                                    "Perimeter_bot_ZN_1_Wall_South")
-        s_wall_mid_1_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state,\
-                                                                                    "Surface Inside Face Temperature",\
-                                                                                    "Perimeter_mid_ZN_1_Wall_South")
-        s_wall_top_1_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state,\
-                                                                                    "Surface Inside Face Temperature",\
-                                                                                    "Perimeter_top_ZN_1_Wall_South")
-        n_wall_bot_1_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state,\
-                                                                                    "Surface Inside Face Temperature",\
-                                                                                    "Perimeter_bot_ZN_3_Wall_North")
-        n_wall_mid_1_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state,\
-                                                                                    "Surface Inside Face Temperature",\
-                                                                                    "Perimeter_mid_ZN_3_Wall_North")
-        n_wall_top_1_Tint_handle = coordination.ep_api.exchange.get_variable_handle(state,\
-                                                                                    "Surface Inside Face Temperature",\
-                                                                                    "Perimeter_top_ZN_3_Wall_North")
+        e_wall_bot_1_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,\
+                                                                                    "Surface Outside Face Temperature",\
+                                                                                    "Perimeter_bot_ZN_1_Wall_East")
+        e_wall_mid_1_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,\
+                                                                                    "Surface Outside Face Temperature",\
+                                                                                    "Perimeter_mid_ZN_1_Wall_East")
+        e_wall_top_1_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,\
+                                                                                    "Surface Outside Face Temperature",\
+                                                                                    "Perimeter_top_ZN_1_Wall_East")
+        w_wall_bot_1_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,\
+                                                                                    "Surface Outside Face Temperature",\
+                                                                                    "Perimeter_bot_ZN_3_Wall_West")
+        w_wall_mid_1_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,\
+                                                                                    "Surface Outside Face Temperature",\
+                                                                                    "Perimeter_mid_ZN_3_Wall_West")
+        w_wall_top_1_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,\
+                                                                                    "Surface Outside Face Temperature",\
+                                                                                    "Perimeter_top_ZN_3_Wall_West")
+
         if (oat_sensor_handle == -1 or hvac_heat_rejection_sensor_handle == -1 or zone_flr_area_handle == -1 or\
                 elec_bld_meter_handle == -1 or zone_indor_temp_sensor_handle == -1 or\
                 zone_indor_spe_hum_sensor_handle == -1 or\
@@ -137,45 +120,36 @@ def MediumOffice_get_ep_results(state):
                 flr_pre4_Text_handle == -1 or flr_core_Text_handle == -1 or roof_Text_handle == -1 or\
                 s_wall_bot_1_Text_handle == -1 or s_wall_mid_1_Text_handle == -1 or s_wall_top_1_Text_handle == -1 or\
                 n_wall_bot_1_Text_handle == -1 or n_wall_mid_1_Text_handle == -1 or n_wall_top_1_Text_handle == -1 or\
-                s_wall_bot_1_Solar_handle == -1 or s_wall_mid_1_Solar_handle == -1 or s_wall_top_1_Solar_handle == -1 or\
-                n_wall_bot_1_Solar_handle == -1 or n_wall_mid_1_Solar_handle == -1 or n_wall_top_1_Solar_handle == -1 or\
-                flr_pre1_Tint_handle == -1 or flr_pre2_Tint_handle == -1 or flr_pre3_Tint_handle == -1 or\
-                flr_pre4_Tint_handle == -1 or flr_core_Tint_handle == -1 or roof_Tint_handle == -1 or\
-                s_wall_bot_1_Tint_handle == -1 or s_wall_mid_1_Tint_handle == -1 or s_wall_top_1_Tint_handle == -1 or\
-                n_wall_bot_1_Tint_handle == -1 or n_wall_mid_1_Tint_handle == -1 or n_wall_top_1_Tint_handle == -1):
+                e_wall_bot_1_Text_handle == -1 or e_wall_mid_1_Text_handle == -1 or e_wall_top_1_Text_handle == -1 or\
+                w_wall_bot_1_Text_handle == -1 or w_wall_mid_1_Text_handle == -1 or w_wall_top_1_Text_handle == -1):
             print('mediumOffice_get_ep_results(): some handle not available')
             os.getpid()
             os.kill(os.getpid(), signal.SIGTERM)
 
-    # get EP results, upload to coordination
-    if called_vcwg_bool:
-        global ep_last_call_time_seconds
 
-        coordination.sem2.acquire()
+    warm_up = coordination.ep_api.exchange.warmup_flag(state)
+    if not warm_up:
+        global ep_last_call_time_seconds, accu_hvac_heat_rejection_J
         curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
-        curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600  # Should always accumulate, since system time always advances
-        accumulated_time_in_seconds = curr_sim_time_in_seconds - ep_last_call_time_seconds
-        ep_last_call_time_seconds = curr_sim_time_in_seconds
-        hvac_heat_rejection_J = coordination.ep_api.exchange.get_variable_value(state,hvac_heat_rejection_sensor_handle)
-        hvac_waste_w_m2 = hvac_heat_rejection_J / accumulated_time_in_seconds / coordination.footprint_area_m2
-        coordination.ep_sensWaste_w_m2_per_footprint_area += hvac_waste_w_m2
+        curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
+        accumulation_time_step_in_seconds = curr_sim_time_in_seconds - ep_last_call_time_seconds
+        accu_hvac_heat_rejection_J += coordination.ep_api.exchange.get_variable_value(state,
+                                                                                      hvac_heat_rejection_sensor_handle)
 
-        time_index_alignment_bool = 1 > abs(curr_sim_time_in_seconds - coordination.vcwg_needed_time_idx_in_seconds)
-
-        if not time_index_alignment_bool:
-            coordination.sem2.release()
+        one_zone_time_step_bool = 1 > abs(accumulation_time_step_in_seconds - zone_time_step_seconds)
+        if not one_zone_time_step_bool:
+            print(f'accumulation_time_step_in_seconds = {accumulation_time_step_in_seconds}, '
+                  f'zone_time_step_seconds = {zone_time_step_seconds}')
             return
+        ep_last_call_time_seconds = curr_sim_time_in_seconds
+
+        hvac_waste_w_m2_footprint = accu_hvac_heat_rejection_J / accumulation_time_step_in_seconds \
+                          / coordination.footprint_area_m2
+        accu_hvac_heat_rejection_J = 0
 
         coordination.ep_indoorTemp_C = coordination.ep_api.exchange.get_variable_value(state, zone_indor_temp_sensor_handle)
         coordination.ep_indoorHum_Ratio = coordination.ep_api.exchange.get_variable_value(state,
                                                                                    zone_indor_spe_hum_sensor_handle)
-
-        flr_core_Text_c = coordination.ep_api.exchange.get_variable_value(state, flr_core_Text_handle)
-        flr_pre1_Text_c = coordination.ep_api.exchange.get_variable_value(state, flr_pre1_Text_handle)
-        flr_pre2_Text_c = coordination.ep_api.exchange.get_variable_value(state, flr_pre2_Text_handle)
-        flr_pre3_Text_c = coordination.ep_api.exchange.get_variable_value(state, flr_pre3_Text_handle)
-        flr_pre4_Text_c = coordination.ep_api.exchange.get_variable_value(state, flr_pre4_Text_handle)
-        roof_Text_c = coordination.ep_api.exchange.get_variable_value(state, roof_Text_handle)
 
         s_wall_bot_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, s_wall_bot_1_Text_handle)
         s_wall_mid_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, s_wall_mid_1_Text_handle)
@@ -183,54 +157,41 @@ def MediumOffice_get_ep_results(state):
         n_wall_bot_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, n_wall_bot_1_Text_handle)
         n_wall_mid_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, n_wall_mid_1_Text_handle)
         n_wall_top_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, n_wall_top_1_Text_handle)
+        e_wall_bot_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, e_wall_bot_1_Text_handle)
+        e_wall_mid_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, e_wall_mid_1_Text_handle)
+        e_wall_top_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, e_wall_top_1_Text_handle)
+        w_wall_bot_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, w_wall_bot_1_Text_handle)
+        w_wall_mid_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, w_wall_mid_1_Text_handle)
+        w_wall_top_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, w_wall_top_1_Text_handle)
 
 
-        flr_core_Tint_c = coordination.ep_api.exchange.get_variable_value(state, flr_core_Tint_handle)
-        flr_pre1_Tint_c = coordination.ep_api.exchange.get_variable_value(state, flr_pre1_Tint_handle)
-        flr_pre2_Tint_c = coordination.ep_api.exchange.get_variable_value(state, flr_pre2_Tint_handle)
-        flr_pre3_Tint_c = coordination.ep_api.exchange.get_variable_value(state, flr_pre3_Tint_handle)
-        flr_pre4_Tint_c = coordination.ep_api.exchange.get_variable_value(state, flr_pre4_Tint_handle)
-        roof_Tint_c = coordination.ep_api.exchange.get_variable_value(state, roof_Tint_handle)
 
-        s_wall_bot_1_Tint_c = coordination.ep_api.exchange.get_variable_value(state, s_wall_bot_1_Tint_handle)
-        s_wall_mid_1_Tint_c = coordination.ep_api.exchange.get_variable_value(state, s_wall_mid_1_Tint_handle)
-        s_wall_top_1_Tint_c = coordination.ep_api.exchange.get_variable_value(state, s_wall_top_1_Tint_handle)
-        n_wall_bot_1_Tint_c = coordination.ep_api.exchange.get_variable_value(state, n_wall_bot_1_Tint_handle)
-        n_wall_mid_1_Tint_c = coordination.ep_api.exchange.get_variable_value(state, n_wall_mid_1_Tint_handle)
-        n_wall_top_1_Tint_c = coordination.ep_api.exchange.get_variable_value(state, n_wall_top_1_Tint_handle)
 
-        s_wall_bot_1_Solar_w_m2 = coordination.ep_api.exchange.get_variable_value(state, s_wall_bot_1_Solar_handle)
-        s_wall_mid_1_Solar_w_m2 = coordination.ep_api.exchange.get_variable_value(state, s_wall_mid_1_Solar_handle)
-        s_wall_top_1_Solar_w_m2 = coordination.ep_api.exchange.get_variable_value(state, s_wall_top_1_Solar_handle)
-        n_wall_bot_1_Solar_w_m2 = coordination.ep_api.exchange.get_variable_value(state, n_wall_bot_1_Solar_handle)
-        n_wall_mid_1_Solar_w_m2 = coordination.ep_api.exchange.get_variable_value(state, n_wall_mid_1_Solar_handle)
-        n_wall_top_1_Solar_w_m2 = coordination.ep_api.exchange.get_variable_value(state, n_wall_top_1_Solar_handle)
-
-        floor_Text_C = (flr_core_Text_c + flr_pre1_Text_c + flr_pre2_Text_c + flr_pre3_Text_c + flr_pre4_Text_c )/5
-        floor_Tint_C = (flr_core_Tint_c + flr_pre1_Tint_c + flr_pre2_Tint_c + flr_pre3_Tint_c + flr_pre4_Tint_c )/5
-
-        coordination.ep_floor_Text_K = floor_Text_C + 273.15
-        coordination.ep_floor_Tint_K = floor_Tint_C + 273.15
-
-        coordination.ep_roof_Text_K = roof_Text_c + 273.15
-        coordination.ep_roof_Tint_K = roof_Tint_c + 273.15
-
-        s_wall_Solar_w_m2 = (s_wall_bot_1_Solar_w_m2 + s_wall_mid_1_Solar_w_m2 + s_wall_top_1_Solar_w_m2)/3
-        n_wall_Solar_w_m2 = (n_wall_bot_1_Solar_w_m2 + n_wall_mid_1_Solar_w_m2 + n_wall_top_1_Solar_w_m2)/3
-
+        roof_Text_c = coordination.ep_api.exchange.get_variable_value(state, roof_Text_handle)
         s_wall_Text_c = (s_wall_bot_1_Text_c + s_wall_mid_1_Text_c + s_wall_top_1_Text_c)/3
-        s_wall_Tint_c = (s_wall_bot_1_Tint_c + s_wall_mid_1_Tint_c + s_wall_top_1_Tint_c)/3
         n_wall_Text_c = (n_wall_bot_1_Text_c + n_wall_mid_1_Text_c + n_wall_top_1_Text_c)/3
-        n_wall_Tint_c = (n_wall_bot_1_Tint_c + n_wall_mid_1_Tint_c + n_wall_top_1_Tint_c)/3
+        e_wall_Text_c = (e_wall_bot_1_Text_c + e_wall_mid_1_Text_c + e_wall_top_1_Text_c)/3
+        w_wall_Text_c = (w_wall_bot_1_Text_c + w_wall_mid_1_Text_c + w_wall_top_1_Text_c)/3
 
-        if s_wall_Solar_w_m2 > n_wall_Solar_w_m2:
-            coordination.ep_wallSun_Text_K = s_wall_Text_c + 273.15
-            coordination.ep_wallSun_Tint_K = s_wall_Tint_c + 273.15
-            coordination.ep_wallShade_Text_K = n_wall_Text_c + 273.15
-            coordination.ep_wallShade_Tint_K = n_wall_Tint_c + 273.15
-        else:
-            coordination.ep_wallSun_Text_K = n_wall_Text_c + 273.15
-            coordination.ep_wallSun_Tint_K = n_wall_Tint_c + 273.15
-            coordination.ep_wallShade_Text_K = s_wall_Text_c + 273.15
-            coordination.ep_wallShade_Tint_K = s_wall_Tint_c + 273.15
+
+        if os.path.exists(coordination.data_saving_path) and not coordination.save_path_clean:
+            os.remove(coordination.data_saving_path)
+            coordination.save_path_clean = True
+
+        cur_datetime = datetime.datetime.strptime(coordination.config['__main__']['start_time'],
+                                                  '%Y-%m-%d %H:%M:%S') + \
+                       datetime.timedelta(seconds= curr_sim_time_in_seconds)
+
+        if not os.path.exists(coordination.data_saving_path):
+            os.makedirs(os.path.dirname(coordination.data_saving_path), exist_ok=True)
+            with open(coordination.data_saving_path, 'a') as f1:
+                # prepare the header string for different sensors
+                header_str = 'cur_datetime,sensWaste,roof_Text_c,s_wall_Text_c,n_wall_Text_c,e_wall_Text_c,w_wall_Text_c,'
+                header_str += '\n'
+                f1.write(header_str)
+            # write the data
+        with open(coordination.data_saving_path, 'a') as f1:
+            fmt1 = "%s," * 1 % (cur_datetime) + \
+                   "%.3f," * 6 % (hvac_waste_w_m2_footprint,roof_Text_c,s_wall_Text_c,n_wall_Text_c,e_wall_Text_c,w_wall_Text_c) + '\n'
+            f1.write(fmt1)
 
