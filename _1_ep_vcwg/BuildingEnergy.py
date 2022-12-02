@@ -494,6 +494,11 @@ class Building(object):
         TempProf_cur = VerticalProfUrban.th
         PresProf_cur = VerticalProfUrban.presProf
         vcwg_needed_time_idx_in_seconds = it * simTime.dt
+
+        wallSun_K = BEM.wallSun.Text
+        wallShade_K = BEM.wallShade.Text
+        roof_K = (FractionsRoof.fimp * BEM.roofImp.Text + FractionsRoof.fexp * BEM.roofExp.Text)
+
         cur_datetime = datetime.datetime.strptime(coordination.config['__main__']['start_time'],
                                                   '%Y-%m-%d %H:%M:%S') + \
                        datetime.timedelta(seconds= vcwg_needed_time_idx_in_seconds)
@@ -506,7 +511,7 @@ class Building(object):
             os.makedirs(os.path.dirname(coordination.data_saving_path), exist_ok=True)
             with open(coordination.data_saving_path, 'a') as f1:
                 # prepare the header string for different sensors
-                header_str = 'cur_datetime,canTemp,sensWaste,MeteoData.Tatm,MeteoData.Pre,'
+                header_str = 'cur_datetime,canTemp,wallSun_K,wallShade_K,roof_K,sensWaste,MeteoData.Tatm,MeteoData.Pre,'
                 for i in mapped_indices:
                     header_str += 'TempProf_cur[%d],' % i
                 for i in mapped_indices:
@@ -516,7 +521,7 @@ class Building(object):
             # write the data
         with open(coordination.data_saving_path, 'a') as f1:
             fmt1 = "%s," * 1 % (cur_datetime) + \
-                   "%.3f," * 4 % (canTemp,self.sensWaste, MeteoData.Tatm, MeteoData.Pre) + \
+                   "%.3f," * 7 % (canTemp,wallSun_K,wallShade_K,roof_K,self.sensWaste, MeteoData.Tatm, MeteoData.Pre) + \
                    "%.3f," * 2 * len(mapped_indices) % tuple([TempProf_cur[i] for i in mapped_indices] + \
                                                              [PresProf_cur[i] for i in mapped_indices]) + '\n'
             f1.write(fmt1)
