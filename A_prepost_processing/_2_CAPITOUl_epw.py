@@ -53,43 +53,54 @@ def solar_declination(day_of_year):
     return delta
 
 def solar_altitude(latitude, longitude, day_of_year, hour_of_day):
-    local_civil_time_fraction = hour_of_day  + 4 * (90 - longitude)
+    # hour_of_day +=  4 * (15 - longitude)
+    # hour_of_day +=  equation_of_time(day_of_year) / 60
     # define delta as the solar declination (degrees)
     # define B as the hour angle (degrees)
-    B = 15 * (local_civil_time_fraction + equation_of_time(day_of_year)/60 - 12)
+    B = 15 * (hour_of_day - 12)
     # define omega as the solar altitude (degrees)
     delta = solar_declination(day_of_year)
-    omega = math.asin(math.sin(latitude) * math.sin(delta) + math.cos(latitude)
-                      * math.cos(delta) * math.cos(B))
-    return math.degrees(omega)
+    omega = math.degrees(math.asin(math.sin(math.radians(latitude)) * math.sin(math.radians(delta)) + math.cos(math.radians(latitude)) * math.cos(math.radians(delta)) * math.cos(math.radians(B))))
+
+    # omega = math.asin(math.sin(latitude) * math.sin(delta) + math.cos(latitude)
+    #                   * math.cos(delta) * math.cos(B))
+    # omega = math.degrees(omega)
+    return omega
 
 def sun_zenith_angle(day_of_year, hour_of_day):
     global toulouse_latitude, toulouse_longitude
     toulouse_latitude, toulouse_longitude = 43.6043, 1.4437
     theta_z = 90 - solar_altitude(toulouse_latitude, toulouse_longitude, day_of_year, hour_of_day)
-def modifying_epw(epw_old):
+    #theta_z is in the range(0,90)
+    return theta_z
+
+def modifying_epw(epw_old, overwriten_epw):
     with open(epw_old, 'r') as f:
         lines = f.readlines()
     for i in range(len(lines)):
         # for the 7th column, overwrite with the measurement data
         if i > 7 and i < 8768:
-            # self.staInfra = numpy.array([cd[i][12] for i in range(len(cd))],
-            #                             dtype=float)  # horizontal Infrared Radiation Intensity [W m^-2]
-            # self.staHor = numpy.array([cd[i][13] for i in range(len(cd))],
-            #                           dtype=float)  # horizontal radiation [W m^-2]
-            # self.staDir = numpy.array([cd[i][14] for i in range(len(cd))],
-            #                           dtype=float)  # normal solar direct radiation [W m^-2]
-            # self.staDif = numpy.array([cd[i][15] for i in range(len(cd))],
-            #                           dtype=float)  # horizontal solar diffuse radiation [W m^-2]
-            # lines[i][20] = str(wind_deg)
-            # lines[i][21] = str(wind_speed)
-
             lines[i] = lines[i].split(',')
-            lines[i][14] = lines_bueno[i][14]
-            lines[i][15] = lines_bueno[i][15]
+            year = lines[i][0]
+            month = lines[i][1]
+            day = lines[i][2]
+            # epw is UTC-7, so add 7 hours
+            hour = str(int(lines[i][3]) - 1)
+            day_of_year = pd.Timestamp(year + '-' + month + '-' + day).dayofyear
+            theta_z = sun_zenith_angle(day_of_year, int(hour))
+            DNI = float(lines[i][14])
+            DNI = max(DNI, 0)
+            DHI = float(lines[i][15])
+            DHI = max(DHI, 0)
+            GHI = DNI * math.cos(math.radians(theta_z)) + DHI
+            GHI = max(GHI, 0)
+            old_GHI = float(lines[i][13])
+            print(f'old GHI: {old_GHI}, new GHI: {GHI}, theta_z: {theta_z}')
+            lines[i][13] = str(GHI)
+            lines[i][14] = str(DNI)
+            lines[i][15] = str(DHI)
             lines[i] = ','.join(lines[i])
         # write the lines to the epw file
-    overwriten_epw = r'.\measurements\Mondouzil_Bueno_2004_Update.epw'
     with open(overwriten_epw, 'w') as f:
         f.writelines(lines)
 def measurements_to_epw(epw_Template, df_measurement):
@@ -149,36 +160,11 @@ def init_ep_api():
     psychrometric = ep_api.functional.psychrometrics(state)
 
 def main():
-    # read the measurement data
-    init_ep_api()
-    experiment_folder = os.path.join('_measurements', 'CAPITOUL')
-    measurements_Mondouzil = os.path.join(experiment_folder, 'Rural_Mondouzil_Minute.csv')
-    df_measurement = pd.read_csv(measurements_Mondouzil, index_col=0, parse_dates=True, header=0)
-    df_measurement_ffill = df_measurement.resample('H').ffill()
-    # fill the first row with the second row
-    df_measurement_ffill.iloc[0] = df_measurement_ffill.iloc[1]
-
-    epw_MyDIY = 'Mondouzil_tdb_td_rh_P_2004.epw'
-    epw_Bueno = 'rural_weather_data_cap.epw'
-
-    epw_Template_Bordeaxu = os.path.join(experiment_folder, 'overriding_FRA_Bordeaux.075100_IWEC.epw')
-    # measurements_to_epw(epw_Template_Bordeaxu, measurements_Mondouzil)
+    experiment_folder = os.path.join(os.path.dirname(__file__), '..', '_1_ep_vcwg'
+                                     ,'resources','epw')
+    epw_Old = os.path.join(experiment_folder, 'Mondouzil_Bueno_2004.epw')
+    overwriten_epw = os.path.join(experiment_folder, 'Mondouzil_Bueno_2004_Update.epw')
+    modifying_epw(epw_Old, overwriten_epw)
     return
-
-experiment_folder = os.path.join('_measurements', 'CAPITOUL')
-measurements_Mondouzil = os.path.join(experiment_folder, 'Rural_Mondouzil_Minute.csv')
-df_measurement = pd.read_csv(measurements_Mondouzil, index_col=0, parse_dates=True, header=0)
-df_measurement_ffill = df_measurement.resample('H').ffill()
-df_measurement_bfill = df_measurement.resample('H').bfill()
-df_measurement_mean = df_measurement.resample('H').mean()
-# fill the first row with the second row
-df_measurement_ffill.iloc[0] = df_measurement_ffill.iloc[1]
-
-# if __name__ == '__main__':
-#     # main()
-#     experiment_folder = os.path.join('_measurements', 'CAPITOUL')
-#     measurements_Mondouzil = os.path.join(experiment_folder, 'Rural_Mondouzil_Minute.csv')
-#     df_measurement = pd.read_csv(measurements_Mondouzil, index_col=0, parse_dates=True, header=0)
-#     df_measurement_ffill = df_measurement.resample('H').ffill()
-#     # fill the first row with the second row
-#     df_measurement_ffill.iloc[0] = df_measurement_ffill.iloc[1]
+if __name__ == '__main__':
+    main()
