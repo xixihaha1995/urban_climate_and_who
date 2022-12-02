@@ -35,4 +35,5 @@ def one_ini(sensitivity_file_name):
 
 if __name__ == '__main__':
     sensitivity_file_name = 'CAPITOUL_Surface_Temperature.ini'
+    sensitivity_file_name = 'CAPITOUL_Obsolete_VCWG.ini'
     one_ini(sensitivity_file_name)
