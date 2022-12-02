@@ -56,15 +56,15 @@ def solar_altitude(latitude, longitude, day_of_year, hour_of_day):
     # hour_of_day +=  4 * (15 - longitude)
     # hour_of_day +=  equation_of_time(day_of_year) / 60
     # define delta as the solar declination (degrees)
+
     # define B as the hour angle (degrees)
     B = 15 * (hour_of_day - 12)
     # define omega as the solar altitude (degrees)
     delta = solar_declination(day_of_year)
-    omega = math.degrees(math.asin(math.sin(math.radians(latitude)) * math.sin(math.radians(delta)) + math.cos(math.radians(latitude)) * math.cos(math.radians(delta)) * math.cos(math.radians(B))))
-
-    # omega = math.asin(math.sin(latitude) * math.sin(delta) + math.cos(latitude)
-    #                   * math.cos(delta) * math.cos(B))
-    # omega = math.degrees(omega)
+    omega = math.degrees(math.asin(math.sin(math.radians(latitude))
+                                   * math.sin(math.radians(delta)) +
+                                   math.cos(math.radians(latitude))
+                                   * math.cos(math.radians(delta)) * math.cos(math.radians(B))))
     return omega
 
 def sun_zenith_angle(day_of_year, hour_of_day):

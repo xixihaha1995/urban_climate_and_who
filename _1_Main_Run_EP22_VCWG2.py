@@ -34,5 +34,5 @@ def one_ini(sensitivity_file_name):
         # run_vcwg(sensitivity_file_name, config, value)
 
 if __name__ == '__main__':
-    sensitivity_file_name = 'BUBBLE_which_epw_debug.ini'
+    sensitivity_file_name = 'CAPITOUL_which_epw_debug.ini'
     one_ini(sensitivity_file_name)
