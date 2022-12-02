@@ -497,7 +497,7 @@ class Building(object):
 
         wallSun_K = BEM.wallSun.Text
         wallShade_K = BEM.wallShade.Text
-        roof_K = (FractionsRoof.fimp * BEM.roofImp.Text + FractionsRoof.fexp * BEM.roofExp.Text)
+        roof_K = (FractionsRoof.fimp * BEM.roofImp.Text + FractionsRoof.fveg * BEM.roofVeg.Text)
 
         cur_datetime = datetime.datetime.strptime(coordination.config['__main__']['start_time'],
                                                   '%Y-%m-%d %H:%M:%S') + \
