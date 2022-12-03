@@ -351,7 +351,7 @@ def main():
     # experiments_folder = 'BUBBLE_Ue2_Bypass'
     # experiments_folder = 'Vancouver_TopForcing_Bypass'
     # experiments_folder = 'Vancouver_Rural_Bypass'
-    experiments_folder = 'CAPITOUL_which_epw_debug'
+    experiments_folder = 'CAPITOUL_New_VCWG'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
