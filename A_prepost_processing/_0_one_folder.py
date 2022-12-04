@@ -243,6 +243,9 @@ def process_one_theme(path):
         df = df[compare_start_time:compare_end_time]
         comparison['MeteoData.Pre'] = df['MeteoData.Pre']
         comparison['sensWaste_' + csv_file] = df['sensWaste']
+        comparison['wallSun_K_' + csv_file] = df['wallSun_K']
+        comparison['wallShade_K_' + csv_file] = df['wallShade_K']
+        comparison['roof_K_' + csv_file] = df['roof_K']
 
         temp_prof_cols, pres_prof_cols = find_height_indice(df)
         for i in range(len(temp_prof_cols)):
@@ -351,6 +354,7 @@ def main():
     # experiments_folder = 'BUBBLE_Ue2_Bypass'
     # experiments_folder = 'Vancouver_TopForcing_Bypass'
     # experiments_folder = 'Vancouver_Rural_Bypass'
+    experiments_folder = 'CAPITOUL_Obsolete_VCWG'
     experiments_folder = 'CAPITOUL_New_VCWG'
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
@@ -367,8 +371,8 @@ def main():
             processed_file = 'BUBBLE_UE2_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                                  + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
     elif "CAPITOUL" in experiments_folder:
-        compare_start_time = '2004-06-01 00:05:00'
-        compare_end_time = '2004-06-30 22:55:00'
+        compare_start_time = '2004-06-01 00:00:00'
+        compare_end_time = '2004-06-30 23:55:00'
         processed_folder =  os.path.join('_measurements','CAPITOUL')
         processed_file = r'CAPITOUL_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                                  + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
