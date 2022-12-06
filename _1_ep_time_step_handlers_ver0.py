@@ -8,6 +8,114 @@ zone_time_step_seconds = 0
 accu_hvac_heat_rejection_J = 0
 ep_last_call_time_seconds = 0
 get_ep_results_inited_handle = False
+def SmallOffice_get_ep_results(state):
+    global zone_time_step_seconds,\
+        get_ep_results_inited_handle,\
+        hvac_heat_rejection_sensor_handle,\
+        roof_1_Text_handle, roof_2_Text_handle, roof_3_Text_handle, roof_4_Text_handle, roof_5_Text_handle, \
+        s_wall_Text_handle, \
+        n_wall_Text_handle,\
+        e_wall_Text_handle,\
+        w_wall_Text_handle
+
+
+    if not get_ep_results_inited_handle:
+        if not coordination.ep_api.exchange.api_data_fully_ready(state):
+            return
+        get_ep_results_inited_handle = True
+        zone_time_step_seconds = 3600 / coordination.ep_api.exchange.num_time_steps_in_hour(state)
+        hvac_heat_rejection_sensor_handle = \
+            coordination.ep_api.exchange.get_variable_handle(state,\
+                                                             "HVAC System Total Heat Rejection Energy",\
+                                                             "SIMHVAC")
+        # Core_ZN_roof
+        roof_5_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",\
+                                                                            "Core_ZN_roof")
+
+        roof_1_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",\
+                                                                            "Perimeter_ZN_1_roof")
+        roof_2_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",\
+                                                                              "Perimeter_ZN_2_roof")
+        roof_3_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",\
+                                                                              "Perimeter_ZN_3_roof")
+        roof_4_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",\
+                                                                              "Perimeter_ZN_4_roof")
+
+        s_wall_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,\
+                                                                              "Surface Outside Face Temperature",\
+                                                                              "Perimeter_ZN_1_wall_south")
+        e_wall_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,\
+                                                                              "Surface Outside Face Temperature",\
+                                                                              "Perimeter_ZN_2_wall_east")
+        n_wall_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,\
+                                                                              "Surface Outside Face Temperature",\
+                                                                              "Perimeter_ZN_3_wall_north")
+        w_wall_Text_handle = coordination.ep_api.exchange.get_variable_handle(state,\
+                                                                              "Surface Outside Face Temperature",\
+                                                                              "Perimeter_ZN_4_wall_west")
+
+        if (hvac_heat_rejection_sensor_handle == -1 or\
+                roof_1_Text_handle == -1 or roof_2_Text_handle == -1 or roof_3_Text_handle == -1
+                or roof_4_Text_handle == -1 or roof_5_Text_handle == -1 or\
+                s_wall_Text_handle == -1 or e_wall_Text_handle == -1 or
+                n_wall_Text_handle == -1 or w_wall_Text_handle == -1):
+            print('SmallOffice_get_ep_results(): some handle not available')
+            os.getpid()
+            os.kill(os.getpid(), signal.SIGTERM)
+
+    warm_up = coordination.ep_api.exchange.warmup_flag(state)
+    if not warm_up:
+        global ep_last_call_time_seconds, accu_hvac_heat_rejection_J
+        curr_sim_time_in_hours = coordination.ep_api.exchange.current_sim_time(state)
+        curr_sim_time_in_seconds = curr_sim_time_in_hours * 3600
+        accumulation_time_step_in_seconds = curr_sim_time_in_seconds - ep_last_call_time_seconds
+        accu_hvac_heat_rejection_J += coordination.ep_api.exchange.get_variable_value(state,
+                                                                                      hvac_heat_rejection_sensor_handle)
+
+        one_zone_time_step_bool = 1 > abs(accumulation_time_step_in_seconds - zone_time_step_seconds)
+        if not one_zone_time_step_bool:
+            print(f'accumulation_time_step_in_seconds = {accumulation_time_step_in_seconds}, '
+                  f'zone_time_step_seconds = {zone_time_step_seconds}')
+            return
+        ep_last_call_time_seconds = curr_sim_time_in_seconds
+
+        hvac_waste_w_m2_footprint = accu_hvac_heat_rejection_J / accumulation_time_step_in_seconds \
+                          / coordination.footprint_area_m2
+        accu_hvac_heat_rejection_J = 0
+        roof_1_Text_c = coordination.ep_api.exchange.get_variable_value(state, roof_1_Text_handle)
+        roof_2_Text_c = coordination.ep_api.exchange.get_variable_value(state, roof_2_Text_handle)
+        roof_3_Text_c = coordination.ep_api.exchange.get_variable_value(state, roof_3_Text_handle)
+        roof_4_Text_c = coordination.ep_api.exchange.get_variable_value(state, roof_4_Text_handle)
+        roof_5_Text_c = coordination.ep_api.exchange.get_variable_value(state, roof_5_Text_handle)
+
+        s_wall_Text_c = coordination.ep_api.exchange.get_variable_value(state, s_wall_Text_handle)
+        e_wall_Text_c = coordination.ep_api.exchange.get_variable_value(state, e_wall_Text_handle)
+        n_wall_Text_c = coordination.ep_api.exchange.get_variable_value(state, n_wall_Text_handle)
+        w_wall_Text_c = coordination.ep_api.exchange.get_variable_value(state, w_wall_Text_handle)
+
+        roof_Text_c = (roof_1_Text_c + roof_2_Text_c + roof_3_Text_c + roof_4_Text_c + roof_5_Text_c) / 5
+
+
+        if os.path.exists(coordination.data_saving_path) and not coordination.save_path_clean:
+            os.remove(coordination.data_saving_path)
+            coordination.save_path_clean = True
+
+        cur_datetime = datetime.datetime.strptime(coordination.config['__main__']['start_time'],
+                                                  '%Y-%m-%d %H:%M:%S') + \
+                       datetime.timedelta(seconds= curr_sim_time_in_seconds)
+
+        if not os.path.exists(coordination.data_saving_path):
+            os.makedirs(os.path.dirname(coordination.data_saving_path), exist_ok=True)
+            with open(coordination.data_saving_path, 'a') as f1:
+                # prepare the header string for different sensors
+                header_str = 'cur_datetime,sensWaste,roof_Text_c,s_wall_Text_c,n_wall_Text_c,e_wall_Text_c,w_wall_Text_c,'
+                header_str += '\n'
+                f1.write(header_str)
+            # write the data
+        with open(coordination.data_saving_path, 'a') as f1:
+            fmt1 = "%s," * 1 % (cur_datetime) + \
+                   "%.3f," * 6 % (hvac_waste_w_m2_footprint,roof_Text_c,s_wall_Text_c,n_wall_Text_c,e_wall_Text_c,w_wall_Text_c) + '\n'
+            f1.write(fmt1)
 def MediumOffice_get_ep_results(state):
     global zone_time_step_seconds,\
         get_ep_results_inited_handle, oat_sensor_handle, \
