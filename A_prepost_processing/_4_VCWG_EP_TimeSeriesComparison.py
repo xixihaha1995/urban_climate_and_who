@@ -46,6 +46,13 @@ ep_withoutCooling_df = ep_withoutCooling_df[compare_start_time:compare_end_time]
 #       dtype='object')
 # create one excel, with sheet names: wallSun, wallShade, roof,sensWaste
 vcwg_ep_comparison = pd.ExcelWriter(os.path.join(experiments_folder, 'VCWG_EP_Comparison.xlsx'))
+#3. sheet: roof
+df = pd.DataFrame()
+df['VCWG'] = vcwg_df['roof_K'] - 273.15
+df['EP_WithCooling'] = ep_withCooling_df['roof_Text_c']
+df['EP_WithoutCooling'] = ep_withoutCooling_df['roof_Text_c']
+df['Rural'] = vcwg_df['MeteoData.Tatm'] - 273.15
+df.to_excel(vcwg_ep_comparison, sheet_name='roof')
 #1. sheet: wallSun
 df = pd.DataFrame()
 df['VCWG'] = vcwg_df['wallSun_K'] - 273.15
@@ -58,12 +65,7 @@ df['VCWG'] = vcwg_df['wallShade_K'] - 273.15
 df['EP_WithCooling'] = ep_withCooling_df['n_wall_Text_c']
 df['EP_WithoutCooling'] = ep_withoutCooling_df['n_wall_Text_c']
 df.to_excel(vcwg_ep_comparison, sheet_name='wallShade')
-#3. sheet: roof
-df = pd.DataFrame()
-df['VCWG'] = vcwg_df['roof_K'] - 273.15
-df['EP_WithCooling'] = ep_withCooling_df['roof_Text_c']
-df['EP_WithoutCooling'] = ep_withoutCooling_df['roof_Text_c']
-df.to_excel(vcwg_ep_comparison, sheet_name='roof')
+
 #4. sheet: sensWaste
 df = pd.DataFrame()
 df['VCWG'] = vcwg_df['sensWaste']
@@ -71,7 +73,7 @@ df['EP_WithCooling'] = ep_withCooling_df['sensWaste']
 df['EP_WithoutCooling'] = ep_withoutCooling_df['sensWaste']
 df.to_excel(vcwg_ep_comparison, sheet_name='sensWaste')
 vcwg_ep_comparison.save()
-themes = ['wallSun', 'wallShade', 'roof', 'sensWaste']
+themes = ['roof','wallSun', 'wallShade', 'sensWaste']
 #plot the len(themes) subfigs, share x axis
 _fig, _axs = plt.subplots(len(themes), 1, figsize=(10, 10), sharex=True)
 _fig.subplots_adjust(right=0.76)
