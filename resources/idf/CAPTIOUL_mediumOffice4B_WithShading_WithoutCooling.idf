@@ -9362,6 +9362,12 @@ OutputControl:ReportingTolerances,
 !-Surface Outside Face Convection Heat Gain Rate per Area
 !-Surface Outside Face Net Thermal Radiation Heat Gain Rate per Area
 !-Surface Outside Face Solar Radiation Heat Gain Rate per Area
+!-Surface Outside Face Convection Heat Transfer Coefficient
+Output:Variable,
+    *,                       !- Key Value
+    Surface Outside Face Convection Heat Transfer Coefficient,  !- Variable Name
+    timestep;                !- Reporting Frequency
+
 Output:Variable,
     *,                       !- Key Value
     Surface Outside Face Convection Heat Gain Rate per Area,  !- Variable Name
