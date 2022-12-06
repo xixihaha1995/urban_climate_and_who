@@ -289,10 +289,10 @@ SizingPeriod:DesignDay,
 
 RunPeriod,
     RUNPERIOD 1,             !- Name
-    11,                       !- Begin Month
+    6,                       !- Begin Month
     1,                       !- Begin Day of Month
     ,                        !- Begin Year
-    11,                       !- End Month
+    6,                       !- End Month
     30,                      !- End Day of Month
     ,                        !- End Year
     Tuesday,                 !- Day of Week for Start Day
@@ -9359,6 +9359,22 @@ OutputControl:ReportingTolerances,
 
 
 !-   ===========  ALL OBJECTS IN CLASS: OUTPUT:VARIABLE ===========
+!-Surface Outside Face Convection Heat Gain Rate per Area
+!-Surface Outside Face Net Thermal Radiation Heat Gain Rate per Area
+!-Surface Outside Face Solar Radiation Heat Gain Rate per Area
+Output:Variable,
+    *,                       !- Key Value
+    Surface Outside Face Convection Heat Gain Rate per Area,  !- Variable Name
+    timestep;                !- Reporting Frequency
+Output:Variable,
+    *,                       !- Key Value
+    Surface Outside Face Net Thermal Radiation Heat Gain Rate per Area,  !- Variable Name
+    timestep;                !- Reporting Frequency
+
+Output:Variable,
+    *,                       !- Key Value
+    Surface Outside Face Solar Radiation Heat Gain Rate per Area,  !- Variable Name
+    timestep;                !- Reporting Frequency
 
 Output:Variable,
     *,                       !- Key Value

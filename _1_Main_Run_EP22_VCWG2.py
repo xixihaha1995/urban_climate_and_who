@@ -34,7 +34,7 @@ def run_ep_api():
     coordination.ep_api.runtime.run_energyplus(state, sys_args)
 
 if __name__ == '__main__':
-    coordination.ini_all('onlyEP_CAPITOUL_smallOffice.ini')
+    coordination.ini_all('onlyEP_CAPITOUL.ini')
     ep_thread = Thread(target=run_ep_api)
     ep_thread.start()
     ep_thread.join()

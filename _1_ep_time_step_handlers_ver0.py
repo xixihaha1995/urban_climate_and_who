@@ -136,7 +136,8 @@ def MediumOffice_get_ep_results(state):
         flr_core_Tint_handle, \
         roof_Tint_handle, \
         s_wall_bot_1_Tint_handle, s_wall_mid_1_Tint_handle, s_wall_top_1_Tint_handle, \
-        n_wall_bot_1_Tint_handle, n_wall_mid_1_Tint_handle, n_wall_top_1_Tint_handle
+        n_wall_bot_1_Tint_handle, n_wall_mid_1_Tint_handle, n_wall_top_1_Tint_handle, \
+        roof_Convection_handle, roof_netThermalRad_handle, roof_solarRad_handle
 
     if not get_ep_results_inited_handle:
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
@@ -150,6 +151,20 @@ def MediumOffice_get_ep_results(state):
             coordination.ep_api.exchange.get_variable_handle(state,\
                                                              "HVAC System Total Heat Rejection Energy",\
                                                              "SIMHVAC")
+        '''
+        !-Surface Outside Face Convection Heat Gain Rate per Area
+        !-Surface Outside Face Net Thermal Radiation Heat Gain Rate per Area
+        !-Surface Outside Face Solar Radiation Heat Gain Rate per Area
+        roof_Text_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Temperature",\
+                                                                    "Building_Roof")
+        '''
+        roof_Convection_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Convection Heat Gain Rate per Area",\
+                                                                                  "Building_Roof")
+        roof_netThermalRad_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Net Thermal Radiation Heat Gain Rate per Area",\
+                                                                                     "Building_Roof")
+        roof_solarRad_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Solar Radiation Heat Gain Rate per Area",\
+                                                                                "Building_Roof")
+
         elec_bld_meter_handle = coordination.ep_api.exchange.get_meter_handle(state, "Electricity:Building")
         zone_flr_area_handle =  coordination.ep_api.exchange.get_internal_variable_handle(state, "Zone Floor Area",\
                                                                           "CORE_MID")
@@ -229,7 +244,8 @@ def MediumOffice_get_ep_results(state):
                 s_wall_bot_1_Text_handle == -1 or s_wall_mid_1_Text_handle == -1 or s_wall_top_1_Text_handle == -1 or\
                 n_wall_bot_1_Text_handle == -1 or n_wall_mid_1_Text_handle == -1 or n_wall_top_1_Text_handle == -1 or\
                 e_wall_bot_1_Text_handle == -1 or e_wall_mid_1_Text_handle == -1 or e_wall_top_1_Text_handle == -1 or\
-                w_wall_bot_1_Text_handle == -1 or w_wall_mid_1_Text_handle == -1 or w_wall_top_1_Text_handle == -1):
+                w_wall_bot_1_Text_handle == -1 or w_wall_mid_1_Text_handle == -1 or w_wall_top_1_Text_handle == -1 or \
+                roof_Convection_handle == -1 or roof_netThermalRad_handle == -1 or roof_solarRad_handle == -1 ):
             print('mediumOffice_get_ep_results(): some handle not available')
             os.getpid()
             os.kill(os.getpid(), signal.SIGTERM)
@@ -281,6 +297,10 @@ def MediumOffice_get_ep_results(state):
         e_wall_Text_c = (e_wall_bot_1_Text_c + e_wall_mid_1_Text_c + e_wall_top_1_Text_c)/3
         w_wall_Text_c = (w_wall_bot_1_Text_c + w_wall_mid_1_Text_c + w_wall_top_1_Text_c)/3
 
+        roof_Conv_w_m2 = coordination.ep_api.exchange.get_variable_value(state, roof_Convection_handle)
+        roof_netThermalRad_w_m2 = coordination.ep_api.exchange.get_variable_value(state, roof_netThermalRad_handle)
+        roof_solarRad_w_m2 = coordination.ep_api.exchange.get_variable_value(state, roof_solarRad_handle)
+
 
         if os.path.exists(coordination.data_saving_path) and not coordination.save_path_clean:
             os.remove(coordination.data_saving_path)
@@ -294,12 +314,14 @@ def MediumOffice_get_ep_results(state):
             os.makedirs(os.path.dirname(coordination.data_saving_path), exist_ok=True)
             with open(coordination.data_saving_path, 'a') as f1:
                 # prepare the header string for different sensors
-                header_str = 'cur_datetime,sensWaste,roof_Text_c,s_wall_Text_c,n_wall_Text_c,e_wall_Text_c,w_wall_Text_c,'
+                header_str = 'cur_datetime,sensWaste,roof_Conv_w_m2,roof_netThermalRad_w_m2,roof_solarRad_w_m2,' \
+                             'roof_Text_c,s_wall_Text_c,n_wall_Text_c,e_wall_Text_c,w_wall_Text_c,'
                 header_str += '\n'
                 f1.write(header_str)
             # write the data
         with open(coordination.data_saving_path, 'a') as f1:
             fmt1 = "%s," * 1 % (cur_datetime) + \
-                   "%.3f," * 6 % (hvac_waste_w_m2_footprint,roof_Text_c,s_wall_Text_c,n_wall_Text_c,e_wall_Text_c,w_wall_Text_c) + '\n'
+                   "%.3f," * 9 % (hvac_waste_w_m2_footprint,roof_Conv_w_m2,roof_netThermalRad_w_m2,roof_solarRad_w_m2,
+                                  roof_Text_c,s_wall_Text_c,n_wall_Text_c,e_wall_Text_c,w_wall_Text_c) + '\n'
             f1.write(fmt1)
 
