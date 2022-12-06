@@ -289,11 +289,11 @@ SizingPeriod:DesignDay,
 
 RunPeriod,
     RUNPERIOD 1,             !- Name
-    6,                       !- Begin Month
+    12,                       !- Begin Month
     1,                       !- Begin Day of Month
     ,                        !- Begin Year
-    6,                       !- End Month
-    30,                      !- End Day of Month
+    12,                       !- End Month
+    31,                      !- End Day of Month
     ,                        !- End Year
     Tuesday,                 !- Day of Week for Start Day
     No,                      !- Use Weather File Holidays and Special Days
