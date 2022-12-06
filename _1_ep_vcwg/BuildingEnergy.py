@@ -519,6 +519,7 @@ class Building(object):
                 # prepare the header string for different sensors
                 header_str = 'cur_datetime,canTemp,wallSun_K,wallShade_K,roof_K,sensWaste,' \
                              'Roof.SWRabsRoofImp,Roof.LWRabsRoofImp,Roof.LEfluxRoofImp,Roof.HfluxRoofImp,fluxRoof,' \
+                             'hConv,' \
                              'MeteoData.Tatm,MeteoData.Pre,'
                 for i in mapped_indices:
                     header_str += 'TempProf_cur[%d],' % i
@@ -532,7 +533,7 @@ class Building(object):
                    "%.3f," * 12 % (canTemp,wallSun_K,wallShade_K,roof_K,self.sensWaste,
                                   EBRoof.SWR.SWRabsRoofImp, EBRoof.LWR.LWRabsRoofImp,
                                   EBRoof.LEflux.LEfluxRoofImp,EBRoof.Hflux.HfluxRoofImp,
-                                    self.fluxRoof,
+                                    self.fluxRoof, coordination.hConv,
                                   MeteoData.Tatm, MeteoData.Pre) + \
                    "%.3f," * 2 * len(mapped_indices) % tuple([TempProf_cur[i] for i in mapped_indices] + \
                                                              [PresProf_cur[i] for i in mapped_indices]) + '\n'
