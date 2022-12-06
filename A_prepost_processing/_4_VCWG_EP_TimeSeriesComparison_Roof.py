@@ -49,24 +49,29 @@ df = pd.DataFrame()
 df['VCWG'] = vcwg_df['roof_K'] - 273.15
 df['EP_WithoutCooling'] = ep_withoutCooling_df['roof_Text_c']
 df['Rural'] = vcwg_df['MeteoData.Tatm'] - 273.15
-df.to_excel(vcwg_ep_comparison, sheet_name='roof temperature')
+df.to_excel(vcwg_ep_comparison, sheet_name='roof temperature (C)')
 #2. sheet: SWR
 df = pd.DataFrame()
 df['VCWG'] = vcwg_df['Roof.SWRabsRoofImp']
 df['EP_WithoutCooling'] = ep_withoutCooling_df['roof_solarRad_w_m2']
-df.to_excel(vcwg_ep_comparison, sheet_name='SWR')
+df.to_excel(vcwg_ep_comparison, sheet_name='SWR (W m-2)')
 #3. sheet: LWR
 df = pd.DataFrame()
 df['VCWG'] = vcwg_df['Roof.LWRabsRoofImp']
 df['EP_WithoutCooling'] = ep_withoutCooling_df['roof_netThermalRad_w_m2']
-df.to_excel(vcwg_ep_comparison, sheet_name='LWR')
+df.to_excel(vcwg_ep_comparison, sheet_name='LWR (W m-2)')
 #4. sheet: Convection
 df = pd.DataFrame()
 df['VCWG'] = -1*vcwg_df['Roof.HfluxRoofImp']
 df['EP_WithoutCooling'] = ep_withoutCooling_df['roof_Conv_w_m2']
-df.to_excel(vcwg_ep_comparison, sheet_name='Convection')
+df.to_excel(vcwg_ep_comparison, sheet_name='Convection (W m-2)')
+#5. sheet: hConv (W/m2/K)
+df = pd.DataFrame()
+df['VCWG'] = vcwg_df['hConv']
+df['EP_WithoutCooling'] = ep_withoutCooling_df['roof_hConv_w_m2_K']
+df.to_excel(vcwg_ep_comparison, sheet_name='hConv (W m-2 K-1)')
 vcwg_ep_comparison.save()
-themes = ['roof temperature', 'SWR', 'LWR', 'Convection']
+themes = ['roof temperature (C)', 'SWR (W m-2)', 'LWR (W m-2)', 'Convection (W m-2)', 'hConv (W m-2 K-1)']
 # #plot the len(themes) subfigs, share x axis
 _fig, _axs = plt.subplots(len(themes), 1, figsize=(10, 10), sharex=True)
 _fig.subplots_adjust(right=0.76)
