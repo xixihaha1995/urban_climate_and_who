@@ -626,7 +626,8 @@ class VCWG_Hydro(object):
                 # Lichen:
                 #   Bypassing the following function BEMCal():
                 self.BEM[i].building.BEMCalc(canTemp,canHum,self.BEM[i],MeteoData,ParCalculation,self.simTime,self.Geometry_m,
-                                             self.FractionsRoof,self.EBCanyon.SWR, self.UCM.VerticalProfUrban,it)
+                                             self.FractionsRoof,self.EBCanyon.SWR, self.UCM.VerticalProfUrban,it,
+                                             self.EBRoof)
                 # self.BEM[i] = _0_vcwg_ep_coordination.BEMCalc_Element(self.UCM.VerticalProfUrban,
                 #                             self.BEM[i], it, self.simTime, self.FractionsRoof, self.Geometry_m)
 

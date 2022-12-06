@@ -137,7 +137,8 @@ class Building(object):
         return abs(float(val)) < tol
 
     def BEMCalc(self, canTemp, canHum, BEM, MeteoData, ParCalculation, simTime, Geometry_m, FractionsRoof, SWR,
-                VerticalProfUrban, it ):
+                VerticalProfUrban, it,
+                EBRoof):
 
         """
         ------
@@ -507,11 +508,18 @@ class Building(object):
         vcwg_heights_profile = numpy.array([0.5 + i for i in range(domain_height)])
         mapped_indices = [numpy.argmin(numpy.abs(vcwg_heights_profile - i)) for i in coordination.sensor_heights]
 
+        # self.BEM[i].roofImp.Element(self.EBRoof.SWR.SWRabsRoofImp, self.EBRoof.LWR.LWRabsRoofImp,
+        #                             self.EBRoof.LEflux.LEfluxRoofImp,
+        #                             self.EBRoof.Hflux.HfluxRoofImp, self.TimeParam.dts, 0., 1, None,
+        #                             self.BEM[i].building.fluxRoof)
+
         if not os.path.exists(coordination.data_saving_path):
             os.makedirs(os.path.dirname(coordination.data_saving_path), exist_ok=True)
             with open(coordination.data_saving_path, 'a') as f1:
                 # prepare the header string for different sensors
-                header_str = 'cur_datetime,canTemp,wallSun_K,wallShade_K,roof_K,sensWaste,MeteoData.Tatm,MeteoData.Pre,'
+                header_str = 'cur_datetime,canTemp,wallSun_K,wallShade_K,roof_K,sensWaste,' \
+                             'Roof.SWRabsRoofImp,Roof.LWRabsRoofImp,Roof.LEfluxRoofImp,Roof.HfluxRoofImp,fluxRoof,' \
+                             'MeteoData.Tatm,MeteoData.Pre,'
                 for i in mapped_indices:
                     header_str += 'TempProf_cur[%d],' % i
                 for i in mapped_indices:
@@ -521,7 +529,11 @@ class Building(object):
             # write the data
         with open(coordination.data_saving_path, 'a') as f1:
             fmt1 = "%s," * 1 % (cur_datetime) + \
-                   "%.3f," * 7 % (canTemp,wallSun_K,wallShade_K,roof_K,self.sensWaste, MeteoData.Tatm, MeteoData.Pre) + \
+                   "%.3f," * 12 % (canTemp,wallSun_K,wallShade_K,roof_K,self.sensWaste,
+                                  EBRoof.SWR.SWRabsRoofImp, EBRoof.LWR.LWRabsRoofImp,
+                                  EBRoof.LEflux.LEfluxRoofImp,EBRoof.Hflux.HfluxRoofImp,
+                                    self.fluxRoof,
+                                  MeteoData.Tatm, MeteoData.Pre) + \
                    "%.3f," * 2 * len(mapped_indices) % tuple([TempProf_cur[i] for i in mapped_indices] + \
                                                              [PresProf_cur[i] for i in mapped_indices]) + '\n'
             f1.write(fmt1)

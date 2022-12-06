@@ -1,7 +1,9 @@
 import configparser, os
 
 def ini_all(config_file_name = None, actual_file = None, _control_value = None):
-    global config, data_saving_path, save_path_clean, sensor_heights, control_value
+    global config, data_saving_path, save_path_clean, sensor_heights, control_value,\
+        hConv
+    hConv = 0
     config = configparser.ConfigParser()
     # find the project path
     project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
