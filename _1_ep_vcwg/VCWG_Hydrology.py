@@ -436,7 +436,7 @@ class VCWG_Hydro(object):
             cur_datetime = datetime.datetime.strptime(coordination.config['__main__']['start_time'],
                                                       '%Y-%m-%d %H:%M:%S') + \
                            datetime.timedelta(seconds=it * self.simTime.dt)
-            print(f'current time: {cur_datetime}, self.EBRoof.LEflux.LEfluxRoofImp: {self.EBRoof.LEflux.LEfluxRoofImp}')
+            print(f'current time: {cur_datetime}, self.EBRoof.Hflux.HfluxRoofImp: {self.EBRoof.Hflux.HfluxRoofImp}')
             bool_later_than_start_time = cur_datetime > \
                                          datetime.datetime.strptime("2004-06-02 18:55:00", '%Y-%m-%d %H:%M:%S')
             SunPosition,MeteoData,Anthropogenic,location,ParCalculation = \
