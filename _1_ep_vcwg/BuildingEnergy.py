@@ -530,7 +530,7 @@ class Building(object):
             # write the data
         with open(coordination.data_saving_path, 'a') as f1:
             fmt1 = "%s," * 1 % (cur_datetime) + \
-                   "%.3f," * 12 % (canTemp,wallSun_K,wallShade_K,roof_K,self.sensWaste,
+                   "%.3f," * 13 % (canTemp,wallSun_K,wallShade_K,roof_K,self.sensWaste,
                                   EBRoof.SWR.SWRabsRoofImp, EBRoof.LWR.LWRabsRoofImp,
                                   EBRoof.LEflux.LEfluxRoofImp,EBRoof.Hflux.HfluxRoofImp,
                                     self.fluxRoof, coordination.hConv,
