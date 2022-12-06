@@ -26,8 +26,8 @@ experiments_folder = 'CAPITOUL_VCWG_EP_Comparison'
 compare_start_time = '2004-06-01 00:05:00'
 compare_end_time = '2004-06-30 23:55:00'
 vcwg = 'Mondouzil_Bueno_2004_Update.csv'
-# ep_withCooling = 'NewEPW_WithShading_WithCooling.csv'
-ep_withCooling = 'NewEPW_WithShading_WithCooling_SmallOffice.csv'
+ep_withCooling = 'NewEPW_WithShading_WithCooling.csv'
+# ep_withCooling = 'NewEPW_WithShading_WithCooling_SmallOffice.csv'
 ep_withoutCooling = 'NewEPW_WithShading_WithoutCooling.csv'
 vcwg_df = pd.read_csv(os.path.join(experiments_folder, vcwg),
                       index_col=0, parse_dates=True,header=0)
