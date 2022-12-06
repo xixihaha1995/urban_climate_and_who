@@ -9,7 +9,7 @@
 # SIMULATION CONTROL,
 # =================================================
 # Simulation parameters,
-Month,6,           # starting month 6
+Month,11,           # starting month 6
 Day,1,             # starting day (1-31) 16
 nDay,30,           # number of days to run simulation 14
 dtSim,300,         # simulation time step [s]

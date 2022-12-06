@@ -23,11 +23,11 @@ def normalized_mean_bias_error(measurements, predictions):
 
 plot_fontsize = 12
 experiments_folder = 'CAPITOUL_VCWG_EP_Comparison'
-compare_start_time = '2004-06-01 00:05:00'
-compare_end_time = '2004-06-30 23:55:00'
-vcwg = 'Mondouzil_Bueno_2004_Update.csv'
-ep_withCooling = 'NewEPW_WithShading_WithCooling.csv'
-ep_withoutCooling = 'NewEPW_WithShading_WithoutCooling.csv'
+compare_start_time = '2004-11-01 00:05:00'
+compare_end_time = '2004-11-30 23:55:00'
+vcwg = 'Winter_Only_VCWG.csv'
+ep_withCooling = 'NewEPW_WithShading_WithCooling_Winter.csv'
+ep_withoutCooling = 'NewEPW_WithShading_WithoutCooling_Winter.csv'
 vcwg_df = pd.read_csv(os.path.join(experiments_folder, vcwg),
                       index_col=0, parse_dates=True,header=0)
 vcwg_df = vcwg_df[compare_start_time:compare_end_time]
@@ -58,7 +58,6 @@ df = pd.DataFrame()
 df['VCWG'] = vcwg_df['wallSun_K'] - 273.15
 df['EP_WithCooling'] = ep_withCooling_df['s_wall_Text_c']
 df['EP_WithoutCooling'] = ep_withoutCooling_df['s_wall_Text_c']
-df['Rural'] = vcwg_df['MeteoData.Tatm'] - 273.15
 df.to_excel(vcwg_ep_comparison, sheet_name='wallSun')
 #2. sheet: wallShade
 df = pd.DataFrame()

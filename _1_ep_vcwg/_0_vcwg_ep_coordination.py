@@ -12,7 +12,7 @@ def ini_all(config_file_name = None, actual_file = None, _control_value = None):
     else:
         config = actual_file
         control_value = _control_value
-        save_file_name = str(control_value)[:-4] + '.csv'
+        save_file_name = config['run_vcwg()']['csv_file'] + '.csv'
     experiments_theme = config['run_vcwg()']['experiments_theme']
     data_saving_path = os.path.join(project_path, 'A_prepost_processing',
                                     experiments_theme, save_file_name)
