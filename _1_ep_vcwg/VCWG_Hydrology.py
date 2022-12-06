@@ -436,7 +436,7 @@ class VCWG_Hydro(object):
             cur_datetime = datetime.datetime.strptime(coordination.config['__main__']['start_time'],
                                                       '%Y-%m-%d %H:%M:%S') + \
                            datetime.timedelta(seconds=it * self.simTime.dt)
-            print(f'current time: {cur_datetime}')
+            print(f'current time: {cur_datetime}, self.EBRoof.LEflux.LEfluxRoofImp: {self.EBRoof.LEflux.LEfluxRoofImp}')
             bool_later_than_start_time = cur_datetime > \
                                          datetime.datetime.strptime("2004-06-02 18:55:00", '%Y-%m-%d %H:%M:%S')
             SunPosition,MeteoData,Anthropogenic,location,ParCalculation = \
@@ -636,7 +636,7 @@ class VCWG_Hydro(object):
                 # Update surface temperature of building surfaces
                 # Mass
                 self.BEM[i].mass.Element(0,0,0,0,self.TimeParam.dts,0.,1,self.BEM[i].building.fluxMass,self.BEM[i].building.fluxMass)
-                #Roof
+
                 if self.FractionsRoof.fimp > 0:
                     self.BEM[i].roofImp.Element(self.EBRoof.SWR.SWRabsRoofImp,self.EBRoof.LWR.LWRabsRoofImp,self.EBRoof.LEflux.LEfluxRoofImp,
                                                 self.EBRoof.Hflux.HfluxRoofImp,self.TimeParam.dts,0.,1,None,self.BEM[i].building.fluxRoof)

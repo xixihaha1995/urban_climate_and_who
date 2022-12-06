@@ -28,12 +28,12 @@ def one_ini(sensitivity_file_name):
     value_list = [i for i in config['run_vcwg()']['control_value_list'].split(',')]
     this_ini_process = []
     for value in value_list:
-        p = Process(target=run_vcwg, args=(sensitivity_file_name,config, value))
-        p.start()
-        this_ini_process.append(p)
-        # run_vcwg(sensitivity_file_name, config, value)
+        # p = Process(target=run_vcwg, args=(sensitivity_file_name,config, value))
+        # p.start()
+        # this_ini_process.append(p)
+        run_vcwg(sensitivity_file_name, config, value)
 
 if __name__ == '__main__':
-    sensitivity_file_name = 'CAPITOUL_Surface_Temperature.ini'
     sensitivity_file_name = 'CAPITOUL_Obsolete_VCWG.ini'
+    sensitivity_file_name = 'CAPITOUL_Updated_OnlyVCWG.ini'
     one_ini(sensitivity_file_name)
