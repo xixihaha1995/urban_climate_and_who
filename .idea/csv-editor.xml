@@ -17,6 +17,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\A_prepost_processing\CAPITOUL_VCWG_EP_Comparison\Mondouzil_Bueno_2004_Update.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\A_prepost_processing\CAPITOUL_VCWG_EP_Comparison\NewEPW_WithShading_WithCooling.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\A_prepost_processing\CAPITOUL_VCWG_EP_Comparison\NewEPW_WithShading_WithoutCooling.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
