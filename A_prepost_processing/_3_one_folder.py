@@ -12,7 +12,7 @@ def cvrmse(measurements, predictions):
     return cvrmse
 
 def normalized_mean_bias_error(measurements, predictions):
-    bias = predictions - measurements
+    bias = measurements - predictions
     nmb = np.mean(bias) / np.mean(measurements)
     return nmb
 def read_text_as_csv(file_path, header=None, index_col=0, skiprows=3):
