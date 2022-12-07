@@ -522,7 +522,7 @@ class Building(object):
         cur_datetime = datetime.datetime.strptime(coordination.config['__main__']['start_time'],
                                                   '%Y-%m-%d %H:%M:%S') + \
                        datetime.timedelta(seconds= vcwg_needed_time_idx_in_seconds)
-        # print('current time: ', cur_datetime)
+        print('current time: ', cur_datetime)
         domain_height = len(TempProf_cur)
         vcwg_heights_profile = numpy.array([0.5 + i for i in range(domain_height)])
         mapped_indices = [numpy.argmin(numpy.abs(vcwg_heights_profile - i)) for i in coordination.sensor_heights]
