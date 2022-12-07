@@ -250,10 +250,10 @@ def process_one_theme(path):
         df = df[compare_start_time:compare_end_time]
         comparison['MeteoData.Pre'] = df['MeteoData.Pre']
         comparison['sensWaste_' + csv_file] = df['sensWaste']
-        comparison['wallSun_K_' + csv_file] = df['wallSun_K']
-        comparison['wallShade_K_' + csv_file] = df['wallShade_K']
-        comparison['roof_K_' + csv_file] = df['roof_K']
-        comparison['ForcTemp_K_' + csv_file] = df['ForcTemp_K']
+        # comparison['wallSun_K_' + csv_file] = df['wallSun_K']
+        # comparison['wallShade_K_' + csv_file] = df['wallShade_K']
+        # comparison['roof_K_' + csv_file] = df['roof_K']
+        # comparison['ForcTemp_K_' + csv_file] = df['ForcTemp_K']
 
         temp_prof_cols, pres_prof_cols = find_height_indice(df)
         for i in range(len(temp_prof_cols)):
@@ -373,6 +373,7 @@ def main():
     # experiments_folder = 'Vancouver_TopForcing_Bypass'
     # experiments_folder = 'Vancouver_Rural_Bypass'
     experiments_folder = "CAPITOUL_ByPass_Improvements_Investigation"
+    experiments_folder = "CAPITOUL_Investigation_Roof_Temperature"
     sql_report_name = 'AnnualBuildingUtilityPerformanceSummary'
     sql_table_name = 'Site and Source Energy'
     sql_row_name = 'Total Site Energy'
@@ -404,7 +405,7 @@ def main():
             processed_file = r'Vancouver_Rural_measurements_' + pd.to_datetime(compare_start_time).strftime('%Y-%m-%d') \
                          + '_to_' + pd.to_datetime(compare_end_time).strftime('%Y-%m-%d') + '.csv'
 
-    # process_one_theme(experiments_folder)
-    plots()
+    process_one_theme(experiments_folder)
+    # plots()
 if __name__ == '__main__':
     main()
