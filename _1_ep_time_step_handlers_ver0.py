@@ -8,6 +8,14 @@ zone_time_step_seconds = 0
 accu_hvac_heat_rejection_J = 0
 ep_last_call_time_seconds = 0
 get_ep_results_inited_handle = False
+
+def api_to_csv(state):
+    orig = coordination.ep_api.exchange.list_available_api_data_csv(state)
+    newFileByteArray = bytearray(orig)
+    api_path = os.path.join(coordination.data_saving_path,'..', 'api_data.csv')
+    newFile = open(api_path, "wb")
+    newFile.write(newFileByteArray)
+    newFile.close()
 def SmallOffice_get_ep_results(state):
     global zone_time_step_seconds,\
         get_ep_results_inited_handle,\
@@ -20,6 +28,7 @@ def SmallOffice_get_ep_results(state):
 
 
     if not get_ep_results_inited_handle:
+
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
             return
         get_ep_results_inited_handle = True
@@ -137,11 +146,14 @@ def MediumOffice_get_ep_results(state):
         roof_Tint_handle, \
         s_wall_bot_1_Tint_handle, s_wall_mid_1_Tint_handle, s_wall_top_1_Tint_handle, \
         n_wall_bot_1_Tint_handle, n_wall_mid_1_Tint_handle, n_wall_top_1_Tint_handle, \
-        roof_Convection_handle, roof_netThermalRad_handle, roof_solarRad_handle, roof_hConv_handle
+        roof_Convection_handle, roof_netThermalRad_handle, roof_solarRad_handle, roof_hConv_handle,\
+        roof_hConv_actuator_handle
 
     if not get_ep_results_inited_handle:
+
         if not coordination.ep_api.exchange.api_data_fully_ready(state):
             return
+        # api_to_csv(state)
         get_ep_results_inited_handle = True
         zone_time_step_seconds = 3600 / coordination.ep_api.exchange.num_time_steps_in_hour(state)
         oat_sensor_handle = coordination.ep_api.exchange.get_variable_handle(state,\
@@ -167,7 +179,12 @@ def MediumOffice_get_ep_results(state):
                                                                                 "Building_Roof")
         roof_hConv_handle = coordination.ep_api.exchange.get_variable_handle(state, "Surface Outside Face Convection Heat Transfer Coefficient",\
                                                                              "Building_Roof")
-
+        # roof_hConv_actuator_handle
+        # coordination.ep_api.exchange. \
+        #     get_actuator_handle(state, "Weather Data", "Outdoor Dry Bulb", "Environment")
+        roof_hConv_actuator_handle = coordination.ep_api.exchange. \
+            get_actuator_handle(state, "Surface","Exterior Surface Convection Heat Transfer Coefficient",\
+                                "BUILDING_ROOF")
         elec_bld_meter_handle = coordination.ep_api.exchange.get_meter_handle(state, "Electricity:Building")
         zone_flr_area_handle =  coordination.ep_api.exchange.get_internal_variable_handle(state, "Zone Floor Area",\
                                                                           "CORE_MID")
@@ -249,7 +266,7 @@ def MediumOffice_get_ep_results(state):
                 e_wall_bot_1_Text_handle == -1 or e_wall_mid_1_Text_handle == -1 or e_wall_top_1_Text_handle == -1 or\
                 w_wall_bot_1_Text_handle == -1 or w_wall_mid_1_Text_handle == -1 or w_wall_top_1_Text_handle == -1 or \
                 roof_Convection_handle == -1 or roof_netThermalRad_handle == -1 or roof_solarRad_handle == -1 or \
-                roof_hConv_handle == -1):
+                roof_hConv_handle == -1 or roof_hConv_actuator_handle == -1):
             print('mediumOffice_get_ep_results(): some handle not available')
             os.getpid()
             os.kill(os.getpid(), signal.SIGTERM)
@@ -307,6 +324,8 @@ def MediumOffice_get_ep_results(state):
         roof_hConv_w_m2_K = coordination.ep_api.exchange.get_variable_value(state, roof_hConv_handle)
 
 
+
+
         if os.path.exists(coordination.data_saving_path) and not coordination.save_path_clean:
             os.remove(coordination.data_saving_path)
             coordination.save_path_clean = True
@@ -314,6 +333,9 @@ def MediumOffice_get_ep_results(state):
         cur_datetime = datetime.datetime.strptime(coordination.config['__main__']['start_time'],
                                                   '%Y-%m-%d %H:%M:%S') + \
                        datetime.timedelta(seconds= curr_sim_time_in_seconds)
+        # if current time is between 6:00 and 18:00, override roof_hConv_actuator_handle
+        if 6 <= cur_datetime.hour < 18:
+            coordination.ep_api.exchange.set_actuator_value(state, roof_hConv_actuator_handle, 40)
 
         if not os.path.exists(coordination.data_saving_path):
             os.makedirs(os.path.dirname(coordination.data_saving_path), exist_ok=True)
