@@ -494,6 +494,21 @@ class Building(object):
         self.GasTotal = BEM.Gas + (massFlorRateSWH*CpH20*(T_hot - MeteoData.waterTemp)/self.nFloor)/self.heatEff + self.heatConsump/self.nFloor
 
         coordination.sem3.acquire()
+        BEM.mass.Text = coordination.ep_floor_Text_K
+        BEM.mass.Tint = coordination.ep_floor_Tint_K
+        BEM.wallSun.Text = coordination.ep_wallSun_Text_K
+        BEM.wallSun.Tint = coordination.ep_wallSun_Tint_K
+        BEM.wallShade.Text = coordination.ep_wallShade_Text_K
+        BEM.wallShade.Tint = coordination.ep_wallShade_Tint_K
+
+        if coordination.config['Bypass']['Roof_From_EP'] == "True":
+            if FractionsRoof.fimp > 0:
+                BEM.roofImp.Text = coordination.ep_roof_Text_K
+                BEM.roofImp.Tint = coordination.ep_roof_Tint_K
+            if FractionsRoof.fveg > 0:
+                BEM.roofVeg.Text = coordination.ep_roof_Text_K
+                BEM.roofVeg.Tint = coordination.ep_roof_Tint_K
+
         self.sensWaste = coordination.ep_sensWaste_w_m2_per_footprint_area
         coordination.ep_sensWaste_w_m2_per_footprint_area = 0
 

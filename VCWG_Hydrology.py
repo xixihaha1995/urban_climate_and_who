@@ -638,7 +638,7 @@ class VCWG_Hydro(object):
                 # Mass
                 # self.BEM[i].mass.Element(0,0,0,0,self.TimeParam.dts,0.,1,self.BEM[i].building.fluxMass,self.BEM[i].building.fluxMass)
                 # # Roof
-                if coordination.config['Bypass']['Over_Roof'] == "True":
+                if coordination.config['Bypass']['Roof_From_EP'] == "False":
                     if self.FractionsRoof.fimp > 0:
                         self.BEM[i].roofImp.Element(self.EBRoof.SWR.SWRabsRoofImp,self.EBRoof.LWR.LWRabsRoofImp,self.EBRoof.LEflux.LEfluxRoofImp,
                                                     self.EBRoof.Hflux.HfluxRoofImp,self.TimeParam.dts,0.,1,None,self.BEM[i].building.fluxRoof)

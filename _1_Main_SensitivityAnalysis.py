@@ -33,6 +33,7 @@ def for_loop_all_ini():
     # selected_jobs = ["Oct_CAPITOUL_WithoutCooling.ini","Bypassing_IDF.ini",
     #                  "Bypassing_EPW.ini","Dec_CAPITOUL_WithoutCooling.ini"]
     selected_jobs = ["Dec_CAPITOUL_WithCooling.ini","Dec_CAPITOUL_WithoutCooling.ini"]
+    selected_jobs = ['CAPITOUL_Without_Roof_Temperature.ini']
 
 
     nbr_job_for_one_batch = 2
