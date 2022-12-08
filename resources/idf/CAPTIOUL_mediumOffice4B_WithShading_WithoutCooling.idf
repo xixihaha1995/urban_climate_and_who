@@ -12,7 +12,7 @@ EnergyManagementSystem:Sensor,
 EnergyManagementSystem:Program,
   Exterior_Conv_Coeff_Program,         ! Name
   IF HOUR >= 6 && HOUR <= 18,          ! Program Line 1
-    SET Exterior_Conv_Coeff_Act = 40,    ! Program Line 2
+    SET Exterior_Conv_Coeff_Act = Exterior_Conv_Coeff_Sens,    ! Program Line 2
   ELSE,                                ! Program Line 3
     SET Exterior_Conv_Coeff_Act = Exterior_Conv_Coeff_Sens,
   ENDIF;                               ! Program Line 4
@@ -1643,7 +1643,7 @@ Zone,
     ,                        !- Volume {m3}
     autocalculate,           !- Floor Area {m2}
     ,                        !- Zone Inside Convection Algorithm
-    ,                        !- Zone Outside Convection Algorithm
+    AdaptiveConvectionAlgorithm,                        !- Zone Outside Convection Algorithm
     No;                      !- Part of Total Floor Area
 
 
