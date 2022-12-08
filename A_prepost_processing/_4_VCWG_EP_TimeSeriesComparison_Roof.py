@@ -28,6 +28,7 @@ compare_end_time = '2004-06-30 23:55:00'
 vcwg = 'Only_VCWG.csv'
 ep_withoutCooling = 'NewEPW_WithShading_WithoutCooling.csv'
 ep_hConv = 'NewEPW_WithShading_WithoutCoolinghConv.csv'
+ep_hConv_IDF = 'NewEPW_WithShading_WithoutCooling_IDF_Modified.csv'
 vcwg_df = pd.read_csv(os.path.join(experiments_folder, vcwg),
                       index_col=0, parse_dates=True,header=0)
 vcwg_df = vcwg_df[compare_start_time:compare_end_time]
@@ -37,6 +38,10 @@ ep_withoutCooling_df = ep_withoutCooling_df[compare_start_time:compare_end_time]
 ep_hConv_df = pd.read_csv(os.path.join(experiments_folder, ep_hConv),
                             index_col=0, parse_dates=True,header=0)
 ep_hConv_df = ep_hConv_df[compare_start_time:compare_end_time]
+ep_hConv_IDF_df = pd.read_csv(os.path.join(experiments_folder, ep_hConv_IDF),
+                            index_col=0, parse_dates=True,header=0)
+ep_hConv_IDF_df = ep_hConv_IDF_df[compare_start_time:compare_end_time]
+
 # Index(['canTemp', 'wallSun_K', 'wallShade_K', 'roof_K', 'sensWaste',
 #        'Roof.SWRabsRoofImp', 'Roof.LWRabsRoofImp', 'Roof.LEfluxRoofImp',
 #        'Roof.HfluxRoofImp', 'fluxRoof', 'MeteoData.Tatm', 'MeteoData.Pre',
@@ -53,6 +58,7 @@ df = pd.DataFrame()
 df['VCWG'] = vcwg_df['roof_K'] - 273.15
 df['EP_WithoutCooling'] = ep_withoutCooling_df['roof_Text_c']
 df['EP_hConv'] = ep_hConv_df['roof_Text_c']
+df['EP_hConv_IDFModified'] = ep_hConv_IDF_df['roof_Text_c']
 df['Rural'] = vcwg_df['MeteoData.Tatm'] - 273.15
 df.to_excel(vcwg_ep_comparison, sheet_name='roof temperature (C)')
 #2. sheet: SWR
