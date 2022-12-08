@@ -10,6 +10,11 @@ def cvrmse(measurements, predictions):
     rmse = np.sqrt(np.mean(bias**2))
     cvrmse = rmse / np.mean(abs(measurements))
     return cvrmse
+
+def normalized_mean_bias_error(measurements, predictions):
+    bias = measurements - predictions
+    nmb = np.mean(bias) / np.mean(measurements)
+    return nmb
 def read_text_as_csv(file_path, header=None, index_col=0, skiprows=3):
     '''
     df first column is index
@@ -262,7 +267,10 @@ def process_one_theme(path):
             tempCVRMSE = cvrmse(comparison[_tmp_col],
                                            comparison[csv_file + '_sensor_idx_' + height_idx])
             cvrmse_dict[csv_file + '_sensor_idx_' + height_idx] = tempCVRMSE
-            print(f'cvrmse for {csv_file} at height idx:{height_idx} is {tempCVRMSE}')
+            tempNMBE = normalized_mean_bias_error(comparison[_tmp_col],
+                                                    comparison[csv_file + '_sensor_idx_' + height_idx])
+
+            print(f'cvrmse for {csv_file} at height idx:{height_idx} is {tempCVRMSE}, NMBE is {tempNMBE}')
 
         sql_dict[csv_file] = read_sql(csv_file)
     if os.path.exists(f'{experiments_folder}/comparison.xlsx'):
