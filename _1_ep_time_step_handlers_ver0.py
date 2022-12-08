@@ -334,8 +334,8 @@ def MediumOffice_get_ep_results(state):
                                                   '%Y-%m-%d %H:%M:%S') + \
                        datetime.timedelta(seconds= curr_sim_time_in_seconds)
         # if current time is between 6:00 and 18:00, override roof_hConv_actuator_handle
-        if 6 <= cur_datetime.hour < 18:
-            coordination.ep_api.exchange.set_actuator_value(state, roof_hConv_actuator_handle, 40)
+        # if 6 <= cur_datetime.hour < 18:
+        #     coordination.ep_api.exchange.set_actuator_value(state, roof_hConv_actuator_handle, 40)
 
         if not os.path.exists(coordination.data_saving_path):
             os.makedirs(os.path.dirname(coordination.data_saving_path), exist_ok=True)

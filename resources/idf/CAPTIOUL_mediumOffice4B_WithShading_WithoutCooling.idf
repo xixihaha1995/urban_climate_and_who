@@ -1,3 +1,27 @@
+EnergyManagementSystem:Actuator,
+  Exterior_Conv_Coeff_Act,     ! Name
+  BUILDING_ROOF,                         ! Actuated Component Unique Name
+  Surface,                           ! Actuated Component Type
+  Exterior Surface Convection Heat Transfer Coefficient;           ! Actuated Component Control Type
+
+EnergyManagementSystem:Sensor,
+  Exterior_Conv_Coeff_Sens,                      ! Name
+  BUILDING_ROOF,         ! Output:Variable Index Key Name
+  Surface Outside Face Convection Heat Transfer Coefficient;! Output:Variable Name
+
+EnergyManagementSystem:Program,
+  Exterior_Conv_Coeff_Program,         ! Name
+  IF HOUR >= 6 && HOUR <= 18,          ! Program Line 1
+    SET Exterior_Conv_Coeff_Act = 40,    ! Program Line 2
+  ELSE,                                ! Program Line 3
+    SET Exterior_Conv_Coeff_Act = Exterior_Conv_Coeff_Sens,
+  ENDIF;                               ! Program Line 4
+
+EnergyManagementSystem:ProgramCallingManager,
+  EMS Manager, ! Name
+  BeginZoneTimestepAfterInitHeatBalance,       ! EnergyPlus Model Calling Point
+  Exterior_Conv_Coeff_Program;                 ! Program Name 1
+
 Shading:Building:Detailed,
   Shading Surface 1 South,                      !- Name
   ,                                       !- Transmittance Schedule Name
