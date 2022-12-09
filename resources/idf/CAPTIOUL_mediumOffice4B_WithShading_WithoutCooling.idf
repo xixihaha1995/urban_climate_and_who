@@ -1107,9 +1107,9 @@ Material,
     0.049,                   !- Conductivity {W/m-K}
     265.0000,                !- Density {kg/m3}
     836.8000,                !- Specific Heat {J/kg-K}
-    0.94,                    !- Thermal Absorptance
-    0.75,                    !- Solar Absorptance
-    0.75;                    !- Visible Absorptance
+    0.90,                    !- Thermal Absorptance
+    0.7,                    !- Solar Absorptance
+    0.7;                    !- Visible Absorptance
 
 Material,
     Std Wood 6inch,          !- Name
@@ -1195,9 +1195,9 @@ Material,
     0.1600,                  !- Conductivity {W/m-K}
     1121.2900,               !- Density {kg/m3}
     1460.0000,               !- Specific Heat {J/kg-K}
-    0.9000,                  !- Thermal Absorptance
-    0.7000,                  !- Solar Absorptance
-    0.7000;                  !- Visible Absorptance
+    0.9500,                  !- Thermal Absorptance
+    0.7500,                  !- Solar Absorptance
+    0.7500;                  !- Visible Absorptance
 
 Material,
     Metal Decking,           !- Name
@@ -1300,7 +1300,9 @@ Construction,
 ! Roof
 Construction,
     IEAD Non-res Roof,       !- Name
-    IEAD NonRes Roof Insulation;  !- Outside Layer
+    Roof Membrane,           !- Outside Layer
+    IEAD NonRes Roof Insulation,  !- Outside Layer
+    Metal Decking;           !- Layer 3
 
 ! Slab on grade, unheated
 Construction,
@@ -1643,7 +1645,7 @@ Zone,
     ,                        !- Volume {m3}
     autocalculate,           !- Floor Area {m2}
     ,                        !- Zone Inside Convection Algorithm
-    AdaptiveConvectionAlgorithm,                        !- Zone Outside Convection Algorithm
+    ,                        !- Zone Outside Convection Algorithm
     No;                      !- Part of Total Floor Area
 
 
@@ -1653,7 +1655,7 @@ Zone,
 BuildingSurface:Detailed,
     Building_Roof,           !- Name
     Roof,                    !- Surface Type
-    UWG_CAPITOUL_Roof,       !- Construction Name
+    IEAD Non-res Roof,       !- Construction Name
     TopFloor_Plenum,         !- Zone Name
     ,                        !- Space Name
     Outdoors,                !- Outside Boundary Condition
