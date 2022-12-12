@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CsvFileAttributes">
+    <option name="attributeMap">
+      <map>
+        <entry key="\A_prepost_processing\Material_BLD_hConv\Only_VCWG.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\A_prepost_processing\Material_BLD_hConv\Original_Roof_MediumOffice_4B_BlockenWindward_AlamdariHammond.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\A_prepost_processing\Material_BLD_hConv\Original_Roof_MediumOffice_4B_BlockenWindward_Walton.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\A_prepost_processing\Material_BLD_hConv\UWG_Roof_SmallOffice_Pre80_4B_ClearRoof_None.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
