@@ -50,6 +50,7 @@ df = df[compare_start_time:compare_end_time]
 
 df.to_excel(vcwg_ep_comparison, sheet_name='roof temperature (C)')
 df_nmbe = pd.DataFrame.from_dict(df_nmbe, orient='index', columns=['NMBE'])
+df_nmbe.to_excel(vcwg_ep_comparison, sheet_name='NMBE')
 # Find the largest nmbe, and print the name
 print('The largest nmbe is', df_nmbe['NMBE'].max(), 'in', df_nmbe['NMBE'].idxmax())
 vcwg_ep_comparison.save()
