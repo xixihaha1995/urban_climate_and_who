@@ -1,3 +1,18 @@
+  SurfaceConvectionAlgorithm:Outside:AdaptiveModelSelections,
+    Default algorithms,      !- Name
+    TARPWindward,            !- Wind Convection Windward Vertical Wall Equation Source
+    ,                        !- Wind Convection Windward Equation Vertical Wall User Curve Name
+    TARPLeeward,             !- Wind Convection Leeward Vertical Wall Equation Source
+    ,                        !- Wind Convection Leeward Vertical Wall Equation User Curve Name
+    TARPWindward,               !- Wind Convection Horizontal Roof Equation Source
+    ,                        !- Wind Convection Horizontal Roof User Curve Name
+    ASHRAEVerticalWall,      !- Natural Convection Vertical Wall Equation Source
+    ,                        !- Natural Convection Vertical Wall Equation User Curve Name
+    WaltonStableHorizontalOrTilt,  !- Natural Convection Stable Horizontal Equation Source
+    ,                        !- Natural Convection Stable Horizontal Equation User Curve Name
+    WaltonUnstableHorizontalOrTilt,  !- Natural Convection Unstable Horizontal Equation Source
+    ;                        !- Natural Convection Unstable Horizontal Equation User Curve Name
+
 Shading:Building:Detailed,
   Shading Surface 1 South,                      !- Name
   ,                                       !- Transmittance Schedule Name
@@ -279,7 +294,7 @@ ShadingProperty:Reflectance,
 
   SurfaceConvectionAlgorithm:Inside,TARP;
 
-  SurfaceConvectionAlgorithm:Outside,DOE-2;
+  SurfaceConvectionAlgorithm:Outside,AdaptiveConvectionAlgorithm;
 
   HeatBalanceAlgorithm,ConductionTransferFunction,200.0000;
 

@@ -1,3 +1,18 @@
+  SurfaceConvectionAlgorithm:Outside:AdaptiveModelSelections,
+    Default algorithms,      !- Name
+    TARPWindward,            !- Wind Convection Windward Vertical Wall Equation Source
+    ,                        !- Wind Convection Windward Equation Vertical Wall User Curve Name
+    TARPLeeward,             !- Wind Convection Leeward Vertical Wall Equation Source
+    ,                        !- Wind Convection Leeward Vertical Wall Equation User Curve Name
+    BlockenWindward,               !- Wind Convection Horizontal Roof Equation Source
+    ,                        !- Wind Convection Horizontal Roof User Curve Name
+    ASHRAEVerticalWall,      !- Natural Convection Vertical Wall Equation Source
+    ,                        !- Natural Convection Vertical Wall Equation User Curve Name
+    WaltonStableHorizontalOrTilt,  !- Natural Convection Stable Horizontal Equation Source
+    ,                        !- Natural Convection Stable Horizontal Equation User Curve Name
+    WaltonUnstableHorizontalOrTilt,  !- Natural Convection Unstable Horizontal Equation Source
+    ;                        !- Natural Convection Unstable Horizontal Equation User Curve Name
+
 Shading:Building:Detailed,
   Shading Surface 1 South,                      !- Name
   ,                                       !- Transmittance Schedule Name
@@ -183,8 +198,7 @@ SurfaceConvectionAlgorithm:Inside,
 
 !-   ===========  ALL OBJECTS IN CLASS: SURFACECONVECTIONALGORITHM:OUTSIDE ===========
 
-SurfaceConvectionAlgorithm:Outside,
-    DOE-2;                   !- Algorithm
+  SurfaceConvectionAlgorithm:Outside,AdaptiveConvectionAlgorithm;
 
 
 !-   ===========  ALL OBJECTS IN CLASS: HEATBALANCEALGORITHM ===========
@@ -1262,23 +1276,37 @@ Construction,
     UWG_CAPITOUL_Wall,       !- Name
     Brick 300mm,             !- Outside Layer
     I01 30mm insulation board;  !- Layer 2
-
-Construction,
-    UWG_CAPITOUL_Roof,       !- Name
-    Tile 60mm,               !- Outside Layer
-    Wood 200mm,              !- Layer 2
-    I01 30mm insulation board;  !- Layer 3
-
-Construction,
-    UWG_CAPITOUL_Floor,      !- Name
-    CONCRETE 20mm;           !- Outside Layer
-
 ! Roof
 Construction,
     IEAD Non-res Roof,       !- Name
     Roof Membrane,           !- Outside Layer
     IEAD NonRes Roof Insulation,  !- Outside Layer
     Metal Decking;           !- Layer 3
+Construction,
+    VCWG_Roof,       !- Name
+    VCWG_Insulation;           !- Outside Layer
+Construction,
+    UWG_CAPITOUL_Roof,       !- Name
+    Tile 60mm,               !- Outside Layer
+    Wood 200mm,              !- Layer 2
+    I01 30mm insulation board;  !- Layer 3
+
+  Material,
+    VCWG_Insulation,  !- Name
+    VeryRough,             !- Roughness
+    0.0926465469659246,      !- Thickness {m}
+    0.049,                   !- Conductivity {W/m-K}
+    265.0000,                !- Density {kg/m3}
+    836.8000,                !- Specific Heat {J/kg-K}
+    0.9500,                  !- Thermal Absorptance
+    0.7500,                  !- Solar Absorptance
+    0.7500;                  !- Visible Absorptance
+
+Construction,
+    UWG_CAPITOUL_Floor,      !- Name
+    CONCRETE 20mm;           !- Outside Layer
+
+
 
 ! Slab on grade, unheated
 Construction,
