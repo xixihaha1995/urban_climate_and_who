@@ -22,10 +22,10 @@ def one_ini(sensitivity_file_name):
     value_list = [i for i in config['sensitivity']['value_list'].split(',')]
     this_ini_process = []
     for value in value_list:
-        p = Process(target=ByPass.run_offline, args=(config,uwgVariable, value))
-        p.start()
-        this_ini_process.append(p)
-        # ByPass.run_offline(config,uwgVariable, value)
+        # p = Process(target=ByPass.run_offline, args=(config,uwgVariable, value))
+        # p.start()
+        # this_ini_process.append(p)
+        ByPass.run_offline(config,uwgVariable, value)
     return this_ini_process
 
 def batch_run(ini_files):
